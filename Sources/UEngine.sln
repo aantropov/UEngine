@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UEngine", "UEngine\UEngine.vcxproj", "{69A8D5F1-0FA7-4994-8506-6BDC907CB685}"
 EndProject
