@@ -1,0 +1,36 @@
+#version 330 core
+
+uniform struct Material
+{
+	sampler2D normal;
+} material;
+
+uniform struct Transform
+{
+	mat4 model;
+	mat4 viewProjection;	
+	mat3 normal;
+	vec3 viewPosition;
+} transform;
+
+in Vertex {	
+	vec2  texcoord;
+	vec3  normal;
+	vec3  t;
+	vec3  b;
+} Vert;
+
+out vec4 color;
+
+void main(void)
+{
+	vec3 bump = normalize( texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0);
+
+	vec3 bump2;
+	bump2.x = dot(bump, Vert.t);
+	bump2.y = dot(bump, Vert.b);
+	bump2.z = dot(bump, Vert.normal);
+	
+	color = transform.model*normalize(vec4(bump2,1));
+	
+}

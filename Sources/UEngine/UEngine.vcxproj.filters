@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{7c437890-84d8-48bd-93e8-d55dee3e4f7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{cd695600-b853-413c-b581-33f61adf2361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\math">
+      <UniqueIdentifier>{50d9c743-6c9d-40a0-b74d-a5c0584506c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Max Exporter">
+      <UniqueIdentifier>{54302691-aa80-4b7a-9cbf-45d458db3710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\GameMechanics">
+      <UniqueIdentifier>{c5c3c852-fce9-44d9-bf20-bf7c32fbd99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Renderer">
+      <UniqueIdentifier>{612b89c5-4420-45ea-9a24-6ee9423e1578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resources">
+      <UniqueIdentifier>{9be51077-924a-4f56-9e34-6211b6f3edc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Utils">
+      <UniqueIdentifier>{7cc50649-c50c-4622-92f0-237f3d5bc3de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Basic">
+      <UniqueIdentifier>{94fe3f19-7037-4265-b743-df5c8b833e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Lua">
+      <UniqueIdentifier>{5e2c8108-179f-49f4-abe4-d30fa0f1a95f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\GameMechanics\UComponent.cpp">
+      <Filter>Core\GameMechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\GameMechanics\UGameObject.cpp">
+      <Filter>Core\GameMechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\OpenGL.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UBuffer.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UFrameBufferObject.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UGLObject.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UIndexBuffer.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\ULighting.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\URenderer.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\URenderManager.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UShader.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UShaderProgram.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UUniformBlockBuffer.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UVertex.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UVertexArrayObject.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UVertexBuffer.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UWindow.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Renderer\UMesh.cpp">
+      <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UMaterial.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UModel.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UPostEffect.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UResource.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UResourceFactory.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UTexture.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Resources\UXMLFile.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Utils\UConfig.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Utils\ULogger.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Utils\utils.cpp">
+      <Filter>Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UCamera.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UEngine.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UIAnimable.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UIRenderable.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UIUpdateble.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\ULight.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UMatrix.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UMatrixRotation.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UNode.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UScene.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UTransform.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Lua\UScriptEngine.cpp">
+      <Filter>Core\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Lua\UScript.cpp">
+      <Filter>Core\Lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\UEngine.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\mat2.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\mat3.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\mat4.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\math3d.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\mathgl.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\quat.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec2.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec3.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="core\math\vec4.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameMechanics\UComponent.h">
+      <Filter>Core\GameMechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameMechanics\UGameObject.h">
+      <Filter>Core\GameMechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\OpenGL.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UBuffer.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UFrameBufferObject.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UGLObject.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UIndexBuffer.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\ULighting.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\URenderer.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\URenderManager.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UShader.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UShaderProgram.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UUniformBlockBuffer.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UVertex.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UVertexArrayObject.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UVertexBuffer.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UWindow.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Renderer\UMesh.h">
+      <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UMaterial.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UModel.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UPostEffect.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UResource.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UResourceFactory.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UTexture.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UXMLFile.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Utils\enum.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Utils\ExportDef.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Utils\UConfig.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Utils\ULogger.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Utils\utils.h">
+      <Filter>Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameMechanics\UGameMechanics.h">
+      <Filter>Core\GameMechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\math\UMath.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UCamera.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UIAnimable.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UIRenderable.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UIUpdateble.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\ULight.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UMatrix.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UMatrixRotation.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UNode.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UScene.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\USingleton.hpp">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UTransform.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Lua\UScriptEngine.h">
+      <Filter>Core\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Lua\UScript.h">
+      <Filter>Core\Lua</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\UEngineStarter\Data\basic.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic_bump_light.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic_bump_light.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basiclight.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basiclight.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\depth.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\depth.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\light.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_blur.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_blur.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skybox.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_model.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\config.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\normal.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\normal.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_ssao.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_ssao.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\deffered.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\deffered.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_model_skinning.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_animation.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\..\..\Export\Model export skinning model.ms">
+      <Filter>Max Exporter</Filter>
+    </None>
+    <None Include="..\..\..\Export\Model export old.ms">
+      <Filter>Max Exporter</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned_bump_light.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned_deffered.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned_depth.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned_light.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skinned_normal.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_animation2.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\fallout3_animation.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\fallout3_model.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\fallout3_idle_animation.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\lighting_off_deffered.ps">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\lighting_off_deffered.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\skysphere.vs">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic_material.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic_material1.xml">
+      <Filter>Data</Filter>
+    </None>
+  </ItemGroup>
+</Project>

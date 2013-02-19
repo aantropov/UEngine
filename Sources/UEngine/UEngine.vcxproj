@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{69A8D5F1-0FA7-4994-8506-6BDC907CB685}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>UEngine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\Projects\NewEra\UEngine\Sources\Include;$(IncludePath)</IncludePath>
+    <TargetExt>.dll</TargetExt>
+    <OutDir>..\UEngineStarter</OutDir>
+    <LibraryPath>D:\Projects\NewEra\UEngine\Sources\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\Projects\UEngine\Sources\UEngine\UEngine\Include\lua-5.1.4\src;D:\Projects\UEngine\Sources\UEngine\UEngine\Core;D:\Projects\UEngine\Sources\UEngine\UEngine\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Projects\UEngine\Sources\UEngine\UEngine\Lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DevIL.lib;Ilut.lib;Ilu.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Projects\UEngine\Sources\UEngine\UEngine\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Basic\UCamera.cpp" />
+    <ClCompile Include="Core\Basic\UEngine.cpp" />
+    <ClCompile Include="Core\Basic\UIAnimable.cpp" />
+    <ClCompile Include="Core\Basic\UIRenderable.cpp" />
+    <ClCompile Include="Core\Basic\UIUpdateble.cpp" />
+    <ClCompile Include="Core\Basic\ULight.cpp" />
+    <ClCompile Include="Core\Basic\UMatrix.cpp" />
+    <ClCompile Include="Core\Basic\UMatrixRotation.cpp" />
+    <ClCompile Include="Core\Basic\UNode.cpp" />
+    <ClCompile Include="Core\Basic\UScene.cpp" />
+    <ClCompile Include="Core\Basic\UTransform.cpp" />
+    <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
+    <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
+    <ClCompile Include="Core\Lua\UScript.cpp" />
+    <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
+    <ClCompile Include="Core\Renderer\OpenGL.cpp" />
+    <ClCompile Include="Core\Renderer\UBuffer.cpp" />
+    <ClCompile Include="Core\Renderer\UFrameBufferObject.cpp" />
+    <ClCompile Include="Core\Renderer\UGLObject.cpp" />
+    <ClCompile Include="Core\Renderer\UIndexBuffer.cpp" />
+    <ClCompile Include="Core\Renderer\ULighting.cpp" />
+    <ClCompile Include="Core\Renderer\UMesh.cpp" />
+    <ClCompile Include="Core\Renderer\URenderer.cpp" />
+    <ClCompile Include="Core\Renderer\URenderManager.cpp" />
+    <ClCompile Include="Core\Renderer\UShader.cpp" />
+    <ClCompile Include="Core\Renderer\UShaderProgram.cpp" />
+    <ClCompile Include="Core\Renderer\UUniformBlockBuffer.cpp" />
+    <ClCompile Include="Core\Renderer\UVertex.cpp" />
+    <ClCompile Include="Core\Renderer\UVertexArrayObject.cpp" />
+    <ClCompile Include="Core\Renderer\UVertexBuffer.cpp" />
+    <ClCompile Include="Core\Renderer\UWindow.cpp" />
+    <ClCompile Include="Core\Resources\UMaterial.cpp" />
+    <ClCompile Include="Core\Resources\UModel.cpp" />
+    <ClCompile Include="Core\Resources\UPostEffect.cpp" />
+    <ClCompile Include="Core\Resources\UResource.cpp" />
+    <ClCompile Include="Core\Resources\UResourceFactory.cpp" />
+    <ClCompile Include="Core\Resources\UTexture.cpp" />
+    <ClCompile Include="Core\Resources\UXMLFile.cpp" />
+    <ClCompile Include="Core\Utils\UConfig.cpp" />
+    <ClCompile Include="Core\Utils\ULogger.cpp" />
+    <ClCompile Include="Core\Utils\utils.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Basic\UCamera.h" />
+    <ClInclude Include="Core\Basic\UIAnimable.h" />
+    <ClInclude Include="Core\Basic\UIRenderable.h" />
+    <ClInclude Include="Core\Basic\UIUpdateble.h" />
+    <ClInclude Include="Core\Basic\ULight.h" />
+    <ClInclude Include="Core\Basic\UMatrix.h" />
+    <ClInclude Include="Core\Basic\UMatrixRotation.h" />
+    <ClInclude Include="Core\Basic\UNode.h" />
+    <ClInclude Include="Core\Basic\UScene.h" />
+    <ClInclude Include="Core\Basic\USingleton.hpp" />
+    <ClInclude Include="Core\Basic\UTransform.h" />
+    <ClInclude Include="Core\GameMechanics\UComponent.h" />
+    <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
+    <ClInclude Include="Core\GameMechanics\UGameObject.h" />
+    <ClInclude Include="Core\Lua\UScript.h" />
+    <ClInclude Include="Core\Lua\UScriptEngine.h" />
+    <ClInclude Include="core\math\mat2.h" />
+    <ClInclude Include="core\math\mat3.h" />
+    <ClInclude Include="core\math\mat4.h" />
+    <ClInclude Include="core\math\math3d.h" />
+    <ClInclude Include="core\math\mathgl.h" />
+    <ClInclude Include="core\math\quat.h" />
+    <ClInclude Include="Core\math\UMath.h" />
+    <ClInclude Include="core\math\vec2.h" />
+    <ClInclude Include="core\math\vec3.h" />
+    <ClInclude Include="core\math\vec4.h" />
+    <ClInclude Include="Core\Renderer\OpenGL.h" />
+    <ClInclude Include="Core\Renderer\UBuffer.h" />
+    <ClInclude Include="Core\Renderer\UFrameBufferObject.h" />
+    <ClInclude Include="Core\Renderer\UGLObject.h" />
+    <ClInclude Include="Core\Renderer\UIndexBuffer.h" />
+    <ClInclude Include="Core\Renderer\ULighting.h" />
+    <ClInclude Include="Core\Renderer\UMesh.h" />
+    <ClInclude Include="Core\Renderer\URenderer.h" />
+    <ClInclude Include="Core\Renderer\URenderManager.h" />
+    <ClInclude Include="Core\Renderer\UShader.h" />
+    <ClInclude Include="Core\Renderer\UShaderProgram.h" />
+    <ClInclude Include="Core\Renderer\UUniformBlockBuffer.h" />
+    <ClInclude Include="Core\Renderer\UVertex.h" />
+    <ClInclude Include="Core\Renderer\UVertexArrayObject.h" />
+    <ClInclude Include="Core\Renderer\UVertexBuffer.h" />
+    <ClInclude Include="Core\Renderer\UWindow.h" />
+    <ClInclude Include="Core\Resources\UMaterial.h" />
+    <ClInclude Include="Core\Resources\UModel.h" />
+    <ClInclude Include="Core\Resources\UPostEffect.h" />
+    <ClInclude Include="Core\Resources\UResource.h" />
+    <ClInclude Include="Core\Resources\UResourceFactory.h" />
+    <ClInclude Include="Core\Resources\UTexture.h" />
+    <ClInclude Include="Core\Resources\UXMLFile.h" />
+    <ClInclude Include="core\UEngine.h" />
+    <ClInclude Include="Core\Utils\enum.h" />
+    <ClInclude Include="Core\Utils\ExportDef.h" />
+    <ClInclude Include="Core\Utils\UConfig.h" />
+    <ClInclude Include="Core\Utils\ULogger.h" />
+    <ClInclude Include="Core\Utils\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Export\Model export skinning model.ms" />
+    <None Include="..\..\..\Export\Model export old.ms" />
+    <None Include="..\UEngineStarter\config.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic.ps" />
+    <None Include="..\UEngineStarter\Data\basic.vs" />
+    <None Include="..\UEngineStarter\Data\basiclight.ps" />
+    <None Include="..\UEngineStarter\Data\basiclight.vs" />
+    <None Include="..\UEngineStarter\Data\basic_bump_light.ps" />
+    <None Include="..\UEngineStarter\Data\basic_bump_light.vs" />
+    <None Include="..\UEngineStarter\Data\basic_material.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\UEngineStarter\Data\basic_material1.xml" />
+    <None Include="..\UEngineStarter\Data\deffered.ps" />
+    <None Include="..\UEngineStarter\Data\deffered.vs" />
+    <None Include="..\UEngineStarter\Data\depth.ps" />
+    <None Include="..\UEngineStarter\Data\depth.vs" />
+    <None Include="..\UEngineStarter\Data\fallout3_animation.xml" />
+    <None Include="..\UEngineStarter\Data\fallout3_idle_animation.xml" />
+    <None Include="..\UEngineStarter\Data\fallout3_model.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\UEngineStarter\Data\light.xml" />
+    <None Include="..\UEngineStarter\Data\lighting_off_deffered.ps" />
+    <None Include="..\UEngineStarter\Data\lighting_off_deffered.vs" />
+    <None Include="..\UEngineStarter\Data\normal.ps" />
+    <None Include="..\UEngineStarter\Data\normal.vs" />
+    <None Include="..\UEngineStarter\Data\post_effect.vs" />
+    <None Include="..\UEngineStarter\Data\post_effect_blur.ps" />
+    <None Include="..\UEngineStarter\Data\post_effect_blur.xml" />
+    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.ps" />
+    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.xml" />
+    <None Include="..\UEngineStarter\Data\post_effect_ssao.ps" />
+    <None Include="..\UEngineStarter\Data\post_effect_ssao.xml" />
+    <None Include="..\UEngineStarter\Data\skinned.vs" />
+    <None Include="..\UEngineStarter\Data\skinned_bump_light.vs" />
+    <None Include="..\UEngineStarter\Data\skinned_deffered.vs" />
+    <None Include="..\UEngineStarter\Data\skinned_depth.vs" />
+    <None Include="..\UEngineStarter\Data\skinned_light.vs" />
+    <None Include="..\UEngineStarter\Data\skinned_normal.vs" />
+    <None Include="..\UEngineStarter\Data\skybox.xml" />
+    <None Include="..\UEngineStarter\Data\skysphere.vs" />
+    <None Include="..\UEngineStarter\Data\test_animation.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_animation2.xml" />
+    <None Include="..\UEngineStarter\Data\test_model.xml" />
+    <None Include="..\UEngineStarter\Data\test_model_skinning.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

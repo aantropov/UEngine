@@ -1,0 +1,7 @@
+<xml>
+  <animation>
+    <name>Test2</name>
+    <frame_rate>1000</frame_rate>
+    <uma>data\\fallout3_idle_animation.uma</uma>
+  </animation>
+</xml>

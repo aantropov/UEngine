@@ -1,0 +1,14 @@
+<xml>
+  <config>
+	  <width>1024</width>
+    <height>768</height>
+    <fullscreen>0</fullscreen>
+    <vsync>1</vsync>
+    <bpp>32</bpp>
+    <deffered_lighting>1</deffered_lighting>
+    <depth_texture_size>2048</depth_texture_size>   
+    <post_effects>
+      <deffered_lighting>data\\post_effect_deffered_lighting.xml</deffered_lighting>
+    </post_effects>    
+  </config>
+</xml>

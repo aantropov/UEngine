@@ -1,0 +1,17 @@
+<xml>
+  <post_effect>
+    <name>SSAO</name>
+    <shaders>
+      <pixel_path>data\\post_effect_ssao.ps</pixel_path>
+      <vertex_path>data\\post_effect.vs</vertex_path>
+    </shaders>
+    <tex_num>1</tex_num>
+    <textures>
+      <tex_0>
+        <name>noise</name>
+        <channel>3</channel>
+        <path>data\\noise.jpg</path>
+      </tex_0>
+    </textures>
+  </post_effect>
+</xml>

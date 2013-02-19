@@ -1,0 +1,26 @@
+<xml>
+  <model>
+    <name>Light</name>
+    <upm>data\\light.upm</upm>
+    <mesh_num>0</mesh_num>
+    <tex_num>1</tex_num>
+    <anim_num>0</anim_num>
+    <common_textures>
+      <tex_0>
+        <name>material.texture</name>
+        <channel>0</channel>
+        <path>data\\light.jpg</path>
+      </tex_0>
+    </common_textures>
+    <common_shaders>
+      <pixel_path>data\\basic.ps</pixel_path>
+      <vertex_path>data\\basic.vs</vertex_path>
+      <normal_vertex_path>data\\normal.vs</normal_vertex_path>
+      <depth_vertex_path>data\\depth.vs</depth_vertex_path>
+      <deffered_vertex_path>data\\deffered.vs</deffered_vertex_path>
+      <normal_pixel_path>data\\normal.ps</normal_pixel_path>
+      <depth_pixel_path>data\\depth.ps</depth_pixel_path>
+      <deffered_pixel_path>data\\deffered.ps</deffered_pixel_path>
+    </common_shaders>
+  </model>
+</xml>

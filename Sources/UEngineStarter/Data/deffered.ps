@@ -1,0 +1,108 @@
+#version 330 core
+#define maxLight 8
+
+uniform int lightsNum;
+
+uniform vec4 light_position[maxLight];
+uniform vec3 light_spotDirection[maxLight];
+uniform float light_spotExponent[maxLight];
+uniform float light_spotCosCutoff[maxLight];
+uniform mat4 light_transform[maxLight];
+uniform sampler2DShadow light_depthTexture[maxLight];
+
+uniform struct Material
+{
+	sampler2D normal;
+	sampler2D texture;
+
+	vec4  ambient;
+	vec4  diffuse;
+	vec4  specular;
+	vec4  emission;
+	float shininess;
+
+} material;
+
+uniform struct Transform
+{
+	mat4 model;
+	mat4 viewProjection;	
+	mat3 normal;
+	vec3 viewPosition;
+} transform;
+
+in Vertex {	
+	vec4 position;
+	vec2  texcoord;
+	vec3  normal;
+	vec3  lightDir[maxLight];
+	vec3  lightDirTBN[maxLight];
+	vec3  viewDir;
+	vec4 smcoord[maxLight];
+	vec3 t;
+	vec3 b;
+} Vert;
+
+out vec4 color[6];
+
+
+float PCF(in vec4 smcoord, sampler2DShadow depthTexture)
+{
+	float res = 0.0;
+
+	res += textureProjOffset(depthTexture, smcoord, ivec2(-1,-1));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 0,-1));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 1,-1));
+	res += textureProjOffset(depthTexture, smcoord, ivec2(-1, 0));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 0, 0));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 1, 0));
+	res += textureProjOffset(depthTexture, smcoord, ivec2(-1, 1));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 0, 1));
+	res += textureProjOffset(depthTexture, smcoord, ivec2( 1, 1));
+
+	return (res / 9.0);
+}
+
+float ProccessLight(int i)
+{
+	float distance = length(Vert.lightDir[i]);
+	float shadow  = clamp(PCF(Vert.smcoord[i], light_depthTexture[i]), 0.1, 1.0);
+	
+	vec3 lightDir = normalize(Vert.lightDirTBN[i]);
+	vec3 lightDirLight = normalize(Vert.lightDir[i]);
+
+	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDirLight);
+	float spot       = float(spotEffect > light_spotCosCutoff[i]);
+	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
+
+	return shadow*spot*spotEffect;
+}
+
+
+void main(void)
+{
+	vec3 bump = ( texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0);
+
+	vec3 bump2;
+	bump2.x = dot(bump, Vert.t);
+	bump2.y = dot(bump, Vert.b);
+	bump2.z = dot(bump, Vert.normal);
+	
+	bump2 = vec3(transform.model*vec4(bump2,1.0));
+	
+	float res = 0.0;
+	for(int i = 0; i < int(lightsNum); i++)
+	{
+	 res += ProccessLight(i);
+	}
+
+	res /= float(lightsNum);
+
+	color[0] = texture(material.texture, Vert.texcoord) * clamp(res, 0, 1.0);
+	color[1] = vec4((bump2) * 0.5 + vec3(0.5), 1.0);
+	color[2] = material.diffuse;
+	color[3] = material.ambient;	
+	color[4] = vec4(material.specular.xyz, material.shininess);
+	color[5] = Vert.position;
+}
+
