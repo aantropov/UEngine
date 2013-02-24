@@ -138,9 +138,6 @@
     <ClCompile Include="Core\Basic\UEngine.cpp">
       <Filter>Core\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Basic\UIAnimable.cpp">
-      <Filter>Core\Basic</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Basic\UIRenderable.cpp">
       <Filter>Core\Basic</Filter>
     </ClCompile>
@@ -169,6 +166,12 @@
       <Filter>Core\Lua</Filter>
     </ClCompile>
     <ClCompile Include="Core\Lua\UScript.cpp">
+      <Filter>Core\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Basic\UIAnimatable.cpp">
+      <Filter>Core\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Lua\LuaTemplates.cpp">
       <Filter>Core\Lua</Filter>
     </ClCompile>
   </ItemGroup>
@@ -302,9 +305,6 @@
     <ClInclude Include="Core\Basic\UCamera.h">
       <Filter>Core\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Basic\UIAnimable.h">
-      <Filter>Core\Basic</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Basic\UIRenderable.h">
       <Filter>Core\Basic</Filter>
     </ClInclude>
@@ -336,6 +336,12 @@
       <Filter>Core\Lua</Filter>
     </ClInclude>
     <ClInclude Include="Core\Lua\UScript.h">
+      <Filter>Core\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Basic\UIAnimatable.h">
+      <Filter>Core\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Lua\LuaTemplates.h">
       <Filter>Core\Lua</Filter>
     </ClInclude>
   </ItemGroup>
@@ -464,6 +470,12 @@
       <Filter>Data</Filter>
     </None>
     <None Include="..\UEngineStarter\Data\basic_material1.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_script.xml">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\test_script.lua">
       <Filter>Data</Filter>
     </None>
   </ItemGroup>

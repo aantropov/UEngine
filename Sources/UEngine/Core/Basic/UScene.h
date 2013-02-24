@@ -7,7 +7,7 @@
 #include "..\Utils\ExportDef.h"
 #include "..\Utils\enum.h"
 #include "..\math\umath.h"
-#include "UIAnimable.h"
+#include "UIAnimatable.h"
 #include "..\GameMechanics\UGameMechanics.h"
 
 using namespace std;

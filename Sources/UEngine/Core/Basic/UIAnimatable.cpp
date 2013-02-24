@@ -1,4 +1,4 @@
-#include "UIAnimable.h"
+#include "UIAnimatable.h"
 #include "..\Resources\UXMLFile.h"
 
 bool UAnimation:: Load(std::string path)

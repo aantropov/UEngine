@@ -95,7 +95,7 @@
   <ItemGroup>
     <ClCompile Include="Core\Basic\UCamera.cpp" />
     <ClCompile Include="Core\Basic\UEngine.cpp" />
-    <ClCompile Include="Core\Basic\UIAnimable.cpp" />
+    <ClCompile Include="Core\Basic\UIAnimatable.cpp" />
     <ClCompile Include="Core\Basic\UIRenderable.cpp" />
     <ClCompile Include="Core\Basic\UIUpdateble.cpp" />
     <ClCompile Include="Core\Basic\ULight.cpp" />
@@ -106,6 +106,7 @@
     <ClCompile Include="Core\Basic\UTransform.cpp" />
     <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
     <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
+    <ClCompile Include="Core\Lua\LuaTemplates.cpp" />
     <ClCompile Include="Core\Lua\UScript.cpp" />
     <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
     <ClCompile Include="Core\Renderer\OpenGL.cpp" />
@@ -138,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Basic\UCamera.h" />
-    <ClInclude Include="Core\Basic\UIAnimable.h" />
+    <ClInclude Include="Core\Basic\UIAnimatable.h" />
     <ClInclude Include="Core\Basic\UIRenderable.h" />
     <ClInclude Include="Core\Basic\UIUpdateble.h" />
     <ClInclude Include="Core\Basic\ULight.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Core\GameMechanics\UComponent.h" />
     <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
     <ClInclude Include="Core\GameMechanics\UGameObject.h" />
+    <ClInclude Include="Core\Lua\LuaTemplates.h" />
     <ClInclude Include="Core\Lua\UScript.h" />
     <ClInclude Include="Core\Lua\UScriptEngine.h" />
     <ClInclude Include="core\math\mat2.h" />
@@ -246,6 +248,8 @@
     <None Include="..\UEngineStarter\Data\test_model_skinning.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="..\UEngineStarter\Data\test_script.lua" />
+    <None Include="..\UEngineStarter\Data\test_script.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

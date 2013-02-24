@@ -5,16 +5,17 @@
 class UMaterial;
 
 class UGameObject : public UNode{
-	
+protected:
+	std::vector<UComponent*> components;
 public:
 	
 	UTransform transform;
 	UTransform world;
 	
-	std::vector<UComponent*> components;
-
 	std::vector<UGameObject*> children;
 	UGameObject *parentObject;
+
+	void UENGINE_DECLSPEC AddComponent(UComponent *component);
 
 	void UENGINE_DECLSPEC Render(UMaterial *m);
 	void UENGINE_DECLSPEC Render(URENDER_TYPE type);

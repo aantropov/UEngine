@@ -1,6 +1,11 @@
 #include "UGameObject.h"
 #include "..\UEngine.h"
 
+void UGameObject:: AddComponent(UComponent *component)
+{
+	components.push_back(component);
+}
+
 void UGameObject::Render(UMaterial *m)
 {
 	for each(auto el in components)

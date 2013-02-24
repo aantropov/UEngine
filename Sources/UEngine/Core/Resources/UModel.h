@@ -1,9 +1,9 @@
 #pragma once
 #include "..\GameMechanics\UGameMechanics.h"
 #include "..\Renderer\UMesh.h"
-#include "..\Basic\UIAnimable.h"
+#include "..\Basic\UIAnimatable.h"
 
-class UModel: public UResource, public UComponent, public UIRenderable, public UISkinAnimable
+class UModel: public UResource, public UComponent, public UIRenderable, public UISkinAnimatable
 {
 	std::string name;
 	unsigned int mesh_num;
@@ -18,7 +18,7 @@ public:
 	
 	virtual void Free();
 	virtual bool Load(std:: string path);
-	virtual void UpdateAnimation(double delta) { UISkinAnimable::UpdateAnimation(delta); }
+	virtual void UpdateAnimation(double delta) { UISkinAnimatable::UpdateAnimation(delta); }
 	UModel(void){}
 	virtual ~UModel(void){}
 };

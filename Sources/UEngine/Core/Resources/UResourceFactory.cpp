@@ -4,6 +4,7 @@
 #include "UModel.h"
 #include "UPostEffect.h"
 #include "..\Renderer\UShaderProgram.h"
+#include "..\Lua\UScript.h"
 
 UResource* UResourceFactory:: Create(URESOURCE_TYPE type){
 	
@@ -57,6 +58,11 @@ UResource* UResourceFactory:: Create(URESOURCE_TYPE type){
 		temp->rf = this;
 		resources.push_back(new UElement(temp, path));
 		return temp;
+	}else if(type == URESOURCE_SCRIPT){
+		UScript* temp = new UScript();
+		temp->rf = this;
+		resources.push_back(new UElement(temp, path));
+		return temp;
 	}
 	else 
 		return nullptr;
@@ -65,10 +71,9 @@ UResource* UResourceFactory:: Get(std::string path)
 {
 	for(unsigned int i = 0 ; i < resources.size() ; i++ ){
 		if(path == resources[i]->GetId()){
-	
-						return resources[i]->GetResource();						
-					}		
+			return resources[i]->GetResource();						
 		}
+	}
 	return nullptr;
 }
 bool UResourceFactory:: Add(std::string path, UResource* resource){
@@ -104,14 +109,12 @@ UResource* UResourceFactory:: Load(std::string path, URESOURCE_TYPE type){
 		return res;
 	
 	ULogger::GetInstance()->Message("Loading resource: \"" + path + "\"");
-	if(type == URESOURCE_SHADER){
-		
+	if(type == URESOURCE_SHADER){		
 		UShader* temp = new UShader();
 		temp->rf = this;
 		temp->Load(path);					
 		resources.push_back(new UElement(temp, path));		
-		return temp;
-	
+		return temp;	
 	}
 	else if(type == URESOURCE_TEXTURE){
 		UTexture* temp = new UTexture();
@@ -147,8 +150,15 @@ UResource* UResourceFactory:: Load(std::string path, URESOURCE_TYPE type){
 		temp->Load(path);					
 		resources.push_back(new UElement(temp, path));
 		return temp;
-	}	
-	else 
+	}
+	else if(type == URESOURCE_SCRIPT){
+		UScript* temp = new UScript();
+		temp->rf = this;
+		temp->Load(path);					
+		resources.push_back(new UElement(temp, path));
+		return temp;
+	}
+	else
 		return nullptr;
 	
 }
@@ -176,8 +186,7 @@ void UResourceFactory::Release(UResource *resource){
 }	
 // delete all elements
 void UResourceFactory::ReleaseAll(){
-	for(unsigned int i = 0 ; i < resources.size() ; i++ ){
-	
+	for(unsigned int i = 0 ; i < resources.size() ; i++ ){	
 			delete resources[i]->GetResource();
 			resources[i]->SetResource(NULL);
 			delete resources[i];				

@@ -117,6 +117,7 @@ public:
 class UAnimation : public UResource
 {
 public:
+
 	UAnimation(){ frameRate = 0.0; startTime = 0.0; lastUpdateTime = 0.0; state = UANIMATION_STOP; }
 	
 	virtual ~UAnimation(){}
@@ -181,16 +182,16 @@ public:
 	
 };
 
-class UIAnimable
+class UIAnimatable
 {	
 public:
 		
-	UIAnimable(){}
+	UIAnimatable(){}
 	virtual void UpdateAnimation(double delta) = 0;
-	virtual ~UIAnimable(){}
+	virtual ~UIAnimatable(){}
 };
 
-class UISkinAnimable : public UIAnimable
+class UISkinAnimatable : public UIAnimatable
 {
 public:
 	
@@ -200,8 +201,8 @@ public:
 	unsigned int countPlayableAnimations;
 	UKeyFrame currentFrame;
 
-	UISkinAnimable(){ for(int i = 0; i < MAX_BONES; i++) boneMatrixes[i] = mat4_identity; countPlayableAnimations = 0;}
-	virtual ~UISkinAnimable(){}
+	UISkinAnimatable(){ for(int i = 0; i < MAX_BONES; i++) boneMatrixes[i] = mat4_identity; countPlayableAnimations = 0;}
+	virtual ~UISkinAnimatable(){}
 	
 	virtual void UpdateAnimation(double delta)
 	{	

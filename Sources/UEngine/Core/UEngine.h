@@ -50,6 +50,7 @@ using namespace std;
 #include "Utils\ExportDef.h"
 
 #include "Lua\UScriptEngine.h"
+#include "Lua\UScript.h"
 
 //The main class 
 class UEngine {

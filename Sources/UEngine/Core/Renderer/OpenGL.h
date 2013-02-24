@@ -14,9 +14,7 @@
 #include "IL\ilut.h"
 #include "IL\ilu.h"
 
-//Debug or Release
-//#define UE_DEBUG
-#define UE_RELEASE
+#include "..\Utils\enum.h"
 
 #pragma comment(lib, "DevIL.lib")
 #pragma comment(lib, "Ilut.lib")
@@ -30,7 +28,6 @@
 // Global variable for error reporting
 extern GLenum g_OpenGLError;
 extern ILenum g_DevILError;
-
 
 // Safe OpenGL functions calling
 #ifdef UE_DEBUG

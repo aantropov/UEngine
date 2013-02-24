@@ -1,6 +1,6 @@
 #pragma once
 #include "..\Basic\UNode.h"
-#include "..\Basic\UIAnimable.h"
+#include "..\Basic\UIAnimatable.h"
 
 class UGameObject;
 
@@ -12,7 +12,7 @@ public:
 
 	virtual void UENGINE_DECLSPEC Update(double delta)
 	{
-		auto anim = dynamic_cast<UIAnimable*>(this);
+		auto anim = dynamic_cast<UIAnimatable*>(this);
 		if(anim != nullptr)
 			anim->UpdateAnimation(delta);
 	}

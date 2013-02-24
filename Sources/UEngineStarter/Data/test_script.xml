@@ -1,0 +1,6 @@
+<xml>
+  <script>
+    <name>Test script</name>
+    <lua>data\\test_script.lua</lua>
+  </script>
+</xml>

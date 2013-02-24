@@ -95,8 +95,8 @@ void  URenderer:: BindTexture(UTexture *tex, unsigned int channel)
 	else
 	{
 		texChannelsCache[channel] = tex->GetId();
-		OPENGL_CALL(glActiveTexture(GL_TEXTURE0 + channel));
-		OPENGL_CALL(glBindTexture(GL_TEXTURE_2D, tex->GetId()));
+		glActiveTexture(GL_TEXTURE0 + channel);
+		glBindTexture(GL_TEXTURE_2D, tex->GetId());
 	}
 }
 int URenderer:: CreateTexture(UTexture *tex){
@@ -173,7 +173,7 @@ int URenderer:: CreateVBO(UVertexBuffer *vb, UVBO_DRAW state){
 		
 	GLuint vbo;
 	OPENGL_CALL(glGenBuffers ( 1, &vbo ));
-    OPENGL_CALL(glBindBuffer ( GL_ARRAY_BUFFER , vbo ));
+    glBindBuffer ( GL_ARRAY_BUFFER , vbo );
 	OPENGL_CALL(glBufferData ( GL_ARRAY_BUFFER , size, vb->GetPointer(), state ));		 
 	
 	return vbo;
@@ -183,7 +183,7 @@ int URenderer:: CreateVBO(UIndexBuffer *ib, UVBO_DRAW state){
 		
 	GLuint vbo;
 	OPENGL_CALL(glGenBuffers ( 1, &vbo ));
-    OPENGL_CALL(glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , vbo ));
+    glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , vbo );
 	OPENGL_CALL(glBufferData ( GL_ELEMENT_ARRAY_BUFFER , size, ib->GetPointer(), state ));		 
 	
 	return vbo;
@@ -200,21 +200,21 @@ void URenderer:: DrawBuffer(UIndexBuffer* ib){
 	OPENGL_CALL(glDrawElements(GL_TRIANGLES, ib->GetNum(), GL_UNSIGNED_INT, NULL));	
 }
 void URenderer:: BindVBO(UVertexBuffer *vb){	
-	OPENGL_CALL(glBindBuffer ( GL_ARRAY_BUFFER , vb->GetId()));    
+	glBindBuffer ( GL_ARRAY_BUFFER , vb->GetId());    
 }
 void URenderer:: BindVBO(UIndexBuffer *vb){
 	
 	if(previousIB != vb->GetId())
 	{
 		previousIB = vb->GetId();
-		OPENGL_CALL(glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , vb->GetId()));
+		glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , vb->GetId());
 	}
 }
 void URenderer:: UnbindVBO(bool vertex_buffer){
 	if(vertex_buffer){
-		OPENGL_CALL(glBindBuffer ( GL_ARRAY_BUFFER , 0 )); 
+		glBindBuffer ( GL_ARRAY_BUFFER , 0 ); 
 	}else{
-		OPENGL_CALL(glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , 0 )); 
+		glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , 0 ); 
 	}
 }	
 
@@ -222,7 +222,7 @@ void URenderer:: UnbindVBO(bool vertex_buffer){
 int URenderer:: CreateVAO(){
 	GLuint vao;
 	OPENGL_CALL(glGenVertexArrays ( 1, &vao ));
-    OPENGL_CALL(glBindVertexArray( vao ));    	
+    glBindVertexArray( vao );    	
 	return vao;
 }
 void URenderer:: DeleteVAO(UVertexArrayObject *vao){
@@ -233,11 +233,11 @@ void URenderer:: BindVAO(UVertexBuffer *vb){
 	if(previousVAO != vb->GetVAO()->GetId())
 	{
 		previousVAO = vb->GetVAO()->GetId();
-		OPENGL_CALL( glBindVertexArray(vb->GetVAO()->GetId()));
+		glBindVertexArray(vb->GetVAO()->GetId());
 	}
 }
 void URenderer:: UnbindVAO(){
-	OPENGL_CALL(glBindVertexArray(0));    
+	glBindVertexArray(0);    
 }
 
 //Shaders

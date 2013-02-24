@@ -12,6 +12,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
 	UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\test_model.xml", URESOURCE_MODEL));
+	
+	UGameObject *gameObject = new UGameObject(m);
+	UScript *script = dynamic_cast<UScript*>(e.rf.Load("data\\test_script.xml", URESOURCE_SCRIPT));
+	gameObject->AddComponent((UComponent*)script);
 
 	sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 	sm->animations["Test2"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);

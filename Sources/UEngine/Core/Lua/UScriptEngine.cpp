@@ -1,4 +1,5 @@
 #include "UScriptEngine.h"
+#include "UScript.h"
 
 UScriptEngine:: UScriptEngine() {}
 
@@ -15,3 +16,5 @@ UScriptEngine* UScriptEngine:: GetInstance()
 	}
 	return instance;
 }
+
+
