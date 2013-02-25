@@ -57,8 +57,6 @@ UMaterial:: UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin)
 bool UMaterial::Load(std::string path)
 {
 	UXMLFile xml;
-	
-	char buffer[UE_MAXCHAR];
 	char tex_buffer[UE_MAXCHAR];
 
 	try{

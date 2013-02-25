@@ -14,7 +14,7 @@ public:
 		return UTransform(lerp(a.pos, b.pos, t), lerp(a.rotation, b.rotation, t), lerp(a.scale, b.scale, t));
 	}
 
-	const UTransform operator * (UTransform parent) const 
+	const UTransform operator* (UTransform parent) const 
 	{
 		UTransform t = *this;
 

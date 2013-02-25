@@ -13,8 +13,8 @@
 #define USCRIPT_UPDATE_FUNCTION "Update"
 
 //Debug or Release
-#define UE_DEBUG
-//#define UE_RELEASE
+//#define UE_DEBUG
+#define UE_RELEASE
 
 // Enumerations
 

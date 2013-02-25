@@ -5,7 +5,6 @@
 #include "..\Basic\ULight.h"
 #include "..\UEngine.h"
 
-
 URenderManager::URenderManager(){
 
 	if(atoi(UConfig::GetInstance()->GetParam("/xml/config/deffered_lighting/").c_str()) == 1)
@@ -17,8 +16,8 @@ URenderManager::URenderManager(){
 	postEffectFbo.Initialize();	
 	postpostEffectFbo.Initialize();	
 
-	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
-	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
+	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
+	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
 	
 	posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 
@@ -33,9 +32,7 @@ URenderManager::URenderManager(){
 	postEffectSSAO->AddTexture(lighting->normalScene, 3);
 	
 	depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
-	
 }
-
 
 URenderManager::~URenderManager(void){
 	delete lighting;

@@ -59,11 +59,11 @@ bool UAnimation:: Load(std::string path)
 					
 					fread(&bone.parent, 4, 1, file);
 
-					fread(&bone.pos, 4, 3, file);
-					fread(&bone.orient, 4, 4, file);
-					fread(&bone.scale, 4, 3, file);					
+					fread(&bone.transform.pos, 4, 3, file);
+					fread(&bone.transform.rotation, 4, 4, file);
+					fread(&bone.transform.scale, 4, 3, file);
 				
-					frame.bones.push_back(bone);					
+					frame.bones.push_back(bone);
 				}
 				
 				frames.push_back(frame);

@@ -1,7 +1,11 @@
 #pragma once 
+
+#include "UTransform.h"
+
 #include "..\math\UMath.h"
 #include "..\Utils\enum.h"
 #include "..\Resources\UResource.h"
+
 #include <string>
 #include <vector>
 #include <windows.h>
@@ -11,47 +15,21 @@
 class UBone
 {
 public:
-	
-	UBone(){}
-	UBone(quat orient, vec4 pos, vec3 scale, std::string name, unsigned int parent): name(name), orient(orient), pos(pos), parent(parent), scale(scale) {}
 
 	std::string name;
-
 	unsigned int parent;
-	quat orient;
-	vec3 pos;
-	vec3 scale;
-
-	mat4 localMatrix() const
-	{	
-		mat4 res = mat4_identity;
-		res = mat4(orient) /* GLTranslation(pos)*/;
-
-		res.r1[3] = pos.x;
-		res.r2[3] = pos.y;
-		res.r3[3] = pos.z;
-		
-		res *= GLScale(scale);
-		return res;
-	}
-
-	vec3 transform(const vec3& vertex_pos) const
-    {
-        return rotate(orient, vertex_pos) + pos;
-    }
-
-    vec3 invTransform (const vec3& vertex_pos) const
-    {
-        quat c = conjugate(orient);
-        return rotate(c, vertex_pos-pos);
-    }
-
+	UTransform transform;
+	
+	UBone(){}
+	UBone(UTransform transform, std::string name, unsigned int parent): name(name), transform(transform), parent(parent) {}
+	
 	static UBone Lerp(UBone a, UBone b, float t)
 	{
-		return UBone(lerp(a.orient, b.orient, t), lerp(a.pos, b.pos, t), lerp(a.scale, b.scale, t), b.name, b.parent);
+		return UBone(UTransform::Lerp(a.transform, b.transform, t), b.name, b.parent);
 	}
-	const UBone operator*(float f) const { return UBone(orient*f,  pos*f, scale*f, name, parent); }
-	const UBone operator+(const UBone &bone) const { return UBone(orient + bone.orient,  pos + bone.pos, scale + bone.scale, name, parent); }
+
+	const UBone operator* (float f) const { return UBone(UTransform(transform.pos * f, transform.rotation * f, transform.scale * f), name, parent); }
+	const UBone operator+ (const UBone &bone) const { return UBone(UTransform(transform.pos + bone.transform.pos, transform.rotation + bone.transform.rotation, transform.scale + bone.transform.scale), name, parent); }
 };
 
 class UKeyFrame
@@ -59,7 +37,7 @@ class UKeyFrame
 private:
 
 	void UpdateBone(unsigned int bone, vector<unsigned int> &updated, mat4 *matrixes)
-	{	
+	{
 		
 		bool isUpdated = false;
 		for(unsigned int i = 0; i < updated.size(); i++)
@@ -67,12 +45,12 @@ private:
 			{
 				isUpdated = true;
 				break;
-			}		
+			}
 
 		if(bones[bone].parent == -1)
-		{			
+		{
 			updated.push_back(bone);
-			matrixes[bone] = bones[bone].localMatrix();
+			matrixes[bone] = bones[bone].transform.ToMatrix();
 			return;
 		}
 
@@ -80,15 +58,16 @@ private:
 			UpdateBone(bones[bone].parent, updated, matrixes);
 
 		updated.push_back(bone);
-		matrixes[bone] = bones[bone].localMatrix() * matrixes[bones[bone].parent]/**/;
+		matrixes[bone] = bones[bone].transform.ToMatrix() * matrixes[bones[bone].parent]/**/;
 	}
 
 public:
+
 	UKeyFrame() {}
 	std::vector<UBone> bones;
 		
 	void UpdateMatrixes(mat4 *matrixes)
-	{		
+	{
 		vector<unsigned int> updated; 
 		for(unsigned int i = 0; i < bones.size(); i++)
 			UpdateBone(i, updated, matrixes);
@@ -96,7 +75,6 @@ public:
 	static UKeyFrame Lerp(UKeyFrame a, UKeyFrame b, float t)
 	{
 		UKeyFrame temp;
-		
 		for(unsigned int i = 0; i < b.bones.size(); i++)
 			temp.bones.push_back(UBone::Lerp(a.bones[i], b.bones[i], t));
 		
@@ -159,7 +137,6 @@ public:
 		unsigned int frame = (unsigned int) round((lastUpdateTime - startTime) / frameRate, 1.0);
 		
 		float t = (float)(((lastUpdateTime  - startTime) / frameRate) - (double)frame);
-		//t = clamp(t, 0.0f, 1.0f);
 
 		float fractpart, intpart;		
 		fractpart = modf(t, &intpart);		
