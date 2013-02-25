@@ -36,26 +36,24 @@ class UKeyFrame
 {
 private:
 
-	void UpdateBone(unsigned int bone, vector<unsigned int> &updated, mat4 *matrixes)
-	{
-		
+	void UpdateBone(unsigned int bone, vector<unsigned int> &updated, mat4 *matrixes){		
 		bool isUpdated = false;
-		for(unsigned int i = 0; i < updated.size(); i++)
-			if(updated[i] == bones[bone].parent)
-			{
+		for(unsigned int i = 0; i < updated.size(); i++){
+			if(updated[i] == bones[bone].parent){
 				isUpdated = true;
 				break;
 			}
+		}
 
-		if(bones[bone].parent == -1)
-		{
+		if(bones[bone].parent == -1){
 			updated.push_back(bone);
 			matrixes[bone] = bones[bone].transform.ToMatrix();
 			return;
 		}
 
-		if(!isUpdated)
+		if(!isUpdated){		
 			UpdateBone(bones[bone].parent, updated, matrixes);
+		}
 
 		updated.push_back(bone);
 		matrixes[bone] = bones[bone].transform.ToMatrix() * matrixes[bones[bone].parent]/**/;
@@ -72,6 +70,7 @@ public:
 		for(unsigned int i = 0; i < bones.size(); i++)
 			UpdateBone(i, updated, matrixes);
 	}
+
 	static UKeyFrame Lerp(UKeyFrame a, UKeyFrame b, float t)
 	{
 		UKeyFrame temp;
@@ -80,11 +79,13 @@ public:
 		
 		return temp;
 	}
+
 	const UKeyFrame operator*(float f) {
 		for(unsigned int i = 0; i < bones.size(); i++)
 			bones[i] = bones[i] * f;
 		return *this;
 	}
+
 	const UKeyFrame operator+(const UKeyFrame &frame) {		
 		for(unsigned int i = 0; i < frame.bones.size(); i++)
 			bones[i] =bones[i] + frame.bones[i];
@@ -112,23 +113,22 @@ public:
 	std::vector<UKeyFrame> frames;	
 	UKeyFrame currentFrame;
 
-	void StopAnimation()
-	{
+	void StopAnimation(){
 		state = UANIMATION_STOP;
 	}
-	void StartAnimation()
-	{
+
+	void StartAnimation(){
 		StartAnimation(GetTickCount(),  UANIMATION_PLAY_ONCE);
 	}
-	void StartAnimation(double startTime, UANIMATION_STATE state)
-	{
+
+	void StartAnimation(double startTime, UANIMATION_STATE state){
 		this->state = state;
 		this->startTime = startTime;
 		lastUpdateTime = startTime;
 		currentFrame = frames[0];
 	}
-	void Update(double delta)
-	{
+
+	void Update(double delta){
 		if(state == UANIMATION_STOP || GetTickCount() < startTime)
 			return;
 
