@@ -82,7 +82,7 @@ void ULight:: SetShadowTexture(unsigned int location, int i)
 	if(castShadows)
 	{
 		URenderer::GetInstance()->BindTexture(depthTextures[0], SHADOW_TEXTURE_CHANNEL + i);
-		URenderer::GetInstance()->Uniform1(location + i, SHADOW_TEXTURE_CHANNEL + i);
+		URenderer::GetInstance()->Uniform1(max(location + i, location), SHADOW_TEXTURE_CHANNEL + i);
 	}
 }
 void ULight:: SetLightTransform(string light){

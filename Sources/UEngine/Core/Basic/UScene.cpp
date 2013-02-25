@@ -20,11 +20,10 @@ void UScene::KeysProccessing(){
 }
 void UScene::UpdateLightParams()
 {
-	int cur = 0;
-	
+	int cur = 0;	
 	for(unsigned int i = 0; i < lights.size(); i++){
 	
-		if( lights[cur] != NULL && lights[i]->castShadows)
+		if( lights[i] != NULL && lights[i]->castShadows)
 		{
 			lightParams.position[cur] =  (lights[cur]->world.Transform(lights[cur]->transform.pos));
 			lightParams.ambient[cur] = lights[cur]->GetAmbient();
@@ -37,7 +36,8 @@ void UScene::UpdateLightParams()
 			lightParams.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
 
 			lightParams.transforms[cur] =  lights[cur]->GetLightTransform();
-			
+			lightParams.lightIndex[cur] = i;
+
 			cur++;
 		}
 		if(cur > MAX_LIGHTS)

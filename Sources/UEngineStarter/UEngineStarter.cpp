@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	light6->castShadows = true;
 	light7->castShadows = true;
 	light8->castShadows = true;
-	/**/
+	
 	UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
 	
 	// Main node in the scene
@@ -77,8 +77,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	scene.root = node;
 	
-	//ULight l[30];
-	/*UModel *m1[1000];
+/*	//ULight l[30];
+	UModel *m1[1000];
 
 	for(int i = 0; i <0; i++)
 	{

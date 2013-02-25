@@ -72,6 +72,7 @@ void URenderManager::Render(UScene* scene){
 	URenderer::GetInstance()->SetCamera(previousCam);
 	URenderer::GetInstance()->UnbindFBO();
 	
+	OPENGL_CHECK_FOR_ERRORS();
 	
 	lighting->Render(scene);
 	postEffectSSAO->Render(URENDER_FORWARD);

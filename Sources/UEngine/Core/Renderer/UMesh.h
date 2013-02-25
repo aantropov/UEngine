@@ -99,6 +99,7 @@ public:
 
 		OPENGL_CHECK_FOR_ERRORS();
 	}
+
 	virtual void Render(UMaterial *mat)
 	{
 		URenderer::GetInstance()->PushModelMatrix();
@@ -113,17 +114,15 @@ public:
 		URenderer::GetInstance()->PopModelMatrix();
 	
 	}
+
 	virtual void Render(URENDER_TYPE type){
 		
 		URenderer::GetInstance()->PushModelMatrix();
-
 		m.Set();
 		material.Render(type);
-		
 		URenderer::GetInstance()->BindVAO(&vb);
 		URenderer::GetInstance()->BindVBO(&ib);
 		URenderer::GetInstance()->DrawBuffer(&ib);
-
 		URenderer::GetInstance()->PopModelMatrix();
 	}
 	

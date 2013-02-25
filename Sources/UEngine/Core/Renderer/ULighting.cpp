@@ -57,7 +57,7 @@ UDefferedLighting:: UDefferedLighting(){
 UTexture* UDefferedLighting:: Render(UScene *scene)
 {
 	URenderer::GetInstance()->BindFBO(&fb);	
-	GLenum buffers[] = {UFB_ATTACHMENT_COLOR0, UFB_ATTACHMENT_COLOR1, UFB_ATTACHMENT_COLOR2,UFB_ATTACHMENT_COLOR3,UFB_ATTACHMENT_COLOR4, UFB_ATTACHMENT_COLOR5};
+	GLenum buffers[] = {UFB_ATTACHMENT_COLOR0, UFB_ATTACHMENT_COLOR1, UFB_ATTACHMENT_COLOR2,UFB_ATTACHMENT_COLOR3, UFB_ATTACHMENT_COLOR4, UFB_ATTACHMENT_COLOR5};
 	glDrawBuffers(6, buffers);
 
 	glViewport(0, 0, colorScene->GetWidth(), colorScene->GetHeight());
@@ -68,13 +68,20 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
 	scene->Render(URENDER_DEFFERED);
 	URenderer::GetInstance()->UnbindFBO();
 
+	OPENGL_CHECK_FOR_ERRORS();
+
 	//////////////////////////////////////
 	URenderer::GetInstance()->BindFBO(&postfb);	
 	postfb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
-	lighting->material.params["lightsNum"] = (float)(scene->GetLights().size());
+	OPENGL_CHECK_FOR_ERRORS();
+
+	lighting->material.params["lightsNum"] = (float)(scene->lightParams.count);
 	lighting->Render(URENDER_FORWARD);
 	URenderer::GetInstance()->UnbindFBO();
 	//////////////////////////////////////
+	
+	OPENGL_CHECK_FOR_ERRORS();
+
 	return resScene;
 
 }

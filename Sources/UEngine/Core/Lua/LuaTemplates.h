@@ -20,6 +20,7 @@ extern "C"
 #include    <map>
 
 #include    "..\Utils\enum.h"
+#include    "..\Utils\ULogger.h"
 
 extern int g_LuaError;
 #ifdef UE_DEBUG

@@ -21,6 +21,7 @@ class ULightParams
 public:
 
 	unsigned int count;
+	unsigned int lightIndex[MAX_LIGHTS];
 
 	vec4 position[MAX_LIGHTS];
 	vec4 ambient[MAX_LIGHTS];
@@ -31,6 +32,8 @@ public:
 	float spotExponent[MAX_LIGHTS];
 	float spotCosCutoff[MAX_LIGHTS];
 	mat4 transforms[MAX_LIGHTS];
+
+	ULightParams(): count(0) { std::memset(lightIndex, 0, sizeof(unsigned int) * MAX_LIGHTS); }
 };
 
 class UScene{
@@ -61,19 +64,15 @@ public:
 		}
 
 		void UENGINE_DECLSPEC Render(URENDER_TYPE type){			
-			
 			node->Render(type);
-
 			for(unsigned int i = 0; i < children.size(); i++){
 				if(children[i] != NULL)
 					children[i]->Render(type);
 			}		
 		}
 
-		void UENGINE_DECLSPEC Render(UMaterial *m){
-			
+		void UENGINE_DECLSPEC Render(UMaterial *m){			
 			node->Render(m);
-
 			for(unsigned int i = 0; i < children.size(); i++){
 				if(children[i] != NULL)
 					children[i]->Render(m);

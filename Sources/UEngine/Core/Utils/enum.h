@@ -4,7 +4,7 @@
 #define UE_MAXCHAR     8024
 #define MAX_UNIFORM_LOCATIONS 1000
 #define MAX_LIGHTS  8
-#define SHADOW_TEXTURE_CHANNEL  8
+#define SHADOW_TEXTURE_CHANNEL  12
 #define MAX_BONES  64
 
 #define USCRIPT_GLOBAL_SCOPE "USCRIPT"
@@ -13,14 +13,13 @@
 #define USCRIPT_UPDATE_FUNCTION "Update"
 
 //Debug or Release
-//#define UE_DEBUG
-#define UE_RELEASE
+#define UE_DEBUG
+//#define UE_RELEASE
 
 // Enumerations
 
 // Log message type
 enum ULOG_MSG_TYPE {
-
 	ULOG_MSG_WARNING = 0,
 	ULOG_MSG_ERROR,
 	ULOG_MSG_INFO
@@ -29,7 +28,6 @@ enum ULOG_MSG_TYPE {
 
 // Log message out
 enum ULOG_OUT {
-
 	ULOG_OUT_FILE = 0,
 	ULOG_OUT_MSG,
 	ULOG_OUT_NONE

@@ -32,7 +32,6 @@ class ULight :
 public:
 	
 	bool castShadows;
-
 	vec3 r;
 
 	std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();

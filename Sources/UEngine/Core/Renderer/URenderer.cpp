@@ -120,7 +120,7 @@ int URenderer:: CreateTexture(UTexture *tex){
 	else
 	{
 		if(tex->GetType() == UTEXTURE_DEPTH_SHADOW){
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+			OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE));
 			OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
 		}
 		else if(tex->GetType() == UTEXTURE_DEPTH){

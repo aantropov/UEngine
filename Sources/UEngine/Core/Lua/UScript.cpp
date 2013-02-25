@@ -27,7 +27,6 @@ void UScript:: Release()
 bool UScript:: Load(std::string path)
 {	
 	UXMLFile xml;	
-	char buffer[UE_MAXCHAR];	
 	try{
 
 		Initialize();
