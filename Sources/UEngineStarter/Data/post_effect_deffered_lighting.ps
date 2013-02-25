@@ -1,7 +1,7 @@
 #version 330 core
-#define maxLight 8
 
-uniform float lightsNum;
+#define maxLight 8
+uniform int lightsNum;
 
 uniform sampler2D colorScene;
 uniform sampler2D depthScene;
@@ -70,7 +70,7 @@ void main(void)
 
   vec4 res = vec4(0.0);
 
-  for(int i = 0; i < int(lightsNum); i++)
+  for(int i = 0; i < lightsNum; i++)
   {
 		res += ProccessLight(i, vertNormal, vertPosition, ambient, diffuse, specular);
   }

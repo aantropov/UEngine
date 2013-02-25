@@ -74,8 +74,7 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
 	URenderer::GetInstance()->BindFBO(&postfb);	
 	postfb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
 	OPENGL_CHECK_FOR_ERRORS();
-
-	lighting->material.params["lightsNum"] = (float)(scene->lightParams.count);
+		
 	lighting->Render(URENDER_FORWARD);
 	URenderer::GetInstance()->UnbindFBO();
 	//////////////////////////////////////

@@ -43,9 +43,10 @@ URenderManager::~URenderManager(void){
 
 void URenderManager::Render(UScene* scene){
 
+	auto render = URenderer::GetInstance();
+
 	UCamera previousCam = URenderer::GetInstance()->GetCamera();
-	
-	URenderer::GetInstance()->BindFBO(&depthFbo);
+	render->BindFBO(&depthFbo);
 	
 	glViewport(0, 0, depthTextureSize, depthTextureSize);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -53,18 +54,20 @@ void URenderManager::Render(UScene* scene){
 	glCullFace(GL_FRONT);
 	
 	auto lights = scene->GetLights();
-	for(unsigned int i = 0; i < lights.size(); i++)
+	auto lightParams = render->GetCurrentScene()->lightParams;
+
+	for(unsigned int i = 0; i < lightParams.count; i++)
 	{	
-		if(!lights[i]->castShadows)
+		if(!lights[lightParams.lightIndex[i]]->castShadows)
 			continue;
 
-		auto depthTextures = lights[i]->GetDepthTextures();
+		auto depthTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
 		for(unsigned int j = 0; j < depthTextures.size(); j++){
 			
 			depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_DEPTH);
 			glClear(GL_DEPTH_BUFFER_BIT);	
 
-			URenderer::GetInstance()->SetCamera(lights[i]->GetCameras()[j]);					
+			render->SetCamera(lights[lightParams.lightIndex[i]]->GetCameras()[j]);					
 			scene->Render(URENDER_DEPTH);
 		}
 	}

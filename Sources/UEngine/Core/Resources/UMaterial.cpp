@@ -203,29 +203,45 @@ void UMaterial::Render(URENDER_TYPE type){
 			if(cur > MAX_LIGHTS)
 				break;
 		}
+		
+		OPENGL_CHECK_FOR_ERRORS();
 
-		if(sceneLights.size() != 0)
+		if(lights.count != 0)
 		{
-			render->Uniform1(locs.lightsNum, lights.count);
+			
+			render->Uniform1(locs.lightsNum, (int)lights.count);
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_position, lights.count, reinterpret_cast<float*>(lights.position));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_ambient, lights.count, reinterpret_cast<float*>(lights.ambient));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_diffuse, lights.count, reinterpret_cast<float*>(lights.diffuse));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_specular, lights.count, reinterpret_cast<float*>(lights.specular));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform3(locs.light_attenuation, lights.count, reinterpret_cast<float*>(lights.attenuation));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform3(locs.light_spotDirection, lights.count, reinterpret_cast<float*>(lights.spotDirection));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform1(locs.light_spotExponent, lights.count, reinterpret_cast<float*>(lights.spotExponent));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform1(locs.light_spotCosCutoff, lights.count, reinterpret_cast<float*>(lights.spotCosCutoff));
+			OPENGL_CHECK_FOR_ERRORS();
 			render->UniformMatrix4(locs.light_transform, lights.count, reinterpret_cast<float*>(lights.transforms));
 		}
 	}
 
+ 	OPENGL_CHECK_FOR_ERRORS();
 	if(params.size() > 0){
 		map<string, float>::iterator i = params.begin();
 		do{
-			render->CacheUniform1((*i).first,  1, &(*i).second);
+			render->CacheUniform1((*i).first, 1, &(*i).second);
+			OPENGL_CHECK_FOR_ERRORS();
+
 			i++;
 		}while(i != params.end());
-	}	
+	}
+
 	OPENGL_CHECK_FOR_ERRORS();
 
 	if(type == URENDER_FORWARD || type == URENDER_DEFFERED || type == URENDER_NORMAL)
@@ -234,11 +250,10 @@ void UMaterial::Render(URENDER_TYPE type){
 		{			
 			render->BindTexture(el.first, el.second);
 			render->CacheUniform1(el.first->name, el.second);
+			OPENGL_CHECK_FOR_ERRORS();
 		}
 	}
-	OPENGL_CHECK_FOR_ERRORS();
 
-	
 }
 void UMaterial::Render(UShaderProgram* sp){
 	//not implemented yet
