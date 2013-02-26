@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
 	
 	node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
-	node->AddChild(new UScene::USceneNode(new UGameObject(m)));
+	node->AddChild(new UScene::USceneNode(gameObject));
 
 	auto go = new UScene::USceneNode(light1);	
 	go->AddChild(new UScene::USceneNode(light2));

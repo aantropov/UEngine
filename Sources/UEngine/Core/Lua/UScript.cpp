@@ -43,10 +43,7 @@ bool UScript:: Load(std::string path)
 		}
 		
 		//execute file
-		LUA_CALL(luaVM, lua_pcall(luaVM, 0, LUA_MULTRET, 0));
-
-		int res;
-		callLua2(luaVM, "foo", res, 2, 3);
+		LUA_CALL(luaVM, lua_pcall(luaVM, 0, LUA_MULTRET, 0));				
 
 	}catch(exception e){
 		ULogger::GetInstance()->Message("Error to load script (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
@@ -59,7 +56,16 @@ void UScript:: Update(double delta)
 {
 	if(!inited)
 	{
+		std::map<std::string, int> test;
+		test["0"] = 1;
+		test["1"] = 2;
+			
+		callLua1(luaVM, "set", test);
+
 		callLua0(luaVM, USCRIPT_INIT_FUNCTION);
+
+		callLua0(luaVM, "get", test);
+
 		inited = true;
 	}
 

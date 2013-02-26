@@ -36,6 +36,6 @@ public:
 	virtual void Free() { Release(); }
 
 	UScript(): luaVM(nullptr), inited(false) {}
-	~UScript(){}	
+	~UScript(){ Free(); }
 };
 

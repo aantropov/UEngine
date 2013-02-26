@@ -152,7 +152,7 @@
     <ClInclude Include="Core\GameMechanics\UComponent.h" />
     <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
     <ClInclude Include="Core\GameMechanics\UGameObject.h" />
-    <ClInclude Include="Core\Lua\LuaTemplates.h" />
+    <ClInclude Include="Core\Lua\LuaTemplates.hpp" />
     <ClInclude Include="Core\Lua\UScript.h" />
     <ClInclude Include="Core\Lua\UScriptEngine.h" />
     <ClInclude Include="core\math\mat2.h" />

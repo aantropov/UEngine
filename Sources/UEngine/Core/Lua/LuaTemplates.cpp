@@ -1,4 +1,8 @@
-#include "LuaTemplates.h"
+#include "LuaTemplates.hpp"
+#include <map>
+#include <vector>
+
+using namespace std;
 
 int g_LuaError = 0;
 
@@ -47,29 +51,29 @@ template<> bool fromLua(lua_State * lua, int index, std::string& ret)
     return true;
 }
 
-template<typename Key, typename Value>
-bool fromLua ( lua_State * lua, int index, std::map<Key, Value>& ret)
+template<typename T>
+bool fromLua(lua_State* lua, int index, std::vector<T>& ret)
 {
-    if(!lua_istable ( lua, index))
-        return false;
+  // stack:
+  if(!lua_istable(lua, index))
+    return false;
 
-    lua_pushvalue ( lua, index );       // stack: map
-    lua_pushnil   ( lua );              // stack: map nil
-    
-    while(lua_next ( lua, -2 ))         // stack: map key value
-    {
-        Key     key;
-        Value   value;
-        
-        fromLua ( lua, -2, key );
-        fromLua ( lua, -1, value);
-        
-        ret [key] = value;
-        
-        lua_pop ( lua, 1 );             // stack: map key
-    }
-    
-    lua_pop ( lua, 1);                  // stack:
+  lua_pushvalue(L, index-1);
+  lua_pushvalue(L, index); // stack: vector
+
+  int count;
+  fromLua ( lua, -2, count);
+
+  for(int i = 1; count >= i; ++i)
+  {
+    lua_pushnumber(L, i);
+    lua_gettable(L, -2);
+    T value;
+    fromLua(L, -1, value);
+    ret.push_back(value);
+    lua_pop(L, 1); // stack: vector
+  }
+  lua_pop(L, 2); // stack:
 
   return true;
 }
@@ -77,10 +81,9 @@ bool fromLua ( lua_State * lua, int index, std::map<Key, Value>& ret)
 template<typename T>
 bool fromLuaTable ( lua_State * lua, int index, const char * key, T& ret)
 {
-    lua_getfield ( lua, index? index : lua_getglobal(lua, USCRIPT_GLOBAL_SCOPE), key ); // stack: table value
+	(index ? lua_getfield(lua, index, key) : lua_getglobal(lua, key));
 
     bool res = fromLua ( lua, -1, ret);
-
     lua_pop ( lua, 1 ); // stack: table
 
     return res;
@@ -134,4 +137,20 @@ template<> void toLua ( lua_State * lua, const std::string& arg )
 template<> void toLua ( lua_State * lua, std::string& arg )
 {
     lua_pushstring ( lua, arg.c_str () );
+}
+
+template<typename T>
+void toLua(lua_State* L, const std::vector<T>& arg)
+{
+  const int size = arg.size();
+  lua_pushnumber(L, size);
+
+  lua_newtable(L); // stack: table
+
+  for(int i = 0; arg.size() > i; ++i)
+  {
+    lua_pushnumber(L, i + 1); // stack: table i
+    toLua(L, arg[i]); // stack: table i value
+    lua_settable(L, -3); // stack: table
+  }
 }

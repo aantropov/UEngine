@@ -1,6 +1,6 @@
 //
 // Simple templated Lua wrapper.
-// Based on code from http://steps3d.narod.ru
+// Based on code from http://ilovelua.narod.ru
 //
 
 #pragma once
@@ -41,6 +41,52 @@ extern int g_LuaError;
 
 template<typename T> bool fromLua ( lua_State * lua, int index, T& ret );
 template<typename T> void toLua   ( lua_State * lua, T& arg );
+
+//////////////////////////////////std::map//////////////////////////////////////////
+
+template<typename TKey, typename TValue>
+void toLua(lua_State* L, std::map<TKey, TValue>& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  for(typename std::map<TKey, TValue>::const_iterator i = arg.begin(); arg.end() != i; ++i)
+  {
+    toLua(L, i->first); // stack: table key
+    toLua(L, i->second); // stack: table key value
+    lua_settable(L, -3); // stack: table
+  }
+}
+
+template<typename Key, typename Value>
+bool fromLua ( lua_State * lua, int index, std::map<Key, Value>& ret)
+{	
+    if(!lua_istable ( lua, index))
+        return false;
+
+    lua_pushvalue ( lua, index );       // stack: map
+    lua_pushnil   ( lua );              // stack: map nil
+    
+	ret = std::map<Key, Value>();
+
+    while(lua_next ( lua, -2 ))         // stack: map key value
+    {
+        Key     key;
+        Value   value;
+        
+        fromLua ( lua, -2, key );
+        fromLua ( lua, -1, value);
+        
+        ret [key] = value;
+        
+        lua_pop ( lua, 1 );             // stack: map key
+    }
+    
+    lua_pop ( lua, 1);                  // stack:
+
+  return true;
+}
+
+
 
 /////////////// templates to call Lua functions passsing arguments /////////////////////
 

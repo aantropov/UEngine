@@ -17,4 +17,7 @@ UScriptEngine* UScriptEngine:: GetInstance()
 	return instance;
 }
 
-
+void UScriptEngine::RegisterFunctions(UScript* script)
+{
+	WrapFunc1<bool, std::string, UScriptEngine::MessageBoxW>().registerFunc(script->GetLuaVM(), "MessageBox");
+}

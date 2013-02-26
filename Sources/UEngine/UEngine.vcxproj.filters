@@ -341,7 +341,7 @@
     <ClInclude Include="Core\Basic\UIAnimatable.h">
       <Filter>Core\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Lua\LuaTemplates.h">
+    <ClInclude Include="Core\Lua\LuaTemplates.hpp">
       <Filter>Core\Lua</Filter>
     </ClInclude>
   </ItemGroup>
