@@ -60,11 +60,16 @@ void UScript:: Update(double delta)
 		test["0"] = 1;
 		test["1"] = 2;
 			
-		callLua1(luaVM, "set", test);
+		std::vector<std::string> test1;
+		test1.push_back("1");
+		test1.push_back("3");
+		test1.push_back("7");
+
+		callLua1(luaVM, "set", test1);
 
 		callLua0(luaVM, USCRIPT_INIT_FUNCTION);
 
-		callLua0(luaVM, "get", test);
+		callLua0(luaVM, "get", test1);
 
 		inited = true;
 	}

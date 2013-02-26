@@ -18,6 +18,7 @@ extern "C"
 
 #include    <string>
 #include    <map>
+#include    <vector>
 
 #include    "..\Utils\enum.h"
 #include    "..\Utils\ULogger.h"
@@ -42,8 +43,49 @@ extern int g_LuaError;
 template<typename T> bool fromLua ( lua_State * lua, int index, T& ret );
 template<typename T> void toLua   ( lua_State * lua, T& arg );
 
-//////////////////////////////////std::map//////////////////////////////////////////
+//////////////////////////////////std::vector////////////////////////////////////////
 
+template<typename T>
+bool fromLua(lua_State* lua, int index, std::vector<T>& ret)
+{	
+    if(!lua_istable ( lua, index))
+        return false;
+
+    lua_pushvalue ( lua, index );       // stack: map
+    lua_pushnil   ( lua );              // stack: map nil
+    
+	ret.clear();
+
+    while(lua_next ( lua, -2 ))         // stack: map key value
+    {
+        T	value;		        
+        fromLua (lua, -1, value);        
+        ret.push_back(value);        
+        lua_pop ( lua, 1 );             // stack: map key
+    }
+    
+    lua_pop ( lua, 1);                  // stack:
+
+  return true;
+}
+
+template<typename T>
+void toLua(lua_State* L, std::vector<T>& arg)
+{
+  const int size = arg.size();
+  //lua_pushnumber(L, size);
+
+  lua_newtable(L); // stack: table
+
+  for(int i = 0; arg.size() > i; ++i)
+  {
+    lua_pushnumber(L, i + 1); // stack: table i
+    toLua(L, arg[i]); // stack: table i value
+    lua_settable(L, -3); // stack: table
+  }
+}
+
+//////////////////////////////////std::map//////////////////////////////////////////
 template<typename TKey, typename TValue>
 void toLua(lua_State* L, std::map<TKey, TValue>& arg)
 {
@@ -86,10 +128,7 @@ bool fromLua ( lua_State * lua, int index, std::map<Key, Value>& ret)
   return true;
 }
 
-
-
 /////////////// templates to call Lua functions passsing arguments /////////////////////
-
 template <typename R> 
 static inline bool callLua0 ( lua_State * lua, const char * funcName, R& res )
 {

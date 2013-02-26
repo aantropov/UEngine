@@ -1,6 +1,6 @@
 local test;
 
-function set(a)
+function set(a)	
 	test = a;
 end
 
@@ -9,7 +9,7 @@ function get(a)
 end
 
 function Init()
-	test = {four = 4, five = 5, ['six'] = 6}
+	test = {9, 8, 7}
 	--MessageBox(test);
 	return 1;
 end
