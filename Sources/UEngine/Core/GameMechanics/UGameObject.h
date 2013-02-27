@@ -1,6 +1,6 @@
 #pragma once
 #include "UComponent.h"
-#include "..\Basic\UTransform.h"
+#include "..\Math\UMath.h"
 
 class UMaterial;
 
@@ -9,8 +9,8 @@ protected:
 	std::vector<UComponent*> components;
 public:
 	
-	UTransform transform;
-	UTransform world;
+	transform local;
+	transform world;
 	
 	std::vector<UGameObject*> children;
 	UGameObject *parentObject;

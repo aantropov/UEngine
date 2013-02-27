@@ -25,7 +25,7 @@ void UScene::UpdateLightParams()
 	
 		if( lights[i] != NULL && lights[i]->castShadows)
 		{
-			lightParams.position[cur] =  (lights[cur]->world.Transform(lights[cur]->transform.pos));
+			lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.pos));
 			lightParams.ambient[cur] = lights[cur]->GetAmbient();
 			lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
 			lightParams.specular[cur] = lights[cur]->GetSpecular();

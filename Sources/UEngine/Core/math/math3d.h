@@ -10,6 +10,7 @@
 #include "mat2.h"
 #include "mat3.h"
 #include "mat4.h"
+#include "transform.h"
 
 // math constants
 const float math_epsilon = 1e-5f;

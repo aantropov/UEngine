@@ -1,7 +1,5 @@
 #pragma once 
 
-#include "UTransform.h"
-
 #include "..\math\UMath.h"
 #include "..\Utils\enum.h"
 #include "..\Resources\UResource.h"
@@ -18,18 +16,18 @@ public:
 
 	std::string name;
 	unsigned int parent;
-	UTransform transform;
+	transform tf;
 	
 	UBone(){}
-	UBone(UTransform transform, std::string name, unsigned int parent): name(name), transform(transform), parent(parent) {}
+	UBone(transform tf, std::string name, unsigned int parent): name(name), tf(tf), parent(parent) {}
 	
 	static UBone Lerp(UBone a, UBone b, float t)
 	{
-		return UBone(UTransform::Lerp(a.transform, b.transform, t), b.name, b.parent);
+		return UBone(lerp(a.tf, b.tf, t), b.name, b.parent);
 	}
 
-	const UBone operator* (float f) const { return UBone(UTransform(transform.pos * f, transform.rotation * f, transform.scale * f), name, parent); }
-	const UBone operator+ (const UBone &bone) const { return UBone(UTransform(transform.pos + bone.transform.pos, transform.rotation + bone.transform.rotation, transform.scale + bone.transform.scale), name, parent); }
+	const UBone operator* (float f) const { return UBone(transform(tf.pos * f, tf.rotation * f, tf.scale * f), name, parent); }
+	const UBone operator+ (const UBone &bone) const { return UBone(transform(tf.pos + bone.tf.pos, tf.rotation + bone.tf.rotation, tf.scale + bone.tf.scale), name, parent); }
 };
 
 class UKeyFrame
@@ -47,7 +45,7 @@ private:
 
 		if(bones[bone].parent == -1){
 			updated.push_back(bone);
-			matrixes[bone] = bones[bone].transform.ToMatrix();
+			matrixes[bone] = bones[bone].tf.matrix();
 			return;
 		}
 
@@ -56,7 +54,7 @@ private:
 		}
 
 		updated.push_back(bone);
-		matrixes[bone] = bones[bone].transform.ToMatrix() * matrixes[bones[bone].parent]/**/;
+		matrixes[bone] = bones[bone].tf.matrix() * matrixes[bones[bone].parent]/**/;
 	}
 
 public:

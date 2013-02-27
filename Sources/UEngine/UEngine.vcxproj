@@ -103,12 +103,12 @@
     <ClCompile Include="Core\Basic\UMatrixRotation.cpp" />
     <ClCompile Include="Core\Basic\UNode.cpp" />
     <ClCompile Include="Core\Basic\UScene.cpp" />
-    <ClCompile Include="Core\Basic\UTransform.cpp" />
     <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
     <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
     <ClCompile Include="Core\Lua\LuaTemplates.cpp" />
     <ClCompile Include="Core\Lua\UScript.cpp" />
     <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
+    <ClCompile Include="Core\math\transform.cpp" />
     <ClCompile Include="Core\Renderer\OpenGL.cpp" />
     <ClCompile Include="Core\Renderer\UBuffer.cpp" />
     <ClCompile Include="Core\Renderer\UFrameBufferObject.cpp" />
@@ -148,7 +148,6 @@
     <ClInclude Include="Core\Basic\UNode.h" />
     <ClInclude Include="Core\Basic\UScene.h" />
     <ClInclude Include="Core\Basic\USingleton.hpp" />
-    <ClInclude Include="Core\Basic\UTransform.h" />
     <ClInclude Include="Core\GameMechanics\UComponent.h" />
     <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
     <ClInclude Include="Core\GameMechanics\UGameObject.h" />
@@ -162,6 +161,7 @@
     <ClInclude Include="core\math\mathgl.h" />
     <ClInclude Include="core\math\quat.h" />
     <ClInclude Include="Core\math\UMath.h" />
+    <ClInclude Include="Core\math\transform.h" />
     <ClInclude Include="core\math\vec2.h" />
     <ClInclude Include="core\math\vec3.h" />
     <ClInclude Include="core\math\vec4.h" />

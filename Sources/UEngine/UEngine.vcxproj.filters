@@ -159,9 +159,6 @@
     <ClCompile Include="Core\Basic\UScene.cpp">
       <Filter>Core\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Basic\UTransform.cpp">
-      <Filter>Core\Basic</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Lua\UScriptEngine.cpp">
       <Filter>Core\Lua</Filter>
     </ClCompile>
@@ -173,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="Core\Lua\LuaTemplates.cpp">
       <Filter>Core\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\math\transform.cpp">
+      <Filter>Core\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +329,6 @@
     <ClInclude Include="Core\Basic\USingleton.hpp">
       <Filter>Core\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Basic\UTransform.h">
-      <Filter>Core\Basic</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Lua\UScriptEngine.h">
       <Filter>Core\Lua</Filter>
     </ClInclude>
@@ -343,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Core\Lua\LuaTemplates.hpp">
       <Filter>Core\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\math\transform.h">
+      <Filter>Core\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -90,7 +90,7 @@ void toLua(lua_State* L, std::vector<T>& arg)
 
   lua_newtable(L); // stack: table
 
-  for(int i = 0; arg.size() > i; ++i)
+  for(unsigned int i = 0; arg.size() > i; ++i)
   {
     lua_pushnumber(L, i + 1); // stack: table i
     toLua(L, arg[i]); // stack: table i value

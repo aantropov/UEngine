@@ -13,8 +13,8 @@ void UGameObject::Render(UMaterial *m)
 		auto renderable = dynamic_cast<UIRenderable*>(el);
 		if(renderable != NULL)
 		{
-			auto localTransform = (transform * world);
-			renderable->m.Set(localTransform.ToMatrix());
+			auto currentTransform = (local * world);
+			renderable->m.Set(currentTransform.matrix());
 			renderable->Render(m);
 		}
 	}	
@@ -27,8 +27,8 @@ void UGameObject::Render(URENDER_TYPE type)
 		auto renderable = dynamic_cast<UIRenderable*>(el);
 		if(renderable != NULL)
 		{
-			auto localTransform = (transform * world);
-			renderable->m.Set(localTransform.ToMatrix());
+			auto currentTransform = (local * world);
+			renderable->m.Set(currentTransform.matrix());
 			renderable->Render(type);
 		}
 	}	

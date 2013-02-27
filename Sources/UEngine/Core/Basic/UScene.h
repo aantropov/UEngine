@@ -98,7 +98,7 @@ public:
 			//	if(dynamic_cast<ULight*>(children[i]) != nullptr && dynamic_cast<ULight*>(node) != nullptr)
 				//	;
 				children[i]->node->parentObject = node;
-				children[i]->node->world = node->transform * node->world;
+				children[i]->node->world = node->local * node->world;
 				children[i]->Update(delta);
 			}				
 
