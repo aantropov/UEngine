@@ -8,6 +8,7 @@ class UComponent : public UNode {
 
 public:
 
+	std::string name;
 	UGameObject *gameObject;
 
 	virtual void UENGINE_DECLSPEC Update(double delta)

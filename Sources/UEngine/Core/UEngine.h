@@ -23,6 +23,7 @@ using namespace std;
 
 #include "Utils\enum.h"
 
+#include "Basic\URegistry.hpp"
 #include "Basic\USingleton.hpp"
 #include "Resources\UResourceFactory.h"
 

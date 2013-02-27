@@ -1,19 +1,21 @@
 #include "ULogger.h"
 
-ULogger* ULogger:: GetInstance()
-{
+ULogger* ULogger:: GetInstance(){
 	if(instance == NULL){
 		instance = new ULogger();
 	}
 	return instance;
 }
+
 ULogger:: ULogger(){
-	
 	//Safe opening
-	//fLog = fopen_s(ULOG_FILE_PATH, "a");
 	fopen_s(&fLog, ULOG_FILE_PATH.c_str(), "a");
-	//Message("");
 	Message("ULogger singleton object is created...");
+}
+
+ULogger:: ~ULogger(){
+	Message("ULogger singleton object is deleted...");
+	fclose(fLog);
 }
 
 void ULogger::Message(string text, ULOG_MSG_TYPE msg_type, ULOG_OUT out){
@@ -43,9 +45,4 @@ void ULogger::Message(string text, ULOG_MSG_TYPE msg_type, ULOG_OUT out){
 	else if(out == ULOG_OUT_MSG){
 		MessageBoxA(NULL, text.c_str(), type.c_str(), MB_OK);
 	}
-}
-ULogger:: ~ULogger(){
-	Message("ULogger singleton object is deleted...");
-// Closed
-	fclose(fLog);
 }

@@ -102,6 +102,7 @@
     <ClCompile Include="Core\Basic\UMatrix.cpp" />
     <ClCompile Include="Core\Basic\UMatrixRotation.cpp" />
     <ClCompile Include="Core\Basic\UNode.cpp" />
+    <ClCompile Include="Core\Basic\URegistry.cpp" />
     <ClCompile Include="Core\Basic\UScene.cpp" />
     <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
     <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Core\Basic\UMatrix.h" />
     <ClInclude Include="Core\Basic\UMatrixRotation.h" />
     <ClInclude Include="Core\Basic\UNode.h" />
+    <ClInclude Include="Core\Basic\URegistry.hpp" />
     <ClInclude Include="Core\Basic\UScene.h" />
     <ClInclude Include="Core\Basic\USingleton.hpp" />
     <ClInclude Include="Core\GameMechanics\UComponent.h" />

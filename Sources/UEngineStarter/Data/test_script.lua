@@ -1,4 +1,6 @@
 local test;
+local gameObject;
+local tr;
 
 function set(a)	
 	test = a;
@@ -6,12 +8,12 @@ function set(a)
 end
 
 function get(a)
-
 	return test;
 end
 
 function Init()
-	test[1].m1 = test[1].m1 + test[1].m2;
+	gameObject = GetGameObject();
+	tr = GetTransform(gameObject);
 	return 1;
 end
 
@@ -21,5 +23,10 @@ function Release()
 end
 
 function Update(a)
+	
+	--tr.pos.x = tr.pos.y + 0.0001 * a;
+	tr.rotation.y = tr.rotation.y  +  0.0001 * a;
+
+	SetTransform(gameObject, tr);
 	return 1;
 end

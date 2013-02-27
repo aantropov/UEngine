@@ -18,13 +18,12 @@ extern "C"
 class UScript :	public UComponent, public UResource{
 
 	lua_State *luaVM;
-
 	bool inited;
 
 public:
 	
-	std::string name;
-	
+	UGameObject* GetGameObject(){ return gameObject; }
+
 	lua_State* GetLuaVM(){ return luaVM;}
 
 	void UENGINE_DECLSPEC Initialize();

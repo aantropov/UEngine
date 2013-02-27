@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "..//math/UMath.h"
+#include "..//GameMechanics//UGameMechanics.h"
+
 using namespace std;
 
 
@@ -379,6 +381,8 @@ template<> bool fromLua(lua_State* L, int index, transform& arg)
 
     if(fromLua(L, index, "pos", p) && fromLua(L, index, "rotation", r)
 		&& fromLua(L, index, "scale", s)){
+	  
+	  r = normalize(r);
 	  arg.pos = p;
 	  arg.rotation = r;
 	  arg.scale = s;
@@ -398,7 +402,7 @@ template<> bool fromLua ( lua_State * lua, int index, void*& ret)
 	void* temp;
 
 	try{
-		int number = lua_tonumber ( lua, index );
+		int number = (int)lua_tonumber ( lua, index );
 		temp = reinterpret_cast<void*>(number);
 	}catch(std::exception ex){return false;}
 	
@@ -407,7 +411,27 @@ template<> bool fromLua ( lua_State * lua, int index, void*& ret)
     return true;
 }
 
+template<> bool fromLua ( lua_State * lua, int index, UGameObject*& ret)
+{
+	return fromLua(lua, index, (void*&) ret);
+}
+
+template<> bool fromLua ( lua_State * lua, int index, UComponent*& ret)
+{
+	return fromLua(lua, index, (void*&) ret);
+}
+
 template<> void toLua ( lua_State * lua, void*& arg )
 {
     lua_pushnumber ( lua, reinterpret_cast<int>(arg));
+}
+
+template<> void toLua ( lua_State * lua, UGameObject*& arg )
+{
+    toLua(lua, (void*&)arg);
+}
+
+template<> void toLua ( lua_State * lua, UComponent*& arg )
+{
+    toLua(lua, (void*&)arg);
 }

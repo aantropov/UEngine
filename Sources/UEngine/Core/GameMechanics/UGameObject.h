@@ -9,6 +9,8 @@ protected:
 	std::vector<UComponent*> components;
 public:
 	
+	std::string name;
+
 	transform local;
 	transform world;
 	

@@ -5,9 +5,7 @@
 
 class UModel: public UResource, public UComponent, public UIRenderable, public UISkinAnimatable
 {
-	std::string name;
 	unsigned int mesh_num;
-
 	std::vector<UMesh*> meshes;	
 	
 public:

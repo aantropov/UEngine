@@ -13,8 +13,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
 	UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\test_model.xml", URESOURCE_MODEL));
 	
-	UGameObject *gameObject = new UGameObject(m);
+	
 	UScript *script = dynamic_cast<UScript*>(e.rf.Load("data\\test_script.xml", URESOURCE_SCRIPT));
+	
+	UGameObject *gameObject = new UGameObject(sm);
 	gameObject->AddComponent((UComponent*)script);
 
 	sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
@@ -54,7 +56,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	auto go = new UScene::USceneNode(light1);	
 	go->AddChild(new UScene::USceneNode(light2));
 		
-	light1->r.x = 1.0f;
 	node->AddChild(go);
 
 	node->AddChild(new UScene::USceneNode(light3));
@@ -64,7 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	node->AddChild(new UScene::USceneNode(light7));
 	node->AddChild(new UScene::USceneNode(light8));
 
-	node->AddChild(new UScene::USceneNode(new UGameObject(sm)));
+	node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
 	scene.AddLight(light1);
 	scene.AddLight(light2);

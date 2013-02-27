@@ -10,9 +10,7 @@ class UResourceFactory;
 class UModel;
 class UShaderProgram;
 
-// It is just for test.
-class ULight :
-	public UGameObject
+class ULight :	public UGameObject
 {
 	
 	vec4 ambient;
@@ -32,7 +30,6 @@ class ULight :
 public:
 	
 	bool castShadows;
-	vec3 r;
 
 	std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();
 	std::vector<UCamera> UENGINE_DECLSPEC GetCameras();

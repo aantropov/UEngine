@@ -250,6 +250,24 @@ public:
     }
 };
 
+template <typename R, typename O, R (O::*func)()>
+class   WrapFuncObj0
+{
+public:
+    static int f(lua_State *lua)
+	{
+		auto obj = URegistry<lua_State*, UScript*>::Registry[lua];
+        R   r = (obj->*func)();
+        toLua(lua, r);
+        return 1;
+    }
+    
+    void registerFunc(lua_State *lua, const char *name)
+	{
+        lua_register ( lua, name, f );
+    }
+};
+
 template <typename R, typename A, R (*func)(A)>
 class   WrapFunc1
 {

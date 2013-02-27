@@ -9,7 +9,7 @@ struct mat3;
 struct mat4;
 
 
-class transform
+struct transform
 {
 public:
 	

@@ -3,6 +3,7 @@
 
 void UGameObject:: AddComponent(UComponent *component)
 {
+	component->gameObject = this;
 	components.push_back(component);
 }
 

@@ -54,7 +54,6 @@ public:
 	// delete all elements
 	void UENGINE_DECLSPEC ReleaseAll();
 
-
 };
 
 

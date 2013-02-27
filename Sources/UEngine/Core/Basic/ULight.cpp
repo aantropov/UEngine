@@ -147,15 +147,6 @@ void ULight:: Update(double delta)
 {	
 	UGameObject::Update(delta);
 	
-	if(r.x > 0)
-	{
-		local.pos = GLRotationY(0.5f) * local.pos;
-		local.rotation = local.rotation * GLRotationX(3.7f);
-	}
-	else
-		;//transform.pos = GLRotationZ(2.5f) * transform.pos;
-
-	//model->m.Set(GLTranslation(vec3(position)));
 	spotDirection = -normalize(world.transformVec3(local.pos));
 //	world
 	cameras[0].LookAt(world.transformVec3(local.pos) , spotDirection + world.transformVec3(local.pos), world.transformVec3(vec3_y));
