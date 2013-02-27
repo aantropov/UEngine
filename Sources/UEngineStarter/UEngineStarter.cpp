@@ -29,11 +29,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ULight *light5 = new ULight(&e.rf, vec4(-5.0f, 5.0f, 5.0f, 0.0f));
 	ULight *light6 = new ULight(&e.rf, vec4(12.0f, 9.0f, 10.0f, 0.0f));
 	ULight *light7 = new ULight(&e.rf, vec4(-5.0f, 4.0f, 5.0f, 0.0f));
-	ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 25.0f, 1.0f, 0.0f));
+	ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 15.0f, 1.0f, 0.0f));
 	
-	light8->SetAttenuation(vec3(0.75f, 0.0f, 0.0f));
-	light8->SetSpotCosCutoff(70.0f);
-	light8->SetSpotExponent(5.0f);
+	light8->SetAttenuation(vec3(1.0f, 0.00015f, 0.0001f));
+	//light8->SetSpotCosCutoff(70.0f);
+	//light8->SetSpotExponent(10.0f);
 
 	light1->castShadows = true;
 	light2->castShadows = true;

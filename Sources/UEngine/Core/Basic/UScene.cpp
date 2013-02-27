@@ -23,7 +23,7 @@ void UScene::UpdateLightParams()
 	int cur = 0;	
 	for(unsigned int i = 0; i < lights.size(); i++){
 	
-		if( lights[i] != NULL && lights[i]->castShadows)
+		if( lights[i] != NULL/* && lights[i]->castShadows*/)
 		{
 			lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.pos));
 			lightParams.ambient[cur] = lights[cur]->GetAmbient();

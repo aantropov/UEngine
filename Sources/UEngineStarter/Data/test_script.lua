@@ -22,10 +22,10 @@ function Release()
 	return 1;
 end
 
-function Update(a)
+function Update(delta)
 	
 	--tr.pos.x = tr.pos.y + 0.0001 * a;
-	tr.rotation.y = tr.rotation.y  +  0.0001 * a;
+	tr.rotation.y = tr.rotation.y  +  0.0001 * delta;
 
 	SetTransform(gameObject, tr);
 	return 1;

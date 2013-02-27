@@ -195,7 +195,7 @@ void UMaterial::Render(URENDER_TYPE type){
 		int cur = 0;
 		for(unsigned int i = 0; i < lights.count; i++)
 		{
-			sceneLights[i]->SetShadowTexture(locs.light_depthTextures, lights.lightIndex[i]);
+			sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
 			cur++;
 			
 			if(cur > MAX_LIGHTS)
@@ -206,25 +206,15 @@ void UMaterial::Render(URENDER_TYPE type){
 
 		if(lights.count != 0)
 		{
-			
 			render->Uniform1(locs.lightsNum, (int)lights.count);
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_position, lights.count, reinterpret_cast<float*>(lights.position));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_ambient, lights.count, reinterpret_cast<float*>(lights.ambient));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_diffuse, lights.count, reinterpret_cast<float*>(lights.diffuse));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform4(locs.light_specular, lights.count, reinterpret_cast<float*>(lights.specular));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform3(locs.light_attenuation, lights.count, reinterpret_cast<float*>(lights.attenuation));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform3(locs.light_spotDirection, lights.count, reinterpret_cast<float*>(lights.spotDirection));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform1(locs.light_spotExponent, lights.count, reinterpret_cast<float*>(lights.spotExponent));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->Uniform1(locs.light_spotCosCutoff, lights.count, reinterpret_cast<float*>(lights.spotCosCutoff));
-			OPENGL_CHECK_FOR_ERRORS();
 			render->UniformMatrix4(locs.light_transform, lights.count, reinterpret_cast<float*>(lights.transforms));
 		}
 	}
