@@ -2,10 +2,13 @@
 #include <map>
 #include <vector>
 
+#include "..//math/UMath.h"
 using namespace std;
+
 
 int g_LuaError = 0;
 
+/////////////////////////////////////// basic types /////////////////////////////////////
 template<> bool fromLua ( lua_State * lua, int index, bool& ret )
 {
     if( !lua_isboolean ( lua, index ) )
@@ -49,17 +52,6 @@ template<> bool fromLua(lua_State * lua, int index, std::string& ret)
         
     ret = lua_tostring ( lua, index);
     return true;
-}
-
-template<typename T>
-bool fromLuaTable ( lua_State * lua, int index, const char * key, T& ret)
-{
-	(index ? lua_getfield(lua, index, key) : lua_getglobal(lua, key));
-
-    bool res = fromLua ( lua, -1, ret);
-    lua_pop ( lua, 1 ); // stack: table
-
-    return res;
 }
 
 template<> void toLua ( lua_State * lua, const bool& arg )
@@ -110,5 +102,256 @@ template<> void toLua ( lua_State * lua, const std::string& arg )
 template<> void toLua ( lua_State * lua, std::string& arg )
 {
     lua_pushstring ( lua, arg.c_str () );
+}
+
+////////////////////////////////// vec2 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, vec2& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  toLua(L, arg.x); // stack: table text
+  lua_setfield(L, -2, "x"); // stack: table
+  toLua(L, arg.y); // stack: table values
+  lua_setfield(L, -2, "y"); // stack: table
+}
+
+template<> bool fromLua(lua_State* L, int index, vec2& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+    float x;
+	float y;
+
+    if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)){
+	  arg.x = x;
+      arg.y = y;
+      return true;
+    }
+  }
+  return false;
+}
+
+////////////////////////////////// vec3 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, vec3& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  toLua(L, arg.x); // stack: table text
+  lua_setfield(L, -2, "x"); // stack: table
+  toLua(L, arg.y); // stack: table values
+  lua_setfield(L, -2, "y"); // stack: table
+  toLua(L, arg.z); // stack: table values
+  lua_setfield(L, -2, "z"); // stack: table
+}
+
+template<> bool fromLua(lua_State* L, int index, vec3& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+    float x;
+	float y;
+	float z;
+
+    if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y) && fromLua(L, index, "z", z)){
+	  arg.x = x;
+      arg.y = y;
+	  arg.z = z;
+      return true;
+    }
+  }
+  return false;
+}
+
+////////////////////////////////// vec4 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, vec4& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  toLua(L, arg.x); // stack: table text
+  lua_setfield(L, -2, "x"); // stack: table
+  toLua(L, arg.y); // stack: table values
+  lua_setfield(L, -2, "y"); // stack: table
+  toLua(L, arg.z); // stack: table values
+  lua_setfield(L, -2, "z"); // stack: table
+  toLua(L, arg.w); // stack: table values
+  lua_setfield(L, -2, "w"); // stack: table
+}
+
+template<> bool fromLua(lua_State* L, int index, vec4& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+    float x;
+	float y;
+	float z;
+	float w;
+
+    if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)
+		&& fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
+	  arg.x = x;
+      arg.y = y;
+	  arg.z = z;
+	  arg.w = w;
+      return true;
+    }
+  }
+  return false;
+}
+
+////////////////////////////////// quat //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, quat& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  toLua(L, arg.x); // stack: table text
+  lua_setfield(L, -2, "x"); // stack: table
+  toLua(L, arg.y); // stack: table values
+  lua_setfield(L, -2, "y"); // stack: table
+  toLua(L, arg.z); // stack: table values
+  lua_setfield(L, -2, "z"); // stack: table
+  toLua(L, arg.w); // stack: table values
+  lua_setfield(L, -2, "w"); // stack: table
+}
+
+template<> bool fromLua(lua_State* L, int index, quat& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+    float x;
+	float y;
+	float z;
+	float w;
+
+    if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)
+		&& fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
+	  arg.x = x;
+      arg.y = y;
+	  arg.z = z;
+	  arg.w = w;
+      return true;
+    }
+  }
+  return false;
+}
+
+////////////////////////////////// mat2 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, mat2& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  
+  char buffer[MAXCHAR];
+  memset(buffer, '\0', MAXCHAR * sizeof(char));
+    
+  for(unsigned int i = 0; i < 4; i++)
+  {
+	toLua(L, arg.m[i]);
+	sprintf_s(buffer, "m%d", i+1);
+	lua_setfield(L, -2, buffer);	
+  }  
+}
+
+template<> bool fromLua(lua_State* L, int index, mat2& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+	char buffer[MAXCHAR];
+	memset(buffer, '\0', MAXCHAR * sizeof(char));
+
+    float m[4];
+	for(unsigned int i = 0; i < 4; i++)
+	{
+		sprintf_s(buffer, "m%d", i+1);
+		if(!fromLua(L, index, buffer, m[i]))
+			return false;
+	}
+	
+	memcpy(arg.m, m, sizeof(arg.m[0]) * 4);
+    return true;    
+  }
+  return false;
+}
+
+////////////////////////////////// mat3 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, mat3& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  
+  char buffer[MAXCHAR];
+  memset(buffer, '\0', MAXCHAR * sizeof(char));
+    
+  for(unsigned int i = 0; i < 9; i++)
+  {
+	toLua(L, arg.m[i]);
+	sprintf_s(buffer, "m%d", i+1);
+	lua_setfield(L, -2, buffer);	
+  }  
+}
+
+template<> bool fromLua(lua_State* L, int index, mat3& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+	char buffer[MAXCHAR];
+	memset(buffer, '\0', MAXCHAR * sizeof(char));
+
+    float m[9];
+	for(unsigned int i = 0; i < 9; i++)
+	{
+		sprintf_s(buffer, "m%d", i+1);
+		if(!fromLua(L, index, buffer, m[i]))
+			return false;
+	}
+	
+	memcpy(arg.m, m, sizeof(arg.m[0]) * 9);
+    return true;    
+  }
+  return false;
+}
+
+////////////////////////////////// mat4 //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, mat4& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  
+  char buffer[MAXCHAR];
+  memset(buffer, '\0', MAXCHAR * sizeof(char));
+    
+  for(unsigned int i = 0; i < 16; i++)
+  {
+	toLua(L, arg.m[i]);
+	sprintf_s(buffer, "m%d", i+1);
+	lua_setfield(L, -2, buffer);	
+  }  
+}
+
+template<> bool fromLua(lua_State* L, int index, mat4& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+	char buffer[MAXCHAR];
+	memset(buffer, '\0', MAXCHAR * sizeof(char));
+
+    float m[16];
+	for(unsigned int i = 0; i < 16; i++)
+	{
+		sprintf_s(buffer, "m%d", i+1);
+		if(!fromLua(L, index, buffer, m[i]))
+			return false;
+	}
+	
+	memcpy(arg.m, m, sizeof(arg.m[0]) * 16);
+    return true;    
+  }
+  return false;
 }
 

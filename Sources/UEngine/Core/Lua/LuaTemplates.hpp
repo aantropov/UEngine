@@ -40,8 +40,21 @@ extern int g_LuaError;
 #define LUA_CALL(state, expression) expression;
 #endif //UE_RELEASE
 
+// transfer values to Lua and from Lua
 template<typename T> bool fromLua ( lua_State * lua, int index, T& ret );
 template<typename T> void toLua   ( lua_State * lua, T& arg );
+
+// take value from Lua table
+template<typename T>
+bool fromLua ( lua_State * lua, int index, const char * key, T& ret)
+{
+	(index ? lua_getfield(lua, index, key) : lua_getglobal(lua, key));
+
+    bool res = fromLua ( lua, -1, ret);
+    lua_pop ( lua, 1 ); // stack: table
+
+    return res;
+}
 
 //////////////////////////////////std::vector////////////////////////////////////////
 

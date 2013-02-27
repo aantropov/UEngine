@@ -60,10 +60,8 @@ void UScript:: Update(double delta)
 		test["0"] = 1;
 		test["1"] = 2;
 			
-		std::vector<std::string> test1;
-		test1.push_back("1");
-		test1.push_back("3");
-		test1.push_back("7");
+		std::vector<mat2> test1;
+		test1.push_back(mat2_identity);
 
 		callLua1(luaVM, "set", test1);
 

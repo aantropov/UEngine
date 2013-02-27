@@ -2,15 +2,16 @@ local test;
 
 function set(a)	
 	test = a;
+	return 1;
 end
 
 function get(a)
+
 	return test;
 end
 
 function Init()
-	test = {9, 8, 7}
-	--MessageBox(test);
+	test[1].m1 = test[1].m1 + test[1].m2;
 	return 1;
 end
 
