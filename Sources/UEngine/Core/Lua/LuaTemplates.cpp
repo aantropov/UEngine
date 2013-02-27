@@ -355,3 +355,59 @@ template<> bool fromLua(lua_State* L, int index, mat4& arg)
   return false;
 }
 
+////////////////////////////////// transform //////////////////////////////////////////////////
+template<> void toLua(lua_State* L, transform& arg)
+{
+  // stack:
+  lua_newtable(L); // stack: table
+  toLua(L, arg.pos); // stack: table text
+  lua_setfield(L, -2, "pos"); // stack: table
+  toLua(L, arg.rotation); // stack: table values
+  lua_setfield(L, -2, "rotation"); // stack: table
+  toLua(L, arg.scale); // stack: table values
+  lua_setfield(L, -2, "scale"); // stack: table
+}
+
+template<> bool fromLua(lua_State* L, int index, transform& arg)
+{
+  // stack:
+  if(lua_istable(L, index))
+  {
+    vec4 p;
+	quat r;
+	vec4 s;
+
+    if(fromLua(L, index, "pos", p) && fromLua(L, index, "rotation", r)
+		&& fromLua(L, index, "scale", s)){
+	  arg.pos = p;
+	  arg.rotation = r;
+	  arg.scale = s;
+
+      return true;
+    }
+  }
+  return false;
+}
+
+////////////////////////////////// objects //////////////////////////////////////////////////
+template<> bool fromLua ( lua_State * lua, int index, void*& ret)
+{
+    if( !lua_isnumber ( lua, index ))
+        return false;
+ 
+	void* temp;
+
+	try{
+		int number = lua_tonumber ( lua, index );
+		temp = reinterpret_cast<void*>(number);
+	}catch(std::exception ex){return false;}
+	
+	ret = temp;
+
+    return true;
+}
+
+template<> void toLua ( lua_State * lua, void*& arg )
+{
+    lua_pushnumber ( lua, reinterpret_cast<int>(arg));
+}
