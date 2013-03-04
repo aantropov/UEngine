@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ULight *light5 = new ULight(&e.rf, vec4(-5.0f, 5.0f, 5.0f, 0.0f));
 	ULight *light6 = new ULight(&e.rf, vec4(12.0f, 9.0f, 10.0f, 0.0f));
 	ULight *light7 = new ULight(&e.rf, vec4(-5.0f, 4.0f, 5.0f, 0.0f));
-	ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 2.0f, 1.0f, 0.0f));
+	ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 10.0f, 1.0f, 0.0f));
 	
 	UScript *script = dynamic_cast<UScript*>(e.rf.Load("data\\test_script.xml", URESOURCE_SCRIPT));
 	light8->AddComponent((UComponent*)script);
@@ -32,16 +32,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	light8->SetSpotCosCutoff(100.1f);
 	light8->SetSpotExponent(20.0f);
 	light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
+	
+
+	light7->castShadows = true;
 	light8->castShadows = true;
 
-	light1->castShadows = true;
-	light2->castShadows = true;
-	light3->castShadows = true;
-	light4->castShadows = true;
-	light5->castShadows = true;
-	light6->castShadows = true;
-	light7->castShadows = true;
-	
 	UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
 	
 	// Main node in the scene
@@ -63,33 +58,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
-	scene.AddLight(light1);
+	/*scene.AddLight(light1);
 	scene.AddLight(light2);
 	scene.AddLight(light3);
 	scene.AddLight(light4);
 	scene.AddLight(light5);
-	scene.AddLight(light6);
+	scene.AddLight(light6);*/
 	scene.AddLight(light7);
 	scene.AddLight(light8);/**/
 	
 	scene.root = node;
 	
-/*	//ULight l[30];
-	UModel *m1[1000];
+	//ULight l[30];
+	UModel *m1[10];
 
-	for(int i = 0; i <0; i++)
+	/*for(int i = 0; i <10; i++)
 	{
 
 		m1[i] = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
 		m1[i]->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_ONCE);
 		//m1[i]->Load("data\\light.xml");
-		node->AddChild(new UScene::USceneNode(m1[i]));
+		node->AddChild(new UScene::USceneNode(new UGameObject(m1[i])));
 
 		/*l[i] = ULight(&e.rf, vec4(0.0f, i, -10.0f, 0.0f));
 		node->AddChild(new UScene::USceneNode(&l[i]));
-		scene.AddLight(&l[i]);*/
-	/*}
-*/
+		scene.AddLight(&l[i]);*}/
+	*/
+
 	e.SetCurrentScene(&scene);
 	e.Run();
 	e.Release();

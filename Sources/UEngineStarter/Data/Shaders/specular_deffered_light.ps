@@ -67,7 +67,7 @@ float PCF(in vec4 smcoord, sampler2DShadow depthTexture)
 
 float ProccessLight(int i)
 {	
-	float shadow = clamp(PCF(Vert.smcoord[i], light_depthTexture[i]), 0.1, 1.0);
+	float shadow = clamp(PCF(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
 	vec3 lightDirLight = normalize(Vert.lightDir[i]);
 	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDirLight);
 	float spot       = float(spotEffect > light_spotCosCutoff[i]);
@@ -84,9 +84,10 @@ void main(void)
 	mat3 m = mat3(normalize(Vert.t), normalize(Vert.b), normalize(Vert.normal));
 	bump *= transpose(m);
 	
-	float res = 1.0;
+	float res = 0.0;
 	for(int i = 0; i < min(maxLight,lightsNum); i++)
-	 res = min(res, ProccessLight(i));
+	 res += ProccessLight(i);
+	res /= lightsNum;
 
 	color[0] = material.emission + texture(material.texture, Vert.texcoord) * clamp(res, 0, 1.0);
 	color[1] = vec4(bump * 0.5 + vec3(0.5), 1.0);
