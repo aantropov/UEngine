@@ -43,12 +43,12 @@ void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model){
 	mat4 viewProjection = camera.GetProjection() * view;
 	mat3 normal         = transpose(mat3(inverse(model)));
 	mat4 modelViewProjection = model * viewProjection;
-
+		
 	UniformMatrix4(shd->locations.transform_model,  1, model.m);
 	UniformMatrix4(shd->locations.transform_viewProjection, 1, viewProjection.m);
 	UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
 	UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
-	UniformMatrix3(shd->locations.transform_viewPosition, 1, camera.GetPosition().v);
+	Uniform3(shd->locations.transform_viewPosition, 1, camera.GetPosition().v);
 	
 }
 void  URenderer::PushModelMatrix(){

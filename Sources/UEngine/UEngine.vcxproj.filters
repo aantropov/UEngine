@@ -43,6 +43,12 @@
     <Filter Include="Core\Lua">
       <UniqueIdentifier>{5e2c8108-179f-49f4-abe4-d30fa0f1a95f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data\Materials">
+      <UniqueIdentifier>{c9927df6-8dd9-4505-a99e-c590339a58b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Shaders">
+      <UniqueIdentifier>{eee7d7a8-1802-45ea-9972-7ef80403c376}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -427,12 +433,6 @@
     <None Include="..\UEngineStarter\Data\test_animation.xml">
       <Filter>Data</Filter>
     </None>
-    <None Include="..\..\..\Export\Model export skinning model.ms">
-      <Filter>Max Exporter</Filter>
-    </None>
-    <None Include="..\..\..\Export\Model export old.ms">
-      <Filter>Max Exporter</Filter>
-    </None>
     <None Include="..\UEngineStarter\Data\skinned_bump_light.vs">
       <Filter>Data</Filter>
     </None>
@@ -483,6 +483,54 @@
     </None>
     <None Include="..\UEngineStarter\Data\test_script.lua">
       <Filter>Data</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\skinned_light.vs">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\specular_bump_light.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\..\Export\Model export old.ms">
+      <Filter>Max Exporter</Filter>
+    </None>
+    <None Include="..\..\Export\Model export skinning model.ms">
+      <Filter>Max Exporter</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Materials\skinned_specular_bump_material.xml">
+      <Filter>Data\Materials</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Materials\specular_bump_material.xml">
+      <Filter>Data\Materials</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\light.vs">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\empty.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\empty.vs">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\skinned_empty.vs">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\normal.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\specular_deffered_light.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\post_effect_deffered_lighting.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\post_effect.vs">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\post_effect_blur.ps">
+      <Filter>Data\Shaders</Filter>
+    </None>
+    <None Include="..\UEngineStarter\Data\Shaders\post_effect_ssao.ps">
+      <Filter>Data\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

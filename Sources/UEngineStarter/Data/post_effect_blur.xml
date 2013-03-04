@@ -2,8 +2,8 @@
   <post_effect>
     <name>Blur</name>
     <shaders>
-      <pixel_path>data\\post_effect_blur.ps</pixel_path>
-      <vertex_path>data\\post_effect.vs</vertex_path>
+      <pixel_path>data\\Shaders\\post_effect_blur.ps</pixel_path>
+      <vertex_path>data\\Shaders\\post_effect.vs</vertex_path>
     </shaders>
   </post_effect>
 </xml>

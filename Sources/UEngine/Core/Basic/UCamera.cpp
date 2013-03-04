@@ -6,7 +6,7 @@ vec3 UCamera::GetPosition() { return position; }
 vec3 UCamera::GetRotation() { return rotation; }
 //For GL and Shaders
 mat4 UCamera::GetProjection() { return projection; }
-mat4 UCamera::GetView() { return GLRotation(rotation.x,rotation.y,rotation.z) * GLTranslation(-position); }
+mat4 UCamera::GetView() { return GLRotation(rotation.x, rotation.y, rotation.z) * GLTranslation(-position); }
 
 // Basic methods
 void UCamera::Create(float x, float y, float z){

@@ -15,7 +15,7 @@
         <path>data\\fallout3_idle_animation.xml</path>
       </animation_1>
     </animations>
-    <common_material>data\\basic_material.xml</common_material>    
+    <common_material>data\\Materials\\skinned_specular_bump_material.xml</common_material>    
     <mesh_0>
       <name>PAHelmet</name>
       <material>data\\basic_material1.xml</material>     

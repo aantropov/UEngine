@@ -71,7 +71,7 @@ bool UMaterial::Load(std::string path)
 		ambient.x = (float)atof(xml.GetElement("/xml/material/ambient/r/").c_str());
 		ambient.y = (float)atof(xml.GetElement("/xml/material/ambient/g/").c_str());
 		ambient.z = (float)atof(xml.GetElement("/xml/material/ambient/b/").c_str());
-		ambient.z = (float)atof(xml.GetElement("/xml/material/ambient/a/").c_str());
+		ambient.w = (float)atof(xml.GetElement("/xml/material/ambient/a/").c_str());
 
 		diffuse.x = (float)atof(xml.GetElement("/xml/material/diffuse/r/").c_str());
 		diffuse.y = (float)atof(xml.GetElement("/xml/material/diffuse/g/").c_str());

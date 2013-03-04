@@ -56,19 +56,7 @@ void UScript:: Update(double delta)
 {
 	if(!inited)
 	{
-		std::map<std::string, int> test;
-		test["0"] = 1;
-		test["1"] = 2;
-			
-		std::vector<mat2> test1;
-		test1.push_back(mat2_identity);
-
-		callLua1(luaVM, "set", test1);
-
 		callLua0(luaVM, USCRIPT_INIT_FUNCTION);
-
-		callLua0(luaVM, "get", test1);
-
 		inited = true;
 	}
 

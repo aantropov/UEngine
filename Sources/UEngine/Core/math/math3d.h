@@ -365,7 +365,7 @@ inline const quat shortarc(const vec3 &from, const vec3 &to)
 	return normalize(q);
 }
 
-
+/*
 inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
 {
 	vec3 tangent = vec3(0.0f,0.0f,0.0f);
@@ -388,8 +388,8 @@ inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0te
    }
    return bitangent;
 }
+*/
 
-/*
 inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
 { 
 	vec3 v0t = vec3(0, 0, 0);
@@ -416,4 +416,4 @@ inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0te
 		v0t.z = -cp.y / cp.x; 
 
 	return normalize(v0t);
-}*/
+}/**/

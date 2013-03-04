@@ -46,7 +46,6 @@ public:
 		
 	};
 
-
 	UUniformLocations locations;
 
 	//Create Shader Program
