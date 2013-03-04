@@ -46,8 +46,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Projects\UEngine\Sources\UEngine\UEngine\Include\lua-5.1.4\src;D:\Projects\UEngine\Sources\UEngine\UEngine\Core;D:\Projects\UEngine\Sources\UEngine\UEngine\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\UEngine\Sources\UEngine\UEngine\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>

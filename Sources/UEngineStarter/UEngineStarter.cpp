@@ -72,18 +72,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ULight l[30];
 	UModel *m1[10];
 
-	/*for(int i = 0; i <10; i++)
+	for(int i = 0; i <10; i++)
 	{
 
 		m1[i] = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
 		m1[i]->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_ONCE);
 		//m1[i]->Load("data\\light.xml");
 		node->AddChild(new UScene::USceneNode(new UGameObject(m1[i])));
-
-		/*l[i] = ULight(&e.rf, vec4(0.0f, i, -10.0f, 0.0f));
-		node->AddChild(new UScene::USceneNode(&l[i]));
-		scene.AddLight(&l[i]);*}/
-	*/
+				
+	}
 
 	e.SetCurrentScene(&scene);
 	e.Run();
