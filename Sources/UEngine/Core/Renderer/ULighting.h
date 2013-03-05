@@ -36,6 +36,9 @@ public:
 	UTexture* specularScene;
 	UTexture* positionScene;
 
+	UTexture* resSceneA;
+	UTexture* resSceneB;
+
 	UPostEffect *lighting;
 	UShaderProgram *objectShaderProgram;
 

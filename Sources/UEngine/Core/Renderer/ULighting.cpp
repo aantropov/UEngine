@@ -15,6 +15,8 @@ UDefferedLighting:: UDefferedLighting(){
 	ambientScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 	specularScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 	resScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+	resSceneA = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+	resSceneB = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 	positionScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 
 	colorScene->name = "colorScene";
@@ -25,15 +27,21 @@ UDefferedLighting:: UDefferedLighting(){
 	specularScene->name = "specularScene";
 	positionScene->name = "positionScene";
 	resScene->name = "colorScene";
+	resSceneA->name = "previousScene";
+	resSceneB->name = "previousScene";
 
-	colorScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	normalScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_FLOAT);
-	diffuseScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	ambientScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	specularScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	resScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	positionScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_FLOAT);
-	depthScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_DEPTH);
+	auto render = URenderer::GetInstance();
+
+	colorScene->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
+	normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
+	diffuseScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	resSceneA->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	resSceneB->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	positionScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
+	depthScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_DEPTH);
 	
 
 	fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
@@ -70,19 +78,50 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
 
 	OPENGL_CHECK_FOR_ERRORS();
 
-	//////////////////////////////////////
-	URenderer::GetInstance()->BindFBO(&postfb);	
-	postfb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
-	OPENGL_CHECK_FOR_ERRORS();
-		
-	lighting->Render(URENDER_FORWARD);
-	URenderer::GetInstance()->UnbindFBO();
-	//////////////////////////////////////
+
+	auto lights = scene->GetLights();
+	auto lightParams = URenderer::GetInstance()->GetCurrentScene()->lightParams;
+
+	int mod2 = 0;
+	for(int i = 0; i < lightParams.count; i++)
+	{
+		lighting->material.ClearTextures();
+		lighting->AddTexture(colorScene, 0);
+		lighting->AddTexture(depthScene, 1);
+		lighting->AddTexture(normalScene, 2);
+		lighting->AddTexture(diffuseScene, 3);
+		lighting->AddTexture(ambientScene, 4);
+		lighting->AddTexture(specularScene, 5);	
+		lighting->AddTexture(positionScene, 6);	
+
+		if(mod2 % 2 == 0)
+		{
+			lighting->AddTexture(resSceneA, 7);
+		}
+		else if(mod2 % 2 == 1)
+		{
+			lighting->AddTexture(resSceneB, 7);
+		}
+
+		lighting->material.params["lightIndex"] = (float)i;
+		lighting->material.params["state"] = (mod2 == lightParams.count - 1 ? 1.0f : 0.0f);
+
+		//////////////////////////////////////
+		URenderer::GetInstance()->BindFBO(&postfb);
+		postfb.BindTexture(mod2 == lightParams.count - 1 ? resScene : (mod2 % 2 == 0 ? resSceneB : resSceneA), UFB_ATTACHMENT_COLOR0);
 	
+		OPENGL_CHECK_FOR_ERRORS();
+	
+		lighting->Render(URENDER_FORWARD);
+	
+		URenderer::GetInstance()->UnbindFBO();
+		//////////////////////////////////////
+		
+		mod2++;
+	}
+
 	OPENGL_CHECK_FOR_ERRORS();
-
 	return resScene;
-
 }
 
 UForwardLighting:: UForwardLighting()
@@ -97,10 +136,12 @@ UForwardLighting:: UForwardLighting()
 	depthScene->name = "depthScene";
 	normalScene->name = "normalScene";
 	resScene->name = "colorScene";
+	
+	auto render = URenderer::GetInstance();
 
-	normalScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_FLOAT);
-	resScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-	depthScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_DEPTH);
+	normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
+	resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+	depthScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_DEPTH);
 	
 
 	fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
