@@ -15,52 +15,59 @@ UResource* UResourceFactory:: Create(URESOURCE_TYPE type){
 
 	ULogger::GetInstance()->Message("Creating resource: \"" + path + "\"");
 
-	if(type == URESOURCE_SHADER){
-		
+	if(type == URESOURCE_SHADER){		
 		UShader* temp = new UShader();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));		
 		return temp;
 	}
 	else if(type == URESOURCE_TEXTURE){
 		UTexture* temp = new UTexture();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}
 	else if(type == URESOURCE_MODEL){
 		UModel* temp = new UModel();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}
 	else if(type == URESOURCE_POST_EFFECT){
 		UPostEffect* temp = new UPostEffect();
 		temp->rf = this;
-		temp->Load(path);					
+		temp->resourceId = path;
+		temp->Load(path);				
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}
 	else if(type == URESOURCE_SHADER_PROGRAM){
 		UShaderProgram* temp = new UShaderProgram();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}
 	else if(type == URESOURCE_SKIN_ANIMATION){
 		UAnimation* temp = new UAnimation();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}
 	else if(type == URESOURCE_MATERIAL){
 		UMaterial* temp = new UMaterial();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}else if(type == URESOURCE_SCRIPT){
 		UScript* temp = new UScript();
 		temp->rf = this;
+		temp->resourceId = path;
 		resources.push_back(new UElement(temp, path));
 		return temp;
 	}

@@ -1,0 +1,17 @@
+<xml>
+  <model>
+    <name>Skysphere</name>
+    <upm>data\\Models\\skysphere.upm</upm>
+    <mesh_num>0</mesh_num>
+    <tex_num>1</tex_num>
+    <anim_num>0</anim_num>
+    <common_textures>
+      <tex_0>
+        <name>material.texture</name>
+        <channel>0</channel>
+        <path>data\\Textures\\stars.jpg</path>
+      </tex_0>
+    </common_textures>
+    <common_material>data\\Materials\\specular_bump_material.xml</common_material>
+  </model>
+</xml>

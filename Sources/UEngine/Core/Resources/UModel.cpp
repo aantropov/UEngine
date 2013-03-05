@@ -80,12 +80,12 @@ bool UModel:: Load(std:: string path){
 
 			this->mesh_num = i_buffer;
 			
-			for(unsigned int i = 0; i < mesh_num; i++){
+			for(unsigned int i = 0; i < mesh_num; i++)
+			{
 
 				UMesh* mesh = new UMesh();
-
-				fread(&data_size, 4, 1, file);
-			
+				fread(&data_size, 4, 1, file);			
+				
 				fread(&i_buffer, 4, 1, file);
 				mesh->vb.Create(i_buffer);
 
@@ -183,30 +183,58 @@ bool UModel:: Load(std:: string path){
 					fread(ind.v, 4,4, file);
 					fread(weight.v, 4,4, file);
 
-					//ind = vec4(1.0f, 0.0f, 0.0f, 0.0f);
-					//weight = vec4(1.0f, 0.0f, 0.0f, 0.0f);
-					//ind += vec4(1.0f, 1.0f, 1.0f, 1.0f)*0.1f;
-				//	weight.y = weight.z = weight.w;vec4(0.0f, 0.0f, 1.0f, 0.0f);
-				//	ULogger::GetInstance()->Message(vertices[count] + " " + vertices[count+1] + " " + vertices[count+7], ULOG_MSG_INFO, ULOG_OUT_MSG);
 					m_vertices[j] = UVertex(vec3(x, y, z), vec3(nx, ny ,nz), vec2(u, v));
-					
-				//	if(ind.x < 0.0f || ind.y < 0.0f || ind.z < 0.0f || ind.w < 0.0f)
-					//	ind = vec4_zero;
 					
 					m_vertices[j].SetBoneIndex(ind);
 					m_vertices[j].SetBoneWeight(normalize(weight));
 				}
 
-				if(finded)
+				if(xml.isExistElement("/xml/model/common_material/"))
 				{
-					if(xml.isExistElement(current_mesh+ "material/"))
-					{
-						mesh->material = *dynamic_cast<UMaterial*>(rf->Load(xml.GetElement(current_mesh+ "material/"), URESOURCE_MATERIAL));
-					}
-					else
-					{
-						mesh->material.SetShaderProgram(rf->Load(xml.GetElement(current_mesh + "shaders/vertex_path/"), xml.GetElement(current_mesh + "shaders/pixel_path/")), URENDER_FORWARD);
+					mesh->material = *dynamic_cast<UMaterial*>(rf->Create(URESOURCE_MATERIAL));
+					mesh->material.Load(xml.GetElement("/xml/model/common_material/"));				
+				}
 
+				if(xml.isExistElement("/xml/model/common_shaders/vertex_path/") && xml.isExistElement("/xml/model/common_shaders/pixel_path/"))
+					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/vertex_path/"), xml.GetElement("/xml/model/common_shaders/pixel_path/")), URENDER_FORWARD);
+
+				if(xml.isExistElement("/xml/model/common_shaders/normal_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/normal_pixel_path/"))
+					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/normal_vertex_path/"), xml.GetElement("/xml/model/common_shaders/normal_pixel_path/")), URENDER_NORMAL);
+				
+				if(xml.isExistElement("/xml/model/common_shaders/depth_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/depth_pixel_path/"))
+					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/depth_vertex_path/"), xml.GetElement("/xml/model/common_shaders/depth_pixel_path/")), URENDER_DEPTH);
+				
+				if(xml.isExistElement("/xml/model/common_shaders/deffered_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/deffered_pixel_path/"))
+					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/deffered_vertex_path/"), xml.GetElement("/xml/model/common_shaders/deffered_pixel_path/")), URENDER_DEFFERED);
+
+				if(xml.isExistElement("/xml/model/tex_num/"))
+				{
+					int tex_num = atoi(xml.GetElement("/xml/model/tex_num/").c_str());
+					for(int j = 0; j < tex_num; j++)
+					{							
+						memset(tex_buffer,'\0',255);	
+						sprintf_s(tex_buffer,"%d",j);
+						std::string current_tex = "/xml/model/common_textures/tex_" + string(tex_buffer) + "/";
+				
+						auto tex = pair<UTexture*, unsigned int>( 
+							dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)), 
+							atoi(xml.GetElement(current_tex + "channel/").c_str()));
+				
+						tex.first->name = xml.GetElement(current_tex + "name/");				
+						mesh->material.AddTexture(tex);
+					}
+				}
+
+				if(finded)
+				{					
+					if(xml.isExistElement(current_mesh + "material/"))
+					{
+						mesh->material = *dynamic_cast<UMaterial*>(rf->Create(URESOURCE_MATERIAL));
+						mesh->material.Load(xml.GetElement(current_mesh+ "material/"));
+					}
+
+					if(xml.isExistElement(current_mesh + "tex_num/"))
+					{
 						int tex_num = atoi(xml.GetElement(current_mesh + "tex_num/").c_str());
 						for(int j = 0; j < tex_num; j++)
 						{
@@ -224,44 +252,7 @@ bool UModel:: Load(std:: string path){
 						}
 					}
 				}
-				else
-				{
-					if(xml.isExistElement("/xml/model/common_material/"))
-					{
-						mesh->material = *dynamic_cast<UMaterial*>(rf->Load(xml.GetElement("/xml/model/common_material/"), URESOURCE_MATERIAL));
-					}
-					else
-					{
-						mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/vertex_path/"), xml.GetElement("/xml/model/common_shaders/pixel_path/")), URENDER_FORWARD);
-
-						int tex_num = atoi(xml.GetElement("/xml/model/tex_num/").c_str());
-						for(int j = 0; j < tex_num; j++)
-						{
-
-							memset(tex_buffer,'\0',255);	
-							sprintf_s(tex_buffer,"%d",j);
-							std::string current_tex = "/xml/model/common_textures/tex_" + string(tex_buffer) + "/";
 				
-							auto tex = pair<UTexture*, unsigned int>( 
-								dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)), 
-								atoi(xml.GetElement(current_tex + "channel/").c_str()));
-				
-							tex.first->name = xml.GetElement(current_tex + "name/");
-				
-							mesh->material.AddTexture(tex);
-						}
-					}
-				}
-
-				if(xml.isExistElement("/xml/model/common_shaders/normal_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/normal_pixel_path/"))
-					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/normal_vertex_path/"), xml.GetElement("/xml/model/common_shaders/normal_pixel_path/")), URENDER_NORMAL);
-				
-				if(xml.isExistElement("/xml/model/common_shaders/depth_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/depth_pixel_path/"))
-					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/depth_vertex_path/"), xml.GetElement("/xml/model/common_shaders/depth_pixel_path/")), URENDER_DEPTH);
-				
-				if(xml.isExistElement("/xml/model/common_shaders/deffered_vertex_path/") && xml.isExistElement("/xml/model/common_shaders/deffered_pixel_path/"))
-					mesh->material.SetShaderProgram(rf->Load(xml.GetElement("/xml/model/common_shaders/deffered_vertex_path/"), xml.GetElement("/xml/model/common_shaders/deffered_pixel_path/")), URENDER_DEFFERED);
-
 				int anim_num = atoi(xml.GetElement("/xml/model/anim_num/").c_str());
 				if(anim_num > 0)
 				{
@@ -279,73 +270,6 @@ bool UModel:: Load(std:: string path){
 			}
 			fclose(file);
 		}
-		else
-		{
-			//Deprecated!!! 
-
-			this->mesh_num = atoi(xml.GetElement("/xml/model/mesh_num/").c_str());
-
-			for(unsigned int i = 0; i < mesh_num; i++){
-
-				UMesh* mesh = new UMesh();
-			
-				memset(buffer,'\0',255);	
-				sprintf_s(buffer,"%d",i);
-				std::string current_mesh = "/xml/model/mesh_" + string(buffer) + "/";
-						
-				mesh->material.SetShaderProgram(rf->Load(xml.GetElement(current_mesh + "shaders/vertex_path/"), xml.GetElement(current_mesh + "shaders/pixel_path/")), URENDER_FORWARD);
-					
-				int tex_num = atoi(xml.GetElement(current_mesh + "tex_num/").c_str());
-				for(int j = 0; j < tex_num; j++)
-				{
-
-					memset(tex_buffer,'\0',255);	
-					sprintf_s(tex_buffer,"%d",j);
-					std::string current_tex = current_mesh+ "textures/tex_" + string(tex_buffer) + "/";
-				
-					auto tex = pair<UTexture*, unsigned int>( 
-						dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)), 
-						atoi(xml.GetElement(current_tex + "channel/").c_str()));
-				
-					tex.first->name = xml.GetElement(current_tex + "name/");
-				
-					mesh->material.AddTexture(tex);
-				}
-
-				mesh->name = xml.GetElement(current_mesh + "name/");
-				mesh->ib.Create(atoi(xml.GetElement(current_mesh + "faces_num/").c_str()));			
-				std::vector<std::string> indices = Split(xml.GetElement(current_mesh + "indices/"));
-				unsigned int *m_indices = reinterpret_cast<unsigned int*>(mesh->ib.GetPointer());
-				for(int j = 0; j < mesh->ib.GetNum(); j++)
-					m_indices[j] = atoi(indices[j].c_str());
-
-				int count = 0;
-				mesh->vb.Create(atoi(xml.GetElement(current_mesh + "verts_num/").c_str()));
-				std::vector<std::string> vertices = Split(xml.GetElement(current_mesh + "vertices/"));			
-				UVertex *m_vertices = reinterpret_cast<UVertex*>(mesh->vb.GetPointer());
-				for(int j = 0; j < mesh->vb.GetNum(); j++)
-				{
-				//	ULogger::GetInstance()->Message(vertices[count] + " " + vertices[count+1] + " " + vertices[count+7], ULOG_MSG_INFO, ULOG_OUT_MSG);
-					m_vertices[j] = UVertex( vec3((float)atof(vertices[count].c_str()), (float)atof(vertices[count+1].c_str()), (float)atof(vertices[count+2].c_str())),
-										   vec3((float)atof(vertices[count+3].c_str()), (float)atof(vertices[count+4].c_str()), (float)atof(vertices[count+5].c_str())),
-										   vec2((float)atof(vertices[count+6].c_str()), (float)atof(vertices[count+7].c_str())) );
-					count += 8;
-				}
-
-				std::vector<std::string> ambient = Split(xml.GetElement(current_mesh + "material/ambient/"));
-				std::vector<std::string> diffuse = Split(xml.GetElement(current_mesh + "material/diffuse/"));
-				std::vector<std::string> specular = Split(xml.GetElement(current_mesh + "material/specular/"));
-				std::vector<std::string> emission = Split(xml.GetElement(current_mesh + "material/emission/"));
-
-				mesh->material = UMaterial( vec4((float)atof(ambient[0].c_str()), (float)atof(ambient[1].c_str()), (float)atof(ambient[2].c_str()), (float)atof(ambient[3].c_str())),
-											vec4((float)atof(diffuse[0].c_str()), (float)atof(diffuse[1].c_str()), (float)atof(diffuse[2].c_str()), (float)atof(diffuse[3].c_str())),
-											vec4((float)atof(specular[0].c_str()), (float)atof(specular[1].c_str()), (float)atof(specular[2].c_str()), (float)atof(specular[3].c_str())),
-											vec4((float)atof(emission[0].c_str()), (float)atof(emission[1].c_str()), (float)atof(emission[2].c_str()), (float)atof(emission[3].c_str())),
-											(float)atof(xml.GetElement(current_mesh + "material/shininess/").c_str()));
-				mesh->Initialize();
-				meshes.push_back(mesh);
-			}
-		}				
 
 	}catch(exception e){
 		ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);

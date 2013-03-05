@@ -203,69 +203,6 @@
     <None Include="..\UEngineStarter\config.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="..\UEngineStarter\Data\basic.ps" />
-    <None Include="..\UEngineStarter\Data\basic.vs" />
-    <None Include="..\UEngineStarter\Data\basiclight.ps" />
-    <None Include="..\UEngineStarter\Data\basiclight.vs" />
-    <None Include="..\UEngineStarter\Data\basic_bump_light.ps" />
-    <None Include="..\UEngineStarter\Data\basic_bump_light.vs" />
-    <None Include="..\UEngineStarter\Data\basic_material.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic_material1.xml" />
-    <None Include="..\UEngineStarter\Data\deffered.ps" />
-    <None Include="..\UEngineStarter\Data\deffered.vs" />
-    <None Include="..\UEngineStarter\Data\depth.ps" />
-    <None Include="..\UEngineStarter\Data\depth.vs" />
-    <None Include="..\UEngineStarter\Data\fallout3_animation.xml" />
-    <None Include="..\UEngineStarter\Data\fallout3_idle_animation.xml" />
-    <None Include="..\UEngineStarter\Data\fallout3_model.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="..\UEngineStarter\Data\light.xml" />
-    <None Include="..\UEngineStarter\Data\lighting_off_deffered.ps" />
-    <None Include="..\UEngineStarter\Data\lighting_off_deffered.vs" />
-    <None Include="..\UEngineStarter\Data\Materials\skinned_specular_bump_material.xml" />
-    <None Include="..\UEngineStarter\Data\Materials\specular_bump_material.xml" />
-    <None Include="..\UEngineStarter\Data\normal.ps" />
-    <None Include="..\UEngineStarter\Data\normal.vs" />
-    <None Include="..\UEngineStarter\Data\post_effect.vs" />
-    <None Include="..\UEngineStarter\Data\post_effect_blur.ps" />
-    <None Include="..\UEngineStarter\Data\post_effect_blur.xml" />
-    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.ps" />
-    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.xml" />
-    <None Include="..\UEngineStarter\Data\post_effect_ssao.ps" />
-    <None Include="..\UEngineStarter\Data\post_effect_ssao.xml" />
-    <None Include="..\UEngineStarter\Data\Shaders\empty.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\empty.vs" />
-    <None Include="..\UEngineStarter\Data\Shaders\light.vs" />
-    <None Include="..\UEngineStarter\Data\Shaders\normal.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect.vs" />
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_blur.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_deffered_lighting.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_ssao.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\skinned_empty.vs" />
-    <None Include="..\UEngineStarter\Data\Shaders\skinned_light.vs" />
-    <None Include="..\UEngineStarter\Data\Shaders\specular_bump_light.ps" />
-    <None Include="..\UEngineStarter\Data\Shaders\specular_deffered_light.ps" />
-    <None Include="..\UEngineStarter\Data\skinned.vs" />
-    <None Include="..\UEngineStarter\Data\skinned_bump_light.vs" />
-    <None Include="..\UEngineStarter\Data\skinned_deffered.vs" />
-    <None Include="..\UEngineStarter\Data\skinned_depth.vs" />
-    <None Include="..\UEngineStarter\Data\skinned_light.vs" />
-    <None Include="..\UEngineStarter\Data\skinned_normal.vs" />
-    <None Include="..\UEngineStarter\Data\skybox.xml" />
-    <None Include="..\UEngineStarter\Data\skysphere.vs" />
-    <None Include="..\UEngineStarter\Data\test_animation.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_animation2.xml" />
-    <None Include="..\UEngineStarter\Data\test_model.xml" />
-    <None Include="..\UEngineStarter\Data\test_model_skinning.xml">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_script.lua" />
-    <None Include="..\UEngineStarter\Data\test_script.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

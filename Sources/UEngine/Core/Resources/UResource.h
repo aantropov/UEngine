@@ -11,14 +11,14 @@ class UResourceFactory;
 class UResource
 {	
 public:
-
-	// Resource factory
+	
+	std::string resourceId;
 	UResourceFactory* rf;
 
 	virtual bool Load(std::string path){ return true; }
 	virtual void Free() {}
 
-	UResource();
+	UResource() : resourceId(""), rf(nullptr) {}
 	virtual ~UResource();
 };
 

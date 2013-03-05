@@ -16,8 +16,8 @@ URenderManager::URenderManager(){
 	postEffectFbo.Initialize();	
 	postpostEffectFbo.Initialize();	
 
-	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
-	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
+	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
+	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
 	
 	posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 

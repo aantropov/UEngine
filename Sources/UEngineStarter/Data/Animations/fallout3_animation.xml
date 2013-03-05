@@ -2,6 +2,6 @@
   <animation>
     <name>Test</name>
     <frame_rate>500</frame_rate>
-    <uma>data\\fallout3_animation.uma</uma>
+    <uma>data\\Animations\\fallout3_animation.uma</uma>
   </animation>
 </xml>

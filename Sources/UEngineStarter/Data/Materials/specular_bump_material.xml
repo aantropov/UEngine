@@ -6,17 +6,17 @@
       <tex_0>
         <name>material.texture</name>
         <channel>0</channel>
-        <path>data\\Plitka_.jpg</path>
+        <path>data\\Textures\\Plitka_.jpg</path>
       </tex_0>
       <tex_1>
         <name>material.normal</name>
         <channel>1</channel>
-        <path>data\\Plitka_b.jpg</path>
+        <path>data\\Textures\\Plitka_b.jpg</path>
       </tex_1>
       <tex_2>
         <name>material.specular_tex</name>
         <channel>2</channel>
-        <path>data\\Plitka_s.jpg</path>
+        <path>data\\Textures\\Plitka_s.jpg</path>
       </tex_2>
     </textures>
     <shaders>

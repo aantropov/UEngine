@@ -6,12 +6,12 @@
       <tex_0>
         <name>material.texture</name>
         <channel>0</channel>
-        <path>data\\powerarmorbody.dds</path>
+        <path>data\\Textures\\powerarmorbody.dds</path>
       </tex_0>
       <tex_1>
         <name>material.normal</name>
         <channel>1</channel>
-        <path>data\\powerarmorbody_n.dds</path>
+        <path>data\\Textures\\powerarmorbody_n.dds</path>
       </tex_1>
     </textures>
     <shaders>

@@ -138,7 +138,7 @@ ULight::~ULight(void)
 void ULight::InitModel(UResourceFactory* rf)
 {
 	model = dynamic_cast<UModel*>(rf->Create(URESOURCE_MODEL));
-	model->Load("data\\light.xml");
+	model->Load("data\\Models\\light_model.xml");
 
 	components.push_back(model);
 }

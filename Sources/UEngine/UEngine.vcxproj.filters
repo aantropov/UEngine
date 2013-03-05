@@ -9,9 +9,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Data">
-      <UniqueIdentifier>{7c437890-84d8-48bd-93e8-d55dee3e4f7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{cd695600-b853-413c-b581-33f61adf2361}</UniqueIdentifier>
     </Filter>
@@ -42,12 +39,6 @@
     </Filter>
     <Filter Include="Core\Lua">
       <UniqueIdentifier>{5e2c8108-179f-49f4-abe4-d30fa0f1a95f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Materials">
-      <UniqueIdentifier>{c9927df6-8dd9-4505-a99e-c590339a58b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data\Shaders">
-      <UniqueIdentifier>{eee7d7a8-1802-45ea-9972-7ef80403c376}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,179 +349,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UEngineStarter\Data\basic.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic_bump_light.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic_bump_light.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basiclight.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basiclight.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\depth.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\depth.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\light.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_blur.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_blur.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skybox.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_model.xml">
-      <Filter>Data</Filter>
-    </None>
     <None Include="..\UEngineStarter\config.xml">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\normal.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\normal.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_ssao.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_ssao.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\deffered.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\deffered.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\post_effect_deffered_lighting.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_model_skinning.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_animation.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned_bump_light.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned_deffered.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned_depth.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned_light.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skinned_normal.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_animation2.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\fallout3_animation.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\fallout3_model.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\fallout3_idle_animation.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\lighting_off_deffered.ps">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\lighting_off_deffered.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\skysphere.vs">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic_material.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\basic_material1.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_script.xml">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\test_script.lua">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\skinned_light.vs">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\specular_bump_light.ps">
-      <Filter>Data\Shaders</Filter>
     </None>
     <None Include="..\..\Export\Model export old.ms">
       <Filter>Max Exporter</Filter>
     </None>
     <None Include="..\..\Export\Model export skinning model.ms">
       <Filter>Max Exporter</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Materials\skinned_specular_bump_material.xml">
-      <Filter>Data\Materials</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Materials\specular_bump_material.xml">
-      <Filter>Data\Materials</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\light.vs">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\empty.ps">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\empty.vs">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\skinned_empty.vs">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\normal.ps">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\specular_deffered_light.ps">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_deffered_lighting.ps">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect.vs">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_blur.ps">
-      <Filter>Data\Shaders</Filter>
-    </None>
-    <None Include="..\UEngineStarter\Data\Shaders\post_effect_ssao.ps">
-      <Filter>Data\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

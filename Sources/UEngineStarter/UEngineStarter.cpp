@@ -10,12 +10,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	e.Initialize();
 	
 	
-	UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
+	UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\fallout3_model.xml", URESOURCE_MODEL));
 	UGameObject *gameObject = new UGameObject(sm);
 	sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 	sm->animations["Test2"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 
-	UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\test_model.xml", URESOURCE_MODEL));
+	UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", URESOURCE_MODEL));
 	
 	ULight *light1 = new ULight(&e.rf, vec4(10.0f, 10.0f, 0.0f, 0.0f));
 	ULight *light2 = new ULight(&e.rf, vec4(1.0f, 1.0f, 1.0f, 0.0f));
@@ -26,7 +26,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ULight *light7 = new ULight(&e.rf, vec4(-5.0f, 4.0f, 5.0f, 0.0f));
 	ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 10.0f, 1.0f, 0.0f));
 	
-	UScript *script = dynamic_cast<UScript*>(e.rf.Load("data\\test_script.xml", URESOURCE_SCRIPT));
+	UScript *script = dynamic_cast<UScript*>(e.rf.Load("data\\Scripts\\test_script.xml", URESOURCE_SCRIPT));
 	light8->AddComponent((UComponent*)script);
 	light8->SetAttenuation(vec3(0.5f, 0.000000001f, 0.00000001f));
 	light8->SetSpotCosCutoff(100.1f);
@@ -37,13 +37,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	light7->castShadows = true;
 	light8->castShadows = true;
 
-	UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
+	//UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
 	
 	// Main node in the scene
 	UScene scene;
 	UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
 	
-	node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
+	//node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
 	node->AddChild(new UScene::USceneNode(gameObject));
 
 	auto go = new UScene::USceneNode(light1);	
@@ -72,7 +72,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ULight l[30];
 	UModel *m1[10];
 
-	for(int i = 0; i <10; i++)
+	/*for(int i = 0; i <10; i++)
 	{
 
 		m1[i] = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
@@ -80,7 +80,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//m1[i]->Load("data\\light.xml");
 		node->AddChild(new UScene::USceneNode(new UGameObject(m1[i])));
 				
-	}
+	}*/
 
 	e.SetCurrentScene(&scene);
 	e.Run();

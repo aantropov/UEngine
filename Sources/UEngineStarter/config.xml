@@ -8,7 +8,7 @@
     <deffered_lighting>1</deffered_lighting>
     <depth_texture_size>1024</depth_texture_size>   
     <post_effects>
-      <deffered_lighting>data\\post_effect_deffered_lighting.xml</deffered_lighting>
+      <deffered_lighting>data\\PostEffects\\post_effect_deffered_lighting.xml</deffered_lighting>
     </post_effects>    
   </config>
 </xml>
