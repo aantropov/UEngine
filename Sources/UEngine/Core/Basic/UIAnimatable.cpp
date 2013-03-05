@@ -36,7 +36,7 @@ bool UAnimation:: Load(std::string path)
 			fread(&total_bone_count, 4, 1, file);
 			fread(&frame_count, 4, 1, file);
 			
-			for(unsigned int i = 0; i < frame_count; i++){
+			for(unsigned int i = 0; i < (unsigned int)frame_count; i++){
 
 				UKeyFrame frame;
 				
@@ -59,7 +59,7 @@ bool UAnimation:: Load(std::string path)
 					
 					fread(&bone.parent, 4, 1, file);
 
-					fread(&bone.tf.pos, 4, 3, file);
+					fread(&bone.tf.position, 4, 3, file);
 					fread(&bone.tf.rotation, 4, 4, file);
 					fread(&bone.tf.scale, 4, 3, file);
 				

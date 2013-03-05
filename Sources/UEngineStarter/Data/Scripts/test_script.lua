@@ -1,4 +1,5 @@
 local velocity;
+local rotation;
 local border;
 local gameObject;
 local tr;
@@ -7,9 +8,10 @@ function Init()
 	gameObject = GetGameObject();
 	tr = GetTransform(gameObject);
 	velocity = {x = 0.001, y = 0.0001, z = 0.005, w = 0.0};
+	rotation = {x = 0.001, y = 0.0001, z = 0.005, w = 0.0};
 	border = {x = 15.0, y = 5.0, z = 13.0, w = 0.0}
 
-	border = SummVectors(tr.pos, border);
+	border = SummVectors(tr.position, border);
 	return 1;
 end
 
@@ -19,20 +21,24 @@ function Release()
 end
 
 function Update(delta)
-	if tr.pos.x > border.x or tr.pos.x < -1.0 * border.x then
+	if tr.position.x > border.x or tr.position.x < -1.0 * border.x then
 		velocity.x = velocity.x * -1.0;
+		rotation.x = velocity.x * -1.0;
 	end
 
-	if tr.pos.z > border.z or tr.pos.z < -1.0 * border.z then
+	if tr.position.z > border.z or tr.position.z < -1.0 * border.z then
 		velocity.z = velocity.z * -1.0;
+		rotation.y = velocity.z * -1.0;
 	end
 
-	if tr.pos.y > border.y or tr.pos.y < 0 then
+	if tr.position.y > border.y or tr.position.y < 0 then
 		velocity.y = velocity.y * -1.0;
+		rotation.z = velocity.y * -1.0;
 	end
 
-	tr.pos = SummVectors(tr.pos, MultVectorScalar(velocity, delta));
-
+	tr.position = SummVectors(tr.position, MultVectorScalar(velocity, delta));
+	tr.rotation = SummVectors(tr.rotation, MultVectorScalar(rotation, delta));
+	
 	SetTransform(gameObject, tr);
 	return 1;
 end

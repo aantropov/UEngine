@@ -8,12 +8,12 @@ struct mat2;
 struct mat3;
 struct mat4;
 
-
 struct transform
 {
+
 public:
 	
-	vec4 pos;
+	vec4 position;
 	quat rotation;
 	vec4 scale;
 		

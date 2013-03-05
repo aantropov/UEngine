@@ -362,8 +362,8 @@ template<> void toLua(lua_State* L, transform& arg)
 {
   // stack:
   lua_newtable(L); // stack: table
-  toLua(L, arg.pos); // stack: table text
-  lua_setfield(L, -2, "pos"); // stack: table
+  toLua(L, arg.position); // stack: table text
+  lua_setfield(L, -2, "position"); // stack: table
   toLua(L, arg.rotation); // stack: table values
   lua_setfield(L, -2, "rotation"); // stack: table
   toLua(L, arg.scale); // stack: table values
@@ -379,11 +379,11 @@ template<> bool fromLua(lua_State* L, int index, transform& arg)
 	quat r;
 	vec4 s;
 
-    if(fromLua(L, index, "pos", p) && fromLua(L, index, "rotation", r)
+    if(fromLua(L, index, "position", p) && fromLua(L, index, "rotation", r)
 		&& fromLua(L, index, "scale", s)){
 	  
 	  r = normalize(r);
-	  arg.pos = p;
+	  arg.position = p;
 	  arg.rotation = r;
 	  arg.scale = s;
 

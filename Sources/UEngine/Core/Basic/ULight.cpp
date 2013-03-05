@@ -58,7 +58,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
 	//cam.Ortho(-size, size, -size, size, -10.0f, 10000.0f);
 	cameras.push_back(cam);
 
-	local.pos = pos;
+	local.position = pos;
 }
 
  mat4 ULight:: GetLightTransform(){
@@ -112,7 +112,7 @@ void ULight:: SetShaderParameters(int i)
 	
 	auto renderer = URenderer::GetInstance();
 
-	renderer->CacheUniform4( light + "position",1, local.pos.v);
+	renderer->CacheUniform4( light + "position",1, local.position.v);
 	renderer->CacheUniform4( light + "ambient",1, ambient.v);
 	renderer->CacheUniform4( light + "diffuse",1, diffuse.v);
 	renderer->CacheUniform4( light + "specular",1, specular.v);
@@ -147,7 +147,7 @@ void ULight:: Update(double delta)
 {	
 	UGameObject::Update(delta);
 	
-	spotDirection = -normalize(world.transformVec3(local.pos));
+	spotDirection = -normalize(world.transformVec3(local.position));
 //	world
-	cameras[0].LookAt(world.transformVec3(local.pos) , spotDirection + world.transformVec3(local.pos), world.transformVec3(vec3_y));
+	cameras[0].LookAt(world.transformVec3(local.position) , spotDirection + world.transformVec3(local.position), world.transformVec3(vec3_y));
 }

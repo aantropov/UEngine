@@ -26,8 +26,8 @@ public:
 		return UBone(lerp(a.tf, b.tf, t), b.name, b.parent);
 	}
 
-	const UBone operator* (float f) const { return UBone(transform(tf.pos * f, tf.rotation * f, tf.scale * f), name, parent); }
-	const UBone operator+ (const UBone &bone) const { return UBone(transform(tf.pos + bone.tf.pos, tf.rotation + bone.tf.rotation, tf.scale + bone.tf.scale), name, parent); }
+	const UBone operator* (float f) const { return UBone(transform(tf.position * f, tf.rotation * f, tf.scale * f), name, parent); }
+	const UBone operator+ (const UBone &bone) const { return UBone(transform(tf.position + bone.tf.position, tf.rotation + bone.tf.rotation, tf.scale + bone.tf.scale), name, parent); }
 };
 
 class UKeyFrame
