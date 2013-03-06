@@ -104,7 +104,15 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
 		}
 
 		lighting->material.params["lightIndex"] = (float)i;
-		lighting->material.params["state"] = (mod2 == lightParams.count - 1 ? 1.0f : 0.0f);
+		
+		if(lightParams.count == 1)
+			lighting->material.params["state"] = 3.0f;
+		else if(mod2 == 0)
+			lighting->material.params["state"] = 0.0f;
+		else if(mod2 == lightParams.count - 1)
+			lighting->material.params["state"] = 2.0f;
+		else 
+			lighting->material.params["state"] = 1.0f;
 
 		//////////////////////////////////////
 		URenderer::GetInstance()->BindFBO(&postfb);
@@ -141,8 +149,7 @@ UForwardLighting:: UForwardLighting()
 
 	normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
 	resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
-	depthScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_DEPTH);
-	
+	depthScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_DEPTH);	
 
 	fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
 	fb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);

@@ -81,14 +81,17 @@ void main(void)
   } 
   color = vec4(0);
   
-  if(int(lightIndex) == 0)
+  if(int(state) == 0)
     color = res;
   
-  if(int(state) == 0)
+  if(int(state) == 1)
     color = res + previous;
   
-  if(int(state) == 1)
+  if(int(state) == 2)
 	color = (res + previous) * vec4(texture, 1.0);
+
+  if(int(state) == 3)
+    color = res * vec4(texture, 1.0);
      
 }
 

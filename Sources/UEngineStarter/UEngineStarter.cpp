@@ -82,13 +82,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
-	/*scene.AddLight(light1);
+	/*scene.AddLight(light1);*/
 	scene.AddLight(light2);
 	scene.AddLight(light3);
 	scene.AddLight(light4);
 	scene.AddLight(light5);
 	scene.AddLight(light6);
-	scene.AddLight(light7);*/
+	scene.AddLight(light7);
 	scene.AddLight(light8);/**/
 	
 	scene.root = node;
