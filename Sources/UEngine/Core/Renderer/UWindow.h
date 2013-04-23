@@ -1,7 +1,7 @@
 // Creates a window with all neccessary settings
 #pragma once
 #include "..\Utils\ULogger.h"
-#include "OpenGL.h"
+#include "URendererHelper.h"
 // User inout intrface. Very standard. Thx to tutorials.
 struct UKeys{
 

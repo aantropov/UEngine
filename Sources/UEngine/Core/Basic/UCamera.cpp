@@ -1,6 +1,5 @@
 #include "UCamera.h"
 
-
 //Getters
 vec3 UCamera::GetPosition() { return position; }
 vec3 UCamera::GetRotation() { return rotation; }

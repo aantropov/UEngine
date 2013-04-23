@@ -6,6 +6,7 @@
 #include "..\Resources\UTexture.h"
 #include "..\Basic\UCamera.h"
 #include "UFrameBufferObject.h"
+#include "URendererHelper.h"
 
 URenderer::URenderer(){
 
@@ -414,6 +415,9 @@ bool URenderer::Initialize(){
 	//Print information
 	PrintDebugInfo();
 
+	//Init MyGUI
+	InitGui();
+
 	return true;
 }
 
@@ -454,6 +458,7 @@ void URenderer::PrintDebugInfo(){
 
 bool URenderer:: InitExtensions()
 {
+	/*
 	// Texture
 	OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC, glActiveTexture);
 	// VAO
@@ -505,10 +510,10 @@ bool URenderer:: InitExtensions()
 	OPENGL_GET_PROC(PFNGLFRAMEBUFFERTEXTUREPROC,     glFramebufferTexture);
 	//
 	OPENGL_GET_PROC(PFNGLDRAWBUFFERSPROC,			 glDrawBuffers);
-	
+	*/
 	OPENGL_GET_PROC(PFNWGLSWAPINTERVALEXTPROC,		 wglSwapIntervalEXT);
 	
 	OPENGL_CHECK_FOR_ERRORS();
-
+	
 	return true;
 }

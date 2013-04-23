@@ -7,24 +7,18 @@ class UIndexBuffer;
 
 // VBO for vertices
 class UVertexBuffer : public UBuffer
-{
-	// Num vertices
-	int num_vertices;
-	// Pointer
-	UVertex *vertices;
-	//VAO
+{	
+	int num_vertices;	
+	UVertex *vertices;	
 	UVertexArrayObject* vao;
 	
 	void ComputeTBN(UIndexBuffer* ib);
 	
 public:
 
-	//get pointer
-	void* GetPointer() {return (void*)vertices;}
-	// get num
+	
+	void* GetPointer() {return (void*)vertices;}	
 	int GetNum() { return num_vertices; }
-
-	// Create dynamic array
 	void Create(int num_vertices) {
 		//Free();
 		this->num_vertices = num_vertices;
@@ -42,8 +36,7 @@ public:
 			ComputeTBN(ib);
 		return Initialize();
 	}
-
-	// Initialize in OpenGL driver
+		
 	bool Initialize(){	
 
 		vao = new UVertexArrayObject();
@@ -56,7 +49,7 @@ public:
 		
 		return (_id != -1) && (vao->GetId() != -1);
 	}
-	// Delete all data
+	
 	void Free() {
 		if(_id != -1)
 			URenderer::GetInstance()->DeleteVBO(this);
@@ -64,6 +57,23 @@ public:
 
 		delete[] vertices;		
 		delete vao;
+	}
+
+	void* Lock()
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, UGLObject::_id);
+		glBufferData(GL_ARRAY_BUFFER, num_vertices * sizeof(UVertex), 0, GL_STREAM_DRAW_ARB);
+		UVertex* pBuffer = (UVertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY_ARB);			
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		return pBuffer;
+	}
+
+	void Unlock()
+	{		
+		glBindBuffer(GL_ARRAY_BUFFER, UGLObject::_id);
+		GLboolean result = glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	UVertexBuffer(void);

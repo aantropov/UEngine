@@ -2,9 +2,12 @@
 
 #include "windows.h"
 #include "..\Utils\ULogger.h"
-
 #include "..\Utils\enum.h"
 
+#define GL_GLEXT_PROTOTYPES
+#define GL3_PROTOTYPES 1
+
+//#include "mygui 3.2.0/GL/glew.h"
 #include <GL\gl.h>
 
 #include "GL\glext.h"
@@ -14,16 +17,35 @@
 #include "IL\ilut.h"
 #include "IL\ilu.h"
 
-#include "..\Utils\enum.h"
-
 #pragma comment(lib, "DevIL.lib")
 #pragma comment(lib, "Ilut.lib")
 #pragma comment(lib, "Ilu.lib")
 
 #pragma comment(lib, "opengl32.lib")
-//#pragma comment(lib, "glu32.lib")
+#pragma comment(lib, "glu32.lib")
 
 //#pragma comment(lib, "glew32.lib")
+
+#include <algorithm>
+#include <cctype>
+#include <cstdlib>
+
+#include <mygui 3.2.0\MyGUI.h>
+#include <mygui 3.2.0\MyGUI_OpenGLPlatform.h>
+#include <mygui 3.2.0\MyGUI_DataManager.h>
+#include <mygui 3.2.0\MyGUI_OpenGLImageLoader.h>
+
+#ifdef UE_DEBUG
+	#pragma comment(lib, "Common_d.lib")
+	#pragma comment(lib, "MyGUIEngine_d.lib")
+	#pragma comment(lib, "MyGUI.OpenGLPlatform_d.lib")
+#endif  //UE_DEBUG
+
+#ifdef UE_RELEASE
+	#pragma comment(lib, "Common.lib")
+	#pragma comment(lib, "MyGUIEngine.lib")
+	#pragma comment(lib, "MyGUI.OpenGLPlatform.lib")
+#endif  //UE_RELEASE
 
 // Global variable for error reporting
 extern GLenum g_OpenGLError;
@@ -94,6 +116,7 @@ extern ILenum g_DevILError;
 #define DEVIL_CALL(expression) expression;
 #endif //UE_RELEASE
 
+/*
 // extensions OpenGL
 // Texture
 extern PFNGLACTIVETEXTUREPROC glActiveTexture;
@@ -146,4 +169,6 @@ extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTUREPROC     glFramebufferTexture;
 //
 extern PFNGLDRAWBUFFERSPROC			   glDrawBuffers;
+*/
+
 extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;

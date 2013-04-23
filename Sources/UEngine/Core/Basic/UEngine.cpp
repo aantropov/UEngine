@@ -81,9 +81,8 @@ void UEngine::Run(){
 			if(currentScene != NULL)
 				renderManager->Render(currentScene);
 
-			//glFinish();
+			URenderer::GetInstance()->DrawMyGuiFrame();
 			SwapBuffers( UWindow::GetHDC());
-			//glFlush();
 
 			//Updating delta
 			deltaTime += GetTickCount() - beginFrameTime;
@@ -105,6 +104,7 @@ void UEngine::Run(){
 				fps = 0;
 				elapsedTime = 0.0f;
 			}
+
 
 			
 		}

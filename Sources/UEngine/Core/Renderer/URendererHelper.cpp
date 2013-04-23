@@ -1,8 +1,9 @@
-#include "OpenGL.h"
+#include "URendererHelper.h"
 
 GLenum g_OpenGLError = GL_NO_ERROR;
 ILenum g_DevILError = IL_NO_ERROR;
 
+/*
 // Extensions OpenGL
 // Texture
 PFNGLACTIVETEXTUREPROC glActiveTexture = NULL;
@@ -55,4 +56,6 @@ PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus = NULL;
 PFNGLFRAMEBUFFERTEXTUREPROC     glFramebufferTexture     = NULL;
 //
 PFNGLDRAWBUFFERSPROC glDrawBuffers = NULL;
+*/
+
 PFNWGLSWAPINTERVALEXTPROC			 wglSwapIntervalEXT = NULL;

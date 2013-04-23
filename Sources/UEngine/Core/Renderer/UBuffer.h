@@ -6,15 +6,13 @@ class UBuffer: public UGLObject
 {
 public:
 
-	// Get pointer to data in buffer
+	virtual void* Lock() = 0;
+	virtual void Unlock() = 0;
+
 	virtual void* GetPointer() = 0;
-	// Get count of elements in buffer
-	virtual int GetNum() = 0;	
-	// Create dynamic array
-	virtual void Create(int num) = 0;	
-	// Initialize buffer in Opengl
+	virtual int GetNum() = 0;
+	virtual void Create(int num) = 0;
 	virtual bool Initialize() = 0;
-	// Free all data and deinitialise
 	virtual void Free() = 0;
 	
 	UBuffer(void);

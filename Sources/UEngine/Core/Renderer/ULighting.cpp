@@ -83,7 +83,7 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
 	auto lightParams = URenderer::GetInstance()->GetCurrentScene()->lightParams;
 
 	int mod2 = 0;
-	for(int i = 0; i < lightParams.count; i++)
+	for(unsigned int i = 0; i < lightParams.count; i++)
 	{
 		lighting->material.ClearTextures();
 		lighting->AddTexture(colorScene, 0);

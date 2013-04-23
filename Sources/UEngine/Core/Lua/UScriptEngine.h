@@ -29,9 +29,9 @@ public:
 	static UGameObject* GetParent(UGameObject* gameObject);
 	static std::vector<UGameObject*> GetChildren(UGameObject* gameObject);
 	
-	static bool SetTransform(UGameObject* gameObject, transform local);
-	static transform GetTransform(UGameObject* gameObject);
-	static transform GetWorldTransform(UGameObject* gameObject);
+	static bool SetTransform(UGameObject* gameObject, ::transform local);
+	static ::transform GetTransform(UGameObject* gameObject);
+	static ::transform GetWorldTransform(UGameObject* gameObject);
 
 	static bool SetName(UGameObject* gameObject, std::string name);
 	static std::string GetName(UGameObject* gameObject);

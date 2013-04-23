@@ -27,6 +27,6 @@ public:
 
 };
 
-const transform lerp(transform a, transform b, float t);
+const ::transform lerp(::transform a, ::transform b, float t);
 
 

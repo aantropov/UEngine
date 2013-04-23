@@ -57,7 +57,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;UE_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;UE_RELEASE;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,11 +106,17 @@
     <ClCompile Include="Core\Basic\UScene.cpp" />
     <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
     <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEngineDataManager.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEnginePlatform.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEngineRenderManager.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEngineRTTexture.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEngineTexture.cpp" />
+    <ClCompile Include="Core\Gui\MyGUI_UEngineVertexBuffer.cpp" />
     <ClCompile Include="Core\Lua\LuaTemplates.cpp" />
     <ClCompile Include="Core\Lua\UScript.cpp" />
     <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
     <ClCompile Include="Core\math\transform.cpp" />
-    <ClCompile Include="Core\Renderer\OpenGL.cpp" />
+    <ClCompile Include="Core\Renderer\URendererHelper.cpp" />
     <ClCompile Include="Core\Renderer\UBuffer.cpp" />
     <ClCompile Include="Core\Renderer\UFrameBufferObject.cpp" />
     <ClCompile Include="Core\Renderer\UGLObject.cpp" />
@@ -153,6 +159,14 @@
     <ClInclude Include="Core\GameMechanics\UComponent.h" />
     <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
     <ClInclude Include="Core\GameMechanics\UGameObject.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineDataManager.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineDiagnostic.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineImageLoader.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEnginePlatform.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineRenderManager.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineRTTexture.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineTexture.h" />
+    <ClInclude Include="Core\Gui\MyGUI_UEngineVertexBuffer.h" />
     <ClInclude Include="Core\Lua\LuaTemplates.hpp" />
     <ClInclude Include="Core\Lua\UScript.h" />
     <ClInclude Include="Core\Lua\UScriptEngine.h" />
@@ -167,7 +181,7 @@
     <ClInclude Include="core\math\vec2.h" />
     <ClInclude Include="core\math\vec3.h" />
     <ClInclude Include="core\math\vec4.h" />
-    <ClInclude Include="Core\Renderer\OpenGL.h" />
+    <ClInclude Include="Core\Renderer\URendererHelper.h" />
     <ClInclude Include="Core\Renderer\UBuffer.h" />
     <ClInclude Include="Core\Renderer\UFrameBufferObject.h" />
     <ClInclude Include="Core\Renderer\UGLObject.h" />

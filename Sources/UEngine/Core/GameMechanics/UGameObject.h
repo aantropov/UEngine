@@ -1,4 +1,5 @@
 #pragma once
+
 #include "UComponent.h"
 #include "..\Math\UMath.h"
 
@@ -11,8 +12,8 @@ public:
 	
 	std::string name;
 
-	transform local;
-	transform world;
+	::transform local;
+	::transform world;
 	
 	std::vector<UGameObject*> children;
 	UGameObject *parentObject;

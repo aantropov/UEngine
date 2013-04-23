@@ -1,5 +1,4 @@
 #include "stdafx.h"
-
 #define _UENGINE_IMPORT_
 #include "..\UEngine\Core\UEngine.h"
 
@@ -8,7 +7,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// Create Engine
 	UEngine e;
 	e.Initialize();
-	
 	
 	UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\fallout3_model.xml", URESOURCE_MODEL));
 	UGameObject *gameObject = new UGameObject(sm);
@@ -93,8 +91,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	scene.root = node;
 	
-	UModel *m1[10];
-	/*
+	/*UModel *m1[10];
+	
 	for(int i = 0; i <10; i++)
 	{
 		m1[i] = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
@@ -103,7 +101,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		node->AddChild(new UScene::USceneNode(new UGameObject(m1[i])));
 	}
 	*/
-
+	
 	e.SetCurrentScene(&scene);
 	e.Run();
 	e.Release();

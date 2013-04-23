@@ -16,18 +16,18 @@ public:
 
 	std::string name;
 	unsigned int parent;
-	transform tf;
+	::transform tf;
 	
 	UBone(){}
-	UBone(transform tf, std::string name, unsigned int parent): name(name), tf(tf), parent(parent) {}
+	UBone(::transform tf, std::string name, unsigned int parent): name(name), tf(tf), parent(parent) {}
 	
 	static UBone Lerp(UBone a, UBone b, float t)
 	{
 		return UBone(lerp(a.tf, b.tf, t), b.name, b.parent);
 	}
 
-	const UBone operator* (float f) const { return UBone(transform(tf.position * f, tf.rotation * f, tf.scale * f), name, parent); }
-	const UBone operator+ (const UBone &bone) const { return UBone(transform(tf.position + bone.tf.position, tf.rotation + bone.tf.rotation, tf.scale + bone.tf.scale), name, parent); }
+	const UBone operator* (float f) const { return UBone(::transform(tf.position * f, tf.rotation * f, tf.scale * f), name, parent); }
+	const UBone operator+ (const UBone &bone) const { return UBone(::transform(tf.position + bone.tf.position, tf.rotation + bone.tf.rotation, tf.scale + bone.tf.scale), name, parent); }
 };
 
 class UKeyFrame

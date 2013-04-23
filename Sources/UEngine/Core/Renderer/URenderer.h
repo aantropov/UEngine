@@ -13,6 +13,8 @@
 #include <hash_map>
 #include <map>
 
+#include "..\Gui\MyGUI_UEnginePlatform.h"
+
 class UVertexBuffer;
 class UIndexBuffer;
 class UShader;
@@ -51,6 +53,10 @@ class URenderer: public USingleton<URenderer>{
 	int CacheUniformLocation(string name);
 	int CacheUniformLocation(string name, UShaderProgram *sh);
 
+	MyGUI::Gui* mGUI;
+	MyGUI::UEngineImageLoader_Devil* mIL;
+    MyGUI::UEnginePlatform* mPlatform;
+		   
 public:
 	
 	//Scene methods
@@ -118,8 +124,7 @@ public:
 	int CreateVAO();
 	void DeleteVAO(UVertexArrayObject *vao);
 
-	//Shaders
-	
+	//Shaders	
 	int CompileShader(std::string source, USHADER_TYPE st);
 	void DeleteShader(UShader* shd);
 
@@ -155,6 +160,27 @@ public:
 	void Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 );
 	void DrawBuffer(UVertexBuffer *vb);
 	void DrawBuffer(UIndexBuffer* ib);
+
+	//GUI
+	void InitGui()
+	{
+		mIL = new MyGUI::UEngineImageLoader_Devil();
+		mPlatform = new MyGUI::UEnginePlatform();
+
+		OPENGL_CHECK_FOR_ERRORS();
+		mPlatform->initialise(mIL);
+		OPENGL_CHECK_FOR_ERRORS();
+
+		mGUI = new MyGUI::Gui();
+		OPENGL_CHECK_FOR_ERRORS();
+		mGUI->initialise();
+		OPENGL_CHECK_FOR_ERRORS();
+
+		MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
+		button->setCaption("Hello World!");
+	}
+
+	void DrawMyGuiFrame(){mPlatform->getRenderManagerPtr()->drawOneFrame();}
 
 };
 
