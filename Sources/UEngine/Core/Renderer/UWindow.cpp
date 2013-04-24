@@ -24,7 +24,7 @@ UWindow::~UWindow(){
 }
 
 bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
-
+		
 	UWindow::width = width;
 	UWindow::height = height;
 	UWindow::fullscreen = fullScreen;
@@ -37,7 +37,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
 	int                   x, y, format;
 
 	// Pointer to create context OpenGL function
-	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
+	//PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
 	// Attributes
 	int attribs[] =
@@ -136,10 +136,12 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
 		return false;
 	}
 
+	GLenum err = glewInit();
+	OPENGL_CHECK_FOR_ERRORS();
 	// Get function address
 	//wglCreateContextAttribsARB = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
 	//wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-	OPENGL_GET_PROC(PFNWGLCREATECONTEXTATTRIBSARBPROC, wglCreateContextAttribsARB);
+	//OPENGL_GET_PROC(PFNWGLCREATECONTEXTATTRIBSARBPROC, wglCreateContextAttribsARB);
 	
 	// Delete temp context
 	wglMakeCurrent(NULL, NULL);

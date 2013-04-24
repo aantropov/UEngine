@@ -7,8 +7,11 @@
 #define GL_GLEXT_PROTOTYPES
 #define GL3_PROTOTYPES 1
 
+#include <GL\glew.h>
+#include <GL\wglew.h>
+
 //#include "mygui 3.2.0/GL/glew.h"
-#include <GL\gl.h>
+//#include <GL\gl.h>
 
 #include "GL\glext.h"
 #include "GL\wglext.h"
@@ -21,10 +24,10 @@
 #pragma comment(lib, "Ilut.lib")
 #pragma comment(lib, "Ilu.lib")
 
+
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
-
-//#pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "glew32.lib")
 
 #include <algorithm>
 #include <cctype>
@@ -171,4 +174,4 @@ extern PFNGLFRAMEBUFFERTEXTUREPROC     glFramebufferTexture;
 extern PFNGLDRAWBUFFERSPROC			   glDrawBuffers;
 */
 
-extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;
+//extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;

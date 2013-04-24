@@ -369,10 +369,12 @@ bool URenderer:: SetVerticalSynchronization(bool bEnabled)
 {
 	if(!wglSwapIntervalEXT)
 		return false;
+
 	if(bEnabled)
 		wglSwapIntervalEXT(1);
 	else
 		wglSwapIntervalEXT(0);
+
 	return true;
 }
 
@@ -457,7 +459,7 @@ void URenderer::PrintDebugInfo(){
 }
 
 bool URenderer:: InitExtensions()
-{
+{	
 	/*
 	// Texture
 	OPENGL_GET_PROC(PFNGLACTIVETEXTUREPROC, glActiveTexture);
@@ -510,9 +512,9 @@ bool URenderer:: InitExtensions()
 	OPENGL_GET_PROC(PFNGLFRAMEBUFFERTEXTUREPROC,     glFramebufferTexture);
 	//
 	OPENGL_GET_PROC(PFNGLDRAWBUFFERSPROC,			 glDrawBuffers);
-	*/
-	OPENGL_GET_PROC(PFNWGLSWAPINTERVALEXTPROC,		 wglSwapIntervalEXT);
 	
+	OPENGL_GET_PROC(PFNWGLSWAPINTERVALEXTPROC,		 wglSwapIntervalEXT);
+	*/
 	OPENGL_CHECK_FOR_ERRORS();
 	
 	return true;

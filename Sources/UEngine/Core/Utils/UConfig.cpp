@@ -21,6 +21,6 @@ UConfig* UConfig::GetInstance(){
 	return instance;
 }
 
-std::string UConfig::GetParam(std::string param_path){
+std::string UConfig::GetParam(std::string param_path) {
 	return uCfg.GetElement(param_path);
 }

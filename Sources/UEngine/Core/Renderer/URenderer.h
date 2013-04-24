@@ -176,11 +176,11 @@ public:
 		mGUI->initialise();
 		OPENGL_CHECK_FOR_ERRORS();
 
-		MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
-		button->setCaption("Hello World!");
+		//MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
+		//button->setCaption("Hello World!");
 	}
 
-	void DrawMyGuiFrame(){mPlatform->getRenderManagerPtr()->drawOneFrame();}
+	void DrawMyGuiFrame(){ /*mPlatform->getRenderManagerPtr()->drawOneFrame();*/}
 
 };
 
