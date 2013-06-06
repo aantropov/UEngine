@@ -9,16 +9,16 @@ class UResourceFactory;
 
 // Base class for resources, RAII hierarchy
 class UResource
-{	
+{    
 public:
-	
-	std::string resourceId;
-	UResourceFactory* rf;
+    
+    std::string resourceId;
+    UResourceFactory* rf;
 
-	virtual bool Load(std::string path){ return true; }
-	virtual void Free() {}
+    virtual bool Load(std::string path){ return true; }
+    virtual void Free() {}
 
-	UResource() : resourceId(""), rf(nullptr) {}
-	virtual ~UResource();
+    UResource() : resourceId(""), rf(nullptr) {}
+    virtual ~UResource();
 };
 

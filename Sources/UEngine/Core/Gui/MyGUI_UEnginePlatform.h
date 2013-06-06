@@ -1,7 +1,7 @@
 /*!
-	@file
-	@author		George Evmenov
-	@date		07/2009
+    @file
+    @author        George Evmenov
+    @date        07/2009
 */
 
 #ifndef __MYGUI_UEngine_PLATFORM_H__
@@ -17,24 +17,24 @@
 namespace MyGUI
 {
 
-	class UEnginePlatform
-	{
-	public:
-		UEnginePlatform();
-		~UEnginePlatform();
+    class UEnginePlatform
+    {
+    public:
+        UEnginePlatform();
+        ~UEnginePlatform();
 
-		void initialise(UEngineImageLoader* _loader, const std::string& _logName = MYGUI_PLATFORM_LOG_FILENAME);
-		void shutdown();
+        void initialise(UEngineImageLoader* _loader, const std::string& _logName = MYGUI_PLATFORM_LOG_FILENAME);
+        void shutdown();
 
-		UEngineRenderManager* getRenderManagerPtr();
-		UEngineDataManager* getDataManagerPtr();
+        UEngineRenderManager* getRenderManagerPtr();
+        UEngineDataManager* getDataManagerPtr();
 
-	private:
-		bool mIsInitialise;
-		UEngineRenderManager* mRenderManager;
-		UEngineDataManager* mDataManager;
-		LogManager* mLogManager;
-	};
+    private:
+        bool mIsInitialise;
+        UEngineRenderManager* mRenderManager;
+        UEngineDataManager* mDataManager;
+        LogManager* mLogManager;
+    };
 
 } // namespace MyGUI
 

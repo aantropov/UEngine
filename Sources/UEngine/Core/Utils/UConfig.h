@@ -3,18 +3,18 @@
 #include "..\Resources\uxmlfile.h"
 
 // Load parameters from the configuration file
-class UConfig :	public USingleton<UConfig>{
+class UConfig :    public USingleton<UConfig>{
 
-	static const string UCONFIG_FILE_PATH;
-	UXMLFile uCfg;
-	UConfig();
+    static const string UCONFIG_FILE_PATH;
+    UXMLFile uCfg;
+    UConfig();
 
 public:
-	
-	static UConfig* GetInstance(); 
-	std::string GetParam(std::string param_path);
+    
+    static UConfig* GetInstance(); 
+    std::string GetParam(std::string param_path);
 
-	~UConfig();	
+    ~UConfig();    
 };
 
 // Singleton

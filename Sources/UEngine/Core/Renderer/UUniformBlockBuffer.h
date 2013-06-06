@@ -6,22 +6,22 @@ class UUniformBlockBuffer: public UGLObject
 {
 public:
 
-	class UUniformBlock
-	{
-		public:
-		
-		unsigned int count;
+    class UUniformBlock
+    {
+        public:
+        
+        unsigned int count;
 
-		vector<unsigned int> index;
-		vector<int> offset;
-		unsigned int blockIndex;
-		int	blockSize;
-	
-	};
+        vector<unsigned int> index;
+        vector<int> offset;
+        unsigned int blockIndex;
+        int    blockSize;
+    
+    };
 
-	void Initialize(){}
+    void Initialize(){}
 
-	UUniformBlockBuffer(void);
-	virtual ~UUniformBlockBuffer(void);
+    UUniformBlockBuffer(void);
+    virtual ~UUniformBlockBuffer(void);
 };
 

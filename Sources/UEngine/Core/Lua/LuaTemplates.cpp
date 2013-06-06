@@ -123,10 +123,10 @@ template<> bool fromLua(lua_State* L, int index, vec2& arg)
   if(lua_istable(L, index))
   {
     float x;
-	float y;
+    float y;
 
     if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)){
-	  arg.x = x;
+      arg.x = x;
       arg.y = y;
       return true;
     }
@@ -153,13 +153,13 @@ template<> bool fromLua(lua_State* L, int index, vec3& arg)
   if(lua_istable(L, index))
   {
     float x;
-	float y;
-	float z;
+    float y;
+    float z;
 
     if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y) && fromLua(L, index, "z", z)){
-	  arg.x = x;
+      arg.x = x;
       arg.y = y;
-	  arg.z = z;
+      arg.z = z;
       return true;
     }
   }
@@ -187,16 +187,16 @@ template<> bool fromLua(lua_State* L, int index, vec4& arg)
   if(lua_istable(L, index))
   {
     float x;
-	float y;
-	float z;
-	float w;
+    float y;
+    float z;
+    float w;
 
     if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)
-		&& fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
-	  arg.x = x;
+        && fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
+      arg.x = x;
       arg.y = y;
-	  arg.z = z;
-	  arg.w = w;
+      arg.z = z;
+      arg.w = w;
       return true;
     }
   }
@@ -224,16 +224,16 @@ template<> bool fromLua(lua_State* L, int index, quat& arg)
   if(lua_istable(L, index))
   {
     float x;
-	float y;
-	float z;
-	float w;
+    float y;
+    float z;
+    float w;
 
     if(fromLua(L, index, "x", x) && fromLua(L, index, "y", y)
-		&& fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
-	  arg.x = x;
+        && fromLua(L, index, "z", z) && fromLua(L, index, "w", w)){
+      arg.x = x;
       arg.y = y;
-	  arg.z = z;
-	  arg.w = w;
+      arg.z = z;
+      arg.w = w;
       return true;
     }
   }
@@ -251,9 +251,9 @@ template<> void toLua(lua_State* L, mat2& arg)
     
   for(unsigned int i = 0; i < 4; i++)
   {
-	toLua(L, arg.m[i]);
-	sprintf_s(buffer, "m%d", i+1);
-	lua_setfield(L, -2, buffer);	
+    toLua(L, arg.m[i]);
+    sprintf_s(buffer, "m%d", i+1);
+    lua_setfield(L, -2, buffer);    
   }  
 }
 
@@ -262,18 +262,18 @@ template<> bool fromLua(lua_State* L, int index, mat2& arg)
   // stack:
   if(lua_istable(L, index))
   {
-	char buffer[MAXCHAR];
-	memset(buffer, '\0', MAXCHAR * sizeof(char));
+    char buffer[MAXCHAR];
+    memset(buffer, '\0', MAXCHAR * sizeof(char));
 
     float m[4];
-	for(unsigned int i = 0; i < 4; i++)
-	{
-		sprintf_s(buffer, "m%d", i+1);
-		if(!fromLua(L, index, buffer, m[i]))
-			return false;
-	}
-	
-	memcpy(arg.m, m, sizeof(arg.m[0]) * 4);
+    for(unsigned int i = 0; i < 4; i++)
+    {
+        sprintf_s(buffer, "m%d", i+1);
+        if(!fromLua(L, index, buffer, m[i]))
+            return false;
+    }
+    
+    memcpy(arg.m, m, sizeof(arg.m[0]) * 4);
     return true;    
   }
   return false;
@@ -290,9 +290,9 @@ template<> void toLua(lua_State* L, mat3& arg)
     
   for(unsigned int i = 0; i < 9; i++)
   {
-	toLua(L, arg.m[i]);
-	sprintf_s(buffer, "m%d", i+1);
-	lua_setfield(L, -2, buffer);	
+    toLua(L, arg.m[i]);
+    sprintf_s(buffer, "m%d", i+1);
+    lua_setfield(L, -2, buffer);    
   }  
 }
 
@@ -301,18 +301,18 @@ template<> bool fromLua(lua_State* L, int index, mat3& arg)
   // stack:
   if(lua_istable(L, index))
   {
-	char buffer[MAXCHAR];
-	memset(buffer, '\0', MAXCHAR * sizeof(char));
+    char buffer[MAXCHAR];
+    memset(buffer, '\0', MAXCHAR * sizeof(char));
 
     float m[9];
-	for(unsigned int i = 0; i < 9; i++)
-	{
-		sprintf_s(buffer, "m%d", i+1);
-		if(!fromLua(L, index, buffer, m[i]))
-			return false;
-	}
-	
-	memcpy(arg.m, m, sizeof(arg.m[0]) * 9);
+    for(unsigned int i = 0; i < 9; i++)
+    {
+        sprintf_s(buffer, "m%d", i+1);
+        if(!fromLua(L, index, buffer, m[i]))
+            return false;
+    }
+    
+    memcpy(arg.m, m, sizeof(arg.m[0]) * 9);
     return true;    
   }
   return false;
@@ -329,9 +329,9 @@ template<> void toLua(lua_State* L, mat4& arg)
     
   for(unsigned int i = 0; i < 16; i++)
   {
-	toLua(L, arg.m[i]);
-	sprintf_s(buffer, "m%d", i+1);
-	lua_setfield(L, -2, buffer);	
+    toLua(L, arg.m[i]);
+    sprintf_s(buffer, "m%d", i+1);
+    lua_setfield(L, -2, buffer);    
   }  
 }
 
@@ -340,18 +340,18 @@ template<> bool fromLua(lua_State* L, int index, mat4& arg)
   // stack:
   if(lua_istable(L, index))
   {
-	char buffer[MAXCHAR];
-	memset(buffer, '\0', MAXCHAR * sizeof(char));
+    char buffer[MAXCHAR];
+    memset(buffer, '\0', MAXCHAR * sizeof(char));
 
     float m[16];
-	for(unsigned int i = 0; i < 16; i++)
-	{
-		sprintf_s(buffer, "m%d", i+1);
-		if(!fromLua(L, index, buffer, m[i]))
-			return false;
-	}
-	
-	memcpy(arg.m, m, sizeof(arg.m[0]) * 16);
+    for(unsigned int i = 0; i < 16; i++)
+    {
+        sprintf_s(buffer, "m%d", i+1);
+        if(!fromLua(L, index, buffer, m[i]))
+            return false;
+    }
+    
+    memcpy(arg.m, m, sizeof(arg.m[0]) * 16);
     return true;    
   }
   return false;
@@ -376,16 +376,16 @@ template<> bool fromLua(lua_State* L, int index, transform& arg)
   if(lua_istable(L, index))
   {
     vec4 p;
-	quat r;
-	vec4 s;
+    quat r;
+    vec4 s;
 
     if(fromLua(L, index, "position", p) && fromLua(L, index, "rotation", r)
-		&& fromLua(L, index, "scale", s)){
-	  
-	  r = normalize(r);
-	  arg.position = p;
-	  arg.rotation = r;
-	  arg.scale = s;
+        && fromLua(L, index, "scale", s)){
+      
+      r = normalize(r);
+      arg.position = p;
+      arg.rotation = r;
+      arg.scale = s;
 
       return true;
     }
@@ -399,26 +399,26 @@ template<> bool fromLua ( lua_State * lua, int index, void*& ret)
     if( !lua_isnumber ( lua, index ))
         return false;
  
-	void* temp;
+    void* temp;
 
-	try{
-		int number = (int)lua_tonumber ( lua, index );
-		temp = reinterpret_cast<void*>(number);
-	}catch(std::exception ex){return false;}
-	
-	ret = temp;
+    try{
+        int number = (int)lua_tonumber ( lua, index );
+        temp = reinterpret_cast<void*>(number);
+    }catch(std::exception ex){return false;}
+    
+    ret = temp;
 
     return true;
 }
 
 template<> bool fromLua ( lua_State * lua, int index, UGameObject*& ret)
 {
-	return fromLua(lua, index, (void*&) ret);
+    return fromLua(lua, index, (void*&) ret);
 }
 
 template<> bool fromLua ( lua_State * lua, int index, UComponent*& ret)
 {
-	return fromLua(lua, index, (void*&) ret);
+    return fromLua(lua, index, (void*&) ret);
 }
 
 template<> void toLua ( lua_State * lua, void*& arg )

@@ -4,9 +4,9 @@ class UIUpdateble
 {
 protected:
 public:
-	
-	virtual void Update(double delta) = 0;
+    
+    virtual void Update(double delta) = 0;
 
-	UIUpdateble(void);
-	virtual ~UIUpdateble(void);
+    UIUpdateble(void);
+    virtual ~UIUpdateble(void);
 };

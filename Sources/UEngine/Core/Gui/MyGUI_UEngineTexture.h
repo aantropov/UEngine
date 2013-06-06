@@ -1,7 +1,7 @@
 /*!
-	@file
-	@author		George Evmenov
-	@date		07/2009
+    @file
+    @author        George Evmenov
+    @date        07/2009
 */
 
 #ifndef __MYGUI_UEngine_TEXTURE_H__
@@ -15,80 +15,80 @@
 namespace MyGUI
 {
 
-	class UEngineRTTexture;
+    class UEngineRTTexture;
 
-	class UEngineTexture : public ITexture
-	{
-	public:
-		UEngineTexture(const std::string& _name, UEngineImageLoader* _loader);
-		virtual ~UEngineTexture();
+    class UEngineTexture : public ITexture
+    {
+    public:
+        UEngineTexture(const std::string& _name, UEngineImageLoader* _loader);
+        virtual ~UEngineTexture();
 
-		virtual const std::string& getName() const;
+        virtual const std::string& getName() const;
 
-		virtual void createManual(int _width, int _height, TextureUsage _usage, PixelFormat _format);
-		virtual void loadFromFile(const std::string& _filename);
-		virtual void saveToFile(const std::string& _filename);
+        virtual void createManual(int _width, int _height, TextureUsage _usage, PixelFormat _format);
+        virtual void loadFromFile(const std::string& _filename);
+        virtual void saveToFile(const std::string& _filename);
 
-		virtual void destroy();
+        virtual void destroy();
 
-		virtual int getWidth()
-		{
-			return mWidth;
-		}
-		virtual int getHeight()
-		{
-			return mHeight;
-		}
+        virtual int getWidth()
+        {
+            return mWidth;
+        }
+        virtual int getHeight()
+        {
+            return mHeight;
+        }
 
-		virtual void* lock(TextureUsage _access);
-		virtual void unlock();
-		virtual bool isLocked()
-		{
-			return mLock;
-		}
+        virtual void* lock(TextureUsage _access);
+        virtual void unlock();
+        virtual bool isLocked()
+        {
+            return mLock;
+        }
 
-		virtual PixelFormat getFormat()
-		{
-			return mOriginalFormat;
-		}
-		virtual TextureUsage getUsage()
-		{
-			return mOriginalUsage;
-		}
-		virtual size_t getNumElemBytes()
-		{
-			return mNumElemBytes;
-		}
+        virtual PixelFormat getFormat()
+        {
+            return mOriginalFormat;
+        }
+        virtual TextureUsage getUsage()
+        {
+            return mOriginalUsage;
+        }
+        virtual size_t getNumElemBytes()
+        {
+            return mNumElemBytes;
+        }
 
-		virtual IRenderTarget* getRenderTarget();
+        virtual IRenderTarget* getRenderTarget();
 
-	/*internal:*/
-		unsigned int getTextureID() const;
-		void setUsage(TextureUsage _usage);
-		void createManual(int _width, int _height, TextureUsage _usage, PixelFormat _format, void* _data);
+    /*internal:*/
+        unsigned int getTextureID() const;
+        void setUsage(TextureUsage _usage);
+        void createManual(int _width, int _height, TextureUsage _usage, PixelFormat _format, void* _data);
 
-	private:
-		void _create();
+    private:
+        void _create();
 
-	private:
-		std::string mName;
-		int mWidth;
-		int mHeight;
-		int mPixelFormat;
-		int mInternalPixelFormat;
-		int mUsage;
-		int mAccess;
-		size_t mNumElemBytes;
-		size_t mDataSize;
-		unsigned int mTextureID;
-		unsigned int mPboID;
-		bool mLock;
-		void* mBuffer;
-		PixelFormat mOriginalFormat;
-		TextureUsage mOriginalUsage;
-		UEngineImageLoader* mImageLoader;
-		UEngineRTTexture* mRenderTarget;
-	};
+    private:
+        std::string mName;
+        int mWidth;
+        int mHeight;
+        int mPixelFormat;
+        int mInternalPixelFormat;
+        int mUsage;
+        int mAccess;
+        size_t mNumElemBytes;
+        size_t mDataSize;
+        unsigned int mTextureID;
+        unsigned int mPboID;
+        bool mLock;
+        void* mBuffer;
+        PixelFormat mOriginalFormat;
+        TextureUsage mOriginalUsage;
+        UEngineImageLoader* mImageLoader;
+        UEngineRTTexture* mRenderTarget;
+    };
 
 } // namespace MyGUI
 

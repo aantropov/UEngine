@@ -39,15 +39,15 @@
 #include <mygui 3.2.0\MyGUI_OpenGLImageLoader.h>
 
 #ifdef UE_DEBUG
-	#pragma comment(lib, "Common_d.lib")
-	#pragma comment(lib, "MyGUIEngine_d.lib")
-	#pragma comment(lib, "MyGUI.OpenGLPlatform_d.lib")
+    #pragma comment(lib, "Common_d.lib")
+    #pragma comment(lib, "MyGUIEngine_d.lib")
+    #pragma comment(lib, "MyGUI.OpenGLPlatform_d.lib")
 #endif  //UE_DEBUG
 
 #ifdef UE_RELEASE
-	#pragma comment(lib, "Common.lib")
-	#pragma comment(lib, "MyGUIEngine.lib")
-	#pragma comment(lib, "MyGUI.OpenGLPlatform.lib")
+    #pragma comment(lib, "Common.lib")
+    #pragma comment(lib, "MyGUIEngine.lib")
+    #pragma comment(lib, "MyGUI.OpenGLPlatform.lib")
 #endif  //UE_RELEASE
 
 // Global variable for error reporting
@@ -58,47 +58,47 @@ extern ILenum g_DevILError;
 #ifdef UE_DEBUG
 // Get function address from the driver
 #define OPENGL_GET_PROC(p,n) \
-	n = (p)wglGetProcAddress(#n); \
-	if (n == NULL) \
-	{ \
-	ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
-		/*return false;*/ \
-	}
+    n = (p)wglGetProcAddress(#n); \
+    if (n == NULL) \
+    { \
+    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
+        /*return false;*/ \
+    }
 #define DEVIL_CHECK_FOR_ERRORS() \
-	if ((g_DevILError = ilGetError()) != IL_NO_ERROR) \
-	{ \
-		char message[UE_MAXCHAR]; \
-		sprintf_s(message, "DevIL error 0x%X", (unsigned)g_DevILError); \
-		ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
-	}
+    if ((g_DevILError = ilGetError()) != IL_NO_ERROR) \
+    { \
+        char message[UE_MAXCHAR]; \
+        sprintf_s(message, "DevIL error 0x%X", (unsigned)g_DevILError); \
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+    }
 #define OPENGL_CHECK_FOR_ERRORS() \
-	if ((g_OpenGLError = glGetError()) != GL_NO_ERROR) \
-	{ \
-		char message[UE_MAXCHAR]; \
-		sprintf_s(message, "OpenGL error 0x%X", (unsigned)g_OpenGLError); \
-		ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
-	}
+    if ((g_OpenGLError = glGetError()) != GL_NO_ERROR) \
+    { \
+        char message[UE_MAXCHAR]; \
+        sprintf_s(message, "OpenGL error 0x%X", (unsigned)g_OpenGLError); \
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+    }
 #define OPENGL_CALL(expression) \
-	{ \
-		expression; \
-		if ((g_OpenGLError = glGetError()) != GL_NO_ERROR) \
-		{ \
-			char message[UE_MAXCHAR]; \
-			sprintf_s(message,"OpenGL expression \"" #expression "\" error %d\n", (int)g_OpenGLError); \
-			ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
-		} \
-	}
+    { \
+        expression; \
+        if ((g_OpenGLError = glGetError()) != GL_NO_ERROR) \
+        { \
+            char message[UE_MAXCHAR]; \
+            sprintf_s(message,"OpenGL expression \"" #expression "\" error %d\n", (int)g_OpenGLError); \
+            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+        } \
+    }
 
 #define DEVIL_CALL(expression) \
-	{ \
-		expression; \
-		if ((g_DevILError = ilGetError()) != IL_NO_ERROR) \
-		{ \
-			char message[UE_MAXCHAR]; \
-			sprintf_s(message,"DevIL expression \"" #expression "\" error %d\n", (int)g_DevILError); \
-			ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
-		} \
-	}
+    { \
+        expression; \
+        if ((g_DevILError = ilGetError()) != IL_NO_ERROR) \
+        { \
+            char message[UE_MAXCHAR]; \
+            sprintf_s(message,"DevIL expression \"" #expression "\" error %d\n", (int)g_DevILError); \
+            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+        } \
+    }
 #endif //UE_DEBUG
 
 #ifdef UE_RELEASE
@@ -109,12 +109,12 @@ extern ILenum g_DevILError;
 
 #define OPENGL_CALL(expression) expression;
 #define OPENGL_GET_PROC(p,n) \
-	n = (p)wglGetProcAddress(#n); \
-	if (n == NULL) \
-	{ \
-	ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
-		return false; \
-	}
+    n = (p)wglGetProcAddress(#n); \
+    if (n == NULL) \
+    { \
+    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
+        return false; \
+    }
 
 #define DEVIL_CALL(expression) expression;
 #endif //UE_RELEASE
@@ -171,7 +171,7 @@ extern PFNGLGENFRAMEBUFFERSPROC        glGenFramebuffers;
 extern PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus;
 extern PFNGLFRAMEBUFFERTEXTUREPROC     glFramebufferTexture;
 //
-extern PFNGLDRAWBUFFERSPROC			   glDrawBuffers;
+extern PFNGLDRAWBUFFERSPROC               glDrawBuffers;
 */
 
 //extern PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT;

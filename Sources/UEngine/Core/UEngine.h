@@ -56,28 +56,28 @@ using namespace std;
 //The main class 
 class UEngine {
 
-	UScene* currentScene;
-	URenderManager* renderManager;
+    UScene* currentScene;
+    URenderManager* renderManager;
 
-	unsigned int fps;
-	float elapsedTime;
+    unsigned int fps;
+    float elapsedTime;
 
 public:
-	
-	UENGINE_DECLSPEC static UResourceFactory  rf;
+    
+    UENGINE_DECLSPEC static UResourceFactory  rf;
 
-	void UENGINE_DECLSPEC SetCurrentScene(UScene* _currentScene)
-	{
-		this->currentScene = _currentScene;
-		URenderer::GetInstance()->SetCurrentScene(currentScene);
-	}
+    void UENGINE_DECLSPEC SetCurrentScene(UScene* _currentScene)
+    {
+        this->currentScene = _currentScene;
+        URenderer::GetInstance()->SetCurrentScene(currentScene);
+    }
 
-	// Init UEngine
-	bool UENGINE_DECLSPEC Initialize();
-	// Run Main loop
-	void UENGINE_DECLSPEC Run();
-	// Stop Main loop
-	void UENGINE_DECLSPEC Stop();
-	// Release all data
-	void UENGINE_DECLSPEC Release();
+    // Init UEngine
+    bool UENGINE_DECLSPEC Initialize();
+    // Run Main loop
+    void UENGINE_DECLSPEC Run();
+    // Stop Main loop
+    void UENGINE_DECLSPEC Stop();
+    // Release all data
+    void UENGINE_DECLSPEC Release();
 };

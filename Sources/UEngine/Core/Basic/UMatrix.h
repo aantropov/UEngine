@@ -4,22 +4,22 @@
 //#include "URenderer.h"
 
 class UMatrix :
-	public UNode
+    public UNode
 {
 
 protected:
-	mat4 m;
-public:	
-	
-	void Set(mat4 m1);
+    mat4 m;
+public:    
+    
+    void Set(mat4 m1);
 
-	mat4 Get();
-	void Set();
+    mat4 Get();
+    void Set();
 
-	virtual void Render();
-	virtual void Update();
+    virtual void Render();
+    virtual void Update();
 
-	UMatrix(void);
-	~UMatrix(void);
+    UMatrix(void);
+    ~UMatrix(void);
 };
 

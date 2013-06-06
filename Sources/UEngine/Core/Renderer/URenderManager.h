@@ -8,26 +8,26 @@ class UScene;
 
 class URenderManager
 {
-	UFrameBufferObject depthFbo;
-	UFrameBufferObject postEffectFbo;
-	UFrameBufferObject postpostEffectFbo;
-	
-	UPostEffect* postEffectRipple;
-	UPostEffect* postEffectSSAO;
-	
-	UTexture* colorScene;
-	UTexture* depthScene;
-	UTexture* normalScene;
-	UTexture* posteffectScene;
+    UFrameBufferObject depthFbo;
+    UFrameBufferObject postEffectFbo;
+    UFrameBufferObject postpostEffectFbo;
+    
+    UPostEffect* postEffectRipple;
+    UPostEffect* postEffectSSAO;
+    
+    UTexture* colorScene;
+    UTexture* depthScene;
+    UTexture* normalScene;
+    UTexture* posteffectScene;
 
-	ULighting *lighting;
-	
-	int depthTextureSize;
+    ULighting *lighting;
+    
+    int depthTextureSize;
 public:
 
-	void Render(UScene* scene);
+    void Render(UScene* scene);
 
-	URenderManager();
-	~URenderManager(void);
+    URenderManager();
+    ~URenderManager(void);
 };
 

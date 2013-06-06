@@ -5,8 +5,8 @@
 
 // It is important
 std::vector<std::string> Split(std::string str){
-	std::vector<std::string> res;
-	std::stringstream iss(str);
+    std::vector<std::string> res;
+    std::stringstream iss(str);
 
     do
     {
@@ -14,6 +14,6 @@ std::vector<std::string> Split(std::string str){
         iss >> sub;
         res.push_back(sub);
     } while (iss);
-		
-	return res;
+        
+    return res;
 }

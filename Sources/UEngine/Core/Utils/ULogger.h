@@ -13,20 +13,20 @@ using namespace std;
 class ULogger : public USingleton<ULogger>{
 protected:
 
-	ULogger();
-	FILE* fLog;
+    ULogger();
+    FILE* fLog;
 
 public:
-	// Singleton method
-	static ULogger* GetInstance();
+    // Singleton method
+    static ULogger* GetInstance();
 
-	// Path to log file
-	static const string ULOG_FILE_PATH;
-		
-	// Write message
-	void Message(string text, ULOG_MSG_TYPE msg_type = ULOG_MSG_INFO, ULOG_OUT out = ULOG_OUT_FILE);
-	
-	~ULogger();
+    // Path to log file
+    static const string ULOG_FILE_PATH;
+        
+    // Write message
+    void Message(string text, ULOG_MSG_TYPE msg_type = ULOG_MSG_INFO, ULOG_OUT out = ULOG_OUT_FILE);
+    
+    ~ULogger();
 };
 
 // Singleton

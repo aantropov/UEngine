@@ -3,7 +3,7 @@
 
 UIndexBuffer::UIndexBuffer(void)
 {
-	indices = NULL;
+    indices = NULL;
 }
 
 

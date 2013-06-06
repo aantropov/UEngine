@@ -26,161 +26,161 @@ class UFrameBufferObject;
 // Renderer
 class URenderer: public USingleton<URenderer>{
 
-	//Main window
-	UWindow uWnd;
+    //Main window
+    UWindow uWnd;
 
-	// Initialization
-	bool InitExtensions();
+    // Initialization
+    bool InitExtensions();
 
-	bool SetVerticalSynchronization(bool enabled);
+    bool SetVerticalSynchronization(bool enabled);
 
-	// Debug info printing
-	void PrintDebugInfo();
-	
-	// ModelView Matrix Stack
-	std::vector<mat4> modelViewMatrixStack;
-	UScene* currentScene;
+    // Debug info printing
+    void PrintDebugInfo();
+    
+    // ModelView Matrix Stack
+    std::vector<mat4> modelViewMatrixStack;
+    UScene* currentScene;
 
-	UShaderProgram *shaderProgram;
-	
-	// Optimization
-	unsigned int previousVAO;
-	unsigned int previousIB;
-	
-	map<unsigned int, hash_map<string, unsigned int>> uniformsCache;
-	map<unsigned int, unsigned int> texChannelsCache;
+    UShaderProgram *shaderProgram;
+    
+    // Optimization
+    unsigned int previousVAO;
+    unsigned int previousIB;
+    
+    map<unsigned int, hash_map<string, unsigned int>> uniformsCache;
+    map<unsigned int, unsigned int> texChannelsCache;
 
-	int CacheUniformLocation(string name);
-	int CacheUniformLocation(string name, UShaderProgram *sh);
+    int CacheUniformLocation(string name);
+    int CacheUniformLocation(string name, UShaderProgram *sh);
 
-	MyGUI::Gui* mGUI;
-	MyGUI::UEngineImageLoader_Devil* mIL;
+    MyGUI::Gui* mGUI;
+    MyGUI::UEngineImageLoader_Devil* mIL;
     MyGUI::UEnginePlatform* mPlatform;
-		   
+           
 public:
-	
-	//Scene methods
-	void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
-	UScene UENGINE_DECLSPEC *GetCurrentScene();
-	
-	static URenderer UENGINE_DECLSPEC *GetInstance();
+    
+    //Scene methods
+    void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
+    UScene UENGINE_DECLSPEC *GetCurrentScene();
+    
+    static URenderer UENGINE_DECLSPEC *GetInstance();
 
-	URenderer();
-	~URenderer();
+    URenderer();
+    ~URenderer();
 
-	// It is very important, to contain camera in renderer object
-	UCamera camera;
-	
-	//Creates a window and initializes OpenGL, it uses UConfig
-	bool Initialize();
+    // It is very important, to contain camera in renderer object
+    UCamera camera;
+    
+    //Creates a window and initializes OpenGL, it uses UConfig
+    bool Initialize();
 
-	//Returns HWND of the main window
-	HWND GetHWND() { return uWnd.GetHWND(); }
+    //Returns HWND of the main window
+    HWND GetHWND() { return uWnd.GetHWND(); }
 
-	//Get width and height
-	int GetWidth(){ return uWnd.GetWidth(); }
-	int GetHeight(){ return uWnd.GetHeight(); }
-		
-	//Releases a window
-	void Release();
+    //Get width and height
+    int GetWidth(){ return uWnd.GetWidth(); }
+    int GetHeight(){ return uWnd.GetHeight(); }
+        
+    //Releases a window
+    void Release();
 
-	//Operations with Stack
-	mat4 modelView;
-	void PushModelMatrix();
-	void PopModelMatrix();
+    //Operations with Stack
+    mat4 modelView;
+    void PushModelMatrix();
+    void PopModelMatrix();
 
-	//Camera
-	UCamera GetCamera();
-	void SetCamera(UCamera cam);
-	void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model);
-	void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model);
-	void SetupCameraLightForShaderProgram(UCamera &camera);
+    //Camera
+    UCamera GetCamera();
+    void SetCamera(UCamera cam);
+    void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model);
+    void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model);
+    void SetupCameraLightForShaderProgram(UCamera &camera);
 
-	//Texture
-	int CreateTexture(UTexture *tex);
-	void BindTexture(UTexture *tex);
-	void DeleteTexture(UTexture *tex);
-	void BindTexture(UTexture *tex, unsigned int channel);
+    //Texture
+    int CreateTexture(UTexture *tex);
+    void BindTexture(UTexture *tex);
+    void DeleteTexture(UTexture *tex);
+    void BindTexture(UTexture *tex, unsigned int channel);
 
-	//VBO
-	void BindVBO(UVertexBuffer *vb);
-	void BindVBO(UIndexBuffer *ib);
-	void UnbindVBO(bool is_vertex_buffer);
-	
-	int CreateVBO(UVertexBuffer *vb, UVBO_DRAW state);
-	int CreateVBO(UIndexBuffer *ib, UVBO_DRAW state);	
-	void DeleteVBO(UBuffer *vb);
+    //VBO
+    void BindVBO(UVertexBuffer *vb);
+    void BindVBO(UIndexBuffer *ib);
+    void UnbindVBO(bool is_vertex_buffer);
+    
+    int CreateVBO(UVertexBuffer *vb, UVBO_DRAW state);
+    int CreateVBO(UIndexBuffer *ib, UVBO_DRAW state);    
+    void DeleteVBO(UBuffer *vb);
 
-	//FBO
-	int CreateFBO();
-	void DeleteFBO(UFrameBufferObject *fb);
-	void BindFBO(UFrameBufferObject *fb);
-	void UnbindFBO();
+    //FBO
+    int CreateFBO();
+    void DeleteFBO(UFrameBufferObject *fb);
+    void BindFBO(UFrameBufferObject *fb);
+    void UnbindFBO();
 
-	//VAO
-	void BindVAO(UVertexBuffer *vb);
-	void UnbindVAO();
-	
-	int CreateVAO();
-	void DeleteVAO(UVertexArrayObject *vao);
+    //VAO
+    void BindVAO(UVertexBuffer *vb);
+    void UnbindVAO();
+    
+    int CreateVAO();
+    void DeleteVAO(UVertexArrayObject *vao);
 
-	//Shaders	
-	int CompileShader(std::string source, USHADER_TYPE st);
-	void DeleteShader(UShader* shd);
+    //Shaders    
+    int CompileShader(std::string source, USHADER_TYPE st);
+    void DeleteShader(UShader* shd);
 
-	int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh);
-	void SetShaderProgram(UShaderProgram *sh);
-	void DeleteShaderProgram(UShaderProgram *sh);
+    int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh);
+    void SetShaderProgram(UShaderProgram *sh);
+    void DeleteShaderProgram(UShaderProgram *sh);
 
-	void CacheUniform4(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
-	void CacheUniform4(std::string name, unsigned int num , float *variable);
-	
-	void CacheUniform1(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
-	void CacheUniform1(std::string name, unsigned int num , float *variable);
-	void CacheUniform1(std::string name, int value);
+    void CacheUniform4(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
+    void CacheUniform4(std::string name, unsigned int num , float *variable);
+    
+    void CacheUniform1(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
+    void CacheUniform1(std::string name, unsigned int num , float *variable);
+    void CacheUniform1(std::string name, int value);
 
-	void CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
-	void CacheUniform3(std::string name, unsigned int num , float *variable);
+    void CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
+    void CacheUniform3(std::string name, unsigned int num , float *variable);
 
-	void CacheUniformMatrix4(std::string name, unsigned int num , float *variable);
-	void CacheUniformMatrix3(std::string name, unsigned int num , float *variable);
+    void CacheUniformMatrix4(std::string name, unsigned int num , float *variable);
+    void CacheUniformMatrix3(std::string name, unsigned int num , float *variable);
 
-	void CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
-	void CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
+    void CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
+    void CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num , float *variable);
 
-	void Uniform4(unsigned int location, unsigned int num , float *variable);
-	void Uniform1(unsigned int location, unsigned int num , float *variable);
-	void Uniform1(unsigned int location, int value);
-	void Uniform3(unsigned int location, unsigned int num , float *variable);
-	void UniformMatrix4(unsigned int location, unsigned int num , float *variable);
-	void UniformMatrix3(unsigned int location, unsigned int num , float *variable);
+    void Uniform4(unsigned int location, unsigned int num , float *variable);
+    void Uniform1(unsigned int location, unsigned int num , float *variable);
+    void Uniform1(unsigned int location, int value);
+    void Uniform3(unsigned int location, unsigned int num , float *variable);
+    void UniformMatrix4(unsigned int location, unsigned int num , float *variable);
+    void UniformMatrix3(unsigned int location, unsigned int num , float *variable);
 
 
-	//Drawing
-	void Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 );
-	void DrawBuffer(UVertexBuffer *vb);
-	void DrawBuffer(UIndexBuffer* ib);
+    //Drawing
+    void Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 );
+    void DrawBuffer(UVertexBuffer *vb);
+    void DrawBuffer(UIndexBuffer* ib);
 
-	//GUI
-	void InitGui()
-	{
-		mIL = new MyGUI::UEngineImageLoader_Devil();
-		mPlatform = new MyGUI::UEnginePlatform();
+    //GUI
+    void InitGui()
+    {
+        mIL = new MyGUI::UEngineImageLoader_Devil();
+        mPlatform = new MyGUI::UEnginePlatform();
 
-		OPENGL_CHECK_FOR_ERRORS();
-		mPlatform->initialise(mIL);
-		OPENGL_CHECK_FOR_ERRORS();
+        OPENGL_CHECK_FOR_ERRORS();
+        mPlatform->initialise(mIL);
+        OPENGL_CHECK_FOR_ERRORS();
 
-		mGUI = new MyGUI::Gui();
-		OPENGL_CHECK_FOR_ERRORS();
-		mGUI->initialise();
-		OPENGL_CHECK_FOR_ERRORS();
+        mGUI = new MyGUI::Gui();
+        OPENGL_CHECK_FOR_ERRORS();
+        mGUI->initialise();
+        OPENGL_CHECK_FOR_ERRORS();
 
-		//MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
-		//button->setCaption("Hello World!");
-	}
+        //MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
+        //button->setCaption("Hello World!");
+    }
 
-	void DrawMyGuiFrame(){ /*mPlatform->getRenderManagerPtr()->drawOneFrame();*/}
+    void DrawMyGuiFrame(){ /*mPlatform->getRenderManagerPtr()->drawOneFrame();*/}
 
 };
 

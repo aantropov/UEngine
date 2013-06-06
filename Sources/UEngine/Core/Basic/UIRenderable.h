@@ -9,13 +9,13 @@ class UIRenderable
 
 protected:
 public:
-	
-	UMatrix m;
+    
+    UMatrix m;
 
-	virtual void Render(URENDER_TYPE type) = 0;
-	virtual void Render(UMaterial* m) = 0;
+    virtual void Render(URENDER_TYPE type) = 0;
+    virtual void Render(UMaterial* m) = 0;
 
-	UIRenderable(void);
-	virtual ~UIRenderable(void);
+    UIRenderable(void);
+    virtual ~UIRenderable(void);
 };
 

@@ -1,7 +1,7 @@
 /*!
-	@file
-	@author		George Evmenov
-	@date		07/2009
+    @file
+    @author        George Evmenov
+    @date        07/2009
 */
 
 #ifndef __MYGUI_UEngine_VERTEX_BUFFER_H__
@@ -14,33 +14,33 @@
 namespace MyGUI
 {
 
-	class UEngineVertexBuffer : public IVertexBuffer
-	{
-	public:
-		UEngineVertexBuffer();
-		virtual ~UEngineVertexBuffer();
+    class UEngineVertexBuffer : public IVertexBuffer
+    {
+    public:
+        UEngineVertexBuffer();
+        virtual ~UEngineVertexBuffer();
 
-		virtual void setVertexCount(size_t _count);
-		virtual size_t getVertexCount();
+        virtual void setVertexCount(size_t _count);
+        virtual size_t getVertexCount();
 
-		virtual Vertex* lock();
-		virtual void unlock();
+        virtual Vertex* lock();
+        virtual void unlock();
 
-	/*internal:*/
-		void destroy();
-		void create();
+    /*internal:*/
+        void destroy();
+        void create();
 
-		unsigned int getBufferID() const
-		{
-			return mBufferID;
-		}
+        unsigned int getBufferID() const
+        {
+            return mBufferID;
+        }
 
-	private:
-		unsigned int mBufferID;
-		size_t mVertexCount;
-		size_t mNeedVertexCount;
-		size_t mSizeInBytes;
-	};
+    private:
+        unsigned int mBufferID;
+        size_t mVertexCount;
+        size_t mNeedVertexCount;
+        size_t mSizeInBytes;
+    };
 
 } // namespace MyGUI
 

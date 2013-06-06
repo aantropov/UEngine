@@ -7,41 +7,41 @@ class UScene;
 
 class ULighting{
 public:
-	UTexture* resScene;
-	UTexture* depthScene;
-	UTexture* normalScene;
+    UTexture* resScene;
+    UTexture* depthScene;
+    UTexture* normalScene;
 
-	UFrameBufferObject fb;
-	UFrameBufferObject postfb;
-	
-	virtual UTexture *Render(UScene *scene) = 0;
+    UFrameBufferObject fb;
+    UFrameBufferObject postfb;
+    
+    virtual UTexture *Render(UScene *scene) = 0;
 };
 
 
 class UForwardLighting : public ULighting
 {
 public:
-	virtual UTexture *Render(UScene *scene);
-	UForwardLighting();
+    virtual UTexture *Render(UScene *scene);
+    UForwardLighting();
 };
 
 
 class UDefferedLighting : public ULighting
 {
 public:
-	
-	UTexture* colorScene;
-	UTexture* diffuseScene;
-	UTexture* ambientScene;
-	UTexture* specularScene;
-	UTexture* positionScene;
+    
+    UTexture* colorScene;
+    UTexture* diffuseScene;
+    UTexture* ambientScene;
+    UTexture* specularScene;
+    UTexture* positionScene;
 
-	UTexture* resSceneA;
-	UTexture* resSceneB;
+    UTexture* resSceneA;
+    UTexture* resSceneB;
 
-	UPostEffect *lighting;
-	UShaderProgram *objectShaderProgram;
+    UPostEffect *lighting;
+    UShaderProgram *objectShaderProgram;
 
-	virtual UTexture *Render(UScene *scene);
-	UDefferedLighting();
+    virtual UTexture *Render(UScene *scene);
+    UDefferedLighting();
 };

@@ -6,49 +6,49 @@
 #include <map>
 
 class UMaterial :
-	public UNode, public UResource
+    public UNode, public UResource
 {
-	vec4  ambient;
-	vec4  diffuse;
-	vec4  specular;
-	vec4  emission;
-	float shininess;
+    vec4  ambient;
+    vec4  diffuse;
+    vec4  specular;
+    vec4  emission;
+    float shininess;
 
-	UShaderProgram *spForward;
-	UShaderProgram *spDepth;
-	UShaderProgram *spNormal;
-	UShaderProgram *spDeffered;
+    UShaderProgram *spForward;
+    UShaderProgram *spDepth;
+    UShaderProgram *spNormal;
+    UShaderProgram *spDeffered;
 
-	std::vector<std::pair<UTexture*, unsigned int>> textures;
+    std::vector<std::pair<UTexture*, unsigned int>> textures;
 
-	mat4* skinningTransforms;
-	unsigned int skinningTransformsNum;
+    mat4* skinningTransforms;
+    unsigned int skinningTransformsNum;
 
-	std::string name;
+    std::string name;
 
 public:
-	
-	std::map<std::string, float> params;
+    
+    std::map<std::string, float> params;
 
-	UMaterial();
-	UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
-	UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin);
-	
-	void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
+    UMaterial();
+    UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
+    UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin);
+    
+    void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
 
-	UShaderProgram* GetShaderProgram(URENDER_TYPE type);
-	void SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type);
+    UShaderProgram* GetShaderProgram(URENDER_TYPE type);
+    void SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type);
 
-	void AddTexture(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
-	void ClearTextures() { textures.clear(); }
+    void AddTexture(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
+    void ClearTextures() { textures.clear(); }
 
-	//Setup material parameters in Shader
-	virtual void Render(URENDER_TYPE type);
-	void Render(UShaderProgram* sp);
-	~UMaterial(void) {}
+    //Setup material parameters in Shader
+    virtual void Render(URENDER_TYPE type);
+    void Render(UShaderProgram* sp);
+    ~UMaterial(void) {}
 
 
-	virtual bool Load(std::string path);
-	virtual void Free() {}
+    virtual bool Load(std::string path);
+    virtual void Free() {}
 };
 

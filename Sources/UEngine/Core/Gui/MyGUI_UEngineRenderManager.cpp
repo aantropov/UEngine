@@ -1,7 +1,7 @@
 /*!
-	@file
-	@author		George Evmenov
-	@date		07/2009
+    @file
+    @author        George Evmenov
+    @date        07/2009
 */
 
 #include "MyGUI_UEngineRenderManager.h"
@@ -18,239 +18,239 @@
 namespace MyGUI
 {
 
-	UEngineRenderManager::UEngineRenderManager() :
-		mUpdate(false),
-		mImageLoader(nullptr),
-		mPboIsSupported(false),
-		mIsInitialise(false)
-	{
-	}
+    UEngineRenderManager::UEngineRenderManager() :
+        mUpdate(false),
+        mImageLoader(nullptr),
+        mPboIsSupported(false),
+        mIsInitialise(false)
+    {
+    }
 
-	void UEngineRenderManager::initialise(UEngineImageLoader* _loader)
-	{
-		MYGUI_PLATFORM_ASSERT(!mIsInitialise, getClassTypeName() << " initialised twice");
-		MYGUI_PLATFORM_LOG(Info, "* Initialise: " << getClassTypeName());
+    void UEngineRenderManager::initialise(UEngineImageLoader* _loader)
+    {
+        MYGUI_PLATFORM_ASSERT(!mIsInitialise, getClassTypeName() << " initialised twice");
+        MYGUI_PLATFORM_LOG(Info, "* Initialise: " << getClassTypeName());
 
-		mVertexFormat = VertexColourType::ColourABGR;
+        mVertexFormat = VertexColourType::ColourABGR;
 
-		mUpdate = false;
-		mImageLoader = _loader;
+        mUpdate = false;
+        mImageLoader = _loader;
 
-		//glewInit();
+        //glewInit();
 
-		mPboIsSupported = true;//gl IsExtensionSupported("GL_EXT_pixel_buffer_object") != 0;
+        mPboIsSupported = true;//gl IsExtensionSupported("GL_EXT_pixel_buffer_object") != 0;
 
-		MYGUI_PLATFORM_LOG(Info, getClassTypeName() << " successfully initialized");
-		mIsInitialise = true;
-	}
+        MYGUI_PLATFORM_LOG(Info, getClassTypeName() << " successfully initialized");
+        mIsInitialise = true;
+    }
 
-	void UEngineRenderManager::shutdown()
-	{
-		MYGUI_PLATFORM_ASSERT(mIsInitialise, getClassTypeName() << " is not initialised");
-		MYGUI_PLATFORM_LOG(Info, "* Shutdown: " << getClassTypeName());
+    void UEngineRenderManager::shutdown()
+    {
+        MYGUI_PLATFORM_ASSERT(mIsInitialise, getClassTypeName() << " is not initialised");
+        MYGUI_PLATFORM_LOG(Info, "* Shutdown: " << getClassTypeName());
 
-		destroyAllResources();
+        destroyAllResources();
 
-		MYGUI_PLATFORM_LOG(Info, getClassTypeName() << " successfully shutdown");
-		mIsInitialise = false;
-	}
+        MYGUI_PLATFORM_LOG(Info, getClassTypeName() << " successfully shutdown");
+        mIsInitialise = false;
+    }
 
-	IVertexBuffer* UEngineRenderManager::createVertexBuffer()
-	{
-		return new UEngineVertexBuffer();
-	}
+    IVertexBuffer* UEngineRenderManager::createVertexBuffer()
+    {
+        return new UEngineVertexBuffer();
+    }
 
-	void UEngineRenderManager::destroyVertexBuffer(IVertexBuffer* _buffer)
-	{
-		delete _buffer;
-	}
+    void UEngineRenderManager::destroyVertexBuffer(IVertexBuffer* _buffer)
+    {
+        delete _buffer;
+    }
 
-	void UEngineRenderManager::doRender(IVertexBuffer* _buffer, ITexture* _texture, size_t _count)
-	{
-		UEngineVertexBuffer* buffer = static_cast<UEngineVertexBuffer*>(_buffer);
-		unsigned int buffer_id = buffer->getBufferID();
-		MYGUI_PLATFORM_ASSERT(buffer_id, "Vertex buffer is not created");
+    void UEngineRenderManager::doRender(IVertexBuffer* _buffer, ITexture* _texture, size_t _count)
+    {
+        UEngineVertexBuffer* buffer = static_cast<UEngineVertexBuffer*>(_buffer);
+        unsigned int buffer_id = buffer->getBufferID();
+        MYGUI_PLATFORM_ASSERT(buffer_id, "Vertex buffer is not created");
 
-		unsigned int texture_id = 0;
-		if (_texture)
-		{
-			UEngineTexture* texture = static_cast<UEngineTexture*>(_texture);
-			texture_id = texture->getTextureID();
-			//MYGUI_PLATFORM_ASSERT(texture_id, "Texture is not created");
-		}
+        unsigned int texture_id = 0;
+        if (_texture)
+        {
+            UEngineTexture* texture = static_cast<UEngineTexture*>(_texture);
+            texture_id = texture->getTextureID();
+            //MYGUI_PLATFORM_ASSERT(texture_id, "Texture is not created");
+        }
 
-		glBindTexture(GL_TEXTURE_2D, texture_id);
+        glBindTexture(GL_TEXTURE_2D, texture_id);
 
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, buffer_id);
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, buffer_id);
 
-		// enable vertex arrays
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        // enable vertex arrays
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-		// before draw, specify vertex and index arrays with their offsets
-		size_t offset = 0;
-		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (void*)offset);
-		offset += (sizeof(float) * 3);
-		glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(Vertex), (void*)offset);
-		offset += (4);
-		glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offset);
+        // before draw, specify vertex and index arrays with their offsets
+        size_t offset = 0;
+        glVertexPointer(3, GL_FLOAT, sizeof(Vertex), (void*)offset);
+        offset += (sizeof(float) * 3);
+        glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(Vertex), (void*)offset);
+        offset += (4);
+        glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void*)offset);
 
-		glDrawArrays(GL_TRIANGLES, 0, _count);
+        glDrawArrays(GL_TRIANGLES, 0, _count);
 
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
 
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 
-	void UEngineRenderManager::begin()
-	{
-		//save current attributes
-		glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
+    void UEngineRenderManager::begin()
+    {
+        //save current attributes
+        glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-		glPolygonMode(GL_FRONT, GL_FILL);
-		glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
-		glLoadIdentity();
-		glOrtho(-1, 1, -1, 1, -1, 1);
+        glPolygonMode(GL_FRONT, GL_FILL);
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(-1, 1, -1, 1, -1, 1);
 
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
 
-		glDisable(GL_LIGHTING);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_FOG);
-		glDisable(GL_TEXTURE_GEN_S);
-		glDisable(GL_TEXTURE_GEN_T);
-		glDisable(GL_TEXTURE_GEN_R);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_FOG);
+        glDisable(GL_TEXTURE_GEN_S);
+        glDisable(GL_TEXTURE_GEN_T);
+        glDisable(GL_TEXTURE_GEN_R);
 
-		//glFrontFace(GL_CW);
-		//glCullFace(GL_BACK);
-		//glEnable(GL_CULL_FACE);
+        //glFrontFace(GL_CW);
+        //glCullFace(GL_BACK);
+        //glEnable(GL_CULL_FACE);
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glEnable(GL_TEXTURE_2D);
-	}
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glEnable(GL_TEXTURE_2D);
+    }
 
-	void UEngineRenderManager::end()
-	{
-		glPopMatrix();
-		glMatrixMode(GL_PROJECTION);
-		glPopMatrix();
-		glMatrixMode(GL_MODELVIEW);
+    void UEngineRenderManager::end()
+    {
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
 
-		//restore former attributes
-		glPopAttrib();
-		glPopClientAttrib();
-	}
+        //restore former attributes
+        glPopAttrib();
+        glPopClientAttrib();
+    }
 
-	const RenderTargetInfo& UEngineRenderManager::getInfo()
-	{
-		return mInfo;
-	}
+    const RenderTargetInfo& UEngineRenderManager::getInfo()
+    {
+        return mInfo;
+    }
 
-	const IntSize& UEngineRenderManager::getViewSize() const
-	{
-		return mViewSize;
-	}
+    const IntSize& UEngineRenderManager::getViewSize() const
+    {
+        return mViewSize;
+    }
 
-	VertexColourType UEngineRenderManager::getVertexFormat()
-	{
-		return mVertexFormat;
-	}
+    VertexColourType UEngineRenderManager::getVertexFormat()
+    {
+        return mVertexFormat;
+    }
 
-	void UEngineRenderManager::drawOneFrame()
-	{
-		Gui* gui = Gui::getInstancePtr();
-		if (gui == nullptr)
-			return;
+    void UEngineRenderManager::drawOneFrame()
+    {
+        Gui* gui = Gui::getInstancePtr();
+        if (gui == nullptr)
+            return;
 
-		static Timer timer;
-		static unsigned long last_time = timer.getMilliseconds();
-		unsigned long now_time = timer.getMilliseconds();
-		unsigned long time = now_time - last_time;
+        static Timer timer;
+        static unsigned long last_time = timer.getMilliseconds();
+        unsigned long now_time = timer.getMilliseconds();
+        unsigned long time = now_time - last_time;
 
-		onFrameEvent((float)((double)(time) / (double)1000));
+        onFrameEvent((float)((double)(time) / (double)1000));
 
-		last_time = now_time;
+        last_time = now_time;
 
-		begin();
-		onRenderToTarget(this, mUpdate);
-		end();
+        begin();
+        onRenderToTarget(this, mUpdate);
+        end();
 
-		mUpdate = false;
-	}
+        mUpdate = false;
+    }
 
-	void UEngineRenderManager::setViewSize(int _width, int _height)
-	{
-		if (_height == 0)
-			_height = 1;
-		if (_width == 0)
-			_width = 1;
+    void UEngineRenderManager::setViewSize(int _width, int _height)
+    {
+        if (_height == 0)
+            _height = 1;
+        if (_width == 0)
+            _width = 1;
 
-		mViewSize.set(_width, _height);
+        mViewSize.set(_width, _height);
 
-		mInfo.maximumDepth = 1;
-		mInfo.hOffset = 0;
-		mInfo.vOffset = 0;
-		mInfo.aspectCoef = float(mViewSize.height) / float(mViewSize.width);
-		mInfo.pixScaleX = 1.0f / float(mViewSize.width);
-		mInfo.pixScaleY = 1.0f / float(mViewSize.height);
+        mInfo.maximumDepth = 1;
+        mInfo.hOffset = 0;
+        mInfo.vOffset = 0;
+        mInfo.aspectCoef = float(mViewSize.height) / float(mViewSize.width);
+        mInfo.pixScaleX = 1.0f / float(mViewSize.width);
+        mInfo.pixScaleY = 1.0f / float(mViewSize.height);
 
-		onResizeView(mViewSize);
-		mUpdate = true;
-	}
+        onResizeView(mViewSize);
+        mUpdate = true;
+    }
 
-	bool UEngineRenderManager::isPixelBufferObjectSupported() const
-	{
-		return mPboIsSupported;
-	}
+    bool UEngineRenderManager::isPixelBufferObjectSupported() const
+    {
+        return mPboIsSupported;
+    }
 
-	ITexture* UEngineRenderManager::createTexture(const std::string& _name)
-	{
-		MapTexture::const_iterator item = mTextures.find(_name);
-		MYGUI_PLATFORM_ASSERT(item == mTextures.end(), "Texture '" << _name << "' already exist");
+    ITexture* UEngineRenderManager::createTexture(const std::string& _name)
+    {
+        MapTexture::const_iterator item = mTextures.find(_name);
+        MYGUI_PLATFORM_ASSERT(item == mTextures.end(), "Texture '" << _name << "' already exist");
 
-		UEngineTexture* texture = new UEngineTexture(_name, mImageLoader);
-		mTextures[_name] = texture;
-		return texture;
-	}
+        UEngineTexture* texture = new UEngineTexture(_name, mImageLoader);
+        mTextures[_name] = texture;
+        return texture;
+    }
 
-	void UEngineRenderManager::destroyTexture(ITexture* _texture)
-	{
-		if (_texture == nullptr)
-			return;
+    void UEngineRenderManager::destroyTexture(ITexture* _texture)
+    {
+        if (_texture == nullptr)
+            return;
 
-		MapTexture::iterator item = mTextures.find(_texture->getName());
-		MYGUI_PLATFORM_ASSERT(item != mTextures.end(), "Texture '" << _texture->getName() << "' not found");
+        MapTexture::iterator item = mTextures.find(_texture->getName());
+        MYGUI_PLATFORM_ASSERT(item != mTextures.end(), "Texture '" << _texture->getName() << "' not found");
 
-		mTextures.erase(item);
-		delete _texture;
-	}
+        mTextures.erase(item);
+        delete _texture;
+    }
 
-	ITexture* UEngineRenderManager::getTexture(const std::string& _name)
-	{
-		MapTexture::const_iterator item = mTextures.find(_name);
-		if (item == mTextures.end())
-			return nullptr;
-		return item->second;
-	}
+    ITexture* UEngineRenderManager::getTexture(const std::string& _name)
+    {
+        MapTexture::const_iterator item = mTextures.find(_name);
+        if (item == mTextures.end())
+            return nullptr;
+        return item->second;
+    }
 
-	void UEngineRenderManager::destroyAllResources()
-	{
-		for (MapTexture::const_iterator item = mTextures.begin(); item != mTextures.end(); ++item)
-		{
-			delete item->second;
-		}
-		mTextures.clear();
-	}
+    void UEngineRenderManager::destroyAllResources()
+    {
+        for (MapTexture::const_iterator item = mTextures.begin(); item != mTextures.end(); ++item)
+        {
+            delete item->second;
+        }
+        mTextures.clear();
+    }
 
 } // namespace MyGUI

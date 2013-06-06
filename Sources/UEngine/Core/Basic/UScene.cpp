@@ -4,79 +4,79 @@
 
 //Process input keys
 void UScene::KeysProccessing(){
-		// Camera moving
-		
-		int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
-	
-		moveDelta[0] = 0.5 * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
-		moveDelta[1] = 0.5 * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
-				
-		UInput::GetCursorPos(cursorPos, cursorPos + 1);
-		rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
-		rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
+        // Camera moving
+        
+        int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
+    
+        moveDelta[0] = 0.5 * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
+        moveDelta[1] = 0.5 * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
+                
+        UInput::GetCursorPos(cursorPos, cursorPos + 1);
+        rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
+        rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
 
-		UInput::SetCursorPos(xCenter, yCenter);
-	
+        UInput::SetCursorPos(xCenter, yCenter);
+    
 }
 void UScene::UpdateLightParams()
 {
-	int cur = 0;	
-	for(unsigned int i = 0; i < lights.size(); i++){
-	
-		if( lights[i] != NULL/* && lights[i]->castShadows*/)
-		{
-			lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.position));
-			lightParams.ambient[cur] = lights[cur]->GetAmbient();
-			lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
-			lightParams.specular[cur] = lights[cur]->GetSpecular();
-			lightParams.attenuation[cur] = vec3(lights[cur]->GetAttenuation());
+    int cur = 0;    
+    for(unsigned int i = 0; i < lights.size(); i++){
+    
+        if( lights[i] != NULL/* && lights[i]->castShadows*/)
+        {
+            lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.position));
+            lightParams.ambient[cur] = lights[cur]->GetAmbient();
+            lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
+            lightParams.specular[cur] = lights[cur]->GetSpecular();
+            lightParams.attenuation[cur] = vec3(lights[cur]->GetAttenuation());
 
-			lightParams.spotDirection[cur] = vec3(lights[cur]->GetSpotDirection());
-			lightParams.spotExponent[cur] = lights[cur]->GetSpotExponent();
-			lightParams.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
+            lightParams.spotDirection[cur] = vec3(lights[cur]->GetSpotDirection());
+            lightParams.spotExponent[cur] = lights[cur]->GetSpotExponent();
+            lightParams.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
 
-			lightParams.transforms[cur] =  lights[cur]->GetLightTransform();
-			lightParams.lightIndex[cur] = i;
+            lightParams.transforms[cur] =  lights[cur]->GetLightTransform();
+            lightParams.lightIndex[cur] = i;
 
-			cur++;
-		}
-		if(cur > MAX_LIGHTS)
-			break;
-	}
-	lightParams.count = cur;
+            cur++;
+        }
+        if(cur > MAX_LIGHTS)
+            break;
+    }
+    lightParams.count = cur;
 }
 
 //Update with deltaTime
 void UScene::Update(double deltaTime){
-		
-	UInput::ShowCursor(false);
-	
-	//Camera movement
-	URenderer::GetInstance()->camera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
-	URenderer::GetInstance()->camera.Move((float)moveDelta[0], 0.0f, (float)moveDelta[1]);
+        
+    UInput::ShowCursor(false);
+    
+    //Camera movement
+    URenderer::GetInstance()->camera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
+    URenderer::GetInstance()->camera.Move((float)moveDelta[0], 0.0f, (float)moveDelta[1]);
 
-	rotateDelta[0] = rotateDelta[1] = 0;
-	moveDelta[0] = moveDelta[1] = 0;
+    rotateDelta[0] = rotateDelta[1] = 0;
+    moveDelta[0] = moveDelta[1] = 0;
 
-	//Nodes Update only one time per Global Update!
-	if(root != NULL)
-		root->Update(deltaTime);	
-	
-	UpdateLightParams();
+    //Nodes Update only one time per Global Update!
+    if(root != NULL)
+        root->Update(deltaTime);    
+    
+    UpdateLightParams();
 }
 //RenderScene
 void UScene::Render(URENDER_TYPE type){
-		if(root != NULL)
-			root->Render(type);
-		URenderer::GetInstance()->modelView= mat4_identity;
+        if(root != NULL)
+            root->Render(type);
+        URenderer::GetInstance()->modelView= mat4_identity;
 }
 void UScene::Render(UMaterial *m){
-		if(root != NULL)
-			root->Render(m);
-		URenderer::GetInstance()->modelView= mat4_identity;
+        if(root != NULL)
+            root->Render(m);
+        URenderer::GetInstance()->modelView= mat4_identity;
 }
 
 UScene::~UScene(void)
 {
-	Free();
+    Free();
 }

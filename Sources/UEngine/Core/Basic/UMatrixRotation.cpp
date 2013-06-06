@@ -3,10 +3,10 @@
 
 UMatrixRotation::UMatrixRotation(vec3 a)
 {
-	::UMatrix();
+    ::UMatrix();
 
-	haste.set(a);
-	currentAngles = vec3_zero;
+    haste.set(a);
+    currentAngles = vec3_zero;
 }
 
 

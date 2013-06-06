@@ -3,5 +3,5 @@
 
 UGLObject::UGLObject(void)
 {
-	_id = -1;
+    _id = -1;
 }
