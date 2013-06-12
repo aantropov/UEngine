@@ -61,6 +61,7 @@ inline quat lerp(quat a, quat b, float t)
     else
         return a + (b - a) * t;
 }
+
 inline vec3 lerp(vec3 a, vec3 b, float t)
 {
     return vec3(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t));

@@ -1,0 +1,7 @@
+<xml>
+  <animation>
+    <name>Test</name>
+    <frame_rate>100</frame_rate>
+    <uma>data\\Animations\\test_model_idle1.uma</uma>
+  </animation>
+</xml>

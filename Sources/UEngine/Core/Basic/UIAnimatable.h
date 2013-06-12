@@ -54,7 +54,7 @@ private:
         }
 
         updated.push_back(bone);
-        matrixes[bone] = bones[bone].tf.matrix() * matrixes[bones[bone].parent]/**/;
+        matrixes[bone] = bones[bone].tf.matrix() /* matrixes[bones[bone].parent]/**/;
     }
 
 public:

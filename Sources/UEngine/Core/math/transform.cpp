@@ -35,7 +35,7 @@ const mat4 transform:: matrix() const
     
 const vec3 transform:: transformVec3(const vec3& vertex_pos) const
 {
-    return rotate(rotation, vertex_pos) + position;
+    return GLScale(scale) * (rotate(rotation, vertex_pos) + position);
 }
 
 const vec3 transform:: invert(const vec3& vertex_pos) const
