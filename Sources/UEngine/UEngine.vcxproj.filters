@@ -177,24 +177,6 @@
     <ClCompile Include="Core\Renderer\URendererHelper.cpp">
       <Filter>Core\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEngineDataManager.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEnginePlatform.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEngineRenderManager.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEngineRTTexture.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEngineTexture.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Gui\MyGUI_UEngineVertexBuffer.cpp">
-      <Filter>Core\Gui</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\UEngine.h">
@@ -367,30 +349,6 @@
     </ClInclude>
     <ClInclude Include="Core\Renderer\URendererHelper.h">
       <Filter>Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineDataManager.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineDiagnostic.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineImageLoader.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEnginePlatform.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineRenderManager.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineRTTexture.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineTexture.h">
-      <Filter>Core\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Gui\MyGUI_UEngineVertexBuffer.h">
-      <Filter>Core\Gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

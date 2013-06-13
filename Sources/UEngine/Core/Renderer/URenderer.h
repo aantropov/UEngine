@@ -13,8 +13,6 @@
 #include <hash_map>
 #include <map>
 
-#include "..\Gui\MyGUI_UEnginePlatform.h"
-
 class UVertexBuffer;
 class UIndexBuffer;
 class UShader;
@@ -52,10 +50,6 @@ class URenderer: public USingleton<URenderer>{
 
     int CacheUniformLocation(string name);
     int CacheUniformLocation(string name, UShaderProgram *sh);
-
-    MyGUI::Gui* mGUI;
-    MyGUI::UEngineImageLoader_Devil* mIL;
-    MyGUI::UEnginePlatform* mPlatform;
            
 public:
     
@@ -164,21 +158,7 @@ public:
     //GUI
     void InitGui()
     {
-        mIL = new MyGUI::UEngineImageLoader_Devil();
-        mPlatform = new MyGUI::UEnginePlatform();
-
-        OPENGL_CHECK_FOR_ERRORS();
-        mPlatform->initialise(mIL);
-        OPENGL_CHECK_FOR_ERRORS();
-
-        mGUI = new MyGUI::Gui();
-        OPENGL_CHECK_FOR_ERRORS();
-        mGUI->initialise();
-        OPENGL_CHECK_FOR_ERRORS();
-
-        //MyGUI::ButtonPtr button = mGUI->createWidget<MyGUI::Button>("Button", 10, 10, 300, 26, MyGUI::Align::Default, "Main");
-        //button->setCaption("Hello World!");
-    }
+	}
 
     void DrawMyGuiFrame(){ /*mPlatform->getRenderManagerPtr()->drawOneFrame();*/}
 

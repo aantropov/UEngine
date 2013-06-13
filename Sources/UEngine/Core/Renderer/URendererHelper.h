@@ -33,23 +33,6 @@
 #include <cctype>
 #include <cstdlib>
 
-#include <mygui 3.2.0\MyGUI.h>
-#include <mygui 3.2.0\MyGUI_OpenGLPlatform.h>
-#include <mygui 3.2.0\MyGUI_DataManager.h>
-#include <mygui 3.2.0\MyGUI_OpenGLImageLoader.h>
-
-#ifdef UE_DEBUG
-    #pragma comment(lib, "Common_d.lib")
-    #pragma comment(lib, "MyGUIEngine_d.lib")
-    #pragma comment(lib, "MyGUI.OpenGLPlatform_d.lib")
-#endif  //UE_DEBUG
-
-#ifdef UE_RELEASE
-    #pragma comment(lib, "Common.lib")
-    #pragma comment(lib, "MyGUIEngine.lib")
-    #pragma comment(lib, "MyGUI.OpenGLPlatform.lib")
-#endif  //UE_RELEASE
-
 // Global variable for error reporting
 extern GLenum g_OpenGLError;
 extern ILenum g_DevILError;

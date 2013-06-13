@@ -20,12 +20,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -48,7 +50,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\Include;$(IncludePath)</IncludePath>
     <LibraryPath>..\Lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <OutDir>..\UEngineStarter\</OutDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,12 +108,6 @@
     <ClCompile Include="Core\Basic\UScene.cpp" />
     <ClCompile Include="Core\GameMechanics\UComponent.cpp" />
     <ClCompile Include="Core\GameMechanics\UGameObject.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEngineDataManager.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEnginePlatform.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEngineRenderManager.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEngineRTTexture.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEngineTexture.cpp" />
-    <ClCompile Include="Core\Gui\MyGUI_UEngineVertexBuffer.cpp" />
     <ClCompile Include="Core\Lua\LuaTemplates.cpp" />
     <ClCompile Include="Core\Lua\UScript.cpp" />
     <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
@@ -159,14 +155,6 @@
     <ClInclude Include="Core\GameMechanics\UComponent.h" />
     <ClInclude Include="Core\GameMechanics\UGameMechanics.h" />
     <ClInclude Include="Core\GameMechanics\UGameObject.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineDataManager.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineDiagnostic.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineImageLoader.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEnginePlatform.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineRenderManager.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineRTTexture.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineTexture.h" />
-    <ClInclude Include="Core\Gui\MyGUI_UEngineVertexBuffer.h" />
     <ClInclude Include="Core\Lua\LuaTemplates.hpp" />
     <ClInclude Include="Core\Lua\UScript.h" />
     <ClInclude Include="Core\Lua\UScriptEngine.h" />
