@@ -1,33 +1,33 @@
 <xml>
   <material>
     <name>Diffuse</name>
-    <tex_num>2</tex_num>
+    <tex_num>3</tex_num>
     <textures>
       <tex_0>
         <name>material.texture</name>
         <channel>0</channel>
-        <path>data\\Textures\\dirt.jpg</path>
+        <path>data\\Textures\\c1.jpg</path>
       </tex_0>
       <tex_1>
         <name>material.normal</name>
         <channel>1</channel>
-        <path>data\\Textures\\normal.jpg</path>
+        <path>data\\Textures\\n1.jpg</path>
       </tex_1>
       <tex_2>
-        <name>material.specular_tex</name>
+        <name>material.height</name>
         <channel>2</channel>
-        <path>data\\Textures\\rock_normalmap.dds</path>
+        <path>data\\Textures\\h2.jpg</path>
       </tex_2>
     </textures>
     <shaders>
-      <pixel_path>data\\Shaders\\bump_light.ps</pixel_path>
+      <pixel_path>data\\Shaders\\parallax_specular_bump_light.ps</pixel_path>
       <vertex_path>data\\Shaders\\light.vs</vertex_path>
       <depth_vertex_path>data\\Shaders\\empty.vs</depth_vertex_path>
       <depth_pixel_path>data\\Shaders\\empty.ps</depth_pixel_path>
       <normal_vertex_path>data\\Shaders\\empty.vs</normal_vertex_path>
       <normal_pixel_path>data\\Shaders\\normal.ps</normal_pixel_path>
       <deffered_vertex_path>data\\Shaders\\light.vs</deffered_vertex_path> 
-      <deffered_pixel_path>data\\Shaders\\bump_deffered_light.ps</deffered_pixel_path>
+      <deffered_pixel_path>data\\Shaders\\parallax_specular_deffered_light.ps</deffered_pixel_path>
     </shaders>    
     <emission>
       <r>0.01f</r>
@@ -54,6 +54,6 @@
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>
-    <shininnes>0.1f</shininnes>
+    <shininnes>1.2f</shininnes>
   </material>
 </xml>

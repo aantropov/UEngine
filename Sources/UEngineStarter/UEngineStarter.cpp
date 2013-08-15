@@ -28,9 +28,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     script->Load("data\\Scripts\\test_script.xml");
 
     light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.5f, 0.000000001f, 0.00000001f));
-    light8->SetSpotCosCutoff(100.1f);
-    light8->SetSpotExponent(20.0f);
+    light8->SetAttenuation(vec3(0.9f, 0.01f, 0.0f));
+    light8->SetSpotCosCutoff(120.1f);
+    light8->SetSpotExponent(10.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
     
     script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
@@ -69,10 +69,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     node->AddChild(new UScene::USceneNode(gameObject));
 
     auto go = new UScene::USceneNode(light1);    
-    go->AddChild(new UScene::USceneNode(light2));
+    /*go->AddChild(new UScene::USceneNode(light2));
     node->AddChild(go);
     node->AddChild(new UScene::USceneNode(light3));
-    node->AddChild(new UScene::USceneNode(light4));
+    node->AddChild(new UScene::USceneNode(light4));*/
     node->AddChild(new UScene::USceneNode(light5));
     node->AddChild(new UScene::USceneNode(light6));
     node->AddChild(new UScene::USceneNode(light7));
@@ -80,10 +80,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     
     node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
-    /*scene.AddLight(light1);*/
+    /*scene.AddLight(light1);
     scene.AddLight(light2);
     scene.AddLight(light3);
-    scene.AddLight(light4);
+    scene.AddLight(light4);*/
     scene.AddLight(light5);
     scene.AddLight(light6);
     scene.AddLight(light7);

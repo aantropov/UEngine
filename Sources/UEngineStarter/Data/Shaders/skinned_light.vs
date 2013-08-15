@@ -67,9 +67,9 @@ void main(void)
 	vec4 vertex   =  transform.model * skinnedVertex;	   
 	Vert.position = vertex;
 	
-	vec3 n = ((transform.normal) * MVIN * normal);
-	Vert.b = ((transform.normal) * MVIN * binormal);
-	Vert.t = (cross(n, Vert.b));
+	vec3 n = (inverse(transform.normal) * normal);
+	Vert.t = (inverse(transform.normal) * binormal);
+	Vert.b = (cross(n, Vert.t));
 	
 	Vert.normal = normalize(n);
 	Vert.transformNormal = MVIN * transform.normal;

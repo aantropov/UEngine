@@ -53,8 +53,8 @@ void main(void)
 	Vert.position = vertex;
 	
 	vec3 n = (inverse(transform.normal) * normal);
-	Vert.b = (inverse(transform.normal) * binormal);
-	Vert.t = (cross(n, Vert.b));
+	Vert.t = (inverse(transform.normal) * binormal);
+	Vert.b = (cross(n, Vert.t));
 
 	Vert.normal = normalize(n);
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
