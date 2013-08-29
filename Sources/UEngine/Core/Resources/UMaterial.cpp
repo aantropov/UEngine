@@ -98,21 +98,37 @@ bool UMaterial::Load(std::string path)
         if(xml.isExistElement("/xml/material/shaders/deffered_vertex_path/") && xml.isExistElement("/xml/material/shaders/deffered_pixel_path/"))
             SetShaderProgram(rf->Load(xml.GetElement("/xml/material/shaders/deffered_vertex_path/"), xml.GetElement("/xml/material/shaders/deffered_pixel_path/")), URENDER_DEFFERED);
     
-        int tex_num = atoi(xml.GetElement("/xml/material/tex_num/").c_str());
-        
-        for(int j = 0; j < tex_num; j++)
+        if(xml.isExistElement("/xml/material/tex_num/"))
         {
-            memset(tex_buffer,'\0',255);    
-            sprintf_s(tex_buffer,"%d",j);
-            std::string current_tex = "/xml/material/textures/tex_" + string(tex_buffer) + "/";
+            int tex_num = atoi(xml.GetElement("/xml/material/tex_num/").c_str());        
+            for(int j = 0; j < tex_num; j++)
+            {
+                memset(tex_buffer,'\0',255);    
+                sprintf_s(tex_buffer,"%d",j);
+                std::string current_tex = "/xml/material/textures/tex_" + string(tex_buffer) + "/";
                 
-            auto tex = pair<UTexture*, unsigned int>( 
-                        dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)), 
-                        atoi(xml.GetElement(current_tex + "channel/").c_str()));
+                auto tex = pair<UTexture*, unsigned int>( 
+                            dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)), 
+                            atoi(xml.GetElement(current_tex + "channel/").c_str()));
                 
-            tex.first->name = xml.GetElement(current_tex + "name/");
-            AddTexture(tex);
+                tex.first->name = xml.GetElement(current_tex + "name/");
+                AddTexture(tex);
+            }
         }
+        
+        if(xml.isExistElement("/xml/material/param_num/"))
+        {
+            int param_num = atoi(xml.GetElement("/xml/material/param_num/").c_str());        
+            for(int j = 0; j < param_num; j++)
+            {
+                memset(tex_buffer,'\0',255);    
+                sprintf_s(tex_buffer,"%d",j);
+                std::string current_param = "/xml/material/params/param_" + string(tex_buffer) + "/";
+                
+                params[xml.GetElement(current_param + "name/")] = atof(xml.GetElement(current_param + "value/").c_str());                
+            }
+        }
+
 
     }catch(exception e){
         ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
@@ -161,7 +177,7 @@ void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type){
 }
 
 void UMaterial::Render(URENDER_TYPE type){
-    
+        
     UShaderProgram *sp = GetShaderProgram(type);
     
     if(sp == nullptr)
@@ -219,7 +235,9 @@ void UMaterial::Render(URENDER_TYPE type){
         }
     }
 
-     OPENGL_CHECK_FOR_ERRORS();
+    OPENGL_CHECK_FOR_ERRORS();
+    params["time"] = (float)GetTickCount();
+
     if(params.size() > 0){
         map<string, float>::iterator i = params.begin();
         do{
@@ -227,7 +245,7 @@ void UMaterial::Render(URENDER_TYPE type){
             OPENGL_CHECK_FOR_ERRORS();
 
             i++;
-        }while(i != params.end());
+        }while(i != params.end());        
     }
 
     OPENGL_CHECK_FOR_ERRORS();

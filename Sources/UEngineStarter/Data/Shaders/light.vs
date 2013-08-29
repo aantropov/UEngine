@@ -52,9 +52,9 @@ void main(void)
 	Vert.texcoord = texcoord;
 	Vert.position = vertex;
 	
-	vec3 n = (inverse(transform.normal) * normal);
-	Vert.t = (inverse(transform.normal) * binormal);
-	Vert.b = (cross(n, Vert.t));
+	vec3 n = transform.normal * normal;
+	Vert.t = transform.normal * binormal;
+	Vert.b = cross(n, Vert.t);
 
 	Vert.normal = normalize(n);
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
