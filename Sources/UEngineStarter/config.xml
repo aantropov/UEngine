@@ -6,7 +6,7 @@
     <vsync>1</vsync>
     <bpp>32</bpp>
     <deffered_lighting>0</deffered_lighting>
-    <depth_texture_size>512</depth_texture_size>   
+    <depth_texture_size>1024</depth_texture_size>   
     <post_effects>
       <deffered_lighting>data\\PostEffects\\post_effect_deffered_lighting.xml</deffered_lighting>
     </post_effects>    

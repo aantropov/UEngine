@@ -9,7 +9,7 @@
 	<mesh_0>
 		<name>Teapot01</name>
 		<tex_num>2</tex_num>
-		<material>data\\Materials\\specular_bump_material.xml</material>
+		<material>data\\Materials\\bump_material.xml</material>
 		<textures>
 		 <tex_0>
 			<name>material.texture</name>
