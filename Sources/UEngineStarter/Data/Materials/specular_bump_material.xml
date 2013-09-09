@@ -30,9 +30,9 @@
       <deffered_pixel_path>data\\Shaders\\specular_deffered_light.ps</deffered_pixel_path>
     </shaders>    
     <emission>
-      <r>0.01f</r>
-      <g>0.01f</g>
-      <b>0.01f</b>
+      <r>0.00f</r>
+      <g>0.00f</g>
+      <b>0.00f</b>
       <a>0.2f</a>
     </emission>
     <ambient>

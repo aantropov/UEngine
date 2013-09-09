@@ -7,10 +7,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     // Create Engine
     UEngine e;
     e.Initialize();
-       
-    UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\test_model.xml", URESOURCE_MODEL));
+    
+    UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\knight_model.xml", URESOURCE_MODEL));
     UGameObject *gameObject = new UGameObject(sm);
-    sm->animations["Test1"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
+    sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
     //sm->animations["Test2"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 
     UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", URESOURCE_MODEL));
@@ -59,14 +59,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     light7->castShadows = true;
     light8->castShadows = true;
 
-    UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\skybox_model.xml", URESOURCE_MODEL));    
-    UGameObject *gameObjectSky = new UGameObject(skybox_s);
-
+    //UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
+    
     // Main node in the scene
     UScene scene;
     UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
-
-    node->AddChild(new UScene::USceneNode(gameObjectSky));
+    
+    //node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
     node->AddChild(new UScene::USceneNode(gameObject));
 
     auto go = new UScene::USceneNode(light1);    

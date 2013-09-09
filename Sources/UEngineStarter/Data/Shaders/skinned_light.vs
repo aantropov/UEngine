@@ -67,13 +67,14 @@ void main(void)
 	vec4 vertex   =  transform.model * skinnedVertex;	   
 	Vert.position = vertex;
 	
-	vec3 n = transform.normal * normal;
-	Vert.t = transform.normal * binormal;
+	Vert.transformNormal =  transform.normal * MVIN;
+
+	vec3 n = Vert.transformNormal * normal;
+	Vert.t = Vert.transformNormal * binormal;
 	Vert.b = (cross(n, Vert.t));
 	
 	Vert.normal = normalize(n);
-	Vert.transformNormal = MVIN * transform.normal;
-
+	
 	Vert.texcoord = texcoord;
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
 	
