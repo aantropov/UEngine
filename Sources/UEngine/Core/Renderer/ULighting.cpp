@@ -32,10 +32,10 @@ UDefferedLighting:: UDefferedLighting(){
     auto render = URenderer::GetInstance();
 
     colorScene->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-    normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT32);
+    normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
     diffuseScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
-    specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
+    specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resSceneA->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resSceneB->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);

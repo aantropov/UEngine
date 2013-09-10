@@ -19,7 +19,8 @@ uniform struct Transform
 	vec3 viewPosition;
 } transform;
 
-out Vertex {
+out Vertex 
+{
 	vec4  position;
 	vec2  texcoord;
 	vec3  normal;
