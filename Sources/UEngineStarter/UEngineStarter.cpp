@@ -59,13 +59,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     light7->castShadows = true;
     light8->castShadows = true;
 
-    //UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\skybox.xml", URESOURCE_MODEL));
+    UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\skybox_model.xml", URESOURCE_MODEL));
     
     // Main node in the scene
     UScene scene;
     UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
     
-    //node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
+    node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
     node->AddChild(new UScene::USceneNode(gameObject));
 
     auto go = new UScene::USceneNode(light1);    

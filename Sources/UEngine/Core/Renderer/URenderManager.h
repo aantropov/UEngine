@@ -14,6 +14,7 @@ class URenderManager
     
     UPostEffect* postEffectRipple;
     UPostEffect* postEffectSSAO;
+    UPostEffect* postEffectDOF;
     
     UTexture* colorScene;
     UTexture* depthScene;

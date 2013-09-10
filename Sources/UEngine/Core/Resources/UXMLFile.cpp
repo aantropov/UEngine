@@ -29,30 +29,32 @@ bool UXMLFile::OpenFile(string path){
     return true;
 }
 
-void UXMLFile::CloseFile(){
+void UXMLFile::CloseFile()
+{
     if(fXml != NULL){
         fclose(fXml);
         ULogger::GetInstance()->Message("XMLFile: " + sPath + " is closed");
     }
 }
 
-string UXMLFile::GetElement(string key){
-    
+string UXMLFile::GetElement(string key)
+{
     for(unsigned int i = 0; i < elements.size(); i++)
         if(key == elements[i].name)
             return elements[i].value;
     return NULL;
 }
 
-bool UXMLFile::isExistElement(string key){
-    
+bool UXMLFile::isExistElement(string key)
+{
     for(unsigned int i = 0; i < elements.size(); i++)
         if(key == elements[i].name)
             return true;
     return false;
 }
 
-vector<std::string> UXMLFile::GetElements(std::string key){
+vector<std::string> UXMLFile::GetElements(std::string key)
+{
     vector<std::string> res;
     for(unsigned int i = 0; i < elements.size(); i++)
         if(key == elements[i].name)
@@ -60,7 +62,8 @@ vector<std::string> UXMLFile::GetElements(std::string key){
     return res;
 }
 
-bool UXMLFile::Load(string path){
+bool UXMLFile::Load(string path)
+{
     
     if(!OpenFile(path))
         return false;

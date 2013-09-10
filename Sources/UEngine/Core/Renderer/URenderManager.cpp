@@ -18,7 +18,8 @@ URenderManager::URenderManager(){
 
     postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
     postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
-    
+    postEffectDOF = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_dof.xml", URESOURCE_POST_EFFECT));
+
     posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
 
     posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
@@ -26,6 +27,9 @@ URenderManager::URenderManager(){
 
     postEffectRipple->AddTexture(lighting->resScene, 0);
     postEffectRipple->AddTexture(lighting->depthScene, 1);
+
+    postEffectDOF->AddTexture(lighting->resScene, 0);
+    postEffectDOF->AddTexture(lighting->depthScene, 1);    
 
     postEffectSSAO->AddTexture(lighting->resScene, 2);
     postEffectSSAO->AddTexture(lighting->depthScene, 1);
@@ -75,6 +79,6 @@ void URenderManager::Render(UScene* scene){
     OPENGL_CHECK_FOR_ERRORS();
     
     lighting->Render(scene);
-    postEffectSSAO->Render(URENDER_FORWARD);
-    //postEffectRipple->Render(URENDER_FORWARD);
+    //postEffectSSAO->Render(URENDER_FORWARD);
+    postEffectDOF->Render(URENDER_FORWARD);
 }

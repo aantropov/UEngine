@@ -70,7 +70,7 @@ void main(void)
 		att = clamp(att/8.0 + 0.45, 0.0, 1.0) * attScale;
 		color = vec4(att);
 	}
-	color *= texture(colorScene, Vert.texcoord);
-
+	
+	color *= texture(colorScene, Vert.texcoord);	
 }
 
