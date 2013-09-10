@@ -22,14 +22,13 @@ class UScene;
 class UFrameBufferObject;
 
 // Renderer
-class URenderer: public USingleton<URenderer>{
-
+class URenderer: public USingleton<URenderer>
+{
     //Main window
     UWindow uWnd;
 
     // Initialization
     bool InitExtensions();
-
     bool SetVerticalSynchronization(bool enabled);
 
     // Debug info printing
@@ -149,20 +148,8 @@ public:
     void UniformMatrix4(unsigned int location, unsigned int num , float *variable);
     void UniformMatrix3(unsigned int location, unsigned int num , float *variable);
 
-
     //Drawing
     void Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 );
     void DrawBuffer(UVertexBuffer *vb);
     void DrawBuffer(UIndexBuffer* ib);
-
-    //GUI
-    void InitGui()
-    {
-	}
-
-    void DrawMyGuiFrame(){ /*mPlatform->getRenderManagerPtr()->drawOneFrame();*/}
-
 };
-
-// Singleton
-//URenderer* URenderer::instance = nullptr;

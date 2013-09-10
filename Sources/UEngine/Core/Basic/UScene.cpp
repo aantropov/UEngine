@@ -3,26 +3,26 @@
 #include "ULight.h"
 
 //Process input keys
-void UScene::KeysProccessing(){
-        // Camera moving
-        
-        int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
+void UScene::KeysProccessing()
+{
+    // Camera moving
+    int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
     
-        moveDelta[0] = 0.5 * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
-        moveDelta[1] = 0.5 * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
+    moveDelta[0] = 0.5 * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
+    moveDelta[1] = 0.5 * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
                 
-        UInput::GetCursorPos(cursorPos, cursorPos + 1);
-        rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
-        rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
+    UInput::GetCursorPos(cursorPos, cursorPos + 1);
+    rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
+    rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
 
-        UInput::SetCursorPos(xCenter, yCenter);
-    
+    UInput::SetCursorPos(xCenter, yCenter);    
 }
+
 void UScene::UpdateLightParams()
 {
     int cur = 0;    
-    for(unsigned int i = 0; i < lights.size(); i++){
-    
+    for(unsigned int i = 0; i < lights.size(); i++)
+    {
         if( lights[i] != NULL/* && lights[i]->castShadows*/)
         {
             lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.position));
@@ -40,6 +40,7 @@ void UScene::UpdateLightParams()
 
             cur++;
         }
+
         if(cur > MAX_LIGHTS)
             break;
     }
@@ -47,7 +48,8 @@ void UScene::UpdateLightParams()
 }
 
 //Update with deltaTime
-void UScene::Update(double deltaTime){
+void UScene::Update(double deltaTime)
+{
         
     UInput::ShowCursor(false);
     
@@ -64,13 +66,17 @@ void UScene::Update(double deltaTime){
     
     UpdateLightParams();
 }
+
 //RenderScene
-void UScene::Render(URENDER_TYPE type){
+void UScene::Render(URENDER_TYPE type)
+{
         if(root != NULL)
             root->Render(type);
         URenderer::GetInstance()->modelView= mat4_identity;
 }
-void UScene::Render(UMaterial *m){
+
+void UScene::Render(UMaterial *m)
+{
         if(root != NULL)
             root->Render(m);
         URenderer::GetInstance()->modelView= mat4_identity;

@@ -14,6 +14,7 @@ URenderer::URenderer(){
     previousIB = 0;
     modelView = mat4_identity;
 }
+
 URenderer::~URenderer(){
     ULogger::GetInstance()->Message("URenderer singleton object is deleted...");
 }
@@ -26,6 +27,7 @@ URenderer* URenderer::GetInstance(){
     }
     return instance;
 }
+
 void URenderer:: SetCurrentScene(UScene* currentScene)
 {
     this->currentScene = currentScene;
@@ -52,11 +54,15 @@ void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model){
     Uniform3(shd->locations.transform_viewPosition, 1, camera.GetPosition().v);
     
 }
-void  URenderer::PushModelMatrix(){
+
+void  URenderer::PushModelMatrix()
+{
     modelViewMatrixStack.push_back(modelView);
     //modelView = mat4_identity;
 }
-void  URenderer::PopModelMatrix(){    
+
+void  URenderer::PopModelMatrix()
+{    
     //Secure code
     if(modelViewMatrixStack.size() > 0){
         modelView = modelViewMatrixStack.back() ;
@@ -65,13 +71,19 @@ void  URenderer::PopModelMatrix(){
     else
         modelView = mat4_identity;
 }
-void URenderer:: SetCamera(UCamera cam){
+
+void URenderer:: SetCamera(UCamera cam)
+{
     camera = cam;
 }
-UCamera URenderer:: GetCamera(){
+
+UCamera URenderer:: GetCamera()
+{
     return camera;
 }
-void URenderer:: Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 ){
+
+void URenderer:: Quad(vec3 v1, vec3 v2, vec3 v3, vec3 v4)
+{
     //OPENGL_CALL should NOT be used in the glBegin - glEnd block!
     glBegin(GL_TRIANGLE_STRIP);
         glVertex3d(v1.x,v1.y,v1.z);
@@ -84,11 +96,13 @@ void URenderer:: Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 ){
         glTexCoord2d(1,0);        
     glEnd();
 }
+
 //Texture
 void  URenderer:: BindTexture(UTexture *tex)
 {
     BindTexture(tex, 0);
 }
+
 void  URenderer:: BindTexture(UTexture *tex, unsigned int channel)
 {
     if(texChannelsCache[channel] == tex->GetId())
@@ -100,8 +114,9 @@ void  URenderer:: BindTexture(UTexture *tex, unsigned int channel)
         glBindTexture(GL_TEXTURE_2D, tex->GetId());
     }
 }
-int URenderer:: CreateTexture(UTexture *tex){
-    
+
+int URenderer:: CreateTexture(UTexture *tex)
+{
     tex->GenTexture();
     GLuint texture = tex->GetId();
     
@@ -143,36 +158,41 @@ int URenderer:: CreateTexture(UTexture *tex){
     return texture;
 }
 
-void URenderer:: DeleteTexture(UTexture *tex){
+void URenderer:: DeleteTexture(UTexture *tex)
+{
     GLuint t = tex->GetId();
     OPENGL_CALL(glDeleteTextures(1, &t));
 }
 
 // FBO
-void URenderer:: UnbindFBO(){
+void URenderer:: UnbindFBO()
+{
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
-void URenderer:: BindFBO(UFrameBufferObject *fb){
+
+void URenderer:: BindFBO(UFrameBufferObject *fb)
+{
     glBindFramebuffer(GL_FRAMEBUFFER, fb->GetId());
 }
-int URenderer:: CreateFBO(){
-    
+
+int URenderer:: CreateFBO()
+{
     GLuint depthFBO = 0;
-    
+
     glGenFramebuffers(1, &depthFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, depthFBO);
 
-//    glDrawBuffer(GL_NONE);
-    //glReadBuffer(GL_NONE);
-    
     return depthFBO;
 }
-void URenderer:: DeleteFBO(UFrameBufferObject *fb){
+
+void URenderer:: DeleteFBO(UFrameBufferObject *fb)
+{
     GLuint fbo =  fb->GetId();
     OPENGL_CALL(glDeleteBuffers(1, &fbo));
 }
-// VBO
-int URenderer:: CreateVBO(UVertexBuffer *vb, UVBO_DRAW state){
+
+int URenderer:: CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)
+{
     int size = vb->GetNum()*sizeof(UVertex);
         
     GLuint vbo;
@@ -182,7 +202,9 @@ int URenderer:: CreateVBO(UVertexBuffer *vb, UVBO_DRAW state){
     
     return vbo;
 }
-int URenderer:: CreateVBO(UIndexBuffer *ib, UVBO_DRAW state){
+
+int URenderer:: CreateVBO(UIndexBuffer *ib, UVBO_DRAW state)
+{
     int size = ib->GetNum()*sizeof(unsigned int);
         
     GLuint vbo;
@@ -193,20 +215,29 @@ int URenderer:: CreateVBO(UIndexBuffer *ib, UVBO_DRAW state){
     return vbo;
 }
 
-void URenderer:: DeleteVBO(UBuffer *vb){
+void URenderer:: DeleteVBO(UBuffer *vb)
+{
     GLuint vbo =  vb->GetId();
     OPENGL_CALL(glDeleteBuffers(1, &vbo));
 }
-void URenderer:: DrawBuffer(UVertexBuffer* vb){    
+
+void URenderer:: DrawBuffer(UVertexBuffer* vb)
+{    
     OPENGL_CALL(glDrawArrays(GL_TRIANGLES, 0, vb->GetNum()));    
 }
-void URenderer:: DrawBuffer(UIndexBuffer* ib){    
+
+void URenderer:: DrawBuffer(UIndexBuffer* ib)
+{    
     OPENGL_CALL(glDrawElements(GL_TRIANGLES, ib->GetNum(), GL_UNSIGNED_INT, NULL));    
 }
-void URenderer:: BindVBO(UVertexBuffer *vb){    
+
+void URenderer:: BindVBO(UVertexBuffer *vb)
+{    
     glBindBuffer ( GL_ARRAY_BUFFER , vb->GetId());    
 }
-void URenderer:: BindVBO(UIndexBuffer *vb){
+
+void URenderer:: BindVBO(UIndexBuffer *vb)
+{
     
     if(previousIB != vb->GetId())
     {
@@ -214,7 +245,9 @@ void URenderer:: BindVBO(UIndexBuffer *vb){
         glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , vb->GetId());
     }
 }
-void URenderer:: UnbindVBO(bool vertex_buffer){
+
+void URenderer:: UnbindVBO(bool vertex_buffer)
+{
     if(vertex_buffer){
         glBindBuffer ( GL_ARRAY_BUFFER , 0 ); 
     }else{
@@ -223,30 +256,37 @@ void URenderer:: UnbindVBO(bool vertex_buffer){
 }    
 
 //VAO
-int URenderer:: CreateVAO(){
+int URenderer:: CreateVAO()
+{
     GLuint vao;
     OPENGL_CALL(glGenVertexArrays ( 1, &vao ));
     glBindVertexArray( vao );        
     return vao;
 }
-void URenderer:: DeleteVAO(UVertexArrayObject *vao){
+
+void URenderer:: DeleteVAO(UVertexArrayObject *vao)
+{
     GLuint id =  vao->GetId();
     OPENGL_CALL(glDeleteVertexArrays(1, &id));
 }
-void URenderer:: BindVAO(UVertexBuffer *vb){
+
+void URenderer:: BindVAO(UVertexBuffer *vb)
+{
     if(previousVAO != vb->GetVAO()->GetId())
     {
         previousVAO = vb->GetVAO()->GetId();
         glBindVertexArray(vb->GetVAO()->GetId());
     }
 }
-void URenderer:: UnbindVAO(){
+
+void URenderer:: UnbindVAO()
+{
     glBindVertexArray(0);    
 }
 
 //Shaders
-int  URenderer:: CompileShader(std::string source, USHADER_TYPE st){
-    
+int  URenderer:: CompileShader(std::string source, USHADER_TYPE st)
+{
     GLuint shd;
     GLchar *strings = (GLchar*)source.c_str();
 
@@ -269,11 +309,14 @@ int  URenderer:: CompileShader(std::string source, USHADER_TYPE st){
 
     return shd;
 }
-void URenderer:: DeleteShader(UShader *shd){
+
+void URenderer:: DeleteShader(UShader *shd)
+{
     OPENGL_CALL(glDeleteShader(shd->GetId()));
 }
 
-int URenderer:: CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh){
+int URenderer:: CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh)
+{
     GLuint sh_pr_id = glCreateProgram();
     OPENGL_CALL(glAttachShader(sh_pr_id, vertex_sh->GetId()));
     OPENGL_CALL(glAttachShader(sh_pr_id, pixel_sh->GetId()));
@@ -281,20 +324,25 @@ int URenderer:: CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh){
     return sh_pr_id;
 }
 
-void URenderer:: DeleteShaderProgram(UShaderProgram *shd){
+void URenderer:: DeleteShaderProgram(UShaderProgram *shd)
+{
     OPENGL_CALL(glDeleteProgram(shd->GetId()));
 }
-void URenderer:: SetShaderProgram(UShaderProgram *sh){
+
+void URenderer:: SetShaderProgram(UShaderProgram *sh)
+{
     if(sh == nullptr || (shaderProgram != nullptr && sh == shaderProgram))
         return;
     shaderProgram = sh;
     OPENGL_CALL(glUseProgram(sh->GetId()));
     OPENGL_CHECK_FOR_ERRORS();
 }
+
 int URenderer:: CacheUniformLocation(string name)
 {
     return CacheUniformLocation(name, shaderProgram);
 }
+
 int URenderer:: CacheUniformLocation(string name, UShaderProgram *sh)
 {
     unsigned int *res = &uniformsCache[sh->GetId()][name];
@@ -308,36 +356,50 @@ int URenderer:: CacheUniformLocation(string name, UShaderProgram *sh)
     }
     return *res;
 }
-void URenderer:: CacheUniform4(UShaderProgram *sh, std::string name, unsigned int num , float *variable){
+
+void URenderer:: CacheUniform4(UShaderProgram *sh, std::string name, unsigned int num , float *variable)
+{
     Uniform4(CacheUniformLocation(name, sh),  num, variable);
 }
-void URenderer:: CacheUniform4(std::string name, unsigned int num , float *variable){
+
+void URenderer:: CacheUniform4(std::string name, unsigned int num , float *variable)
+{
     Uniform4(CacheUniformLocation(name),  num, variable);
 }
-void URenderer:: CacheUniformMatrix4(std::string name, unsigned int num , float *variable){    
+
+void URenderer:: CacheUniformMatrix4(std::string name, unsigned int num , float *variable)
+{    
     UniformMatrix4(CacheUniformLocation(name), num, variable);
 }
+
 void URenderer:: CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num , float *variable){    
     UniformMatrix3(CacheUniformLocation(name, sh), num, variable);
 }
+
 void URenderer:: CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num , float *variable){    
     UniformMatrix4(CacheUniformLocation(name, sh), num, variable);
 }
+
 void URenderer:: CacheUniformMatrix3(std::string name, unsigned int num , float *variable){    
     UniformMatrix3(CacheUniformLocation(name), num, variable);
 }
+
 void URenderer:: CacheUniform1(UShaderProgram *sh, std::string name, unsigned int num , float *variable){
     Uniform1(CacheUniformLocation(name, sh),  num, variable);
 }
+
 void URenderer:: CacheUniform1(std::string name, unsigned int num , float *variable){
     Uniform1(CacheUniformLocation(name),  num, variable);
 }
+
 void URenderer:: CacheUniform1(std::string name, int value){
     Uniform1(CacheUniformLocation(name), value);
 }
+
 void URenderer:: CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num , float *variable){
     Uniform3(CacheUniformLocation(name, sh),  num, variable);
 }
+
 void URenderer:: CacheUniform3(std::string name, unsigned int num , float *variable){
     Uniform3(CacheUniformLocation(name),  num, variable);
 }
@@ -347,22 +409,27 @@ void URenderer:: Uniform4(unsigned int location, unsigned int num , float *varia
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform4fv(location,  num, variable);
 }
+
 void URenderer:: UniformMatrix4(unsigned int location, unsigned int num , float *variable){    
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix4fv(location, num, GL_TRUE, variable);
 }
+
 void URenderer:: UniformMatrix3(unsigned int location, unsigned int num , float *variable){    
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix3fv(location, num, GL_TRUE, variable);
 }
+
 void URenderer:: Uniform1(unsigned int location, unsigned int num , float *variable){
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform1fv(location,  num, variable);
 }
+
 void URenderer:: Uniform1(unsigned int location, int value){
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform1i(location, value);
 }
+
 void URenderer:: Uniform3(unsigned int location, unsigned int num , float *variable){
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform3fv(location,  num, variable);
@@ -381,20 +448,18 @@ bool URenderer:: SetVerticalSynchronization(bool bEnabled)
     return true;
 }
 
-bool URenderer::Initialize(){
-    //Create Window
+bool URenderer::Initialize()
+{
     if( !uWnd.Create(L"UEngine",  std::atoi(UConfig::GetInstance()->GetParam("/xml/config/width/").c_str()),
                                 std::atoi(UConfig::GetInstance()->GetParam("/xml/config/height/").c_str()), 
                                 std::atoi(UConfig::GetInstance()->GetParam("/xml/config/fullscreen/").c_str()) == 1) )
         return false;
     
-    //Initialize GL
     if(!InitExtensions())
         return false;
     
     OPENGL_CALL(glActiveTexture(GL_TEXTURE0));
     
-    //Setup driver
     OPENGL_CALL(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
     OPENGL_CALL(glClearDepth(1.0f));
     OPENGL_CALL(glEnable(GL_DEPTH_TEST));
@@ -419,10 +484,7 @@ bool URenderer::Initialize(){
     
     //Print information
     PrintDebugInfo();
-
-    //Init MyGUI
-    InitGui();
-
+    
     return true;
 }
 
@@ -519,6 +581,5 @@ bool URenderer:: InitExtensions()
     OPENGL_GET_PROC(PFNWGLSWAPINTERVALEXTPROC,         wglSwapIntervalEXT);
     */
     OPENGL_CHECK_FOR_ERRORS();
-    
     return true;
 }

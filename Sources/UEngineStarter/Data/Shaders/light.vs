@@ -79,6 +79,6 @@ void main(void)
 		ProcessLight(i, vertex, Vert.t, Vert.b, n);
 	}
 	*/
+	
 	gl_Position = transform.viewProjection * (vertex);	
-
 }

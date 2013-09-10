@@ -81,7 +81,6 @@ void UEngine::Run(){
             if(currentScene != NULL)
                 renderManager->Render(currentScene);
 
-            URenderer::GetInstance()->DrawMyGuiFrame();
             SwapBuffers( UWindow::GetHDC());
 
             //Updating delta
