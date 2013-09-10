@@ -5,7 +5,7 @@
     <mesh_num>1</mesh_num>
     <tex_num>0</tex_num>
     <anim_num>0</anim_num>
-    <common_material>data\\Materials\\parallax_specular_bump_material.xml</common_material>    
+    <common_material>data\\Materials\\specular_bump_material.xml</common_material>    
 	<mesh_0>
 		<name>Teapot01</name>
 		<tex_num>2</tex_num>
