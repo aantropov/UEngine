@@ -20,7 +20,7 @@ class UVertex
 
 public:
 
-    static const int offsetPos = sizeof(vec3) + sizeof(vec3) + sizeof(vec2) + sizeof(vec4) + sizeof(vec4);
+    static const int offsetPos = sizeof(vec3) + sizeof(vec3) + sizeof(vec2) + sizeof(vec3) + sizeof(vec4) + sizeof(vec4);
 
     // Position setters and getters
     void UENGINE_DECLSPEC SetPosition(vec3 p){  pos = p; }

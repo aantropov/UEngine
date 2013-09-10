@@ -15,18 +15,26 @@ class UVertexBuffer : public UBuffer
     void ComputeTBN(UIndexBuffer* ib);
     
 public:
-
     
-    void* GetPointer() {return (void*)vertices;}    
-    int GetNum() { return num_vertices; }
-    void Create(int num_vertices) {
-        //Free();
+	void* GetPointer()
+	{
+		return (void*)vertices;
+	}
+
+    int GetNum() 
+	{ 
+		return num_vertices; 
+	}
+
+    void Create(int num_vertices) 
+	{
         this->num_vertices = num_vertices;
         vertices = new UVertex[num_vertices]();
     }
     
     //VAO
-    UVertexArrayObject* GetVAO() {
+    UVertexArrayObject* GetVAO()
+	{
         return vao;
     }
     
@@ -37,20 +45,21 @@ public:
         return Initialize();
     }
         
-    bool Initialize(){    
-
+    bool Initialize()
+	{    
         vao = new UVertexArrayObject();
         vao->Initialize();
         
         URenderer::GetInstance()->BindVAO(this);
-
-        _id = -1;    
+        
+		_id = -1;    
         _id = URenderer::GetInstance()->CreateVBO(this, UVBO_STATIC);
         
         return (_id != -1) && (vao->GetId() != -1);
     }
     
-    void Free() {
+    void Free() 
+	{
         if(_id != -1)
             URenderer::GetInstance()->DeleteVBO(this);
         _id = -1;
