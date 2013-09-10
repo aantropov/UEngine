@@ -28,9 +28,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     script->Load("data\\Scripts\\test_script.xml");
 
     light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.9f, 0.01f, 0.0f));
-    light8->SetSpotCosCutoff(120.1f);
-    light8->SetSpotExponent(10.0f);
+    light8->SetAttenuation(vec3(0.0f, 0.02f, 0.0f));
+    light8->SetSpotCosCutoff(60.1f);
+    light8->SetSpotExponent(20.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
     
     script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));

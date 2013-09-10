@@ -30,15 +30,15 @@
       <deffered_pixel_path>data\\Shaders\\bump_deffered_light.ps</deffered_pixel_path>
     </shaders>
     <emission>
-      <r>0.01f</r>
-      <g>0.01f</g>
-      <b>0.01f</b>
+      <r>0.0f</r>
+      <g>0.0f</g>
+      <b>0.0f</b>
       <a>0.2f</a>
     </emission>
     <ambient>
-      <r>0.3f</r>
-      <g>0.3f</g>
-      <b>0.3f</b>
+      <r>0.0f</r>
+      <g>0.0f</g>
+      <b>0.0f</b>
       <a>0.0f</a>
     </ambient>
     <diffuse>

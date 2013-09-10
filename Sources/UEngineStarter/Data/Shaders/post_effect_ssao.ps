@@ -15,7 +15,8 @@ in Vertex
 
 out vec4 color;
 
-float LinearizeDepth(float zoverw){
+float LinearizeDepth(float zoverw)
+{
 	float n =  0.001f; // camera z near
 	float f = 1000.0; // camera z far
 	return 45 * (2.0 * n) / (f + n - zoverw * (f - n));
@@ -29,9 +30,9 @@ void main(void)
 	const float zFar      = 100.0;
     const float zNear     = 0.01;
     const float attScale  = 1.0;
-    const float distScale   = 0.5;
-	const float radius      = 0.2;
-	const float bias   = 100.0;
+    const float distScale = 0.5;
+	const float radius    = 0.2;
+	const float bias      = 100.0;
 	
 	color = vec4(1);
 	if( zb*zFar <  99.997)
