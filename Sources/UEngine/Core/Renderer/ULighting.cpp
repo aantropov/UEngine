@@ -1,7 +1,6 @@
 #include "ULighting.h"
 #include "..\UEngine.h"
 
-
 UDefferedLighting:: UDefferedLighting(){
     fb.Initialize();
     postfb.Initialize();
@@ -154,8 +153,8 @@ UForwardLighting:: UForwardLighting()
     fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
     fb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
 	fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR1);
-    
 }
+
 UTexture* UForwardLighting:: Render(UScene *scene)
 {
     //color, depth
@@ -172,8 +171,8 @@ UTexture* UForwardLighting:: Render(UScene *scene)
     URenderer::GetInstance()->UnbindFBO();
     
     // normal    
-    URenderer::GetInstance()->BindFBO(&postfb);    
-    postfb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR0);
+    URenderer::GetInstance()->BindFBO(&fb);
+    fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR0);
 
     glViewport(0, 0, normalScene->GetWidth(), normalScene->GetHeight());
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);

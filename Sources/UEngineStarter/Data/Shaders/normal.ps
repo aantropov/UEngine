@@ -30,6 +30,6 @@ void main(void)
 	mat3 m = mat3(normalize(Vert.t), normalize(Vert.b), normalize(Vert.normal));
 	bump *= transpose(m);
 	
-	color = normalize(vec4(bump,1));
+	color = vec4(bump,1);
 	
 }
