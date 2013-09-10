@@ -24,7 +24,7 @@
       <vertex_path>data\\Shaders\\light.vs</vertex_path>
       <depth_vertex_path>data\\Shaders\\empty.vs</depth_vertex_path>
       <depth_pixel_path>data\\Shaders\\empty.ps</depth_pixel_path>
-      <normal_vertex_path>data\\Shaders\\empty.vs</normal_vertex_path>
+      <normal_vertex_path>data\\Shaders\\light.vs</normal_vertex_path>
       <normal_pixel_path>data\\Shaders\\normal.ps</normal_pixel_path>
       <deffered_vertex_path>data\\Shaders\\light.vs</deffered_vertex_path> 
       <deffered_pixel_path>data\\Shaders\\bump_deffered_light.ps</deffered_pixel_path>

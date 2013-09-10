@@ -36,7 +36,7 @@ UDefferedLighting:: UDefferedLighting(){
     normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
     diffuseScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
-    specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+    specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT);
     resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resSceneA->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resSceneB->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
@@ -153,6 +153,7 @@ UForwardLighting:: UForwardLighting()
 
     fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
     fb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
+	fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR1);
     
 }
 UTexture* UForwardLighting:: Render(UScene *scene)
@@ -175,6 +176,9 @@ UTexture* UForwardLighting:: Render(UScene *scene)
     postfb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR0);
 
     glViewport(0, 0, normalScene->GetWidth(), normalScene->GetHeight());
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glCullFace(GL_BACK);
 
     scene->Render(URENDER_NORMAL);
     URenderer::GetInstance()->UnbindFBO();

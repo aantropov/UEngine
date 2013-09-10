@@ -133,6 +133,9 @@ int URenderer:: CreateTexture(UTexture *tex){
         }
         else if(tex->GetType() == UTEXTURE_FLOAT){
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
+        }  
+		else if(tex->GetType() == UTEXTURE_FLOAT32){
+			OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }
     }
 
