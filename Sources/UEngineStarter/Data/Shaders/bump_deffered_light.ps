@@ -81,6 +81,7 @@ void main(void)
 	//bump *= Vert.transformNormal;	
 	mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));	
 	bump *= transpose(m);
+	bump = normalize(bump);
 	
 	float res = 0.0;
 	for(int i = 0; i < min(maxLight,lightsNum); i++)

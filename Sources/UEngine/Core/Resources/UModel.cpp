@@ -183,7 +183,7 @@ bool UModel:: Load(std:: string path){
                     fread(ind.v, 4,4, file);
                     fread(weight.v, 4,4, file);
 
-                    m_vertices[j] = UVertex(vec3(x, y, z), vec3(nx, ny ,nz), vec2(u, v));
+                    m_vertices[j] = UVertex(vec3(x, y, z), normalize(vec3(nx, ny ,nz)), vec2(u, v));
                     
                     m_vertices[j].SetBoneIndex(ind);
                     m_vertices[j].SetBoneWeight(normalize(weight));

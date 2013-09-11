@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     script->Load("data\\Scripts\\test_script.xml");
 
     light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.0f, 0.06f, 0.0f));
+    light8->SetAttenuation(vec3(0.0f, 0.003f, 0.0f));
     light8->SetSpotCosCutoff(60.1f);
     light8->SetSpotExponent(20.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
@@ -72,8 +72,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     go->AddChild(new UScene::USceneNode(light2));
     node->AddChild(go);
     node->AddChild(new UScene::USceneNode(light3));
-    node->AddChild(new UScene::USceneNode(light4));*/
-    node->AddChild(new UScene::USceneNode(light5));
+    node->AddChild(new UScene::USceneNode(light4));
+    node->AddChild(new UScene::USceneNode(light5));*/
     node->AddChild(new UScene::USceneNode(light6));
     node->AddChild(new UScene::USceneNode(light7));
     node->AddChild(new UScene::USceneNode(light8));
@@ -83,8 +83,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     /*scene.AddLight(light1);
     scene.AddLight(light2);
     scene.AddLight(light3);
-    scene.AddLight(light4);*/
-    scene.AddLight(light5);
+    scene.AddLight(light4);
+    scene.AddLight(light5);*/
     scene.AddLight(light6);
     scene.AddLight(light7);
     scene.AddLight(light8);/**/

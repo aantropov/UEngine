@@ -19,7 +19,7 @@
       <vertex_path>data\\Shaders\\skinned_light.vs</vertex_path>
       <depth_vertex_path>data\\Shaders\\skinned_empty.vs</depth_vertex_path>
       <depth_pixel_path>data\\Shaders\\empty.ps</depth_pixel_path>
-      <normal_vertex_path>data\\Shaders\\skinned_empty.vs</normal_vertex_path>
+      <normal_vertex_path>data\\Shaders\\skinned_light.vs</normal_vertex_path>
       <normal_pixel_path>data\\Shaders\\normal.ps</normal_pixel_path>      
       <deffered_vertex_path>data\\Shaders\\skinned_light.vs</deffered_vertex_path>      
       <deffered_pixel_path>data\\Shaders\\specular_deffered_light.ps</deffered_pixel_path>
@@ -43,9 +43,9 @@
       <a>1.0f</a>
     </diffuse>
     <specular>
-      <r>0.3f</r>
-      <g>0.3f</g>
-      <b>0.3f</b>
+      <r>1.0f</r>
+      <g>1.0f</g>
+      <b>1.0f</b>
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>

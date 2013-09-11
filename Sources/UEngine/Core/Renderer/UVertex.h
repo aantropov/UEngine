@@ -27,7 +27,7 @@ public:
     vec3 UENGINE_DECLSPEC GetPosition(){ return pos; }
 
     // Normal setters and getters
-    void UENGINE_DECLSPEC SetNormal(vec3 p){  pos = p; }
+    void UENGINE_DECLSPEC SetNormal(vec3 p){  normal = p; }
     vec3 UENGINE_DECLSPEC GetNormal(){ return pos; }
     
     // Texcoord setters and getters

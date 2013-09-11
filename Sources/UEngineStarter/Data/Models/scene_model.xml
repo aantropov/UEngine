@@ -2,7 +2,7 @@
   <model>   
     <name>Test Model</name>
     <upm>data\\Models\\scene_model.upm</upm>
-    <mesh_num>1</mesh_num>
+    <mesh_num>2</mesh_num>
     <tex_num>0</tex_num>
     <anim_num>0</anim_num>
     <common_material>data\\Materials\\specular_bump_material.xml</common_material>    
@@ -27,6 +27,28 @@
 			<path>data\\Textures\\Plitka_s.jpg</path>
 		  </tex_2>
 		</textures>
-	</mesh_0>	
+	</mesh_0>
+	<mesh_1>
+		<name>Plane01</name>
+		<tex_num>2</tex_num>
+		<material>data\\Materials\\specular_bump_material.xml</material>
+		<textures>
+		 <tex_0>
+			<name>material.texture</name>
+			<channel>0</channel>
+			<path>data\\Textures\\c1.jpg</path>
+		  </tex_0>
+		  <tex_1>
+			<name>material.normal</name>
+			<channel>1</channel>
+			<path>data\\Textures\\n1.jpg</path>
+		  </tex_1>
+		  <tex_2>
+			<name>material.specular_tex</name>
+			<channel>2</channel>
+			<path>data\\Textures\\s1.jpg</path>
+		  </tex_2>
+		</textures>
+	</mesh_1>	
   </model>
 </xml>

@@ -391,6 +391,30 @@ inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0te
 }
 */
 
+inline vec3 vertextangentspace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2, vec2 &t3)
+{
+  vec3 e1  = p2 - p1;
+  vec3 e2  = p3 - p1;
+  vec2 et1 = t2 - t1;
+  vec2 et2 = t3 - t1;
+  vec3 tangent = vec3_zero;
+  vec3 binormal = vec3_zero;
+
+  float tmp = 0.0;
+  
+  if (fabsf(et1.x*et2.y - et1.y*et2.x)<0.0001f)
+    tmp = 1.0f;
+  else
+    tmp = 1.0 / (et1.x*et2.y - et1.y*et2.x);
+  
+  tangent  = (e1 * et2.y - e2 * et1.y) * tmp;
+  binormal = (e2 * et1.x - e1 * et2.x) * tmp;
+  normalize(tangent);
+  
+  return normalize(binormal);
+}
+
+/*
 inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
 { 
     vec3 v0t = vec3(0, 0, 0);

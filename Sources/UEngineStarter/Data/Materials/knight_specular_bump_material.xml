@@ -50,10 +50,10 @@
     <specular>
       <r>1.0f</r>
       <g>1.0f</g>
-      <b>0.9f</b>
+      <b>1.0f</b>
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>
-    <shininnes>10.0f</shininnes>
+    <shininnes>2.0f</shininnes>
   </material>
 </xml>
