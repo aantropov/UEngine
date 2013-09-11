@@ -36,6 +36,18 @@ function FindSkinModificator obj =
     return undefined
 )
 
+
+function FindEditNormalsModificator obj = 
+(
+    if (canConvertTo obj TriMeshGeometry) then
+        for i = 1 to obj.modifiers.count do
+            if obj.modifiers[i].Name == "Edit Normals" then
+            (                
+                return obj.modifiers[i]
+            )
+    return undefined
+)
+
 --Thanks DOOM 3 Export Script
 function ConvertMatrixToRightHanded Matrix =
 (
@@ -301,8 +313,21 @@ function ConvertObjectToUEMesh Obj &ConvertedUEMesh SelectedIndex Bones =
         for i = 1 to cMesh.numtverts do
         (
             local v = getVert cMesh temp_buf[i]
-            local n = getNormal cMesh temp_buf[i]
-            local uv = getTVert cMesh i
+            
+            local n = [0,0,0]
+            
+            vertFaces = meshop.getFacesUsingVert cMesh temp_buf[i]
+            for j in vertFaces do 
+			(
+			 faceNormals = meshop.getFaceRNormals CMesh j
+			 n += (faceNormals)[1]
+			 n += (faceNormals)[2]
+			 n += (faceNormals)[3]
+		    )
+            n /= (vertFaces.count * 3)
+
+
+            local uv = getTVert cMesh temp_buf[i]
             local w = getWeightData temp_buf[i] Obj Bones
             
             ConvertedUEMesh.VerticesBuffer[i] = (UEVertex v.x v.y v.z n.x n.y n.z uv.x (1.0-uv.y) w)
@@ -313,9 +338,19 @@ function ConvertObjectToUEMesh Obj &ConvertedUEMesh SelectedIndex Bones =
         for i = 1 to cMesh.numverts do
         (
             local v = getVert cMesh i
-            local n = getNormal cMesh i
+            local n = [0,0,0]
             local w = getWeightData i Obj Bones
 
+            vertFaces = meshop.getFacesUsingVert cMesh i
+            for j in vertFaces do 
+			(
+			 faceNormals = meshop.getFaceRNormals CMesh j
+			 n += (faceNormals)[1]
+			 n += (faceNormals)[2]
+			 n += (faceNormals)[3]
+		    )
+            n /= (vertFaces.count * 3)
+			
             if cMesh.numtverts==0 then
                 ConvertedUEMesh.VerticesBuffer[i] = (UEVertex v.x v.y v.z n.x n.y n.z 0.0 0.0 w)
             else
@@ -379,11 +414,11 @@ function WriteMesh &c_Mesh &File_out =
         WriteFloat File_out c_Mesh.VerticesBuffer[i].nz
         WriteFloat File_out c_Mesh.VerticesBuffer[i].u
         WriteFloat File_out c_Mesh.VerticesBuffer[i].v
-        
-		i0 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i0)
-		i1 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i1)
-		i2 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i2)
-		i3 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i3)
+       
+        i0 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i0)
+        i1 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i1)
+        i2 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i2)
+        i3 = ConvertOkToFloat(c_Mesh.VerticesBuffer[i].w.i3)
 		
         WriteFloat File_out i0
         WriteFloat File_out i1
@@ -398,6 +433,7 @@ function WriteMesh &c_Mesh &File_out =
     )
     
 )
+
 function exportBones SelectedIndex = 
 (   
     Bones = #()
