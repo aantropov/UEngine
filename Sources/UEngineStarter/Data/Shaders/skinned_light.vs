@@ -70,8 +70,8 @@ void main(void)
 	Vert.transformNormal =  transform.normal * MVIN;
 
 	vec3 n = Vert.transformNormal * normal;
-	Vert.t = Vert.transformNormal * binormal;
-	Vert.b = (cross(n, Vert.t));
+	Vert.b = Vert.transformNormal * binormal;
+	Vert.t = (cross(n, Vert.b));
 	
 	Vert.normal = normalize(n);
 	

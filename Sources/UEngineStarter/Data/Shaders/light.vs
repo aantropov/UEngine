@@ -51,11 +51,13 @@ void main(void)
 	vec4 vertex = transform.model * vec4(position, 1.0);
 		
 	Vert.texcoord = texcoord;
-	Vert.position = vertex;
+	Vert.position = vertex;		
 	
-	vec3 n = transform.normal * normal;
-	Vert.t = transform.normal * binormal;
-	Vert.b = cross(n, Vert.t);
+	Vert.transformNormal = transform.normal;
+
+	vec3 n = Vert.transformNormal * normal;
+	Vert.b = Vert.transformNormal * binormal;
+	Vert.t = (cross(n, Vert.b));
 
 	Vert.normal = normalize(n);
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
@@ -63,8 +65,6 @@ void main(void)
 	Vert.viewDirTBN.x = dot(Vert.viewDir, Vert.t);
 	Vert.viewDirTBN.y = dot(Vert.viewDir, Vert.b);
 	Vert.viewDirTBN.z = dot(Vert.viewDir, n);
-
-	Vert.transformNormal = transform.normal;
 
 	ProcessLight(0, vertex, Vert.t, Vert.b, n);
 	ProcessLight(1, vertex, Vert.t, Vert.b, n);

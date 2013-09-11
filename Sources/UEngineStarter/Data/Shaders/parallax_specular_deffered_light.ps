@@ -84,9 +84,9 @@ void main(void)
     vec2 tex  = Vert.texcoord.xy - Vert.viewDirTBN.xy * h / Vert.viewDirTBN.z;
 	Vert.texcoord = tex;
 	
-	vec3 bump = normalize(texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0);
-	bump *= Vert.transformNormal;
-	mat3 m = mat3(normalize(Vert.t), normalize(Vert.b), normalize(Vert.normal));
+	vec3 bump = (texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0);
+	//bump *= Vert.transformNormal;	
+	mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));	
 	bump *= transpose(m);
 	
 	float res = 0.0;

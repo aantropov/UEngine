@@ -64,7 +64,6 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffu
 
 void main(void)
 {
-
   vec4 vertPosition  = texture(positionScene, Vert.texcoord);
   vec3 vertNormal  = (texture(normalScene, Vert.texcoord).xyz * 2.0 - vec3(1.0));
   vec4 ambient = texture(ambientScene, Vert.texcoord);
