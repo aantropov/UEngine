@@ -327,7 +327,7 @@ function ConvertObjectToUEMesh Obj &ConvertedUEMesh SelectedIndex Bones =
             n /= (vertFaces.count * 3)
 
 
-            local uv = getTVert cMesh temp_buf[i]
+            local uv = getTVert cMesh i
             local w = getWeightData temp_buf[i] Obj Bones
             
             ConvertedUEMesh.VerticesBuffer[i] = (UEVertex v.x v.y v.z n.x n.y n.z uv.x (1.0-uv.y) w)
