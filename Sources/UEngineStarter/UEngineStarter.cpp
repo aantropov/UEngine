@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     script->Load("data\\Scripts\\test_script.xml");
 
     light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.0f, 0.003f, 0.0f));
+    light8->SetAttenuation(vec3(0.0f, 0.009f, 0.0f));
     light8->SetSpotCosCutoff(60.1f);
     light8->SetSpotExponent(20.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
