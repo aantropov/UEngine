@@ -8,20 +8,22 @@
 #include "UFrameBufferObject.h"
 #include "URendererHelper.h"
 
-URenderer::URenderer(){
-
+URenderer::URenderer()
+{
     previousVAO = 0;
     previousIB = 0;
     modelView = mat4_identity;
 }
 
-URenderer::~URenderer(){
+URenderer::~URenderer()
+{
     ULogger::GetInstance()->Message("URenderer singleton object is deleted...");
 }
 
-URenderer* URenderer::GetInstance(){
-
-    if(instance == NULL){
+URenderer* URenderer::GetInstance()
+{
+    if(instance == NULL)
+    {
         ULogger::GetInstance()->Message("URenderer singleton object is created...");
         instance = new URenderer();        
     }
@@ -33,15 +35,18 @@ void URenderer:: SetCurrentScene(UScene* currentScene)
     this->currentScene = currentScene;
 }
 
-UScene* URenderer:: GetCurrentScene(){
+UScene* URenderer:: GetCurrentScene()
+{
     return this->currentScene;
 }
-void URenderer:: SetupCameraLightForShaderProgram(UCamera &camera){
+
+void URenderer:: SetupCameraLightForShaderProgram(UCamera &camera)
+{
    //deprecated
 }
 
-void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model){
-
+void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
+{
     mat4 view           = camera.GetView();
     mat4 viewProjection = camera.GetProjection() * view;
     mat3 normal         = transpose(mat3(inverse(model)));
@@ -52,13 +57,11 @@ void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model){
     UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
     UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
     Uniform3(shd->locations.transform_viewPosition, 1, camera.GetPosition().v);
-    
 }
 
 void  URenderer::PushModelMatrix()
 {
     modelViewMatrixStack.push_back(modelView);
-    //modelView = mat4_identity;
 }
 
 void  URenderer::PopModelMatrix()
@@ -135,21 +138,26 @@ int URenderer:: CreateTexture(UTexture *tex)
     }
     else
     {
-        if(tex->GetType() == UTEXTURE_DEPTH_SHADOW){
+        if(tex->GetType() == UTEXTURE_DEPTH_SHADOW)
+        {
             OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE));
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
-        else if(tex->GetType() == UTEXTURE_DEPTH){
+        else if(tex->GetType() == UTEXTURE_DEPTH)
+        {
         //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
-        else if(tex->GetType() == UTEXTURE_COLOR){
+        else if(tex->GetType() == UTEXTURE_COLOR)
+        {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
         }
-        else if(tex->GetType() == UTEXTURE_FLOAT){
+        else if(tex->GetType() == UTEXTURE_FLOAT)
+        {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }  
-		else if(tex->GetType() == UTEXTURE_FLOAT32){
+		else if(tex->GetType() == UTEXTURE_FLOAT32)
+        {
 			OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }
     }
@@ -248,9 +256,12 @@ void URenderer:: BindVBO(UIndexBuffer *vb)
 
 void URenderer:: UnbindVBO(bool vertex_buffer)
 {
-    if(vertex_buffer){
+    if(vertex_buffer)
+    {
         glBindBuffer ( GL_ARRAY_BUFFER , 0 ); 
-    }else{
+    }
+    else
+    {
         glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER , 0 ); 
     }
 }    
@@ -333,6 +344,7 @@ void URenderer:: SetShaderProgram(UShaderProgram *sh)
 {
     if(sh == nullptr || (shaderProgram != nullptr && sh == shaderProgram))
         return;
+
     shaderProgram = sh;
     OPENGL_CALL(glUseProgram(sh->GetId()));
     OPENGL_CHECK_FOR_ERRORS();
@@ -372,65 +384,79 @@ void URenderer:: CacheUniformMatrix4(std::string name, unsigned int num , float 
     UniformMatrix4(CacheUniformLocation(name), num, variable);
 }
 
-void URenderer:: CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num , float *variable){    
+void URenderer:: CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num , float *variable)
+{    
     UniformMatrix3(CacheUniformLocation(name, sh), num, variable);
 }
 
-void URenderer:: CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num , float *variable){    
+void URenderer:: CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num , float *variable)
+{    
     UniformMatrix4(CacheUniformLocation(name, sh), num, variable);
 }
 
-void URenderer:: CacheUniformMatrix3(std::string name, unsigned int num , float *variable){    
+void URenderer:: CacheUniformMatrix3(std::string name, unsigned int num , float *variable)
+{    
     UniformMatrix3(CacheUniformLocation(name), num, variable);
 }
 
-void URenderer:: CacheUniform1(UShaderProgram *sh, std::string name, unsigned int num , float *variable){
+void URenderer:: CacheUniform1(UShaderProgram *sh, std::string name, unsigned int num , float *variable)
+{
     Uniform1(CacheUniformLocation(name, sh),  num, variable);
 }
 
-void URenderer:: CacheUniform1(std::string name, unsigned int num , float *variable){
+void URenderer:: CacheUniform1(std::string name, unsigned int num , float *variable)
+{
     Uniform1(CacheUniformLocation(name),  num, variable);
 }
 
-void URenderer:: CacheUniform1(std::string name, int value){
+void URenderer:: CacheUniform1(std::string name, int value)
+{
     Uniform1(CacheUniformLocation(name), value);
 }
 
-void URenderer:: CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num , float *variable){
+void URenderer:: CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num , float *variable)
+{
     Uniform3(CacheUniformLocation(name, sh),  num, variable);
 }
 
-void URenderer:: CacheUniform3(std::string name, unsigned int num , float *variable){
+void URenderer:: CacheUniform3(std::string name, unsigned int num , float *variable)
+{
     Uniform3(CacheUniformLocation(name),  num, variable);
 }
 ///////////////
 
-void URenderer:: Uniform4(unsigned int location, unsigned int num , float *variable){
+void URenderer:: Uniform4(unsigned int location, unsigned int num , float *variable)
+{
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform4fv(location,  num, variable);
 }
 
-void URenderer:: UniformMatrix4(unsigned int location, unsigned int num , float *variable){    
+void URenderer:: UniformMatrix4(unsigned int location, unsigned int num , float *variable)
+{    
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix4fv(location, num, GL_TRUE, variable);
 }
 
-void URenderer:: UniformMatrix3(unsigned int location, unsigned int num , float *variable){    
+void URenderer:: UniformMatrix3(unsigned int location, unsigned int num , float *variable)
+{    
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix3fv(location, num, GL_TRUE, variable);
 }
 
-void URenderer:: Uniform1(unsigned int location, unsigned int num , float *variable){
+void URenderer:: Uniform1(unsigned int location, unsigned int num , float *variable)
+{
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform1fv(location,  num, variable);
 }
 
-void URenderer:: Uniform1(unsigned int location, int value){
+void URenderer:: Uniform1(unsigned int location, int value)
+{
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform1i(location, value);
 }
 
-void URenderer:: Uniform3(unsigned int location, unsigned int num , float *variable){
+void URenderer:: Uniform3(unsigned int location, unsigned int num , float *variable)
+{
     if(location < MAX_UNIFORM_LOCATIONS)
         glUniform3fv(location,  num, variable);
 }
@@ -475,25 +501,23 @@ bool URenderer::Initialize()
     camera.Create(0.0f, 1.0f, 0.0f);
     camera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
 
-    //Init IL
     DEVIL_CALL(ilInit());
     DEVIL_CALL(iluInit());
-    //DEVIL_CALL(ilutInit());
 
     DEVIL_CHECK_FOR_ERRORS();
-    
-    //Print information
+
     PrintDebugInfo();
     
     return true;
 }
 
-void URenderer::Release(){
+void URenderer::Release()
+{
     uWnd.Destroy();    
 }
 
-void URenderer::PrintDebugInfo(){
-    // Information about OpenGL
+void URenderer::PrintDebugInfo()
+{
     GLint major, minor, mrt;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);

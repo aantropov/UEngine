@@ -21,20 +21,15 @@ class UTexture;
 class UScene;
 class UFrameBufferObject;
 
-// Renderer
 class URenderer: public USingleton<URenderer>
 {
-    //Main window
     UWindow uWnd;
 
-    // Initialization
     bool InitExtensions();
     bool SetVerticalSynchronization(bool enabled);
 
-    // Debug info printing
     void PrintDebugInfo();
     
-    // ModelView Matrix Stack
     std::vector<mat4> modelViewMatrixStack;
     UScene* currentScene;
 
@@ -52,7 +47,6 @@ class URenderer: public USingleton<URenderer>
            
 public:
     
-    //Scene methods
     void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
     UScene UENGINE_DECLSPEC *GetCurrentScene();
     
@@ -61,20 +55,15 @@ public:
     URenderer();
     ~URenderer();
 
-    // It is very important, to contain camera in renderer object
     UCamera camera;
     
-    //Creates a window and initializes OpenGL, it uses UConfig
     bool Initialize();
 
-    //Returns HWND of the main window
     HWND GetHWND() { return uWnd.GetHWND(); }
 
-    //Get width and height
     int GetWidth(){ return uWnd.GetWidth(); }
     int GetHeight(){ return uWnd.GetHeight(); }
         
-    //Releases a window
     void Release();
 
     //Operations with Stack

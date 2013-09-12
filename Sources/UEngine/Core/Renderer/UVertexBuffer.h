@@ -5,7 +5,6 @@
 
 class UIndexBuffer;
 
-// VBO for vertices
 class UVertexBuffer : public UBuffer
 {    
     int num_vertices;    
@@ -88,4 +87,3 @@ public:
     UVertexBuffer(void);
     virtual ~UVertexBuffer(void);
 };
-

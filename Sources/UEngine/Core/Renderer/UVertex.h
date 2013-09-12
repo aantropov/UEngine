@@ -2,19 +2,13 @@
 #include "..\math\UMath.h"
 #include "..\Utils\ExportDef.h"
 
-// Vertex
 class UVertex
 {
-    // Position
     vec3 pos;    
-    // Normal
     vec3 normal;    
-    //Texcoords
     vec2 texcoord;
-    //Binormal
     vec3 binormal;
     
-    //Bones
     vec4 bone_index;
     vec4 bone_weight;
 
@@ -22,23 +16,18 @@ public:
 
     static const int offsetPos = sizeof(vec3) + sizeof(vec3) + sizeof(vec2) + sizeof(vec3) + sizeof(vec4) + sizeof(vec4);
 
-    // Position setters and getters
     void UENGINE_DECLSPEC SetPosition(vec3 p){  pos = p; }
     vec3 UENGINE_DECLSPEC GetPosition(){ return pos; }
 
-    // Normal setters and getters
     void UENGINE_DECLSPEC SetNormal(vec3 p){  normal = p; }
     vec3 UENGINE_DECLSPEC GetNormal(){ return pos; }
     
-    // Texcoord setters and getters
     void UENGINE_DECLSPEC SetTexcoord(vec2 t){  texcoord = t; }
     vec2 UENGINE_DECLSPEC GetTexcoord(){ return texcoord; }
 
-    // Binormal setters and getters
     void UENGINE_DECLSPEC SetBinormal(vec3 bn){  binormal = bn; }
     vec3 UENGINE_DECLSPEC GetBinormal(){ return binormal; }
 
-    // Bones
     void UENGINE_DECLSPEC SetBoneIndex(vec4 bn){  bone_index = bn; }
     vec3 UENGINE_DECLSPEC GetBoneIndex(){ return bone_index; }
 
@@ -53,4 +42,3 @@ public:
     UENGINE_DECLSPEC UVertex(void);
     UENGINE_DECLSPEC ~UVertex(void);
 };
-

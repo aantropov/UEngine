@@ -5,8 +5,8 @@
 #include "..\Basic\ULight.h"
 #include "..\UEngine.h"
 
-URenderManager::URenderManager(){
-
+URenderManager::URenderManager()
+{
     if(atoi(UConfig::GetInstance()->GetParam("/xml/config/deffered_lighting/").c_str()) == 1)
         lighting = new UDefferedLighting();
     else
@@ -38,12 +38,13 @@ URenderManager::URenderManager(){
     depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
 }
 
-URenderManager::~URenderManager(void){
+URenderManager::~URenderManager(void)
+{
     delete lighting;
 }
 
-void URenderManager::Render(UScene* scene){
-
+void URenderManager::Render(UScene* scene)
+{
     auto render = URenderer::GetInstance();
 
     UCamera previousCam = URenderer::GetInstance()->GetCamera();
@@ -63,8 +64,8 @@ void URenderManager::Render(UScene* scene){
             continue;
 
         auto depthTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
-        for(unsigned int j = 0; j < depthTextures.size(); j++){
-            
+        for(unsigned int j = 0; j < depthTextures.size(); j++)
+        {
             depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_DEPTH);
             glClear(GL_DEPTH_BUFFER_BIT);    
 

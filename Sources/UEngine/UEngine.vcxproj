@@ -102,7 +102,6 @@
     <ClCompile Include="Core\Basic\UIUpdateble.cpp" />
     <ClCompile Include="Core\Basic\ULight.cpp" />
     <ClCompile Include="Core\Basic\UMatrix.cpp" />
-    <ClCompile Include="Core\Basic\UMatrixRotation.cpp" />
     <ClCompile Include="Core\Basic\UNode.cpp" />
     <ClCompile Include="Core\Basic\URegistry.cpp" />
     <ClCompile Include="Core\Basic\UScene.cpp" />
@@ -147,7 +146,6 @@
     <ClInclude Include="Core\Basic\UIUpdateble.h" />
     <ClInclude Include="Core\Basic\ULight.h" />
     <ClInclude Include="Core\Basic\UMatrix.h" />
-    <ClInclude Include="Core\Basic\UMatrixRotation.h" />
     <ClInclude Include="Core\Basic\UNode.h" />
     <ClInclude Include="Core\Basic\URegistry.hpp" />
     <ClInclude Include="Core\Basic\UScene.h" />

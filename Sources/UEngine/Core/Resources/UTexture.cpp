@@ -6,7 +6,6 @@ UTexture::UTexture(void)
     texture_res_id = 0;
 }
 
-
 UTexture::~UTexture(void)
 {
     Free();
@@ -28,7 +27,9 @@ bool UTexture:: Load(std:: string path)
     DEVIL_CHECK_FOR_ERRORS();
     return true;
 }
-void UTexture::   Free(){
+
+void UTexture::   Free()
+{
     if(_id != -1)
         URenderer::GetInstance()->DeleteTexture(this);
     if(texture_res_id != 0)

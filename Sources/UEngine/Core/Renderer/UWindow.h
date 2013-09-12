@@ -1,16 +1,17 @@
-// Creates a window with all neccessary settings
 #pragma once
 #include "..\Utils\ULogger.h"
 #include "URendererHelper.h"
-// User inout intrface. Very standard. Thx to tutorials.
-struct UKeys{
+
+struct UKeys
+{
 
         UINPUT_KEY_STATE keyState[256];
         UINPUT_KEY_STATE buttonState[3];
         int     cursorPos[2];
 };
 
-class UInput{    
+class UInput
+{    
     public:    
     
     static bool IsKeyDown(unsigned short int key);
@@ -26,22 +27,14 @@ class UInput{
 
 class UWindow
 {
-
-    // Standard window processing function
-    //LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-    
-    //Windows variables
     HINSTANCE g_hInstance;
     HGLRC     g_hRC;
-    // Static variables
+    
     static HWND      g_hWnd;
     static HDC       g_hDC;
     
-
     static const string UWND_CLASS_NAME;
-
-
-    // Variables
+    
     int width;
     int height;
 
@@ -51,6 +44,7 @@ class UWindow
     static bool running;
 
 public:
+    
     UWindow();
     ~UWindow();
     
@@ -81,6 +75,4 @@ public:
     
     // Set window size
     void SetSize(int width, int height, bool isFullScreen = false);
-
 };
-

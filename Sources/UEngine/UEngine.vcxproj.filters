@@ -147,9 +147,6 @@
     <ClCompile Include="Core\Basic\UMatrix.cpp">
       <Filter>Core\Basic</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Basic\UMatrixRotation.cpp">
-      <Filter>Core\Basic</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Basic\UNode.cpp">
       <Filter>Core\Basic</Filter>
     </ClCompile>
@@ -315,9 +312,6 @@
       <Filter>Core\Basic</Filter>
     </ClInclude>
     <ClInclude Include="Core\Basic\UMatrix.h">
-      <Filter>Core\Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Basic\UMatrixRotation.h">
       <Filter>Core\Basic</Filter>
     </ClInclude>
     <ClInclude Include="Core\Basic\UNode.h">

@@ -2,36 +2,39 @@
 //#include "URendererHelper.h"
 //#include "UEngine.h"
 
-UXMLFile::UXMLFile(){
+UXMLFile::UXMLFile()
+{
     fXml = NULL;
 }
 
-UXMLFile::~UXMLFile(){
+UXMLFile::~UXMLFile()
+{
 }
 
-std::string UXMLFile:: GetPath(){
+std::string UXMLFile:: GetPath()
+{
     return sPath;
 }
 
-bool UXMLFile::OpenFile(string path){
-    
-    //Safe opening
+bool UXMLFile::OpenFile(string path)
+{
     fopen_s(&fXml, path.c_str() , "rb");
-    
-    if(fXml == NULL){        
+    if(fXml == NULL)
+    {
         ULogger::GetInstance()->Message("XMLFile: Can`t open file " + path, ULOG_MSG_ERROR);    
         return false;
     }
 
     sPath = path;
     ULogger::GetInstance()->Message("XMLFile: " + path + " is opened");
-    
+
     return true;
 }
 
 void UXMLFile::CloseFile()
 {
-    if(fXml != NULL){
+    if(fXml != NULL)
+    {
         fclose(fXml);
         ULogger::GetInstance()->Message("XMLFile: " + sPath + " is closed");
     }
@@ -64,7 +67,6 @@ vector<std::string> UXMLFile::GetElements(std::string key)
 
 bool UXMLFile::Load(string path)
 {
-    
     if(!OpenFile(path))
         return false;
 
@@ -72,10 +74,12 @@ bool UXMLFile::Load(string path)
     string currentMapTag = "/";
     string lastWord;
     string value;
-    
+
     char buffer[UE_MAXCHAR];
     memset(buffer, '\0' , UE_MAXCHAR);
-    try{
+
+    try
+    {
         while(!feof(fXml)){
             // Get line
             temp = std::fgets(buffer, MAXCHAR, fXml);
@@ -87,7 +91,7 @@ bool UXMLFile::Load(string path)
             bool isEndingTag = false;
 
             for(unsigned int i = 0; i < temp.length() ; i++){            
-            
+
                 // if it is a new tag
                 if(temp[i] == '<' && startTag == -1){
                     if(temp[i+1] == '/'){
@@ -104,7 +108,7 @@ bool UXMLFile::Load(string path)
 
                 // if end of tag
                 if(temp[i] == '>' && startTag != -1){
-                
+
                     // tag name
                     lastWord = temp.substr(startTag, i - startTag);
 
@@ -127,17 +131,12 @@ bool UXMLFile::Load(string path)
                 }                
             }                
         }
+        CloseFile();
 
-    //Close file
-    CloseFile();
-
-    }catch(exception ex){
-
+    }
+    catch(exception ex)
+    {
         ULogger::GetInstance()->Message("UXMLFile: Uncorrect xml" ,ULOG_MSG_ERROR);        
     }
-    //Show all values
-    //for(int i = 0; i < elements.size(); i++)
-    //    ULogger::GetInstance()->Message( elements[i].name+ "  "+ elements[i].value,ULOG_MSG_INFO ,ULOG_OUT_MSG);
-
     return true;
 }

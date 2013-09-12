@@ -3,8 +3,8 @@
 #include "UTexture.h"
 #include "stdio.h"
 
-void UModel:: Render(URENDER_TYPE type){
-
+void UModel:: Render(URENDER_TYPE type)
+{
     URenderer::GetInstance()->PushModelMatrix();
     m.Set();
     for(int i = mesh_num-1; i >= 0; i--)
@@ -18,8 +18,8 @@ void UModel:: Render(URENDER_TYPE type){
     URenderer::GetInstance()->PopModelMatrix();
 }
 
-void UModel:: Render(UMaterial *mat){
-
+void UModel:: Render(UMaterial *mat)
+{
     URenderer::GetInstance()->PushModelMatrix();
     m.Set();
     
@@ -30,22 +30,24 @@ void UModel:: Render(UMaterial *mat){
         meshes[i]->Render(mat);
     URenderer::GetInstance()->PopModelMatrix();
 }
-void UModel:: Update(double delta){
 
+void UModel:: Update(double delta)
+{
     UComponent::Update(delta);
     for(unsigned int i = 0; i < mesh_num; i++)
             meshes[i]->Update(delta);
 }
 
-void UModel:: Free(){
+void UModel:: Free()
+{
     for(unsigned int i = 0; i < mesh_num; i++)
         delete meshes[i];
     meshes.clear();
     mesh_num = 0;
 }
 
-bool UModel:: Load(std:: string path){
-    
+bool UModel:: Load(std:: string path)
+{
     UXMLFile xml;
     
     char buffer[UE_MAXCHAR];
@@ -271,7 +273,9 @@ bool UModel:: Load(std:: string path){
             fclose(file);
         }
 
-    }catch(exception e){
+    }
+    catch(exception e)
+    {
         ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
         return false;
     }

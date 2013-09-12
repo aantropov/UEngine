@@ -5,10 +5,8 @@
 
 class UShader;
 
-//Contains pixel and vertex shaders
 class UShaderProgram : public UNode, public UGLObject, public UResource
 {    
-    // Shader program is a tuple which contains  pixel and vertex shaders
     UShader *pixel_sh;
     UShader *vertex_sh;
 
@@ -48,20 +46,15 @@ public:
 
     UUniformLocations locations;
 
-    //Create Shader Program
     void InitLocations();
 
-    //void CreateShaderProgram(std::string vertexshd_path, std::string pixelshd_path);
     virtual bool Load(string path);
     bool Load(std::string vertexshd_path, std::string pixelshd_path);
 
-    //SetShader
     void Render();
-    // Free
     virtual void Free();
 
     UShaderProgram(const UShaderProgram& s) {this->pixel_sh = s.pixel_sh; this->vertex_sh = s.vertex_sh; this->_id = s._id; };
     UShaderProgram(void);
     virtual ~UShaderProgram(void);
 };
-

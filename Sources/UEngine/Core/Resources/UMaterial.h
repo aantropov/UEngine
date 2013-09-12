@@ -5,8 +5,7 @@
 #include "UTexture.h"
 #include <map>
 
-class UMaterial :
-    public UNode, public UResource
+class UMaterial : public UNode, public UResource
 {
     vec4  ambient;
     vec4  diffuse;
@@ -51,4 +50,3 @@ public:
     virtual bool Load(std::string path);
     virtual void Free() {}
 };
-

@@ -1,8 +1,7 @@
 #pragma once
 #include "URenderer.h"
 
-// Not implemented yet
-class UUniformBlockBuffer: public UGLObject
+class UUniformBlockBuffer : public UGLObject
 {
 public:
 
@@ -24,4 +23,3 @@ public:
     UUniformBlockBuffer(void);
     virtual ~UUniformBlockBuffer(void);
 };
-

@@ -3,12 +3,15 @@
 #include "..\Resources\UResourceFactory.h"
 #include "..\UEngine.h"
 
-void UShaderProgram::Free(){    
+void UShaderProgram::Free()
+{    
         if(_id != -1)
             URenderer::GetInstance()->DeleteShaderProgram(this);
         _id = -1;
 }
-void UShaderProgram:: Render(){
+
+void UShaderProgram:: Render()
+{
     URenderer::GetInstance()->SetShaderProgram(this);
 }
 
@@ -40,15 +43,16 @@ void UShaderProgram:: InitLocations()
 
     locations.skinning_transformsNum = glGetUniformLocation(_id, "skinning_transformsNum" );
     locations.skinning_transforms = glGetUniformLocation(_id, "skinning_transforms" );
-    
 }
+
 bool UShaderProgram:: Load(string path)
 {
     //not implemented yet
     return false;
 }
-bool UShaderProgram:: Load(std::string vertexshd_path, std::string pixelshd_path){
 
+bool UShaderProgram:: Load(std::string vertexshd_path, std::string pixelshd_path)
+{
     UShader *vs = dynamic_cast<UShader*>(rf->Get(vertexshd_path));
     UShader *ps = dynamic_cast<UShader*>(rf->Get(pixelshd_path));
 
@@ -65,7 +69,9 @@ bool UShaderProgram:: Load(std::string vertexshd_path, std::string pixelshd_path
     InitLocations();
 
     return true;
-}/*
+}
+
+/*
 void UShaderProgram:: CreateShaderProgram(std::string vertexshd_path, std::string pixelshd_path){
         
         vertex_sh.Load(vertexshd_path,&vertex_sh);
@@ -77,9 +83,12 @@ void UShaderProgram:: CreateShaderProgram(std::string vertexshd_path, std::strin
         shader_program_id = URenderer::GetInstance()->CreateShaderProgram(&vertex_sh, &pixel_sh);
 }
 /**/
-UShaderProgram::UShaderProgram(void){
+
+UShaderProgram::UShaderProgram(void)
+{
 }
 
-UShaderProgram::~UShaderProgram(void){
+UShaderProgram::~UShaderProgram(void)
+{
     Free();
 }

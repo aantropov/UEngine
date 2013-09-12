@@ -3,8 +3,8 @@
 #include <sstream>
 #include <string>
 
-// It is important
-std::vector<std::string> Split(std::string str){
+std::vector<std::string> Split(std::string str)
+{
     std::vector<std::string> res;
     std::stringstream iss(str);
 

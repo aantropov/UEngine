@@ -21,4 +21,3 @@ public:
     UResource() : resourceId(""), rf(nullptr) {}
     virtual ~UResource();
 };
-

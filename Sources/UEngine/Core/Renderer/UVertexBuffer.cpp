@@ -1,7 +1,6 @@
 #include "UVertexBuffer.h"
 #include "UIndexBuffer.h"
 
-
 UVertexBuffer::UVertexBuffer(void)
 {
     vertices = NULL;
@@ -18,8 +17,8 @@ void UVertexBuffer:: ComputeTBN(UIndexBuffer* ib)
     unsigned int *data = (unsigned int*)ib->GetPointer();
     unsigned int iterator = 0;
     
-    for(int i = 0; i < ib->GetNum()/3 ; i ++){
-            
+    for(int i = 0; i < ib->GetNum()/3 ; i ++)
+    {
         vertices[data[iterator]].SetBinormal(
             vertextangentspace(vertices[data[iterator]].GetPosition(), 
                            vertices[data[iterator+1]].GetPosition(),

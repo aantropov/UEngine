@@ -59,7 +59,8 @@ bool UMaterial::Load(std::string path)
     UXMLFile xml;
     char tex_buffer[UE_MAXCHAR];
 
-    try{
+    try
+    {
         xml.Load(path);
         this->name = xml.GetElement("/xml/material/name/");
         
@@ -130,42 +131,37 @@ bool UMaterial::Load(std::string path)
         }
 
 
-    }catch(exception e){
+    }
+    catch(exception e)
+    {
         ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
         return false;
     }
     return true;
 }
 
-UShaderProgram* UMaterial::GetShaderProgram(URENDER_TYPE type){ 
-
+UShaderProgram* UMaterial::GetShaderProgram(URENDER_TYPE type)
+{
     if(type == URENDER_FORWARD) 
         return spForward;
     else if(type == URENDER_DEPTH)
     {
-    //    if(spDepth == nullptr)
-    //        spDepth = UEngine::rf.Load(UConfig::GetInstance()->GetParam("/xml/config/shaders/depth/vertex_path/"), 
-    //                                   UConfig::GetInstance()->GetParam("/xml/config/shaders/depth/pixel_path/"));
         return spDepth;
     }
     else if(type == URENDER_NORMAL)
     {
-    //    if(spNormal == nullptr)
-    //        spNormal = UEngine::rf.Load(UConfig::GetInstance()->GetParam("/xml/config/shaders/normal/vertex_path/"), 
-    //                                               UConfig::GetInstance()->GetParam("/xml/config/shaders/normal/pixel_path/"));
         return spNormal;
     }
     else if(type == URENDER_DEFFERED)
     {
-    //    if(spDeffered == nullptr)
-    //        spDeffered = UEngine::rf.Load(UConfig::GetInstance()->GetParam("/xml/config/shaders/deffered_lighting_object/vertex_path/"), 
-    //                                                     UConfig::GetInstance()->GetParam("/xml/config/shaders/deffered_lighting_object/pixel_path/"));
         return spDeffered;
     }
+
     return nullptr;
 }
 
-void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type){
+void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type)
+{
     if(type == URENDER_FORWARD) 
         spForward = _sp; 
     else if(type == URENDER_DEPTH)
@@ -176,8 +172,8 @@ void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type){
         spDeffered = _sp;
 }
 
-void UMaterial::Render(URENDER_TYPE type){
-        
+void UMaterial::Render(URENDER_TYPE type)
+{
     UShaderProgram *sp = GetShaderProgram(type);
     
     if(sp == nullptr)
@@ -238,9 +234,11 @@ void UMaterial::Render(URENDER_TYPE type){
     OPENGL_CHECK_FOR_ERRORS();
     params["time"] = (float)GetTickCount();
 
-    if(params.size() > 0){
+    if(params.size() > 0)
+    {
         map<string, float>::iterator i = params.begin();
-        do{
+        do
+        {
             render->CacheUniform1((*i).first, 1, &(*i).second);
             OPENGL_CHECK_FOR_ERRORS();
 
@@ -261,6 +259,8 @@ void UMaterial::Render(URENDER_TYPE type){
     }
 
 }
-void UMaterial::Render(UShaderProgram* sp){
+
+void UMaterial::Render(UShaderProgram* sp)
+{
     //not implemented yet
 }

@@ -53,9 +53,8 @@ using namespace std;
 #include "Lua\UScriptEngine.h"
 #include "Lua\UScript.h"
 
-//The main class 
-class UEngine {
-
+class UEngine 
+{
     UScene* currentScene;
     URenderManager* renderManager;
 
@@ -72,12 +71,8 @@ public:
         URenderer::GetInstance()->SetCurrentScene(currentScene);
     }
 
-    // Init UEngine
     bool UENGINE_DECLSPEC Initialize();
-    // Run Main loop
     void UENGINE_DECLSPEC Run();
-    // Stop Main loop
     void UENGINE_DECLSPEC Stop();
-    // Release all data
     void UENGINE_DECLSPEC Release();
 };

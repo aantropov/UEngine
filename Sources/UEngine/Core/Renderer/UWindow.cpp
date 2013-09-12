@@ -13,18 +13,19 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 // input
 static UKeys    g_input;
 
-UWindow::UWindow(){
+UWindow::UWindow()
+{
     width = 1024;
     height = 768;
     fullscreen = false;
 }
 
-
-UWindow::~UWindow(){
+UWindow::~UWindow()
+{
 }
 
-bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
-        
+bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
+{
     UWindow::width = width;
     UWindow::height = height;
     UWindow::fullscreen = fullScreen;
@@ -64,7 +65,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
     wcx.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
     wcx.hCursor       = LoadCursor(NULL, IDC_ARROW);
 
-    if (!RegisterClassEx(&wcx)){
+    if (!RegisterClassEx(&wcx))
+    {
         char message[MAXCHAR];
         sprintf_s(message,"RegisterClassEx fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -91,7 +93,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
     g_hWnd = CreateWindowEx(exStyle, (LPCWSTR)UWND_CLASS_NAME.c_str(), title, style, rect.left, rect.top,
         rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, g_hInstance, NULL);
 
-    if (!g_hWnd){
+    if (!g_hWnd)
+    {
         char message[MAXCHAR];
         sprintf_s(message,"CreateWindowEx fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -101,7 +104,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
     // ïGet window descriptor
     g_hDC = GetDC(g_hWnd);
 
-    if (!g_hDC){
+    if (!g_hDC)
+    {
         char message[MAXCHAR];
         sprintf_s(message,"GetDC fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -119,7 +123,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
 
     // Get pixel format for format which is described above
     format = ChoosePixelFormat(g_hDC, &pfd);
-    if (!format || !SetPixelFormat(g_hDC, format, &pfd)){
+    if (!format || !SetPixelFormat(g_hDC, format, &pfd))
+    {
         char message[MAXCHAR];
         sprintf_s(message,"Setting pixel format fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -129,7 +134,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
     // Create temp rendering context
     // It is neccessary for getting wglCreateContextAttribsARB function
     hRCTemp = wglCreateContext(g_hDC);
-    if (!hRCTemp || !wglMakeCurrent(g_hDC, hRCTemp)){
+    if (!hRCTemp || !wglMakeCurrent(g_hDC, hRCTemp))
+    {
         char message[MAXCHAR];
         sprintf_s(message,"Ñreating temp render context fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -147,7 +153,8 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(hRCTemp);
 
-    if (!wglCreateContextAttribsARB){
+    if (!wglCreateContextAttribsARB)
+    {
         char message[MAXCHAR];
         sprintf_s(message,"wglCreateContextAttribsARB fail (%d), try to create context with wglCreateContext", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -155,12 +162,15 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
         
         // Create context with OpenGL 2 support
         g_hRC = wglCreateContext(g_hDC);
-    }else{
+    }
+    else
+    {
         // Create extended context with OpenGL 3 support
         g_hRC = wglCreateContextAttribsARB(g_hDC, 0, attribs);
     }
 
-    if (!g_hRC || !wglMakeCurrent(g_hDC, g_hRC)){
+    if (!g_hRC || !wglMakeCurrent(g_hDC, g_hRC))
+    {
         char message[MAXCHAR];
         sprintf_s(message,"Creating render context fail (%d)", GetLastError());
         ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
@@ -174,8 +184,9 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen){
 
     return true;
 }
-void UWindow::SetSize(int width, int height, bool isFullScreen){
-        
+
+void UWindow::SetSize(int width, int height, bool isFullScreen)
+{
     RECT    rect;
     DWORD   style, exStyle;
     DEVMODE devMode;
@@ -183,7 +194,8 @@ void UWindow::SetSize(int width, int height, bool isFullScreen){
     int     x, y;
 
     // If we change from fullscreen mode
-    if (fullscreen && !isFullScreen){
+    if (fullscreen && !isFullScreen)
+    {
         ChangeDisplaySettings(NULL, CDS_RESET);
         ShowCursor(TRUE);
     }
@@ -202,7 +214,8 @@ void UWindow::SetSize(int width, int height, bool isFullScreen){
 
         // Try to set fullscreen mode
         result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);
-        if (result != DISP_CHANGE_SUCCESSFUL){
+        if (result != DISP_CHANGE_SUCCESSFUL)
+        {
             char message[MAXCHAR];
             sprintf_s(message,"ChangeDisplaySettings fail %dx%d (%d)", width, height, result);
             ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
@@ -211,13 +224,16 @@ void UWindow::SetSize(int width, int height, bool isFullScreen){
     }
 
     // If fullscreen mode setuped succesfully
-    if (fullscreen)    {
+    if (fullscreen)
+    {
         ShowCursor(FALSE);
         style   = WS_POPUP;
         exStyle = WS_EX_APPWINDOW | WS_EX_TOPMOST;
 
         x = y = 0;
-    } else { //Window
+    } 
+    else 
+    { //Window
         style   = WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
         exStyle = WS_EX_APPWINDOW;
 
@@ -261,15 +277,19 @@ void UWindow::SetSize(int width, int height, bool isFullScreen){
 
     OPENGL_CHECK_FOR_ERRORS();
 }
-void UWindow:: Destroy(){
+
+void UWindow:: Destroy()
+{
     // Restore window size
-    if (fullscreen){
+    if (fullscreen)
+    {
         ChangeDisplaySettings(NULL, CDS_RESET);
         ShowCursor(TRUE);
     }
 
     // Release renderer`s context 
-    if (g_hRC){
+    if (g_hRC)
+    {
         wglMakeCurrent(NULL, NULL);
         wglDeleteContext(g_hRC);
     }
@@ -393,21 +413,21 @@ bool UInput:: IsButtonDown(unsigned short int  button)
     return (g_input.buttonState[button] != UINPUT_UP);
 }
 
-bool UInput:: IsButtonClick(unsigned short int  button){    
-
+bool UInput:: IsButtonClick(unsigned short int  button)
+{    
     bool pressed = (g_input.buttonState[button] == UINPUT_PRESSED);
     g_input.buttonState[button] = UINPUT_DOWN;
     return pressed;
 }
 
-void UInput:: GetCursorPos(int *x, int *y){
-    
+void UInput:: GetCursorPos(int *x, int *y)
+{
     *x = g_input.cursorPos[0];
     *y = g_input.cursorPos[1];
 }
 
-void UInput:: SetCursorPos(int x, int y){
-
+void UInput:: SetCursorPos(int x, int y)
+{
     POINT pos = {x, y};
     ClientToScreen(URenderer::GetInstance()->GetHWND(), &pos);
 
@@ -418,7 +438,8 @@ void UInput:: SetCursorPos(int x, int y){
     g_input.cursorPos[1] = y;
 }
 
-void UInput:: ShowCursor(bool visible){
+void UInput:: ShowCursor(bool visible)
+{
     ::ShowCursor(visible ? TRUE : FALSE);
 }
 
