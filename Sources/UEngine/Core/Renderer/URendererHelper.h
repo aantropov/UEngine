@@ -39,6 +39,7 @@ extern ILenum g_DevILError;
 
 // Safe OpenGL functions calling
 #ifdef UE_DEBUG
+
 // Get function address from the driver
 #define OPENGL_GET_PROC(p,n) \
     n = (p)wglGetProcAddress(#n); \
@@ -47,6 +48,7 @@ extern ILenum g_DevILError;
     ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
         /*return false;*/ \
     }
+
 #define DEVIL_CHECK_FOR_ERRORS() \
     if ((g_DevILError = ilGetError()) != IL_NO_ERROR) \
     { \
@@ -54,6 +56,7 @@ extern ILenum g_DevILError;
         sprintf_s(message, "DevIL error 0x%X", (unsigned)g_DevILError); \
         ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
     }
+
 #define OPENGL_CHECK_FOR_ERRORS() \
     if ((g_OpenGLError = glGetError()) != GL_NO_ERROR) \
     { \
@@ -61,6 +64,7 @@ extern ILenum g_DevILError;
         sprintf_s(message, "OpenGL error 0x%X", (unsigned)g_OpenGLError); \
         ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
     }
+
 #define OPENGL_CALL(expression) \
     { \
         expression; \

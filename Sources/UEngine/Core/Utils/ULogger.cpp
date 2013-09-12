@@ -1,24 +1,29 @@
 #include "ULogger.h"
 
-ULogger* ULogger:: GetInstance(){
-    if(instance == NULL){
+ULogger* ULogger:: GetInstance()
+{
+    if(instance == NULL)
+    {
         instance = new ULogger();
     }
     return instance;
 }
 
-ULogger:: ULogger(){
+ULogger:: ULogger()
+{
     //Safe opening
     fopen_s(&fLog, ULOG_FILE_PATH.c_str(), "a");
     Message("ULogger singleton object is created...");
 }
 
-ULogger:: ~ULogger(){
+ULogger:: ~ULogger()
+{
     Message("ULogger singleton object is deleted...");
     fclose(fLog);
 }
 
-void ULogger::Message(string text, ULOG_MSG_TYPE msg_type, ULOG_OUT out){
+void ULogger::Message(string text, ULOG_MSG_TYPE msg_type, ULOG_OUT out)
+{
     // Current date and time
     SYSTEMTIME st; 
     GetSystemTime(&st); 
