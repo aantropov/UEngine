@@ -4,8 +4,8 @@
 
 class UGameObject;
 
-class UComponent : public UNode {
-
+class UComponent : public UNode 
+{
 public:
 
     std::string name;

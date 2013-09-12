@@ -5,9 +5,11 @@
 
 class UMaterial;
 
-class UGameObject : public UNode{
+class UGameObject : public UNode
+{
 protected:
     std::vector<UComponent*> components;
+
 public:
     
     std::string name;

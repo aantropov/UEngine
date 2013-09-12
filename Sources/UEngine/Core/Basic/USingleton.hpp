@@ -1,8 +1,8 @@
 #pragma once
 
 template<typename T>
-class USingleton {
-    
+class USingleton 
+{
 protected:
 
     static T* instance;

@@ -10,7 +10,6 @@ struct mat4;
 
 struct transform
 {
-
 public:
     
     vec4 position;
@@ -24,9 +23,6 @@ public:
 
     transform();
     transform(vec4 pos, quat rotation, vec4 scale);    
-
 };
 
 const ::transform lerp(::transform a, ::transform b, float t);
-
-

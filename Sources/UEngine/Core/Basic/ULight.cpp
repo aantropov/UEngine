@@ -61,8 +61,8 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     local.position = pos;
 }
 
- mat4 ULight:: GetLightTransform(){
-
+ mat4 ULight:: GetLightTransform()
+ {
     static const mat4 bias(
             0.5f, 0.0f, 0.0f, 0.5f,
             0.0f, 0.5f, 0.0f, 0.5f,
@@ -74,7 +74,6 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     mat4 viewProjection = bias * cameras[0].GetProjection() * view;
     return viewProjection.m;
     //URenderer::GetInstance()->CacheUniformMatrix(light+ "transform", 1, viewProjection.m);    
-
 }
  
 void ULight:: SetShadowTexture(unsigned int location, int i)
@@ -85,8 +84,9 @@ void ULight:: SetShadowTexture(unsigned int location, int i)
         URenderer::GetInstance()->Uniform1(max(location + i, location), SHADOW_TEXTURE_CHANNEL + i);
     }
 }
-void ULight:: SetLightTransform(string light){
-    
+
+void ULight:: SetLightTransform(string light)
+{
     // Deprecated!
     static const mat4 bias(
             0.5f, 0.0f, 0.0f, 0.5f,
@@ -101,6 +101,7 @@ void ULight:: SetLightTransform(string light){
     URenderer::GetInstance()->CacheUniformMatrix4(light+ "transform", 1, viewProjection.m);    
 
 }
+
 void ULight:: SetShaderParameters(int i)
 {    
     // Deprecated!
@@ -122,19 +123,22 @@ void ULight:: SetShaderParameters(int i)
     renderer->CacheUniform1( light + "spotCosCutoff",1, &spotCosCutoff);
     
     SetLightTransform(light);
-    
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 }
 
-std::vector<UTexture*> ULight::GetDepthTextures(){ 
+std::vector<UTexture*> ULight::GetDepthTextures()
+{
     return depthTextures; 
 }
-std::vector<UCamera> ULight::GetCameras(){ 
+
+std::vector<UCamera> ULight::GetCameras()
+{ 
     return cameras; 
 }
+
 ULight::~ULight(void)
 {
 }
+
 void ULight::InitModel(UResourceFactory* rf)
 {
     model = dynamic_cast<UModel*>(rf->Create(URESOURCE_MODEL));
@@ -146,7 +150,7 @@ void ULight::InitModel(UResourceFactory* rf)
 void ULight:: Update(double delta)
 {    
     UGameObject::Update(delta);
-    
+
     //spotDirection = -vec3_y;
     spotDirection = -normalize(world.transformVec3(local.position));
 //    world

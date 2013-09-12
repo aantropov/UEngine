@@ -50,7 +50,6 @@ void UScene::UpdateLightParams()
 //Update with deltaTime
 void UScene::Update(double deltaTime)
 {
-        
     UInput::ShowCursor(false);
     
     //Camera movement
@@ -70,16 +69,16 @@ void UScene::Update(double deltaTime)
 //RenderScene
 void UScene::Render(URENDER_TYPE type)
 {
-        if(root != NULL)
-            root->Render(type);
-        URenderer::GetInstance()->modelView= mat4_identity;
+    if(root != NULL)
+        root->Render(type);
+    URenderer::GetInstance()->modelView= mat4_identity;
 }
 
 void UScene::Render(UMaterial *m)
 {
-        if(root != NULL)
-            root->Render(m);
-        URenderer::GetInstance()->modelView= mat4_identity;
+    if(root != NULL)
+        root->Render(m);
+    URenderer::GetInstance()->modelView= mat4_identity;
 }
 
 UScene::~UScene(void)

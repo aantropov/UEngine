@@ -10,7 +10,6 @@
 #include "..\Basic\UIRenderable.h"
 #include <map>
 
-// Standard class for geometry render
 class UMesh: public UNode, public UIRenderable
 {
     class UShaderParameters
@@ -25,8 +24,8 @@ class UMesh: public UNode, public UIRenderable
         int boneWeightsLocation;
     };
 
-    // init buffers
-    bool InitializeBuffers(){
+    bool InitializeBuffers()
+    {
         return ib.Initialize() & vb.Initialize(&ib);
     }
     

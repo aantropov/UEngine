@@ -5,8 +5,10 @@
 
 class UScene;
 
-class ULighting{
+class ULighting
+{
 public:
+
     UTexture* resScene;
     UTexture* depthScene;
     UTexture* normalScene;
@@ -17,14 +19,13 @@ public:
     virtual UTexture *Render(UScene *scene) = 0;
 };
 
-
 class UForwardLighting : public ULighting
 {
 public:
+
     virtual UTexture *Render(UScene *scene);
     UForwardLighting();
 };
-
 
 class UDefferedLighting : public ULighting
 {

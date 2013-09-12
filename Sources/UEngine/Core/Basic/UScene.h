@@ -38,7 +38,7 @@ public:
 
 class UScene
 {
-// Position of the cursor and the delta
+
 int cursorPos[2];
 double rotateDelta[2];
 double moveDelta[2];
@@ -150,12 +150,14 @@ public:
     void UENGINE_DECLSPEC Render(UMaterial *m);
 
     //Constructor
-    UENGINE_DECLSPEC UScene(void): root(NULL) {
+    UENGINE_DECLSPEC UScene(void): root(NULL)
+    {
         rotateDelta[0] = rotateDelta[1] = 0.0;
         moveDelta[0] = moveDelta[1] = 0.0;
     }
 
-    void UENGINE_DECLSPEC Free(){
+    void UENGINE_DECLSPEC Free()
+    {
         root->DeleteTopology();
         delete root;
     }
@@ -163,4 +165,3 @@ public:
     //Destructor
     UENGINE_DECLSPEC ~UScene(void);
 };
-

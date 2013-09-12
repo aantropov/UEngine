@@ -4,10 +4,10 @@
 bool UAnimation:: Load(std::string path)
 {    
     UXMLFile xml;
-    
     char buffer[UE_MAXCHAR];
     
-    try{
+    try
+    {
         xml.Load(path);
         this->name = xml.GetElement("/xml/animation/name/");
         
@@ -36,14 +36,14 @@ bool UAnimation:: Load(std::string path)
             fread(&total_bone_count, 4, 1, file);
             fread(&frame_count, 4, 1, file);
             
-            for(unsigned int i = 0; i < (unsigned int)frame_count; i++){
-
+            for(unsigned int i = 0; i < (unsigned int)frame_count; i++)
+            {
                 UKeyFrame frame;
                 
-                for(unsigned int j = 0; j < total_bone_count; j++){
-
+                for(unsigned int j = 0; j < total_bone_count; j++)
+                {
                     UBone bone;
-
+                    
                     char c_buffer[MAXCHAR];
                     memset(buffer, 0, MAXCHAR);
 
@@ -58,14 +58,12 @@ bool UAnimation:: Load(std::string path)
                     bone.name = string(c_buffer);
                     
                     fread(&bone.parent, 4, 1, file);
-
                     fread(&bone.tf.position, 4, 3, file);
                     fread(&bone.tf.rotation, 4, 4, file);
                     fread(&bone.tf.scale, 4, 3, file);
                 
                     frame.bones.push_back(bone);
                 }
-                
                 frames.push_back(frame);
             }
             
@@ -73,7 +71,9 @@ bool UAnimation:: Load(std::string path)
             fclose(file);
         }
 
-    }catch(exception e){
+    }
+    catch(exception e)
+    {
         ULogger::GetInstance()->Message("Error to load animation (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
         return false;
     }

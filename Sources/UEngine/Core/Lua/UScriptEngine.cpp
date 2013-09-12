@@ -46,5 +46,4 @@ void UScriptEngine::RegisterFunctions(UScript* script)
     
     //WrapFunc2<bool, UGameObject*, string, UScriptEngine::SetName>().registerFunc(script->GetLuaVM(), "SetName");
     //WrapFunc1<string, UGameObject*, UScriptEngine::GetName>().registerFunc(script->GetLuaVM(), "GetName");
-    
 }

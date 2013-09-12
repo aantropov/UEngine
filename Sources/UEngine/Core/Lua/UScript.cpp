@@ -27,14 +27,12 @@ void UScript:: Release()
 bool UScript:: Load(std::string path)
 {    
     UXMLFile xml;    
-    try{
-
+    try
+    {
         Initialize();
-        
         xml.Load(path);
         this->name = xml.GetElement("/xml/script/name/");
         
-        //load file
         int file = luaL_loadfile(luaVM, xml.GetElement("/xml/script/lua/").c_str());
         if(file != 0)
         {
@@ -59,6 +57,5 @@ void UScript:: Update(double delta)
         callLua0(luaVM, USCRIPT_INIT_FUNCTION);
         inited = true;
     }
-
     callLua1(luaVM, USCRIPT_UPDATE_FUNCTION, (double)delta);
 }

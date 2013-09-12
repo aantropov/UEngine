@@ -2,8 +2,8 @@
 
 class UGLObject
 {
-
 protected:
+
     int _id;
 
 public:
@@ -15,4 +15,3 @@ public:
     UGLObject(void);
     virtual ~UGLObject(void) { _id = -1; } 
 };
-

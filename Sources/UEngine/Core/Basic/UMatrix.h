@@ -1,14 +1,12 @@
 #pragma once
 #include "unode.h"
 #include "..\math\umath.h"
-//#include "URenderer.h"
 
-class UMatrix :
-    public UNode
+class UMatrix : public UNode
 {
-
 protected:
     mat4 m;
+
 public:    
     
     void Set(mat4 m1);
@@ -22,4 +20,3 @@ public:
     UMatrix(void);
     ~UMatrix(void);
 };
-

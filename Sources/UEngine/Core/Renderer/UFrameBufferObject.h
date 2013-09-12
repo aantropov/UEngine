@@ -6,7 +6,6 @@ class UTexture;
 
 class UFrameBufferObject : public UGLObject
 {
-
 public:
 
     bool Initialize();

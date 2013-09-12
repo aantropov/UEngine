@@ -2,8 +2,8 @@
 #include <map>
 
 template<typename Key, typename Value>
-class URegistry{
-
+class URegistry
+{
 public:
 
     static std::map<Key, Value> Registry;

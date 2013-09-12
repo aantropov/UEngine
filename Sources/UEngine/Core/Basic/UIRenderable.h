@@ -6,7 +6,6 @@ class UMaterial;
 
 class UIRenderable
 {
-
 protected:
 public:
     
@@ -18,4 +17,3 @@ public:
     UIRenderable(void);
     virtual ~UIRenderable(void);
 };
-

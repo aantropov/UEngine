@@ -1,7 +1,8 @@
 #include "ULighting.h"
 #include "..\UEngine.h"
 
-UDefferedLighting:: UDefferedLighting(){
+UDefferedLighting:: UDefferedLighting()
+{
     fb.Initialize();
     postfb.Initialize();
 
@@ -58,7 +59,6 @@ UDefferedLighting:: UDefferedLighting(){
     lighting->AddTexture(ambientScene, 4);
     lighting->AddTexture(specularScene, 5);    
     lighting->AddTexture(positionScene, 6);    
-
 }
 
 UTexture* UDefferedLighting:: Render(UScene *scene)
@@ -76,7 +76,6 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
     URenderer::GetInstance()->UnbindFBO();
 
     OPENGL_CHECK_FOR_ERRORS();
-
 
     auto lights = scene->GetLights();
     auto lightParams = URenderer::GetInstance()->GetCurrentScene()->lightParams;

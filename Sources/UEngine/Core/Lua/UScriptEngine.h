@@ -11,8 +11,8 @@ class UGameObject;
 class UComponent;
 struct transform;
 
-class UScriptEngine : public USingleton<UScriptEngine>{
-
+class UScriptEngine : public USingleton<UScriptEngine>
+{
 public:
     
     static UScriptEngine* GetInstance();

@@ -23,6 +23,7 @@ inline float round(float value, float precious)
 {
     return  precious * (value > 0.0 ? (floor(value/precious)) : ceil(value/precious));
 }
+
 inline double round(double value, double precious)
 {
     return precious * (value > 0.0 ? (floor(value/precious)) : ceil(value/precious));
@@ -402,7 +403,7 @@ inline vec3 vertextangentspace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2,
 
   float tmp = 0.0;
   
-  if (fabsf(et1.x*et2.y - et1.y*et2.x)<0.0001f)
+  if (fabsf(et1.x*et2.y - et1.y*et2.x) < 0.0001f)
     tmp = 1.0f;
   else
     tmp = 1.0 / (et1.x*et2.y - et1.y*et2.x);

@@ -1,7 +1,6 @@
 #pragma once
 #include "UGLObject.h"
 
-// Base class for Index and Vertex buffers
 class UBuffer: public UGLObject
 {
 public:
@@ -18,4 +17,3 @@ public:
     UBuffer(void);
     virtual ~UBuffer(void);
 };
-

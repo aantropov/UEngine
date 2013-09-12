@@ -15,8 +15,8 @@ extern "C"
 #include "..\Utils\ULogger.h"
 #include "..\Resources\UResource.h"
 
-class UScript :    public UComponent, public UResource{
-
+class UScript :    public UComponent, public UResource
+{
     lua_State *luaVM;
     bool inited;
 
@@ -37,4 +37,3 @@ public:
     UScript(): luaVM(nullptr), inited(false) {}
     ~UScript(){ Free(); }
 };
-

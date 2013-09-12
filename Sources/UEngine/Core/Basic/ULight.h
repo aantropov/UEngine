@@ -10,9 +10,8 @@ class UResourceFactory;
 class UModel;
 class UShaderProgram;
 
-class ULight :    public UGameObject
+class ULight : public UGameObject
 {
-    
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
@@ -68,4 +67,3 @@ public:
     UENGINE_DECLSPEC ULight(UResourceFactory* rf,  vec4 pos, bool _castShadows);
     UENGINE_DECLSPEC ~ULight(void);
 };
-
