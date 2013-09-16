@@ -43,6 +43,9 @@ public:
     result:Test
     */
     std::string GetElement(std::string path);
+	int GetElementi(std::string param_path);
+	float GetElementf(std::string param_path);
+
     vector<string> GetElements(std::string key);
     bool isExistElement(string key);
 };

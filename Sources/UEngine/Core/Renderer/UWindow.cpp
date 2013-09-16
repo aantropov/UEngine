@@ -69,7 +69,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"RegisterClassEx fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
 
@@ -97,7 +97,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"CreateWindowEx fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
 
@@ -108,7 +108,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"GetDC fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
 
@@ -127,7 +127,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Setting pixel format fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
 
@@ -138,7 +138,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Ñreating temp render context fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
 
@@ -157,7 +157,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"wglCreateContextAttribsARB fail (%d), try to create context with wglCreateContext", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         //return false;
         
         // Create context with OpenGL 2 support
@@ -173,7 +173,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Creating render context fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message,ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
         return false;
     }
     
@@ -210,7 +210,7 @@ void UWindow::SetSize(int width, int height, bool isFullScreen)
         devMode.dmPelsWidth  = width;
         devMode.dmPelsHeight = height;
         devMode.dmBitsPerPel = GetDeviceCaps(g_hDC, BITSPIXEL);
-        devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+        devMode.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
 
         // Try to set fullscreen mode
         result = ChangeDisplaySettings(&devMode, CDS_FULLSCREEN);

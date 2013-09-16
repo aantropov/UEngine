@@ -476,9 +476,9 @@ bool URenderer:: SetVerticalSynchronization(bool bEnabled)
 
 bool URenderer::Initialize()
 {
-    if( !uWnd.Create(L"UEngine",  std::atoi(UConfig::GetInstance()->GetParam("/xml/config/width/").c_str()),
-                                std::atoi(UConfig::GetInstance()->GetParam("/xml/config/height/").c_str()), 
-                                std::atoi(UConfig::GetInstance()->GetParam("/xml/config/fullscreen/").c_str()) == 1) )
+	auto config = UConfig::GetInstance();
+
+    if( !uWnd.Create(L"UEngine", config->GetParami("/xml/config/width/"), config->GetParami("/xml/config/height/"), config->GetParami("/xml/config/fullscreen/") == 1))
         return false;
     
     if(!InitExtensions())
@@ -491,13 +491,12 @@ bool URenderer::Initialize()
     OPENGL_CALL(glEnable(GL_DEPTH_TEST));
     OPENGL_CALL(glEnable(GL_CULL_FACE));
     
-    SetVerticalSynchronization(std::atoi(UConfig::GetInstance()->GetParam("/xml/config/vsync/").c_str()) == 1);
+    SetVerticalSynchronization(config->GetParami("/xml/config/vsync/") == 1);
 
     OPENGL_CHECK_FOR_ERRORS();
 
     //Initialize camera
-    float aspectRatio = (float)std::atoi(UConfig::GetInstance()->GetParam("/xml/config/width/").c_str()) /
-                              (float)std::atoi(UConfig::GetInstance()->GetParam("/xml/config/height/").c_str());
+    float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     camera.Create(0.0f, 1.0f, 0.0f);
     camera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
 

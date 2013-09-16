@@ -48,6 +48,17 @@ string UXMLFile::GetElement(string key)
     return NULL;
 }
 
+
+int UXMLFile::GetElementi(std::string param_path) 
+{
+	return std::atoi(GetElement(param_path).c_str());
+}
+
+float UXMLFile::GetElementf(std::string param_path) 
+{
+    return std::atof(GetElement(param_path).c_str());
+}
+
 bool UXMLFile::isExistElement(string key)
 {
     for(unsigned int i = 0; i < elements.size(); i++)
