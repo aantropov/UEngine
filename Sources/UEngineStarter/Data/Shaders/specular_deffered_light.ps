@@ -83,16 +83,18 @@ void main(void)
 	mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
 	bump *= transpose(m);
 	
+	vec4 specular = texture(material.specular_tex, Vert.texcoord);
+	
 	float res = 0.0;
 	for(int i = 0; i < min(maxLight,lightsNum); i++)
 	 res += ProccessLight(i);
 	res /= lightsNum;
 
-	color[0] = material.emission + texture(material.texture, Vert.texcoord) * clamp(res, 0, 1.0);
+	color[0] = material.emission;
 	color[1] = vec4(bump * 0.5 + vec3(0.5), 1.0);
-	color[2] = material.diffuse;
-	color[3] = material.ambient;	
-	color[4] = vec4(material.specular.xyz * texture(material.specular_tex, Vert.texcoord).xyz, material.shininess * 0.01f);
+	color[2] = material.diffuse * clamp(res, 0, 1.0) * texture(material.texture, Vert.texcoord);
+	color[3] = material.ambient * clamp(res, 0, 1.0);
+	color[4] = material.specular.w * specular.w * vec4(material.specular.xyz * specular.xyz, material.shininess * 0.01f) * clamp(res, 0, 1.0);
 	color[5] = Vert.position;
 	//color[6] = vec4(0.0f);
 }

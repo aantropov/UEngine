@@ -70,12 +70,12 @@ void main(void)
   vec4 diffuse = texture(diffuseScene, Vert.texcoord);
   vec4 specular = texture(specularScene, Vert.texcoord);  
   vec4 previous = texture(previousScene, Vert.texcoord);
-  vec3 texture  = texture(colorScene, Vert.texcoord).xyz;  
+  vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
   vec4 res = vec4(0.0);
 
   if(ambient.a > 0.9f)
-	res = vec4(texture, 1.0);
+	res = vec4(0.0f);
   else  
   	res += ProccessLight(int(lightIndex), vertNormal, vertPosition, ambient, diffuse, specular);
   
@@ -88,9 +88,9 @@ void main(void)
     color = res + previous;
   
   if(int(state) == 2)
-	color = (res + previous) * vec4(texture, 1.0);
+	color = (res + previous) + vec4(emission, 1.0);
 
   if(int(state) == 3)
-    color = res * vec4(texture, 1.0);
+    color = res + vec4(emission, 1.0);	
 }
 

@@ -18,6 +18,7 @@ uniform struct Material
 {
 	sampler2D texture;
 	sampler2D normal;
+	sampler2D specular_tex;
 
 	vec4  ambient;
 	vec4  diffuse;
@@ -65,14 +66,14 @@ float PCF(in vec4 smcoord, sampler2DShadow depthTexture)
 	return (res / 9.0);
 }
 
-vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
+vec4 ProccessLight(int i, vec3 bump, vec4 specular, vec3 viewDir)
 {
 	vec4 res = vec4(0);
 
 	float distance = length(Vert.lightDir[i]);
 	vec3 lVec = normalize(Vert.lightDirTBN[i] * inversesqrt(distance));	
 
-	float shadow  = clamp(PCF(Vert.smcoord[i], light_depthTexture[i]), 0.1, 1.0);
+	float shadow  = clamp(PCF(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
 	
 	vec3 lightDir = normalize(Vert.lightDirTBN[i]);
 	vec3 lightDirLight = normalize(Vert.lightDir[i]);
@@ -88,10 +89,10 @@ vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
 	res = material.ambient * light_ambient[i] * attenuation;
 	
 	float NdotL = max(dot(bump, lVec), 0);
-	res += material.diffuse * light_diffuse[i] * NdotL * attenuation;
+	res += material.diffuse * light_diffuse[i] * NdotL * attenuation * texture(material.texture, Vert.texcoord);
 
 	float RdotVpow = max(pow(dot(reflect(-(lVec), bump), Vert.viewDirTBN), material.shininess), 0.0);
-	res += (material.specular * light_specular[i] * RdotVpow * attenuation) * material.specular.w;
+	res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow * attenuation * material.specular.w * specular.w;
 		
 	res *= shadow;
 	return res;
@@ -102,11 +103,13 @@ void main(void)
 	vec3 bump = (texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0);
 	vec3 viewDir = normalize(Vert.viewDir);
 	
+	vec4 specular = texture(material.specular_tex, Vert.texcoord);
+	
 	vec4 res = vec4(0.0);
 	for(int i = 0; i < lightsNum; i++)
-		res += ProccessLight(i, bump, viewDir);
+		res += ProccessLight(i, bump, specular, viewDir);
 
 	color = material.emission;
-	color += texture(material.texture, Vert.texcoord) * res;
+	color += res;
 	
 }
