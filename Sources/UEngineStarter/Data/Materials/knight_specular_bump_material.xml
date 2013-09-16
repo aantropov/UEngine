@@ -42,10 +42,10 @@
       <a>0.0f</a>
     </ambient>
     <diffuse>
-      <r>1.0f</r>
-      <g>1.0f</g>
-      <b>1.0f</b>
-      <a>1.0f</a>
+      <r>0.50f</r>
+      <g>0.50f</g>
+      <b>0.5f</b>
+      <a>0.0f</a>
     </diffuse>
     <specular>
       <r>1.0f</r>
@@ -54,6 +54,6 @@
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>
-    <shininnes>2.0f</shininnes>
+    <shininnes>0.5f</shininnes>
   </material>
 </xml>

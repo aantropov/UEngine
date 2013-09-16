@@ -51,7 +51,7 @@
       <r>0.3f</r>
       <g>0.3f</g>
       <b>0.3f</b>
-      <a>1.0f</a>
+      <a>0.01f</a>
     </specular>
     <two_sides>1</two_sides>
     <shininnes>5.2f</shininnes>
