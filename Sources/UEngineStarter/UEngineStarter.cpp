@@ -28,8 +28,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     script->Load("data\\Scripts\\test_script.xml");
 
     light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.0f, 0.009f, 0.0f));
-    light8->SetSpotCosCutoff(60.1f);
+    light8->SetAttenuation(vec3(0.0f, 0.004f, 0.0f));
+    light8->SetSpotCosCutoff(40.1f);
     light8->SetSpotExponent(20.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
     
@@ -68,39 +68,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
     node->AddChild(new UScene::USceneNode(gameObject));
 
-    /**/auto go = new UScene::USceneNode(light1);    
+    /*auto go = new UScene::USceneNode(light1);    
     go->AddChild(new UScene::USceneNode(light2));
     node->AddChild(go);
     node->AddChild(new UScene::USceneNode(light3));
     node->AddChild(new UScene::USceneNode(light4));
     node->AddChild(new UScene::USceneNode(light5));
     node->AddChild(new UScene::USceneNode(light6));
-    node->AddChild(new UScene::USceneNode(light7));
+    node->AddChild(new UScene::USceneNode(light7));*/
     node->AddChild(new UScene::USceneNode(light8));
     
     node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
-    /**/scene.AddLight(light1);
+    /*scene.AddLight(light1);
     scene.AddLight(light2);
     scene.AddLight(light3);
     scene.AddLight(light4);
     scene.AddLight(light5);
     scene.AddLight(light6);
-    scene.AddLight(light7);
+    scene.AddLight(light7);*/
     scene.AddLight(light8);/**/
     
     scene.root = node;
     
-    /*UModel *m1[10];
+    UModel *m1[100];
     
-    for(int i = 0; i <10; i++)
+    for(int i = 0; i <60; i++)
     {
-        m1[i] = dynamic_cast<UModel*>(e.rf.Load("data\\fallout3_model.xml", URESOURCE_MODEL));
-        m1[i]->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_ONCE);
+        m1[i]  =  dynamic_cast<UModel*>(e.rf.Create(URESOURCE_MODEL)); 
+        m1[i]->Load("data\\Models\\knight_model.xml"); 
+        m1[i]->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
         //m1[i]->Load("data\\light.xml");
-        node->AddChild(new UScene::USceneNode(new UGameObject(m1[i])));
+        auto gameObject = new UGameObject(m1[i]);
+        gameObject->local.position = vec4_x * (- 30.0f) + vec4_x * (i%10) * 6.0f + vec4_z * (- 6.0f + 6*(i / 10));//vec4(rand() % i*0.1f, rand() % i*0.1f, rand() % i*0.1f, 1.0f);
+
+        node->AddChild(new UScene::USceneNode(gameObject));
     }
-    */
+    
     
     e.SetCurrentScene(&scene);
     e.Run();

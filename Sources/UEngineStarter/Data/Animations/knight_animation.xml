@@ -1,7 +1,7 @@
 <xml>
   <animation>
     <name>Test</name>
-    <frame_rate>100</frame_rate>
+    <frame_rate>45</frame_rate>
     <uma>data\\Animations\\knight_model_attack.uma</uma>
   </animation>
 </xml>

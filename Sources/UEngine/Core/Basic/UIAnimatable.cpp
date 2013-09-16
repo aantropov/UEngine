@@ -77,5 +77,6 @@ bool UAnimation:: Load(std::string path)
         ULogger::GetInstance()->Message("Error to load animation (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
         return false;
     }
+
     return true;
 }

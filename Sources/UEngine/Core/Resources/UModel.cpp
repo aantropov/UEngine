@@ -263,7 +263,9 @@ bool UModel:: Load(std:: string path)
                         memset(tex_buffer,'\0',255);    
                         sprintf_s(tex_buffer,"%d",j);
                         std::string current_anim = "/xml/model/animations/animation_" + string(tex_buffer) + "/";
-                        animations[xml.GetElement(current_anim + "name/")] = dynamic_cast<UAnimation*>(rf->Load(xml.GetElement(current_anim + "path/"), URESOURCE_SKIN_ANIMATION));                        
+                        
+                        animations[xml.GetElement(current_anim + "name/")] = dynamic_cast<UAnimation*>(rf->Create(URESOURCE_SKIN_ANIMATION));
+                        animations[xml.GetElement(current_anim + "name/")]->Load(xml.GetElement(current_anim + "path/"));
                     }
                 }
 
