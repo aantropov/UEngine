@@ -47,8 +47,8 @@ void URenderer:: SetupCameraLightForShaderProgram(UCamera &camera)
 
 void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 {
-    mat4 view           = camera.GetView();
-    mat4 viewProjection = camera.GetProjection() * view;
+    mat4 view           = currentCamera.GetView();
+    mat4 viewProjection = currentCamera.GetProjection() * view;
     mat3 normal         = transpose(mat3(inverse(model)));
     mat4 modelViewProjection = model * viewProjection;
         
@@ -56,7 +56,7 @@ void URenderer:: SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
     UniformMatrix4(shd->locations.transform_viewProjection, 1, viewProjection.m);
     UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
     UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
-    Uniform3(shd->locations.transform_viewPosition, 1, camera.GetPosition().v);
+    Uniform3(shd->locations.transform_viewPosition, 1, currentCamera.GetPosition().v);
 }
 
 void  URenderer::PushModelMatrix()
@@ -75,14 +75,14 @@ void  URenderer::PopModelMatrix()
         modelView = mat4_identity;
 }
 
-void URenderer:: SetCamera(UCamera cam)
+void URenderer:: SetCurrentCamera(UCamera cam)
 {
-    camera = cam;
+    currentCamera = cam;
 }
 
-UCamera URenderer:: GetCamera()
+UCamera URenderer:: GetCurrentCamera()
 {
-    return camera;
+    return currentCamera;
 }
 
 void URenderer:: Quad(vec3 v1, vec3 v2, vec3 v3, vec3 v4)
@@ -231,11 +231,13 @@ void URenderer:: DeleteVBO(UBuffer *vb)
 
 void URenderer:: DrawBuffer(UVertexBuffer* vb)
 {    
+	drawCalls++;
     OPENGL_CALL(glDrawArrays(GL_TRIANGLES, 0, vb->GetNum()));    
 }
 
 void URenderer:: DrawBuffer(UIndexBuffer* ib)
 {    
+	drawCalls++;
     OPENGL_CALL(glDrawElements(GL_TRIANGLES, ib->GetNum(), GL_UNSIGNED_INT, NULL));    
 }
 
@@ -497,8 +499,8 @@ bool URenderer::Initialize()
 
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
-    camera.Create(0.0f, 1.0f, 0.0f);
-    camera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
+    mainCamera.Create(0.0f, 1.0f, 0.0f);
+    mainCamera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
 
     DEVIL_CALL(ilInit());
     DEVIL_CALL(iluInit());

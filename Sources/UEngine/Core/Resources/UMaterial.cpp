@@ -126,7 +126,7 @@ bool UMaterial::Load(std::string path)
                 sprintf_s(tex_buffer,"%d",j);
                 std::string current_param = "/xml/material/params/param_" + string(tex_buffer) + "/";
                 
-                params[xml.GetElement(current_param + "name/")] = atof(xml.GetElement(current_param + "value/").c_str());                
+                params[xml.GetElement(current_param + "name/")] = xml.GetElementf(current_param + "value/");                
             }
         }
 

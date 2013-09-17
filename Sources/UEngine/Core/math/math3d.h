@@ -11,6 +11,8 @@
 #include "mat3.h"
 #include "mat4.h"
 #include "transform.h"
+#include "frustum.h"
+#include "bounds.h"
 
 // math constants
 const float math_epsilon = 1e-5f;
@@ -368,7 +370,7 @@ inline const quat shortarc(const vec3 &from, const vec3 &to)
 }
 
 /*
-inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
+inline vec3 VertexTangentSpace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
 {
     vec3 tangent = vec3(0.0f,0.0f,0.0f);
     vec3 bitangent = vec3(0.0f,0.0f,0.0f);
@@ -392,7 +394,7 @@ inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0te
 }
 */
 
-inline vec3 vertextangentspace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2, vec2 &t3)
+inline vec3 VertexTangentSpace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2, vec2 &t3)
 {
   vec3 e1  = p2 - p1;
   vec3 e2  = p3 - p1;
@@ -403,10 +405,10 @@ inline vec3 vertextangentspace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2,
 
   float tmp = 0.0;
   
-  if (fabsf(et1.x*et2.y - et1.y*et2.x) < 0.0001f)
+  if (fabsf(et1.x * et2.y - et1.y * et2.x) < math_epsilon)
     tmp = 1.0f;
   else
-    tmp = 1.0 / (et1.x*et2.y - et1.y*et2.x);
+    tmp = 1.0f / (et1.x * et2.y - et1.y * et2.x);
   
   tangent  = (e1 * et2.y - e2 * et1.y) * tmp;
   binormal = (e2 * et1.x - e1 * et2.x) * tmp;
@@ -416,7 +418,7 @@ inline vec3 vertextangentspace(vec3 &p1, vec3 &p2, vec3 &p3, vec2 &t1, vec2 &t2,
 }
 
 /*
-inline vec3 vertextangentspace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
+inline vec3 VertexTangentSpace(vec3& v0pos, vec3& v1pos, vec3& v2pos, vec2& v0tex, vec2& v1tex, vec2& v2tex)
 { 
     vec3 v0t = vec3(0, 0, 0);
     vec3 e0 ( v1pos.x - v0pos.x, v1tex.x - v0tex.x, v1tex.y - v0tex.y );

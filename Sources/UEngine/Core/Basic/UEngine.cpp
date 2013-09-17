@@ -40,6 +40,8 @@ void UEngine::Run()
     
     double deltaTime, beginFrameTime, fixedTimeStep;
     
+	auto render = URenderer::GetInstance();	
+
     deltaTime      = 0.0;
     //it is important for lag fixing
     fixedTimeStep  = 1.0 / 100.0;
@@ -48,7 +50,8 @@ void UEngine::Run()
     {
         while (PeekMessage(&msg, UWindow::GetHWND(), 0, 0, PM_REMOVE))
         {
-            if (msg.message == WM_QUIT){
+            if (msg.message == WM_QUIT)
+			{
                 UWindow::SetRunning(false);
                 break;
             }
@@ -67,10 +70,12 @@ void UEngine::Run()
         {
             OPENGL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         
+			render->drawCalls = 0;
+
             if(currentScene != NULL)
                 renderManager->Render(currentScene);
 
-            SwapBuffers( UWindow::GetHDC());
+            SwapBuffers(UWindow::GetHDC());
 
             deltaTime += GetTickCount() - beginFrameTime;
             
@@ -83,7 +88,7 @@ void UEngine::Run()
             if (elapsedTime >= 1.0f)
             {
                 WCHAR buff[50];
-                wsprintf(buff, L"UEngine FPS: %u", fps);
+				wsprintf(buff, L"UEngine FPS: %u, Draw Calls: %u", fps, render->drawCalls);
 
                 UWindow::SetWindowTitle(buff);
                 fps = 0;

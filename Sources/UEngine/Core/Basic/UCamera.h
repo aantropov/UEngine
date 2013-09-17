@@ -8,16 +8,21 @@ class UCamera
     vec3 rotation;
     mat4 projection;
 
+    frustum frustumPlanes;
+
 public:
 
-    vec3 UENGINE_DECLSPEC GetPosition();
-    vec3 UENGINE_DECLSPEC GetRotation();
+    void UENGINE_DECLSPEC UpdateFrustum();
+
+    vec3 UENGINE_DECLSPEC GetPosition() const;
+    vec3 UENGINE_DECLSPEC GetRotation()  const;
+    const frustum UENGINE_DECLSPEC GetFrustum() const { return frustumPlanes; }
 
     void UENGINE_DECLSPEC SetPosition(vec3 p) { position = p; }
     void UENGINE_DECLSPEC SetRotation(vec3 r) { rotation = r; }
     
-    mat4 UENGINE_DECLSPEC GetProjection();
-    mat4 UENGINE_DECLSPEC GetView();
+    mat4 UENGINE_DECLSPEC GetProjection()  const;
+    mat4 UENGINE_DECLSPEC GetView()  const;
 
     void UENGINE_DECLSPEC Create(float x, float y, float z);
     void UENGINE_DECLSPEC Perspective(float fov, float aspect, float zNear, float zFar);

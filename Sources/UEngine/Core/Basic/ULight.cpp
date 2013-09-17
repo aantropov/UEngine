@@ -152,7 +152,7 @@ void ULight:: Update(double delta)
     UGameObject::Update(delta);
 
     //spotDirection = -vec3_y;
-    spotDirection = -normalize(world.transformVec3(local.position));
+    spotDirection = -normalize(world*(local.position));
 //    world
-    cameras[0].LookAt(world.transformVec3(local.position) , spotDirection + world.transformVec3(local.position), world.transformVec3(vec3_y));
+    cameras[0].LookAt(world*(local.position) , spotDirection + world * local.position, world * vec3_y);
 }

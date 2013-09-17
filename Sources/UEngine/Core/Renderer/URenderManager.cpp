@@ -47,7 +47,7 @@ void URenderManager::Render(UScene* scene)
 {
     auto render = URenderer::GetInstance();
 
-    UCamera previousCam = URenderer::GetInstance()->GetCamera();
+    UCamera previousCam = URenderer::GetInstance()->GetCurrentCamera();
     render->BindFBO(&depthFbo);
     
     glViewport(0, 0, depthTextureSize, depthTextureSize);
@@ -67,19 +67,17 @@ void URenderManager::Render(UScene* scene)
         for(unsigned int j = 0; j < depthTextures.size(); j++)
         {
             depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_DEPTH);
-            glClear(GL_DEPTH_BUFFER_BIT);    
-
-            render->SetCamera(lights[lightParams.lightIndex[i]]->GetCameras()[j]);                    
-            scene->Render(URENDER_DEPTH);
+            glClear(GL_DEPTH_BUFFER_BIT);                                
+            scene->Render(URENDER_DEPTH, lights[lightParams.lightIndex[i]]->GetCameras()[j]);
         }
     }
 
-    URenderer::GetInstance()->SetCamera(previousCam);
+    //URenderer::GetInstance()->SetCurrentCamera(previousCam);
     URenderer::GetInstance()->UnbindFBO();
     
     OPENGL_CHECK_FOR_ERRORS();
     
-    lighting->Render(scene);
+    lighting->Render(scene, render->mainCamera);
     //postEffectSSAO->Render(URENDER_FORWARD);
     postEffectDOF->Render(URENDER_FORWARD);
 }

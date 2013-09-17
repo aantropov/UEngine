@@ -4,6 +4,7 @@
 #include "..\Resources\UTexture.h"
 
 class UScene;
+class UCamera;
 
 class ULighting
 {
@@ -16,14 +17,14 @@ public:
     UFrameBufferObject fb;
     UFrameBufferObject postfb;
     
-    virtual UTexture *Render(UScene *scene) = 0;
+    virtual UTexture *Render(UScene *scene, UCamera camera) = 0;
 };
 
 class UForwardLighting : public ULighting
 {
 public:
 
-    virtual UTexture *Render(UScene *scene);
+    virtual UTexture *Render(UScene *scene, UCamera camera);
     UForwardLighting();
 };
 
@@ -43,6 +44,6 @@ public:
     UPostEffect *lighting;
     UShaderProgram *objectShaderProgram;
 
-    virtual UTexture *Render(UScene *scene);
+    virtual UTexture *Render(UScene *scene, UCamera camera);
     UDefferedLighting();
 };

@@ -61,9 +61,10 @@ UDefferedLighting:: UDefferedLighting()
     lighting->AddTexture(positionScene, 6);    
 }
 
-UTexture* UDefferedLighting:: Render(UScene *scene)
+UTexture* UDefferedLighting:: Render(UScene *scene, UCamera camera)
 {
-    URenderer::GetInstance()->BindFBO(&fb);    
+    auto render = URenderer::GetInstance();
+    render->BindFBO(&fb);    
     GLenum buffers[] = {UFB_ATTACHMENT_COLOR0, UFB_ATTACHMENT_COLOR1, UFB_ATTACHMENT_COLOR2,UFB_ATTACHMENT_COLOR3, UFB_ATTACHMENT_COLOR4, UFB_ATTACHMENT_COLOR5};
     glDrawBuffers(6, buffers);
 
@@ -72,7 +73,7 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->Render(URENDER_DEFFERED);
+    scene->Render(URENDER_DEFFERED, camera);
     URenderer::GetInstance()->UnbindFBO();
 
     OPENGL_CHECK_FOR_ERRORS();
@@ -118,9 +119,8 @@ UTexture* UDefferedLighting:: Render(UScene *scene)
     
         OPENGL_CHECK_FOR_ERRORS();
     
-        lighting->Render(URENDER_FORWARD);
-    
-        URenderer::GetInstance()->UnbindFBO();
+        lighting->Render(URENDER_FORWARD);    
+        render->UnbindFBO();
         //////////////////////////////////////
         
         mod2++;
@@ -154,10 +154,11 @@ UForwardLighting:: UForwardLighting()
 	fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR1);
 }
 
-UTexture* UForwardLighting:: Render(UScene *scene)
+UTexture* UForwardLighting:: Render(UScene *scene, UCamera camera)
 {
+    auto render = URenderer::GetInstance();
     //color, depth
-    URenderer::GetInstance()->BindFBO(&fb);    
+    render->BindFBO(&fb);    
     fb.BindTexture(resScene, UFB_ATTACHMENT_COLOR0);
     fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
 
@@ -166,7 +167,7 @@ UTexture* UForwardLighting:: Render(UScene *scene)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->Render(URENDER_FORWARD);
+    scene->Render(URENDER_FORWARD, camera);
     URenderer::GetInstance()->UnbindFBO();
     
     // normal    
@@ -180,7 +181,7 @@ UTexture* UForwardLighting:: Render(UScene *scene)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    scene->Render(URENDER_NORMAL);
+    scene->Render(URENDER_NORMAL, camera);
     URenderer::GetInstance()->UnbindFBO();
 
     return resScene;

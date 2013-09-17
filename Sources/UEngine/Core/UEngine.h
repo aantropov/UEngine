@@ -57,7 +57,7 @@ class UEngine
 {
     UScene* currentScene;
     URenderManager* renderManager;
-
+	
     unsigned int fps;
     float elapsedTime;
 

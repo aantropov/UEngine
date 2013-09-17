@@ -110,6 +110,8 @@
     <ClCompile Include="Core\Lua\LuaTemplates.cpp" />
     <ClCompile Include="Core\Lua\UScript.cpp" />
     <ClCompile Include="Core\Lua\UScriptEngine.cpp" />
+    <ClCompile Include="Core\math\bounds.cpp" />
+    <ClCompile Include="Core\math\frustum.cpp" />
     <ClCompile Include="Core\math\transform.cpp" />
     <ClCompile Include="Core\Renderer\URendererHelper.cpp" />
     <ClCompile Include="Core\Renderer\UBuffer.cpp" />
@@ -156,6 +158,8 @@
     <ClInclude Include="Core\Lua\LuaTemplates.hpp" />
     <ClInclude Include="Core\Lua\UScript.h" />
     <ClInclude Include="Core\Lua\UScriptEngine.h" />
+    <ClInclude Include="Core\math\bounds.h" />
+    <ClInclude Include="Core\math\frustum.h" />
     <ClInclude Include="core\math\mat2.h" />
     <ClInclude Include="core\math\mat3.h" />
     <ClInclude Include="core\math\mat4.h" />

@@ -56,7 +56,7 @@ int UXMLFile::GetElementi(std::string param_path)
 
 float UXMLFile::GetElementf(std::string param_path) 
 {
-    return std::atof(GetElement(param_path).c_str());
+    return (float)std::atof(GetElement(param_path).c_str());
 }
 
 bool UXMLFile::isExistElement(string key)

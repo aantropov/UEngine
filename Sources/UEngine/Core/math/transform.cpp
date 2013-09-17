@@ -10,7 +10,7 @@ const transform transform:: operator* (transform parent) const
 {
     transform t = *this;
 
-    t.position = parent.transformVec3(t.position);
+    t.position = parent * t.position;
     t.rotation = t.rotation * parent.rotation;
                 
     t.scale.x *= parent.scale.x;
@@ -18,6 +18,11 @@ const transform transform:: operator* (transform parent) const
     t.scale.z *= parent.scale.z;
 
     return t;   
+}
+
+const vec3 transform:: operator*(const vec3& vertex_pos) const
+{
+    return GLScale(scale) * (rotate(rotation, vertex_pos) + position);
 }
 
 const mat4 transform:: matrix() const
@@ -33,11 +38,6 @@ const mat4 transform:: matrix() const
     return res;
 }
     
-const vec3 transform:: transformVec3(const vec3& vertex_pos) const
-{
-    return GLScale(scale) * (rotate(rotation, vertex_pos) + position);
-}
-
 const vec3 transform:: invert(const vec3& vertex_pos) const
 {
     quat c = conjugate(rotation);

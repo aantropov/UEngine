@@ -17,8 +17,8 @@ public:
     vec4 scale;
         
     const transform operator* (transform parent) const;
+    const vec3 operator* (const vec3& vertex_pos) const;
     const mat4 matrix() const;    
-    const vec3 transformVec3(const vec3& vertex_pos) const;
     const vec3 invert(const vec3& vertex_pos) const;
 
     transform();

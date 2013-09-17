@@ -43,6 +43,9 @@
     <Filter Include="Core\Gui">
       <UniqueIdentifier>{007d67a6-9b0c-405d-a34b-0d0013a56f7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Physics">
+      <UniqueIdentifier>{7f16249f-8089-470f-b324-bd603a67a70c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -173,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="Core\Renderer\URendererHelper.cpp">
       <Filter>Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\math\frustum.cpp">
+      <Filter>Core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\math\bounds.cpp">
+      <Filter>Core\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="Core\Renderer\URendererHelper.h">
       <Filter>Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\math\frustum.h">
+      <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\math\bounds.h">
+      <Filter>Core\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ public:
     std::vector<UGameObject*> children;
     UGameObject *parentObject;
 
+    void UENGINE_DECLSPEC GetBounds() const;
     void UENGINE_DECLSPEC AddComponent(UComponent *component);
 
     void UENGINE_DECLSPEC Render(UMaterial *m);

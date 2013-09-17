@@ -1,7 +1,7 @@
-//Scene with Hierarchy topology
 #pragma once
 #include "unode.h"
 #include "..\Renderer\URenderer.h"
+#include "..\Basic\UCamera.h"
 #include <vector>
 #include "UIRenderable.h"
 #include "..\Utils\ExportDef.h"
@@ -63,7 +63,7 @@ public:
         }
 
         void UENGINE_DECLSPEC Render(URENDER_TYPE type)
-        {            
+        {
             node->Render(type);
             for(unsigned int i = 0; i < children.size(); i++){
                 if(children[i] != NULL)
@@ -132,24 +132,17 @@ public:
         return lights;
     }
 
-    // Root element in the topology
     USceneNode *root;
-
     ULightParams lightParams;
 
-    //Process input keys
     void UENGINE_DECLSPEC KeysProccessing();
 
-    //Update with deltaTime
     void UENGINE_DECLSPEC Update(double deltaTime);
     void UENGINE_DECLSPEC UpdateLightParams();
 
+    void UENGINE_DECLSPEC Render(URENDER_TYPE type, UCamera camera);
+    void UENGINE_DECLSPEC Render(UMaterial *m, UCamera camera);
 
-    //RenderScene
-    void UENGINE_DECLSPEC Render(URENDER_TYPE type);
-    void UENGINE_DECLSPEC Render(UMaterial *m);
-
-    //Constructor
     UENGINE_DECLSPEC UScene(void): root(NULL)
     {
         rotateDelta[0] = rotateDelta[1] = 0.0;
@@ -162,6 +155,5 @@ public:
         delete root;
     }
 
-    //Destructor
     UENGINE_DECLSPEC ~UScene(void);
 };

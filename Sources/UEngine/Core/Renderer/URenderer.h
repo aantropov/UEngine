@@ -47,6 +47,8 @@ class URenderer: public USingleton<URenderer>
            
 public:
     
+	unsigned int drawCalls;
+
     void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
     UScene UENGINE_DECLSPEC *GetCurrentScene();
     
@@ -55,7 +57,8 @@ public:
     URenderer();
     ~URenderer();
 
-    UCamera camera;
+    UCamera currentCamera;
+    UCamera mainCamera;
     
     bool Initialize();
 
@@ -72,8 +75,8 @@ public:
     void PopModelMatrix();
 
     //Camera
-    UCamera GetCamera();
-    void SetCamera(UCamera cam);
+    UCamera GetCurrentCamera();
+    void SetCurrentCamera(UCamera cam);
     void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model);
     void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model);
     void SetupCameraLightForShaderProgram(UCamera &camera);

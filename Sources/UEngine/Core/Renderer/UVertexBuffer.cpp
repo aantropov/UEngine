@@ -20,21 +20,21 @@ void UVertexBuffer:: ComputeTBN(UIndexBuffer* ib)
     for(int i = 0; i < ib->GetNum()/3 ; i ++)
     {
         vertices[data[iterator]].SetBinormal(
-            vertextangentspace(vertices[data[iterator]].GetPosition(), 
+            VertexTangentSpace(vertices[data[iterator]].GetPosition(), 
                            vertices[data[iterator+1]].GetPosition(),
                            vertices[data[iterator+2]].GetPosition(),
                            vertices[data[iterator]].GetTexcoord(), 
                            vertices[data[iterator+1]].GetTexcoord(),
                            vertices[data[iterator+2]].GetTexcoord()));
         vertices[data[iterator+1]].SetBinormal(
-            vertextangentspace(vertices[data[iterator+1]].GetPosition(), 
+            VertexTangentSpace(vertices[data[iterator+1]].GetPosition(), 
                            vertices[data[iterator+2]].GetPosition(),
                            vertices[data[iterator]].GetPosition(),
                            vertices[data[iterator+1]].GetTexcoord(), 
                            vertices[data[iterator+2]].GetTexcoord(),
                            vertices[data[iterator]].GetTexcoord()));
         vertices[data[iterator+2]].SetBinormal(
-            vertextangentspace(vertices[data[iterator+2]].GetPosition(), 
+            VertexTangentSpace(vertices[data[iterator+2]].GetPosition(), 
                            vertices[data[iterator]].GetPosition(),
                            vertices[data[iterator+1]].GetPosition(),
                            vertices[data[iterator+2]].GetTexcoord(), 

@@ -25,7 +25,7 @@ void UScene::UpdateLightParams()
     {
         if( lights[i] != NULL/* && lights[i]->castShadows*/)
         {
-            lightParams.position[cur] =  (lights[cur]->world.transformVec3(lights[cur]->local.position));
+            lightParams.position[cur] =  (lights[cur]->world*(lights[cur]->local.position));
             lightParams.ambient[cur] = lights[cur]->GetAmbient();
             lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
             lightParams.specular[cur] = lights[cur]->GetSpecular();
@@ -53,8 +53,8 @@ void UScene::Update(double deltaTime)
     UInput::ShowCursor(false);
     
     //Camera movement
-    URenderer::GetInstance()->camera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
-    URenderer::GetInstance()->camera.Move((float)moveDelta[0], 0.0f, (float)moveDelta[1]);
+    URenderer::GetInstance()->mainCamera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
+    URenderer::GetInstance()->mainCamera.Move((float)moveDelta[0], 0.0f, (float)moveDelta[1]);
 
     rotateDelta[0] = rotateDelta[1] = 0;
     moveDelta[0] = moveDelta[1] = 0;
@@ -67,15 +67,21 @@ void UScene::Update(double deltaTime)
 }
 
 //RenderScene
-void UScene::Render(URENDER_TYPE type)
+void UScene::Render(URENDER_TYPE type, UCamera camera)
 {
+    camera.UpdateFrustum();
+    URenderer::GetInstance()->SetCurrentCamera(camera);
+
     if(root != NULL)
         root->Render(type);
     URenderer::GetInstance()->modelView= mat4_identity;
 }
 
-void UScene::Render(UMaterial *m)
+void UScene::Render(UMaterial *m, UCamera camera)
 {
+    camera.UpdateFrustum();
+    URenderer::GetInstance()->SetCurrentCamera(camera);
+
     if(root != NULL)
         root->Render(m);
     URenderer::GetInstance()->modelView= mat4_identity;
