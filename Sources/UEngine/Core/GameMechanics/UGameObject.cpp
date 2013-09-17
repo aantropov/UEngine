@@ -9,6 +9,7 @@ void UGameObject:: AddComponent(UComponent *component)
 
 void UGameObject::Render(UMaterial *m)
 {
+    auto render = URenderer::GetInstance();    
     for each(auto el in components)
     {
         auto renderable = dynamic_cast<UIRenderable*>(el);
@@ -16,13 +17,25 @@ void UGameObject::Render(UMaterial *m)
         {
             auto currentTransform = (local * world);
             renderable->m.Set(currentTransform.matrix());
-            renderable->Render(m);
+
+            auto model = dynamic_cast<UModel*>(el);
+            if(model != nullptr)
+            {
+                auto sph = model->GetBounds();
+                sph.center = currentTransform * sph.center;
+
+               // if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
+                    renderable->Render(m);
+            }
+            else
+                renderable->Render(m);
         }
     }    
 }
     
 void UGameObject::Render(URENDER_TYPE type)
 {
+    auto render = URenderer::GetInstance();    
     for each(auto el in components)
     {
         auto renderable = dynamic_cast<UIRenderable*>(el);
@@ -30,7 +43,18 @@ void UGameObject::Render(URENDER_TYPE type)
         {
             auto currentTransform = (local * world);
             renderable->m.Set(currentTransform.matrix());
-            renderable->Render(type);
+
+            auto model = dynamic_cast<UModel*>(el);
+            if(model != nullptr)
+            {
+                auto sph = model->GetBounds();
+                sph.center = currentTransform * sph.center;
+
+                //if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
+                    renderable->Render(type);
+            }
+            else
+                renderable->Render(type);
         }
     }    
 }

@@ -91,9 +91,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     
     scene.root = node;
     
-    UModel *m1[100];
+    UModel *m1[150];
     
-    for(int i = 0; i <60; i++)
+    for(int i = 0; i <35; i++)
     {
         m1[i]  =  dynamic_cast<UModel*>(e.rf.Create(URESOURCE_MODEL)); 
         m1[i]->Load("data\\Models\\knight_model.xml"); 

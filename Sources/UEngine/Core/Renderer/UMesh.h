@@ -30,6 +30,7 @@ class UMesh: public UNode, public UIRenderable
     }
     
     map<URENDER_TYPE, UShaderParameters> parameters;
+    sphere boundSphere;
 
 public:
     
@@ -95,6 +96,7 @@ public:
     
     virtual void Initialize()
 	{
+        ComputeBoundSphere();
         InitializeBuffers();
 		
 		auto renderer = URenderer::GetInstance();
@@ -134,6 +136,9 @@ public:
         URenderer::GetInstance()->PopModelMatrix();
     }
     
+    sphere GetBounds() const { return boundSphere; }
+    void ComputeBoundSphere() { boundSphere = vb.ComputeBoundSphere(); }
+
     void Free(){}
 
     UMesh(void);

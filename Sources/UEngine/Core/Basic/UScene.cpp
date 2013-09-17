@@ -68,23 +68,27 @@ void UScene::Update(double deltaTime)
 
 //RenderScene
 void UScene::Render(URENDER_TYPE type, UCamera camera)
-{
-    camera.UpdateFrustum();
-    URenderer::GetInstance()->SetCurrentCamera(camera);
+{   
+    auto render = URenderer::GetInstance();
+
+    render->SetCurrentCamera(camera);
+    render->currentCamera.UpdateFrustum();
 
     if(root != NULL)
         root->Render(type);
-    URenderer::GetInstance()->modelView= mat4_identity;
+    render->modelView= mat4_identity;
 }
 
 void UScene::Render(UMaterial *m, UCamera camera)
 {
-    camera.UpdateFrustum();
-    URenderer::GetInstance()->SetCurrentCamera(camera);
+    auto render = URenderer::GetInstance();
+
+    render->SetCurrentCamera(camera);
+    render->currentCamera.UpdateFrustum();
 
     if(root != NULL)
         root->Render(m);
-    URenderer::GetInstance()->modelView= mat4_identity;
+    render->modelView= mat4_identity;
 }
 
 UScene::~UScene(void)

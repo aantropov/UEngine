@@ -14,6 +14,15 @@ class UVertexBuffer : public UBuffer
     void ComputeTBN(UIndexBuffer* ib);
     
 public:
+
+    sphere ComputeBoundSphere()
+    {
+        unsigned int index = 0;
+        for(int i = 0; i < num_vertices; i++)
+            if(length(vertices[index].GetPosition()) < length(vertices[i].GetPosition()))
+                index = i;
+        return sphere(vec3_zero, length(vertices[index].GetPosition()));
+    }
     
 	void* GetPointer()
 	{
