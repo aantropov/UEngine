@@ -10,6 +10,7 @@
 #include "UBuffer.h"
 #include "UShaderProgram.h"
 #include "..\Utils\ExportDef.h"
+#include "..\Math\UMath.h"
 #include <hash_map>
 #include <map>
 
@@ -140,8 +141,10 @@ public:
     void UniformMatrix4(unsigned int location, unsigned int num , float *variable);
     void UniformMatrix3(unsigned int location, unsigned int num , float *variable);
 
-    //Drawing
-    void Quad(vec3 v1,vec3 v2,vec3 v3,vec3 v4 );
+    void DrawSegment(const vec3& p1, const vec3& p2, const vec3& color);
+    void DrawTransform(::transform xf);
+    void DrawSolidPolygon(const UVertex* vertices, int vertexCount, const vec4 color);
+        
     void DrawBuffer(UVertexBuffer *vb);
     void DrawBuffer(UIndexBuffer* ib);
 };

@@ -66,7 +66,6 @@ void UScene::Update(double deltaTime)
     UpdateLightParams();
 }
 
-//RenderScene
 void UScene::Render(URENDER_TYPE type, UCamera camera)
 {   
     auto render = URenderer::GetInstance();

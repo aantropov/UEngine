@@ -40,7 +40,18 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     // Pointer to create context OpenGL function
     //PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
-    // Attributes
+#ifdef UE_DEBUG
+    int attribs[] =
+    {
+        WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+        WGL_CONTEXT_FLAGS_ARB,         WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+        WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB ,
+        0
+    };
+#endif
+
+#ifdef UE_RELEASE
     int attribs[] =
     {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
@@ -49,6 +60,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
         WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
         0
     };
+#endif
 
     g_hInstance = static_cast<HINSTANCE>(GetModuleHandle(NULL));
 
@@ -442,4 +454,3 @@ void UInput:: ShowCursor(bool visible)
 {
     ::ShowCursor(visible ? TRUE : FALSE);
 }
-

@@ -17,22 +17,22 @@ public:
     static const int offsetPos = sizeof(vec3) + sizeof(vec3) + sizeof(vec2) + sizeof(vec3) + sizeof(vec4) + sizeof(vec4);
 
     void UENGINE_DECLSPEC SetPosition(vec3 p){  pos = p; }
-    vec3 UENGINE_DECLSPEC GetPosition(){ return pos; }
+    vec3 UENGINE_DECLSPEC GetPosition() const { return pos; }
 
     void UENGINE_DECLSPEC SetNormal(vec3 p){  normal = p; }
-    vec3 UENGINE_DECLSPEC GetNormal(){ return pos; }
+    vec3 UENGINE_DECLSPEC GetNormal() const { return pos; }
     
     void UENGINE_DECLSPEC SetTexcoord(vec2 t){  texcoord = t; }
-    vec2 UENGINE_DECLSPEC GetTexcoord(){ return texcoord; }
+    vec2 UENGINE_DECLSPEC GetTexcoord() const { return texcoord; }
 
     void UENGINE_DECLSPEC SetBinormal(vec3 bn){  binormal = bn; }
-    vec3 UENGINE_DECLSPEC GetBinormal(){ return binormal; }
+    vec3 UENGINE_DECLSPEC GetBinormal() const { return binormal; }
 
     void UENGINE_DECLSPEC SetBoneIndex(vec4 bn){  bone_index = bn; }
-    vec3 UENGINE_DECLSPEC GetBoneIndex(){ return bone_index; }
+    vec3 UENGINE_DECLSPEC GetBoneIndex() const { return bone_index; }
 
     void UENGINE_DECLSPEC SetBoneWeight(vec4 bn){  bone_weight = bn; }
-    vec3 UENGINE_DECLSPEC GetBoneWeight(){ return bone_weight; }
+    vec3 UENGINE_DECLSPEC GetBoneWeight() const { return bone_weight; }
 
     UENGINE_DECLSPEC UVertex(vec3 p): pos(p), normal(vec3_zero), texcoord(vec2_zero), binormal(vec3_zero) {}    
     UENGINE_DECLSPEC UVertex(vec3 p, vec3 n): pos(p), normal(n), texcoord(vec2_zero), binormal(vec3_zero) {}    

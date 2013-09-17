@@ -4,14 +4,12 @@
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-    // Create Engine
     UEngine e;
     e.Initialize();
     
     UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\knight_model.xml", URESOURCE_MODEL));
     UGameObject *gameObject = new UGameObject(sm);
     sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
-    //sm->animations["Test2"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 
     UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", URESOURCE_MODEL));
     
@@ -93,7 +91,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     
     UModel *m1[150];
     
-    for(int i = 0; i <35; i++)
+    for(int i = 0; i <135; i++)
     {
         m1[i]  =  dynamic_cast<UModel*>(e.rf.Create(URESOURCE_MODEL)); 
         m1[i]->Load("data\\Models\\knight_model.xml"); 
@@ -104,8 +102,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         node->AddChild(new UScene::USceneNode(gameObject));
     }
-    
-    
+        
     e.SetCurrentScene(&scene);
     e.Run();
     e.Release();

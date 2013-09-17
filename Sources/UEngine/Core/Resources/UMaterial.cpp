@@ -129,8 +129,6 @@ bool UMaterial::Load(std::string path)
                 params[xml.GetElement(current_param + "name/")] = xml.GetElementf(current_param + "value/");                
             }
         }
-
-
     }
     catch(exception e)
     {

@@ -7,6 +7,7 @@
 #include "..\Basic\UCamera.h"
 #include "UFrameBufferObject.h"
 #include "URendererHelper.h"
+#include "..\math\transform.h"
 
 URenderer::URenderer()
 {
@@ -85,22 +86,6 @@ UCamera URenderer:: GetCurrentCamera()
     return currentCamera;
 }
 
-void URenderer:: Quad(vec3 v1, vec3 v2, vec3 v3, vec3 v4)
-{
-    //OPENGL_CALL should NOT be used in the glBegin - glEnd block!
-    glBegin(GL_TRIANGLE_STRIP);
-        glVertex3d(v1.x,v1.y,v1.z);
-        glTexCoord2d(0,0);
-        glVertex3d(v2.x,v2.y,v2.z);
-        glTexCoord2d(0,1);
-        glVertex3d(v4.x,v4.y,v4.z);
-        glTexCoord2d(1,1);
-        glVertex3d(v3.x,v3.y,v3.z);
-        glTexCoord2d(1,0);        
-    glEnd();
-}
-
-//Texture
 void  URenderer:: BindTexture(UTexture *tex)
 {
     BindTexture(tex, 0);
@@ -172,7 +157,6 @@ void URenderer:: DeleteTexture(UTexture *tex)
     OPENGL_CALL(glDeleteTextures(1, &t));
 }
 
-// FBO
 void URenderer:: UnbindFBO()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -227,6 +211,63 @@ void URenderer:: DeleteVBO(UBuffer *vb)
 {
     GLuint vbo =  vb->GetId();
     OPENGL_CALL(glDeleteBuffers(1, &vbo));
+}
+
+void URenderer:: DrawSegment(const vec3& p1, const vec3& p2, const vec3& color)
+{
+#ifdef UE_DEBUG
+    
+    glColor4f(color.x, color.y, color.z, 1);    
+    GLfloat glVertices[] = 
+    {
+       p1.x, p1.y, p1.z, p2.x, p2.y, p2.z
+	};
+	    
+    glVertexPointer(3, GL_FLOAT, 0, glVertices);
+	glDrawArrays(GL_LINES, 0, 2);
+#endif
+}
+
+void URenderer:: DrawTransform(::transform xf)
+{
+#ifdef UE_DEBUG
+	vec3 p1 = xf.position;
+    vec3 p2;
+
+	const float k_axisScale = 0.4f;
+
+    p2 = p1 + (xf.matrix() * vec4_x) * k_axisScale;
+	DrawSegment(p1, p2, vec3(1,0,0));
+	
+	p2 = p1 + (xf.matrix() * vec4_y) * k_axisScale;
+	DrawSegment(p1, p2, vec3(0,1,0));
+
+    p2 = p1 + (xf.matrix() * vec4_z) * k_axisScale;
+	DrawSegment(p1, p2, vec3(0,0,1));
+#endif
+}
+
+void URenderer:: DrawSolidPolygon(const UVertex* vertices, int vertexCount, const vec4 color) 
+{
+#ifdef UE_DEBUG
+    GLfloat glverts[24];
+    glVertexPointer(3, GL_FLOAT, 0, glverts);
+    glEnableClientState(GL_VERTEX_ARRAY);
+            
+    for (int i = 0; i < vertexCount; i++) 
+    {
+       glverts[i*3]   = vertices[i].GetPosition().x;
+       glverts[i*3+1] = vertices[i].GetPosition().y;
+       glverts[i*3+2] = vertices[i].GetPosition().z;
+    }
+      
+    glColor4f(color.x, color.y, color.z, 1);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
+       
+    glLineWidth(3);
+    glColor4f(1, 0, 1, 1 );
+    glDrawArrays(GL_LINE_LOOP, 0, vertexCount);
+#endif
 }
 
 void URenderer:: DrawBuffer(UVertexBuffer* vb)

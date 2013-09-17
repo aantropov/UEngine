@@ -24,7 +24,7 @@ void UGameObject::Render(UMaterial *m)
                 auto sph = model->GetBounds();
                 sph.center = currentTransform * sph.center;
 
-               // if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
+                if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
                     renderable->Render(m);
             }
             else
@@ -49,8 +49,8 @@ void UGameObject::Render(URENDER_TYPE type)
             {
                 auto sph = model->GetBounds();
                 sph.center = currentTransform * sph.center;
-
-                //if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
+         
+                if(IsSphereInFrustum(sph, render->currentCamera.GetFrustum()))
                     renderable->Render(type);
             }
             else
