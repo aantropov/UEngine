@@ -36,7 +36,6 @@ bool UPostEffect:: Load(std:: string path)
         this->name = xml.GetElement("/xml/post_effect/name/");
 
         material.SetShaderProgram(rf->Load(xml.GetElement("/xml/post_effect/shaders/vertex_path/"), xml.GetElement("/xml/post_effect/shaders/pixel_path/")), URENDER_FORWARD);
-
         ib.Create(2);
 
         unsigned int *m_indices = reinterpret_cast<unsigned int*>(ib.GetPointer());

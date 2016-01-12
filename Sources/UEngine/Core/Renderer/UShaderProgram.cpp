@@ -17,12 +17,12 @@ void UShaderProgram:: Render()
 
 void UShaderProgram:: InitLocations()
 {
+
     locations.material_ambient = glGetUniformLocation(_id, "material.ambient" );
     locations.material_diffuse = glGetUniformLocation(_id, "material.diffuse" );
     locations.material_specular = glGetUniformLocation(_id, "material.specular" );
     locations.material_emission = glGetUniformLocation(_id, "material.emission" );
     locations.material_shininess = glGetUniformLocation(_id, "material.shininess" );
-
     locations.light_position = glGetUniformLocation(_id, "light_position" );
     locations.light_ambient = glGetUniformLocation(_id, "light_ambient" );
     locations.light_diffuse = glGetUniformLocation(_id, "light_diffuse" );
@@ -43,6 +43,8 @@ void UShaderProgram:: InitLocations()
 
     locations.skinning_transformsNum = glGetUniformLocation(_id, "skinning_transformsNum" );
     locations.skinning_transforms = glGetUniformLocation(_id, "skinning_transforms" );
+
+	OPENGL_CHECK_FOR_ERRORS();
 }
 
 bool UShaderProgram:: Load(string path)
@@ -61,13 +63,12 @@ bool UShaderProgram:: Load(std::string vertexshd_path, std::string pixelshd_path
 
     if(vs == nullptr)
         vertex_sh->Create(USHADER_VERTEX);
+
     if(ps == nullptr)
-        pixel_sh->Create(USHADER_PIXEL);
+        pixel_sh->Create(USHADER_PIXEL);	
 
     _id = URenderer::GetInstance()->CreateShaderProgram(vertex_sh, pixel_sh);
-
     InitLocations();
-
     return true;
 }
 

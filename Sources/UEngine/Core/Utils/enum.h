@@ -19,7 +19,7 @@
 // Enumerations
 
 // Log message type
-enum ULOG_MSG_TYPE 
+enum ULOG_MSG_TYPE
 {
     ULOG_MSG_WARNING = 0,
     ULOG_MSG_ERROR,
@@ -27,37 +27,37 @@ enum ULOG_MSG_TYPE
 };
 
 // Log message out
-enum ULOG_OUT 
+enum ULOG_OUT
 {
-    ULOG_OUT_FILE = 0,
-    ULOG_OUT_MSG,
-    ULOG_OUT_NONE
+    ULOG_OUT_FILE = 1,
+    ULOG_OUT_MSG = 2,
+    ULOG_OUT_NONE = 4
 };
 
 // Window type (IT IS NOT USED!)
-enum UWND_STATE 
+enum UWND_STATE
 {
     UWND_STATE_WINDOW = 0,
     UWND_STATE_FULLSCREEN
 };
 
 // VBO
-enum UVBO_DRAW 
-{    
+enum UVBO_DRAW
+{
     UVBO_STATIC = 0x88E4,
     UVBO_DYNAMIC = 0x88E8
 };
 
 
 // Shader
-enum USHADER_TYPE 
+enum USHADER_TYPE
 {
     USHADER_VERTEX = 0x8B31,
     USHADER_PIXEL = 0x8B30
 };
 
 //Input
-enum UINPUT_KEY_STATE 
+enum UINPUT_KEY_STATE
 {
     UINPUT_UP = 0,
     UINPUT_DOWN,
@@ -65,7 +65,7 @@ enum UINPUT_KEY_STATE
 };
 
 //Texture
-enum UTEXTURE_TYPE 
+enum UTEXTURE_TYPE
 {
     UTEXTURE_COLOR = 0,
     UTEXTURE_FLOAT,
@@ -75,7 +75,7 @@ enum UTEXTURE_TYPE
 };
 
 //Resource
-enum URESOURCE_TYPE 
+enum URESOURCE_TYPE
 {
     URESOURCE_SHADER = 0,
     URESOURCE_SHADER_PROGRAM,
@@ -87,7 +87,7 @@ enum URESOURCE_TYPE
     URESOURCE_SCRIPT
 };
 
-enum URENDER_TYPE 
+enum URENDER_TYPE
 {
     URENDER_FORWARD = 0,
     URENDER_DEFFERED,
@@ -95,7 +95,7 @@ enum URENDER_TYPE
     URENDER_NORMAL
 };
 
-enum UFRAMEBUFFER_ATTACHMENT 
+enum UFRAMEBUFFER_ATTACHMENT
 {
     UFB_ATTACHMENT_DEPTH = 0x8D00,
     UFB_ATTACHMENT_COLOR0 = 0x8CE0,

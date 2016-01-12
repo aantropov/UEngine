@@ -3,7 +3,7 @@
       <width>1400</width>
     <height>1024</height>
     <fullscreen>0</fullscreen>
-    <vsync>1</vsync>
+    <vsync>0</vsync>
     <bpp>32</bpp>
     <deffered_lighting>1</deffered_lighting>
     <depth_texture_size>1024</depth_texture_size>   

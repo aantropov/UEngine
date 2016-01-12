@@ -1,7 +1,12 @@
 in vec3 position;
+
 uniform struct Transform
 {
-    mat4 modelViewProjection;
+	mat4 model;
+	mat4 viewProjection;
+	mat3 normal;
+	vec3 viewPosition;
+        mat4 modelViewProjection;
 } transform;
 
 void main(void)

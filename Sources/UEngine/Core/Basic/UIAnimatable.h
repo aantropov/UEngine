@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <windows.h>
-#include <hash_map>
+#include <unordered_map>
 #include <map>
 
 class UBone
@@ -179,7 +179,7 @@ class UISkinAnimatable : public UIAnimatable
 public:
     
     mat4 boneMatrixes[MAX_BONES];    
-    std::hash_map<std::string, UAnimation*> animations;
+    std::unordered_map<std::string, UAnimation*> animations;
 
     unsigned int countPlayableAnimations;
     UKeyFrame currentFrame;

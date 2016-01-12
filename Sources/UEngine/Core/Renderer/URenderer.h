@@ -11,7 +11,7 @@
 #include "UShaderProgram.h"
 #include "..\Utils\ExportDef.h"
 #include "..\Math\UMath.h"
-#include <hash_map>
+#include <unordered_map>
 #include <map>
 
 class UVertexBuffer;
@@ -40,7 +40,7 @@ class URenderer: public USingleton<URenderer>
     unsigned int previousVAO;
     unsigned int previousIB;
     
-    map<unsigned int, hash_map<string, unsigned int>> uniformsCache;
+    map<unsigned int, unordered_map<string, unsigned int>> uniformsCache;
     map<unsigned int, unsigned int> texChannelsCache;
 
     int CacheUniformLocation(string name);

@@ -1,5 +1,8 @@
 #version 330 core
 
+#define maxLight 8
+#define maxBones 64
+
 uniform struct Material
 {
 	sampler2D normal;
@@ -11,13 +14,20 @@ uniform struct Transform
 	mat4 viewProjection;	
 	mat3 normal;
 	vec3 viewPosition;
+        mat4 modelViewProjection;
 } transform;
 
-in Vertex {	
+in Vertex {
+	vec4  position;
 	vec2  texcoord;
 	vec3  normal;
-	vec3  t;
-	vec3  b;
+	vec3  lightDir[maxLight];
+	vec3  lightDirTBN[maxLight];
+	vec3  viewDirTBN;
+	vec3  viewDir;
+	vec4 smcoord[maxLight];	
+	vec3 t;
+	vec3 b;
 	mat3 transformNormal;
 } Vert;
 
@@ -31,5 +41,4 @@ void main(void)
 	bump *= transpose(m);
 	
 	color = vec4(bump,1);
-	
 }

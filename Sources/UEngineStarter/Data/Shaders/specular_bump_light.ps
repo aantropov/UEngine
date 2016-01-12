@@ -30,13 +30,17 @@ uniform struct Material
 
 in Vertex 
 {
+	vec4  position;
 	vec2  texcoord;
 	vec3  normal;
 	vec3  lightDir[maxLight];
 	vec3  lightDirTBN[maxLight];
 	vec3  viewDirTBN;
 	vec3  viewDir;
-	vec4 smcoord[maxLight];
+	vec4 smcoord[maxLight];	
+	vec3 t;
+	vec3 b;
+	mat3 transformNormal;
 } Vert;
 
 uniform struct Transform
@@ -45,6 +49,7 @@ uniform struct Transform
 	mat4 viewProjection;	
 	mat3 normal;
 	vec3 viewPosition;
+        mat4 modelViewProjection;
 } transform;
 
 out vec4 color;

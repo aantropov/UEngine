@@ -6,103 +6,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     UEngine e;
     e.Initialize();
-    
+
     UModel *sm = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\knight_model.xml", URESOURCE_MODEL));
     UGameObject *gameObject = new UGameObject(sm);
     sm->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 
     UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", URESOURCE_MODEL));
-    
-    ULight *light1 = new ULight(&e.rf, vec4(10.0f, 10.0f, 0.0f, 0.0f));
-    ULight *light2 = new ULight(&e.rf, vec4(1.0f, 1.0f, 1.0f, 0.0f));
-    ULight *light3 = new ULight(&e.rf, vec4(10.0f, 7.0f, 0.0f, 0.0f));
-    ULight *light4 = new ULight(&e.rf, vec4(-12.0f, 10.0f, 10.0f, 0.0f));
-    ULight *light5 = new ULight(&e.rf, vec4(-5.0f, 5.0f, 5.0f, 0.0f));
-    ULight *light6 = new ULight(&e.rf, vec4(12.0f, 9.0f, 10.0f, 0.0f));
-    ULight *light7 = new ULight(&e.rf, vec4(-5.0f, 4.0f, 5.0f, 0.0f));
-    ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 30.0f, 1.0f, 0.0f));
-    
-    UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->Load("data\\Scripts\\test_script.xml");
 
-    light8->AddComponent((UComponent*)script);
-    light8->SetAttenuation(vec3(0.0f, 0.004f, 0.0f));
-    light8->SetSpotCosCutoff(40.1f);
-    light8->SetSpotExponent(20.0f);
-    light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
-    
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->Load("data\\Scripts\\test_script.xml");
-    light7->AddComponent((UComponent*)script);
-
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->Load("data\\Scripts\\test_script.xml");
-    light6->AddComponent((UComponent*)script);
-
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->Load("data\\Scripts\\test_script.xml");
-    light5->AddComponent((UComponent*)script);
-
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->Load("data\\Scripts\\test_script.xml");
-    light1->AddComponent((UComponent*)script);
-
-
+    ULight *light1 = new ULight(&e.rf, vec4(10.0f, 30.0f, 0.0f, 0.0f));
+    light1->SetAmbient(vec4(0.5f, 0.5f, 0.5f, 1.0f));
+    light1->SetDiffuse(vec4(0.5f, 0.5f, 0.5f, 1.0f));
+    light1->SetAttenuation(vec3(0.0175f, 0.001f, 0.0000001f));
     light1->castShadows = true;
-    light2->castShadows = true;
-    light3->castShadows = true;
-    light4->castShadows = true;
-    light5->castShadows = true;
-    light6->castShadows = true;
-    light7->castShadows = true;
-    light8->castShadows = true;
 
     UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\skybox_model.xml", URESOURCE_MODEL));
-    
+
     // Main node in the scene
     UScene scene;
     UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
-    
+
     node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
     node->AddChild(new UScene::USceneNode(gameObject));
 
-    /*auto go = new UScene::USceneNode(light1);    
-    go->AddChild(new UScene::USceneNode(light2));
-    node->AddChild(go);
-    node->AddChild(new UScene::USceneNode(light3));
-    node->AddChild(new UScene::USceneNode(light4));
-    node->AddChild(new UScene::USceneNode(light5));
-    node->AddChild(new UScene::USceneNode(light6));
-    node->AddChild(new UScene::USceneNode(light7));*/
-    node->AddChild(new UScene::USceneNode(light8));
-    
+    auto go = new UScene::USceneNode(light1);
+
     node->AddChild(new UScene::USceneNode(new UGameObject(m)));
 
-    /*scene.AddLight(light1);
-    scene.AddLight(light2);
-    scene.AddLight(light3);
-    scene.AddLight(light4);
-    scene.AddLight(light5);
-    scene.AddLight(light6);
-    scene.AddLight(light7);*/
-    scene.AddLight(light8);/**/
-    
+    scene.AddLight(light1);
     scene.root = node;
-    
-    UModel *m1[150];
-    
-    for(int i = 0; i <135; i++)
-    {
-        m1[i]  =  dynamic_cast<UModel*>(e.rf.Create(URESOURCE_MODEL)); 
-        m1[i]->Load("data\\Models\\knight_model.xml"); 
-        m1[i]->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
-        //m1[i]->Load("data\\light.xml");
-        auto gameObject = new UGameObject(m1[i]);
-        gameObject->local.position = vec4_x * (- 30.0f) + vec4_x * (i%10) * 6.0f + vec4_z * (- 6.0f + 6*(i / 10));//vec4(rand() % i*0.1f, rand() % i*0.1f, rand() % i*0.1f, 1.0f);
 
-        node->AddChild(new UScene::USceneNode(gameObject));
-    }
-        
     e.SetCurrentScene(&scene);
     e.Run();
     e.Release();

@@ -33,28 +33,29 @@ public:
     float spotCosCutoff[MAX_LIGHTS];
     mat4 transforms[MAX_LIGHTS];
 
-    ULightParams(): count(0) { std::memset(lightIndex, 0, sizeof(unsigned int) * MAX_LIGHTS); }
+    ULightParams() : count(0) { std::memset(lightIndex, 0, sizeof(unsigned int) * MAX_LIGHTS); }
 };
 
 class UScene
 {
 
-int cursorPos[2];
-double rotateDelta[2];
-double moveDelta[2];
+    int cursorPos[2];
+    double rotateDelta[2];
+    double moveDelta[2];
 
-vector<ULight*> lights;
+    vector<ULight*> lights;
+
 public:
 
-    class USceneNode: public UNode
+    class USceneNode : public UNode
     {
         UGameObject* node;
         std::vector<USceneNode*> children;
         bool isAlreadyUpdated;
-        
-        public:
-        
-        UENGINE_DECLSPEC USceneNode(UGameObject* n): node(n) ,isAlreadyUpdated(false) {}
+
+    public:
+
+        UENGINE_DECLSPEC USceneNode(UGameObject* n) : node(n), isAlreadyUpdated(false) {}
 
         void UENGINE_DECLSPEC AddChild(USceneNode* n)
         {
@@ -65,50 +66,50 @@ public:
         void UENGINE_DECLSPEC Render(URENDER_TYPE type)
         {
             node->Render(type);
-            for(unsigned int i = 0; i < children.size(); i++){
-                if(children[i] != NULL)
+            for (unsigned int i = 0; i < children.size(); i++) {
+                if (children[i] != NULL)
                     children[i]->Render(type);
-            }        
+            }
         }
 
         void UENGINE_DECLSPEC Render(UMaterial *m)
-        {            
+        {
             node->Render(m);
-            for(unsigned int i = 0; i < children.size(); i++){
-                if(children[i] != NULL)
+            for (unsigned int i = 0; i < children.size(); i++) {
+                if (children[i] != NULL)
                     children[i]->Render(m);
-            }        
+            }
         }
 
         void UENGINE_DECLSPEC Update(double delta)
         {
-            if(node != NULL && !isAlreadyUpdated)
+            if (node != NULL && !isAlreadyUpdated)
             {
                 node->Update(delta);
                 isAlreadyUpdated = true;
             }
-            
-            for(unsigned int i = 0; i < children.size(); i++)
+
+            for (unsigned int i = 0; i < children.size(); i++)
             {
                 children[i]->node->parentObject = node;
                 children[i]->node->world = node->local * node->world;
                 children[i]->Update(delta);
-            }                
+            }
 
             isAlreadyUpdated = false;
         }
 
         void UENGINE_DECLSPEC DeleteTopology()
         {
-            for(unsigned int i = 0; i < children.size(); i++){
+            for (unsigned int i = 0; i < children.size(); i++) {
                 USceneNode *temp = NULL;
                 temp = dynamic_cast<USceneNode*>(children[i]);
-                
-                if(temp != NULL){
+
+                if (temp != NULL) {
                     temp->DeleteTopology();
                     delete temp;
-                }                
-            }            
+                }
+            }
         }
 
         void UENGINE_DECLSPEC Free()
@@ -121,7 +122,7 @@ public:
             Free();
         }
     };
-    
+
     void UENGINE_DECLSPEC AddLight(ULight* n)
     {
         lights.push_back(n);
@@ -143,7 +144,7 @@ public:
     void UENGINE_DECLSPEC Render(URENDER_TYPE type, UCamera camera);
     void UENGINE_DECLSPEC Render(UMaterial *m, UCamera camera);
 
-    UENGINE_DECLSPEC UScene(void): root(NULL)
+    UENGINE_DECLSPEC UScene(void) : root(NULL)
     {
         rotateDelta[0] = rotateDelta[1] = 0.0;
         moveDelta[0] = moveDelta[1] = 0.0;
