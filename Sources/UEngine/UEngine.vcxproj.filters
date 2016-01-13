@@ -183,6 +183,9 @@
     <ClCompile Include="Core\math\bounds.cpp">
       <Filter>Core\math</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Resources\UCubemap.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\UEngine.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="Core\math\bounds.h">
       <Filter>Core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Resources\UCubemap.h">
+      <Filter>Core\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

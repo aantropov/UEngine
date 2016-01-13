@@ -7,9 +7,9 @@ local tr;
 function Init()
 	gameObject = GetGameObject();
 	tr = GetTransform(gameObject);
-	velocity = {x = 0.001, y = 0.0001, z = 0.005, w = 0.0};
+	velocity = {x = 0.001, y = 0.001, z = 0.005, w = 0.0};
 	rotation = {x = 0.001, y = 0.0001, z = 0.005, w = 0.0};
-	border = {x = 15.0, y = 5.0, z = 13.0, w = 0.0}
+	border = {x = 15.0, y = 1.0, z = 13.0, w = 0.0}
 
 	border = SummVectors(tr.position, border);
 	return 1;

@@ -53,16 +53,16 @@ using namespace std;
 #include "Lua\UScriptEngine.h"
 #include "Lua\UScript.h"
 
-class UEngine 
+class UEngine
 {
     UScene* currentScene;
     URenderManager* renderManager;
-	
+
     unsigned int fps;
     float elapsedTime;
 
 public:
-    
+
     UENGINE_DECLSPEC static UResourceFactory  rf;
 
     void UENGINE_DECLSPEC SetCurrentScene(UScene* _currentScene)

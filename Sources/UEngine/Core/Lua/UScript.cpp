@@ -3,56 +3,55 @@
 #include "UScriptEngine.h"
 #include "..\utils\enum.h"
 
-void UScript:: Initialize()
+void UScript::Initialize()
 {
     luaVM = luaL_newstate();
     if (luaVM == nullptr)
     {
         return ULogger::GetInstance()->Message("Lua script cannot be initialized, cannot get new lua state", ULOG_MSG_ERROR);
     }
-        
-    luaL_openlibs(luaVM);    
+
+    luaL_openlibs(luaVM);
     //lua_setglobal(luaVM, USCRIPT_GLOBAL_SCOPE);
 
     UScriptEngine::GetInstance()->RegisterFunctions(this);
 }
 
-void UScript:: Release()
-{    
+void UScript::Release()
+{
     callLua0(luaVM, USCRIPT_RELEASE_FUNCTION);
-    if(luaVM != nullptr)
+    if (luaVM != nullptr)
         lua_close(luaVM);
 }
 
-bool UScript:: Load(std::string path)
-{    
-    UXMLFile xml;    
+bool UScript::Load(UXMLFile& xml, std::string path)
+{
     try
     {
         Initialize();
-        xml.Load(path);
-        this->name = xml.GetElement("/xml/script/name/");
-        
-        int file = luaL_loadfile(luaVM, xml.GetElement("/xml/script/lua/").c_str());
-        if(file != 0)
+        this->name = xml.GetElement(path + "script/name/");
+
+        int file = luaL_loadfile(luaVM, xml.GetElement(path + "script/lua/").c_str());
+        if (file != 0)
         {
-            ULogger::GetInstance()->Message("Cannot find file: " + xml.GetElement("/xml/script/lua/"));
+            ULogger::GetInstance()->Message("Cannot find file: " + xml.GetElement(path + "script/lua/"));
             throw;
         }
-        
-        //execute file
-        LUA_CALL(luaVM, lua_pcall(luaVM, 0, LUA_MULTRET, 0));                
 
-    }catch(exception e){
+        //execute file
+        LUA_CALL(luaVM, lua_pcall(luaVM, 0, LUA_MULTRET, 0));
+
+    }
+    catch (exception e) {
         ULogger::GetInstance()->Message("Error to load script (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
         return false;
     }
     return true;
 }
 
-void UScript:: Update(double delta)
+void UScript::Update(double delta)
 {
-    if(!inited)
+    if (!inited)
     {
         callLua0(luaVM, USCRIPT_INIT_FUNCTION);
         inited = true;

@@ -84,7 +84,7 @@ UTexture* UDefferedLighting:: Render(UScene *scene, UCamera camera)
     int mod2 = 0;
     for(unsigned int i = 0; i < lightParams.count; i++)
     {
-        lighting->material.ClearTextures();
+        lighting->material.ClearUniformUnits();
         lighting->AddTexture(colorScene, 0);
         lighting->AddTexture(depthScene, 1);
         lighting->AddTexture(normalScene, 2);

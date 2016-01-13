@@ -26,8 +26,8 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     specular.set(0.9f, 0.9f, 0.9f, 1.0f);
     attenuation.set(0.5f, 0.1f, 0.001f);
     spotDirection.set(-1.0f, -2.0f, -1.0f);
-    spotCosCutoff = cosf(45.0f * math_radians);
-    spotExponent = 20.0f;
+    spotCosCutoff = cosf(180.0f * math_radians);
+    spotExponent = 5.0f;
 
     InitModel(rf);
 
@@ -142,7 +142,7 @@ ULight::~ULight(void)
 void ULight::InitModel(UResourceFactory* rf)
 {
     model = dynamic_cast<UModel*>(rf->Create(URESOURCE_MODEL));
-    model->Load("data\\Models\\light_model.xml");
+    model->LoadFromFile("data\\Models\\light_model.xml");
 
     components.push_back(model);
 }

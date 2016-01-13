@@ -10,8 +10,10 @@ class UShader : public UResource, public UGLObject
 public:
 
     void Create(USHADER_TYPE st);
-    virtual bool Load(std::string path);
+    virtual bool Load(UXMLFile& xml, std::string xmlPath) override { return false; };
+    virtual bool LoadFromFile(std::string xmlPath) override;
+
     void Free();
-    UShader(void){}
+    UShader(void) {}
     virtual ~UShader(void) { Free(); }
 };

@@ -9,7 +9,7 @@ using namespace std;
 #include "UResource.h"
 #include "..\Utils\ULogger.h"
 
-class UXMLFile :  public UResource
+class UXMLFile : public UResource
 {
 private:
 
@@ -23,7 +23,7 @@ private:
         std::string value;
     };
 
-    bool OpenFile(std::string path);    
+    bool OpenFile(std::string path);
     void CloseFile();
 
     vector<UXMLNode> elements;
@@ -34,8 +34,10 @@ public:
     ~UXMLFile();
 
     std::string GetPath();
-    bool Load(std::string path);
-    void Free(){}
+    virtual bool LoadFromFile(std::string path) override;
+    virtual bool Load(UXMLFile &xml, std::string path) { return false; }
+
+    void Free() {}
 
     /* Get value by "path": /a/b/c
     for xml:
@@ -43,8 +45,8 @@ public:
     result:Test
     */
     std::string GetElement(std::string path);
-	int GetElementi(std::string param_path);
-	float GetElementf(std::string param_path);
+    int GetElementi(std::string param_path);
+    float GetElementf(std::string param_path);
 
     vector<string> GetElements(std::string key);
     bool isExistElement(string key);

@@ -9,9 +9,9 @@
       <tex_0>
         <name>material.texture</name>
         <channel>0</channel>
-        <path>data\\Textures\\light.jpg</path>
+        <path>data\\Textures\\light_texture.xml</path>
       </tex_0>
     </common_textures>
-   <common_material>data\\Materials\\specular_bump_material.xml</common_material>
+   <common_material>data\\test\\test_material.xml</common_material>
   </model>
 </xml>

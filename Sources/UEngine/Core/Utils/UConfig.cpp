@@ -2,9 +2,8 @@
 
 UConfig::UConfig()
 {
-    uCfg.Load(UCONFIG_FILE_PATH);
+    uCfg.LoadFromFile(UCONFIG_FILE_PATH);
 }
-
 
 UConfig::~UConfig()
 {
@@ -13,25 +12,25 @@ UConfig::~UConfig()
 
 UConfig* UConfig::GetInstance()
 {
-    if(instance == NULL)
+    if (instance == NULL)
     {
         ULogger::GetInstance()->Message("UConfig singleton object is created...");
-        instance = new UConfig();        
+        instance = new UConfig();
     }
     return instance;
 }
 
-std::string UConfig::GetParam(std::string param_path) 
+std::string UConfig::GetParam(std::string param_path)
 {
     return uCfg.GetElement(param_path);
 }
 
-int UConfig::GetParami(std::string param_path) 
+int UConfig::GetParami(std::string param_path)
 {
-	return uCfg.GetElementi(param_path);
+    return uCfg.GetElementi(param_path);
 }
 
-float UConfig::GetParamf(std::string param_path) 
+float UConfig::GetParamf(std::string param_path)
 {
     return uCfg.GetElementf(param_path);
 }

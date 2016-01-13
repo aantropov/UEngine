@@ -6,16 +6,17 @@
 using namespace std;
 
 class UResourceFactory;
+class UXMLFile;
 
-// Base class for resources, RAII hierarchy
 class UResource
-{    
+{
 public:
-    
+
     std::string resourceId;
     UResourceFactory* rf;
 
-    virtual bool Load(std::string path){ return true; }
+    virtual bool LoadFromFile(std::string path);
+    virtual bool Load(UXMLFile& xml, std::string xmlPath) = 0;
     virtual void Free() {}
 
     UResource() : resourceId(""), rf(nullptr) {}

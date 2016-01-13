@@ -10,7 +10,7 @@
       <tex_0>
         <name>noise</name>
         <channel>3</channel>
-        <path>data\\Textures\\noise.jpg</path>
+        <path>data\\Textures\\noise_texture.xml</path>
       </tex_0>
     </textures>
   </post_effect>

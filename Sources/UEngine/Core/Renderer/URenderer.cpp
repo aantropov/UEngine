@@ -8,6 +8,7 @@
 #include "UFrameBufferObject.h"
 #include "URendererHelper.h"
 #include "..\math\transform.h"
+#include "..\Resources\UCubemap.h"
 
 URenderer::URenderer()
 {
@@ -86,12 +87,12 @@ UCamera URenderer::GetCurrentCamera()
     return currentCamera;
 }
 
-void  URenderer::BindTexture(UTexture *tex)
+void URenderer::BindTexture(UTexture *tex)
 {
     BindTexture(tex, 0);
 }
 
-void  URenderer::BindTexture(UTexture *tex, unsigned int channel)
+void URenderer::BindTexture(UTexture *tex, unsigned int channel)
 {
     if (texChannelsCache[channel] == tex->GetId())
         return;
@@ -103,25 +104,91 @@ void  URenderer::BindTexture(UTexture *tex, unsigned int channel)
     }
 }
 
+int URenderer::CreateCubemap(UCubemap *tex)
+{
+    tex->GenTexture();
+    GLuint id = tex->GetId();
+
+    auto filter = GL_LINEAR;
+    if (tex->GetImageFilter() == UTEXTURE_FILTER_NEAREST)
+        filter = GL_NEAREST;
+
+    auto wrap = GL_REPEAT;
+    if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP)
+        wrap = GL_CLAMP_TO_EDGE;
+
+    glEnable(GL_TEXTURE_CUBE_MAP_ARB);
+    glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, id);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_WRAP_S, wrap);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_WRAP_T, wrap);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_WRAP_R, wrap);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_MAG_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_MIN_FILTER, filter);
+
+    GLenum	intFormat = GL_RGBA8;
+    if (tex->GetImageFormat() == IL_RGB || tex->GetImageFormat() == IL_BGR)
+        intFormat = GL_RGB8;
+
+    for (int i = 0; i < 6; i++)
+    {
+        ilBindImage(tex->GetHelperTextures()[i]);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X_ARB + i, 0, intFormat,
+            tex->GetWidth(), tex->GetWidth(), 0, tex->GetImageFormat(), tex->GetImageType(), ilGetData());
+    }
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, 0);
+    glDisable(GL_TEXTURE_CUBE_MAP_ARB);
+    return id;
+}
+
+void URenderer::BindCubemap(UCubemap *tex, unsigned int channel)
+{
+    if (texChannelsCache[channel] == tex->GetId())
+        return;
+    else
+    {
+        texChannelsCache[channel] = tex->GetId();
+        glActiveTexture(GL_TEXTURE0 + channel);
+        glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, tex->GetId());
+    }
+}
+
+void URenderer::DeleteCubemap(UCubemap *tex)
+{
+    GLuint t = tex->GetId();
+    OPENGL_CALL(glDeleteTextures(1, &t));
+}
+
 int URenderer::CreateTexture(UTexture *tex)
 {
-
     tex->GenTexture();
     GLuint texture = tex->GetId();
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    auto minFilter = tex->GetMipMap() ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR;
+    auto magFilter = GL_LINEAR;
+    if (tex->GetImageFilter() == UTEXTURE_FILTER_NEAREST)
+    {
+        minFilter = GL_NEAREST;
+        magFilter = GL_NEAREST;
+    }
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    auto wrap = GL_REPEAT;
+    if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP)
+        wrap = GL_CLAMP;
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
 
     if (tex->GetTextureResId() != 0)
     {
-
         tex->SetType(UTEXTURE_COLOR);
-        OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), tex->GetWidth(), tex->GetHeight(), 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_TYPE), ilGetData()));
+        OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, tex->GetImageFormat(), tex->GetWidth(), tex->GetHeight(), 0, tex->GetImageFormat(), tex->GetImageType(), ilGetData()));
     }
     else
     {
@@ -147,6 +214,12 @@ int URenderer::CreateTexture(UTexture *tex)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }
+    }
+
+    if (tex->GetMipMap())
+    {
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
     }
 
     OPENGL_CHECK_FOR_ERRORS();

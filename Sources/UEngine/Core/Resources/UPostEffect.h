@@ -11,7 +11,7 @@ public:
     virtual void Render(URENDER_TYPE type);
     virtual void Update(double delta);
     virtual void Free();
-    virtual bool Load(std:: string path);
+    virtual bool Load(UXMLFile &xml, std:: string path);
 
     UPostEffect(void);
     virtual ~UPostEffect(void);

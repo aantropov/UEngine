@@ -3,28 +3,37 @@
 #include "..\Renderer\urenderer.h"
 #include "..\Renderer\UGLObject.h"
 
-class UTexture :  public UResource, public UGLObject
+class UTexture : public UResource, public UGLObject
 {
     unsigned int texture_res_id;
 
-    int width, height;
+    int width;
+    int height;
+    int image_format;
+    int image_type;
+    bool mipmap;
+
     UTEXTURE_TYPE type;
+    UTEXTURE_FILTER filter;
+    UTEXTURE_WRAP wrap;
 
 public:
 
     std::string name;
 
-    unsigned int GetTextureResId() {return texture_res_id;}
+    unsigned int GetTextureResId() { return texture_res_id; }
+    
+    bool GetMipMap() const { return mipmap; }
+    int GetWidth() const { return width; }
+    int GetHeight() const { return height; }
+    int GetImageType() const { return image_type; }
+    int GetImageFormat() const { return image_format; }
+    UTEXTURE_FILTER GetImageFilter() const { return filter; }
+    UTEXTURE_WRAP GetImageWrap() const { return wrap; }
+    UTEXTURE_TYPE GetType() const { return type; }
 
-    int GetWidth() {return width;}
-    int GetHeight() {return height;}
-    UTEXTURE_TYPE GetType() {return type;}
-
-    void SetWidth(int w) { width = w; }
-    void SetHeight(int h) { height = h; }
     void SetType(UTEXTURE_TYPE type) { this->type = type; }
-
-    void GenTexture(){ glGenTextures(1, (GLuint*)&_id);}
+    void GenTexture() { glGenTextures(1, (GLuint*)&_id); }
 
     void Create(int w, int h, UTEXTURE_TYPE t)
     {
@@ -35,7 +44,7 @@ public:
     }
 
     virtual void Free();
-    virtual bool Load(std:: string path);
+    virtual bool Load(UXMLFile &xml, std::string path);
 
     UTexture(void);
     virtual ~UTexture(void);

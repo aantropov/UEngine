@@ -3,6 +3,7 @@
 #include "UTexture.h"
 #include "UModel.h"
 #include "UPostEffect.h"
+#include "UCubemap.h"
 #include "..\Renderer\UShaderProgram.h"
 #include "..\Lua\UScript.h"
 
@@ -31,6 +32,14 @@ UResource* UResourceFactory::Create(URESOURCE_TYPE type)
         resources.push_back(new UElement(temp, path));
         return temp;
     }
+    else if (type == URESOURCE_CUBEMAP)
+    {
+        UCubemap* temp = new UCubemap();
+        temp->rf = this;
+        temp->resourceId = path;
+        resources.push_back(new UElement(temp, path));
+        return temp;
+    }
     else if (type == URESOURCE_MODEL)
     {
         UModel* temp = new UModel();
@@ -44,7 +53,7 @@ UResource* UResourceFactory::Create(URESOURCE_TYPE type)
         UPostEffect* temp = new UPostEffect();
         temp->rf = this;
         temp->resourceId = path;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
@@ -131,33 +140,41 @@ UResource* UResourceFactory::Load(std::string path, URESOURCE_TYPE type)
     ULogger::GetInstance()->Message("Loading resource: \"" + path + "\"");
     if (type == URESOURCE_SHADER)
     {
-        UShader* temp = new UShader();
+        UResource* temp = new UShader();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
     else if (type == URESOURCE_TEXTURE)
     {
-        UTexture* temp = new UTexture();
+        UResource* temp = new UTexture();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
+        resources.push_back(new UElement(temp, path));
+        return temp;
+    }
+    else if (type == URESOURCE_CUBEMAP)
+    {
+        UResource* temp = new UCubemap();
+        temp->rf = this;
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
     else if (type == URESOURCE_MODEL)
     {
-        UModel* temp = new UModel();
+        UResource* temp = new UModel();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
     else if (type == URESOURCE_POST_EFFECT)
     {
-        UPostEffect* temp = new UPostEffect();
+        UResource* temp = new UPostEffect();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
@@ -165,23 +182,23 @@ UResource* UResourceFactory::Load(std::string path, URESOURCE_TYPE type)
     {
         UAnimation* temp = new UAnimation();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
     else if (type == URESOURCE_MATERIAL)
     {
-        UMaterial* temp = new UMaterial();
+        UResource* temp = new UMaterial();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }
     else if (type == URESOURCE_SCRIPT)
     {
-        UScript* temp = new UScript();
+        UResource* temp = new UScript();
         temp->rf = this;
-        temp->Load(path);
+        temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));
         return temp;
     }

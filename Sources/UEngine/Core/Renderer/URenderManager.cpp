@@ -78,6 +78,6 @@ void URenderManager::Render(UScene* scene)
     OPENGL_CHECK_FOR_ERRORS();
 
     lighting->Render(scene, render->mainCamera);
-    //postEffectSSAO->Render(URENDER_FORWARD);
+    postEffectSSAO->Render(URENDER_FORWARD);
     postEffectDOF->Render(URENDER_FORWARD);
 }

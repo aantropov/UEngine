@@ -6,7 +6,7 @@
 class UShader;
 
 class UShaderProgram : public UNode, public UGLObject, public UResource
-{    
+{
     UShader *pixel_sh;
     UShader *vertex_sh;
 
@@ -38,23 +38,25 @@ public:
         unsigned int transform_viewPosition;
 
         unsigned int lightsNum;
-        
+
         unsigned int skinning_transformsNum;
         unsigned int skinning_transforms;
-        
+
     };
 
     UUniformLocations locations;
 
     void InitLocations();
 
-    virtual bool Load(string path);
+    virtual bool LoadFromFile(string path) override;
+    virtual bool Load(UXMLFile &xml, string path) override { return false; };
+
     bool Load(std::string vertexshd_path, std::string pixelshd_path);
 
     void Render();
     virtual void Free();
 
-    UShaderProgram(const UShaderProgram& s) {this->pixel_sh = s.pixel_sh; this->vertex_sh = s.vertex_sh; this->_id = s._id; };
+    UShaderProgram(const UShaderProgram& s) { this->pixel_sh = s.pixel_sh; this->vertex_sh = s.vertex_sh; this->_id = s._id; };
     UShaderProgram(void);
     virtual ~UShaderProgram(void);
 };

@@ -129,6 +129,7 @@
     <ClCompile Include="Core\Renderer\UVertexArrayObject.cpp" />
     <ClCompile Include="Core\Renderer\UVertexBuffer.cpp" />
     <ClCompile Include="Core\Renderer\UWindow.cpp" />
+    <ClCompile Include="Core\Resources\UCubemap.cpp" />
     <ClCompile Include="Core\Resources\UMaterial.cpp" />
     <ClCompile Include="Core\Resources\UModel.cpp" />
     <ClCompile Include="Core\Resources\UPostEffect.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Core\Renderer\UVertexArrayObject.h" />
     <ClInclude Include="Core\Renderer\UVertexBuffer.h" />
     <ClInclude Include="Core\Renderer\UWindow.h" />
+    <ClInclude Include="Core\Resources\UCubemap.h" />
     <ClInclude Include="Core\Resources\UMaterial.h" />
     <ClInclude Include="Core\Resources\UModel.h" />
     <ClInclude Include="Core\Resources\UPostEffect.h" />

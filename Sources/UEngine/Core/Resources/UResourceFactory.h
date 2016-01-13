@@ -5,13 +5,13 @@
 
 class UShaderProgram;
 
-class UResourceFactory 
+class UResourceFactory
 {
 protected:
 
     class UElement
     {
-    protected:    
+    protected:
 
         std::string id;
         UResource* resource;
@@ -20,14 +20,13 @@ protected:
 
         UElement(UResource* r, std::string path) : resource(r), id(path) {}
 
-        UResource* GetResource(){ return resource;}
-        void SetResource( UResource* r ){ resource = r; }
-
-
-        std::string GetId() { return id;}
+        UResource* GetResource() { return resource; }
+        void SetResource(UResource* r) { resource = r; }
+        
+        std::string GetId() { return id; }
         void SetId(std::string id) { this->id = id; }
 
-        void Free(){ delete resource;}
+        void Free() { delete resource; }
         ~UElement() { Free(); }
 
     };
@@ -37,8 +36,8 @@ protected:
 
 public:
 
-    UENGINE_DECLSPEC UResourceFactory(){ unique_id = 0;}
-    UENGINE_DECLSPEC ~UResourceFactory(){ ReleaseAll(); }
+    UENGINE_DECLSPEC UResourceFactory() { unique_id = 0; }
+    UENGINE_DECLSPEC ~UResourceFactory() { ReleaseAll(); }
 
     //Load resource from hard disk
     UResource UENGINE_DECLSPEC *Get(std::string path);
@@ -48,7 +47,7 @@ public:
     UResource UENGINE_DECLSPEC *Create(URESOURCE_TYPE type);
 
     // delete by Id
-    void UENGINE_DECLSPEC Release(std::string path);    
+    void UENGINE_DECLSPEC Release(std::string path);
     // delete by pointer
     void UENGINE_DECLSPEC Release(UResource *resource);
     // delete all elements

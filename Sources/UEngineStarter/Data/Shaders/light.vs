@@ -17,7 +17,7 @@ uniform struct Transform
 	mat4 viewProjection;	
 	mat3 normal;
 	vec3 viewPosition;
-        mat4 modelViewProjection;
+    mat4 modelViewProjection;
 } transform;
 
 out Vertex 
