@@ -1,0 +1,9 @@
+<xml>
+  <texture>
+    <name>Specular</name>
+    <mipmap>1</mipmap>
+    <filter>linear</filter>
+    <wrap>repeat</wrap>
+    <path>data\\Textures\\s.jpg</path>
+  </texture>
+</xml>

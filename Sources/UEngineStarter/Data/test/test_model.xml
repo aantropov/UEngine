@@ -1,0 +1,9 @@
+<xml>
+  <model>   
+    <name>test Model</name>
+	<upm>data\\Models\\scene_model.upm</upm>
+    <mesh_num>0</mesh_num>
+    <anim_num>0</anim_num>
+    <common_material>data\\test\\test_material.xml</common_material>    	
+  </model>
+</xml>

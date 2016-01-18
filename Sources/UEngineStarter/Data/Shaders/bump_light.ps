@@ -109,9 +109,9 @@ void main(void)
 	for(int i = 0; i < lightsNum; i++)
 		res += ProccessLight(i, bump, viewDir);
 
-	mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));	
+	mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
 
-    vec3 reflectDir = normalize(reflect(viewDir, mix(Vert.normal, bump*transpose(m), 0.01)));
+    vec3 reflectDir = normalize(reflect(viewDir, mix(Vert.normal, bump*transpose(m), 0)));
 	vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
 	
 	color = material.emission;

@@ -1,0 +1,9 @@
+<xml>
+  <texture>
+    <name>Diffuse</name>
+    <mipmap>1</mipmap>
+    <filter>linear</filter>
+    <wrap>repeat</wrap>
+    <path>data\\Textures\\dirt.jpg</path>
+  </texture>
+</xml>

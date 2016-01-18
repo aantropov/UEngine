@@ -11,12 +11,12 @@ protected:
     std::vector<UComponent*> components;
 
 public:
-    
+
     std::string name;
 
     ::transform local;
     ::transform world;
-    
+
     std::vector<UGameObject*> children;
     UGameObject *parentObject;
 
@@ -29,6 +29,6 @@ public:
 
     UENGINE_DECLSPEC UGameObject();
     UENGINE_DECLSPEC UGameObject(UComponent *component);
-    UENGINE_DECLSPEC ~UGameObject();    
+    UENGINE_DECLSPEC ~UGameObject();
 };
 

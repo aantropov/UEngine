@@ -62,7 +62,7 @@ float UXMLFile::GetElementf(std::string param_path)
 bool UXMLFile::isExistElement(string key)
 {
     for (unsigned int i = 0; i < elements.size(); i++)
-        if (key == elements[i].name)
+        if (key == elements[i].name || key == elements[i].name.substr(0, key.size()))
             return true;
     return false;
 }

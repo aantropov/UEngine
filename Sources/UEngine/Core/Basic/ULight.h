@@ -33,14 +33,14 @@ public:
     std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();
     std::vector<UCamera> UENGINE_DECLSPEC GetCameras();
 
-    vec4 UENGINE_DECLSPEC GetAmbient(){ return ambient; }
-    vec4 UENGINE_DECLSPEC GetDiffuse(){ return diffuse; }
-    vec4 UENGINE_DECLSPEC GetSpecular(){ return specular; }
-    vec3 UENGINE_DECLSPEC GetAttenuation(){ return attenuation; }
+    vec4 UENGINE_DECLSPEC GetAmbient() const { return ambient; }
+    vec4 UENGINE_DECLSPEC GetDiffuse() const { return diffuse; }
+    vec4 UENGINE_DECLSPEC GetSpecular() const { return specular; }
+    vec3 UENGINE_DECLSPEC GetAttenuation() const { return attenuation; }
 
-    vec3 UENGINE_DECLSPEC GetSpotDirection(){ return spotDirection; }
-    float UENGINE_DECLSPEC GetSpotCosCutoff(){ return spotCosCutoff; }
-    float UENGINE_DECLSPEC GetSpotExponent(){ return spotExponent; }
+    vec3 UENGINE_DECLSPEC GetSpotDirection() const { return spotDirection; }
+    float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosCutoff; }
+    float UENGINE_DECLSPEC GetSpotExponent() const { return spotExponent; }
 
     void UENGINE_DECLSPEC SetAmbient(vec4 v){ ambient = v; }
     void UENGINE_DECLSPEC SetDiffuse(vec4 v){ diffuse = v; }

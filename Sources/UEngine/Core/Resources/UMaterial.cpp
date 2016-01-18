@@ -85,17 +85,37 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
         shininess = (float)atof(xml.GetElement(path + "material/shininnes/").c_str());
         //two_sides = atof(xml.GetElement(path + "material/two_sides/").c_str());
 
-        if (xml.isExistElement(path + "material/shaders/vertex_path/") && xml.isExistElement(path + "material/shaders/pixel_path/"))
-            SetShaderProgram(rf->Load(xml.GetElement(path + "material/shaders/vertex_path/"), xml.GetElement(path + "material/shaders/pixel_path/")), URENDER_FORWARD);
+        if (xml.isExistElement(path + "material/shaders/forward/"))
+        {
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " forward shader program", URESOURCE_SHADER_PROGRAM);
+            shader_program->Load(xml, path + "material/shaders/forward/");
 
-        if (xml.isExistElement(path + "material/shaders/normal_vertex_path/") && xml.isExistElement(path + "material/shaders/normal_pixel_path/"))
-            SetShaderProgram(rf->Load(xml.GetElement(path + "material/shaders/normal_vertex_path/"), xml.GetElement(path + "material/shaders/normal_pixel_path/")), URENDER_NORMAL);
+            SetShaderProgram(shader_program, URENDER_FORWARD);
+        }
 
-        if (xml.isExistElement(path + "material/shaders/depth_vertex_path/") && xml.isExistElement(path + "material/shaders/depth_pixel_path/"))
-            SetShaderProgram(rf->Load(xml.GetElement(path + "material/shaders/depth_vertex_path/"), xml.GetElement(path + "material/shaders/depth_pixel_path/")), URENDER_DEPTH);
+        if (xml.isExistElement(path + "material/shaders/normal/"))
+        {
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " normal shader program", URESOURCE_SHADER_PROGRAM);
+            shader_program->Load(xml, path + "material/shaders/normal/");
 
-        if (xml.isExistElement(path + "material/shaders/deffered_vertex_path/") && xml.isExistElement(path + "material/shaders/deffered_pixel_path/"))
-            SetShaderProgram(rf->Load(xml.GetElement(path + "material/shaders/deffered_vertex_path/"), xml.GetElement(path + "material/shaders/deffered_pixel_path/")), URENDER_DEFFERED);
+            SetShaderProgram(shader_program, URENDER_NORMAL);
+        }
+
+        if (xml.isExistElement(path + "material/shaders/depth/"))
+        {
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " depth shader program", URESOURCE_SHADER_PROGRAM);
+            shader_program->Load(xml, path + "material/shaders/depth/");
+
+            SetShaderProgram(shader_program, URENDER_DEPTH);
+        }
+
+        if (xml.isExistElement(path + "material/shaders/deffered/"))
+        {
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " deffered shader program", URESOURCE_SHADER_PROGRAM);
+            shader_program->Load(xml, path + "material/shaders/deffered/");
+
+            SetShaderProgram(shader_program, URENDER_DEFFERED);
+        }
 
         if (xml.isExistElement(path + "material/tex_num/"))
         {

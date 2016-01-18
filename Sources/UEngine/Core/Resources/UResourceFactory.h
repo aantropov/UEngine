@@ -43,13 +43,10 @@ public:
     UResource UENGINE_DECLSPEC *Get(std::string path);
     bool UENGINE_DECLSPEC Add(std::string path, UResource* res);
     UResource UENGINE_DECLSPEC *Load(std::string path, URESOURCE_TYPE type);
-    UShaderProgram UENGINE_DECLSPEC *Load(std::string vp, std::string pp);
     UResource UENGINE_DECLSPEC *Create(URESOURCE_TYPE type);
+    UResource UENGINE_DECLSPEC *Create(std::string path, URESOURCE_TYPE type);
 
-    // delete by Id
     void UENGINE_DECLSPEC Release(std::string path);
-    // delete by pointer
     void UENGINE_DECLSPEC Release(UResource *resource);
-    // delete all elements
     void UENGINE_DECLSPEC ReleaseAll();
 };

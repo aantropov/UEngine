@@ -1,10 +1,9 @@
 <xml>
   <post_effect>
     <name>Deffered lighting</name>
-    <shaders>
-      <pixel_path>data\\Shaders\\post_effect_deffered_lighting.ps</pixel_path>
-      <vertex_path>data\\Shaders\\post_effect.vs</vertex_path>
-    </shaders>
+    <shader>
+      <path>data\\Shaders\\post_effect_deffered_lighting.shader</path>      
+    </shader>
     <tex_num>0</tex_num>    
   </post_effect>
 </xml>

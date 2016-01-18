@@ -16,7 +16,7 @@ public:
 
     UFrameBufferObject fb;
     UFrameBufferObject postfb;
-    
+
     virtual UTexture *Render(UScene *scene, UCamera camera) = 0;
 };
 
@@ -31,12 +31,12 @@ public:
 class UDefferedLighting : public ULighting
 {
 public:
-    
+
     UTexture* colorScene;
     UTexture* diffuseScene;
     UTexture* ambientScene;
     UTexture* specularScene;
-    UTexture* positionScene;    
+    UTexture* positionScene;
 
     UTexture* resSceneA;
     UTexture* resSceneB;

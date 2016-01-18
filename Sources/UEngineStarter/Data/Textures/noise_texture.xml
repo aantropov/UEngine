@@ -1,0 +1,9 @@
+<xml>
+  <texture>
+    <name>Noise</name>
+    <mipmap>1</mipmap>
+    <filter>linear</filter>
+    <wrap>repeat</wrap>
+    <path>data\\Textures\\noise.jpg</path>
+  </texture>
+</xml>

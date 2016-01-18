@@ -33,7 +33,10 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
     {
         this->name = xml.GetElement(path + "post_effect/name/");
 
-        material.SetShaderProgram(rf->Load(xml.GetElement(path + "post_effect/shaders/vertex_path/"), xml.GetElement(path + "post_effect/shaders/pixel_path/")), URENDER_FORWARD);
+        UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " shader program", URESOURCE_SHADER_PROGRAM);
+        shader_program->Load(xml, path + "post_effect/");
+
+        material.SetShaderProgram(shader_program, URENDER_FORWARD);
         ib.Create(2);
 
         unsigned int *m_indices = reinterpret_cast<unsigned int*>(ib.GetPointer());

@@ -116,7 +116,7 @@ public:
     void DeleteVAO(UVertexArrayObject *vao);
 
     //Shaders    
-    int CompileShader(std::string source, USHADER_TYPE st);
+    int  CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines);
     void DeleteShader(UShader* shd);
 
     int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh);

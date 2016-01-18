@@ -2,6 +2,7 @@
 #include "UShader.h"
 #include "..\Resources\UResourceFactory.h"
 #include "..\UEngine.h"
+#include "..\Utils\utils.h"
 
 void UShaderProgram::Free()
 {
@@ -47,28 +48,50 @@ void UShaderProgram::InitLocations()
     OPENGL_CHECK_FOR_ERRORS();
 }
 
-bool UShaderProgram::LoadFromFile(string path)
+bool UShaderProgram::Load(UXMLFile& xml, std::string path)
 {
-    //not implemented yet
-    return false;
-}
+    try
+    {
+        std::string defines;
+        std::vector<std::string> defines_array;
 
-bool UShaderProgram::Load(std::string vertexshd_path, std::string pixelshd_path)
-{
-    UShader *vs = dynamic_cast<UShader*>(rf->Get(vertexshd_path));
-    UShader *ps = dynamic_cast<UShader*>(rf->Get(pixelshd_path));
+        if (xml.isExistElement(path + "shader/defines/"))
+        {
+            defines = trim(xml.GetElement(path + "shader/defines/"));
+            defines_array = split(defines);
+        }
 
-    vertex_sh = dynamic_cast<UShader*> (rf->Load(vertexshd_path, URESOURCE_SHADER));
-    pixel_sh = dynamic_cast<UShader*> (rf->Load(pixelshd_path, URESOURCE_SHADER));
+        std::string shader_path = xml.GetElement(path + "shader/path/");
 
-    if (vs == nullptr)
-        vertex_sh->Create(USHADER_VERTEX);
+        std::string vertex_shader_path(shader_path + " VERTEX " + defines);
+        std::string fragment_shader_path(shader_path + " FRAGMENT " + defines);
 
-    if (ps == nullptr)
-        pixel_sh->Create(USHADER_PIXEL);
+        vertex_sh = dynamic_cast<UShader*>(rf->Get(vertex_shader_path));
+        fragment_sh = dynamic_cast<UShader*>(rf->Get(fragment_shader_path));
 
-    _id = URenderer::GetInstance()->CreateShaderProgram(vertex_sh, pixel_sh);
-    InitLocations();
+        if (vertex_sh == nullptr)
+        {
+            vertex_sh = (UShader*)rf->Create(vertex_shader_path, URESOURCE_SHADER);
+            vertex_sh->LoadFromFile(shader_path);
+            vertex_sh->Create(USHADER_VERTEX, defines_array);
+        }
+
+        if (fragment_sh == nullptr)
+        {
+            fragment_sh = (UShader*)rf->Create(fragment_shader_path, URESOURCE_SHADER);
+            fragment_sh->LoadFromFile(shader_path);
+            fragment_sh->Create(USHADER_FRAGMENT, defines_array);
+        }
+
+        _id = URenderer::GetInstance()->CreateShaderProgram(vertex_sh, fragment_sh);
+        InitLocations();
+
+    }
+    catch (exception e)
+    {
+        ULogger::GetInstance()->Message("Error to load shader (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        return false;
+    }
     return true;
 }
 

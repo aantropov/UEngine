@@ -1,0 +1,14 @@
+<xml>
+  <cubemap>
+    <name>Diffuse</name>
+    <mipmap>1</mipmap>
+    <filter>linear</filter>
+    <wrap>repeat</wrap>
+    <positive_x>data\\Textures\\cubemap\\posx.jpg</positive_x>
+	<positive_y>data\\Textures\\cubemap\\posy.jpg</positive_y>
+	<positive_z>data\\Textures\\cubemap\\posz.jpg</positive_z>
+	<negative_x>data\\Textures\\cubemap\\negx.jpg</negative_x>
+	<negative_y>data\\Textures\\cubemap\\negy.jpg</negative_y>
+	<negative_z>data\\Textures\\cubemap\\negz.jpg</negative_z>
+  </cubemap>
+</xml>

@@ -7,7 +7,7 @@ class UShader;
 
 class UShaderProgram : public UNode, public UGLObject, public UResource
 {
-    UShader *pixel_sh;
+    UShader *fragment_sh;
     UShader *vertex_sh;
 
 public:
@@ -48,15 +48,12 @@ public:
 
     void InitLocations();
 
-    virtual bool LoadFromFile(string path) override;
-    virtual bool Load(UXMLFile &xml, string path) override { return false; };
-
-    bool Load(std::string vertexshd_path, std::string pixelshd_path);
+    virtual bool Load(UXMLFile &xml, string path) override;
 
     void Render();
     virtual void Free();
 
-    UShaderProgram(const UShaderProgram& s) { this->pixel_sh = s.pixel_sh; this->vertex_sh = s.vertex_sh; this->_id = s._id; };
+    UShaderProgram(const UShaderProgram& s) { this->fragment_sh = s.fragment_sh; this->vertex_sh = s.vertex_sh; this->_id = s._id; };
     UShaderProgram(void);
     virtual ~UShaderProgram(void);
 };

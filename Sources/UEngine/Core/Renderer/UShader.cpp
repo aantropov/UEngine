@@ -1,16 +1,16 @@
 #include "UShader.h"
 #include "urenderer.h"
+#include "..\Utils\utils.h"
 
-//Compile Shader
-void UShader::Create(USHADER_TYPE st)
+void UShader::Create(USHADER_TYPE st, std::vector<std::string> defines)
 {
-    _id = URenderer::GetInstance()->CompileShader(source, st);
+    _id = URenderer::GetInstance()->CompileShader(&source, st, defines);
 }
 
 bool UShader::LoadFromFile(std::string path)
 {
     FILE* fShd;
-    fopen_s(&fShd, path.c_str(), "rb");
+    fopen_s(&fShd, trim(path).c_str(), "rb");
 
     if (fShd == NULL)
     {

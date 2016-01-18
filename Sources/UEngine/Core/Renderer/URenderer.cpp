@@ -414,13 +414,41 @@ void URenderer::UnbindVAO()
 }
 
 //Shaders
-int  URenderer::CompileShader(std::string source, USHADER_TYPE st)
+int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines)
 {
     GLuint shd;
-    GLchar *strings = (GLchar*)source.c_str();
+    GLchar *strings = (GLchar*)source->c_str();
+
+    std::string shader_define;
+    std::string define_vertex("#version 330 core\n#define VERTEX\n");
+    std::string define_fragment("#version 330 core\n#define FRAGMENT\n");
+
+    if (st == USHADER_VERTEX)
+        shader_define = define_vertex;
+    else if (st == USHADER_FRAGMENT)
+        shader_define = define_fragment;
+
+    //GLchar* shader_strings[2] = { (GLchar*)define_vertex.c_str(), strings };
+    //GLint shader_strings_lengths[2] = { 17, (GLint)strlen((char*)strings) };
+
+    std::vector<GLchar*> shader_strings(defines.size() + 2);
+    std::vector<GLint> shader_strings_lengths(defines.size() + 2);
+
+    shader_strings[0] = (GLchar*)shader_define.c_str();
+    shader_strings_lengths[0] = (GLint)strlen(shader_define.c_str());
+
+    for (int i = 0; i < defines.size(); i++)
+    {
+        defines[i] = "#define " + defines[i] + "\n";
+        shader_strings[i + 1] = (GLchar*)defines[i].c_str();
+        shader_strings_lengths[i + 1] = (GLint)strlen(defines[i].c_str());
+    }
+
+    shader_strings[defines.size() + 1] = strings;
+    shader_strings_lengths[defines.size() + 1] = (GLint)strlen((char*)strings);
 
     shd = glCreateShader(st);
-    glShaderSource(shd, 1, (const GLchar**)&strings, NULL);
+    glShaderSource(shd, defines.size() + 2, (const GLchar**)&shader_strings[0], (const GLint*)&shader_strings_lengths[0]);
     glCompileShader(shd);
 
     OPENGL_CHECK_FOR_ERRORS();
@@ -437,6 +465,7 @@ int  URenderer::CompileShader(std::string source, USHADER_TYPE st)
 
         ULogger::GetInstance()->Message(log, ULOG_MSG_ERROR, ULOG_OUT_FILE);
     }
+
     return shd;
 }
 

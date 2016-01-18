@@ -1,9 +1,8 @@
 <xml>
   <post_effect>
     <name>DOF</name>
-    <shaders>
-      <pixel_path>data\\Shaders\\post_effect_dof.ps</pixel_path>
-      <vertex_path>data\\Shaders\\post_effect.vs</vertex_path>
-    </shaders>
+    <shader>
+      <path>data\\Shaders\\post_effect_dof.shader</path>      
+    </shader>
   </post_effect>
 </xml>

@@ -1,12 +1,12 @@
 #pragma once
 
 template<typename T>
-class USingleton 
+class USingleton
 {
 protected:
 
     static T* instance;
-    USingleton(){}
+    USingleton() {}
 
 public:
 
@@ -18,4 +18,4 @@ public:
 };
 
 template<typename T>
-T* USingleton<T>:: instance = nullptr;
+T* USingleton<T>::instance = nullptr;

@@ -13,7 +13,11 @@ UResource* UResourceFactory::Create(URESOURCE_TYPE type)
     memset(buffer, '\0', UE_MAXCHAR);
     sprintf_s(buffer, "\\memory\\%d%d\\", (int)type, unique_id++);
     std::string path = buffer;
+    return Create(path, type);
+}
 
+UResource* UResourceFactory::Create(std::string path, URESOURCE_TYPE type)
+{
     ULogger::GetInstance()->Message("Creating resource: \"" + path + "\"");
 
     if (type == URESOURCE_SHADER)
@@ -89,6 +93,14 @@ UResource* UResourceFactory::Create(URESOURCE_TYPE type)
         resources.push_back(new UElement(temp, path));
         return temp;
     }
+    else if (type == URESOURCE_CUBEMAP)
+    {
+        UCubemap* temp = new UCubemap();
+        temp->rf = this;
+        temp->resourceId = path;
+        resources.push_back(new UElement(temp, path));
+        return temp;
+    }
     else
         return nullptr;
 }
@@ -114,23 +126,6 @@ bool UResourceFactory::Add(std::string path, UResource* resource)
     return true;
 }
 
-UShaderProgram* UResourceFactory::Load(std::string vp, std::string pp)
-{
-    string path = "\\shader_program\\" + vp + "\\" + pp;
-
-    UShaderProgram* res = dynamic_cast<UShaderProgram*>(Get(path));
-    if (res != nullptr)
-        return res;
-
-    ULogger::GetInstance()->Message("Loading resource: \"" + path + "\"");
-
-    UShaderProgram* temp = new UShaderProgram();
-    temp->rf = this;
-    temp->Load(vp, pp);
-    resources.push_back(new UElement(temp, path));
-    return temp;
-}
-
 UResource* UResourceFactory::Load(std::string path, URESOURCE_TYPE type)
 {
     UResource* res = Get(path);
@@ -141,6 +136,14 @@ UResource* UResourceFactory::Load(std::string path, URESOURCE_TYPE type)
     if (type == URESOURCE_SHADER)
     {
         UResource* temp = new UShader();
+        temp->rf = this;
+        temp->LoadFromFile(path);
+        resources.push_back(new UElement(temp, path));
+        return temp;
+    }
+    else if (type == URESOURCE_SHADER_PROGRAM)
+    {
+        UResource* temp = new UShaderProgram();
         temp->rf = this;
         temp->LoadFromFile(path);
         resources.push_back(new UElement(temp, path));

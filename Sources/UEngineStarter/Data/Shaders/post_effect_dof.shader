@@ -1,17 +1,36 @@
-#version 330 core
+#define PI 3.14159265
 
-uniform sampler2D colorScene;
-uniform sampler2D depthScene;
+#if defined(VERTEX)
+	#define inout out
+#elif defined(FRAGMENT)
+	#define inout in
+#endif
 
-in Vertex
+inout Vertex
 {
   vec2 texcoord;
   vec3 position;
 } Vert;
 
+uniform sampler2D colorScene;
+uniform sampler2D depthScene;
+uniform float time;
+
+#if defined(VERTEX)
+
+layout(location = 0) in vec3 position;
+layout(location = 3) in vec2 texcoord;
+
+void main(void)
+{
+  Vert.texcoord = texcoord;
+  Vert.position = position;
+  gl_Position = vec4(position, 1.0);
+}
+
+#elif defined(FRAGMENT)
 out vec4 resColor;
 
-#define PI  3.14159265
 
 float width = 1400.0f; //texture width
 float height = 1024.0f; //texture height
@@ -205,3 +224,4 @@ void main()
 	resColor.rgb = col;
 	resColor.a = 1.0;
 }
+#endif

@@ -1,19 +1,34 @@
-#version 330 core
+#if defined(VERTEX)
+	#define inout out
+#elif defined(FRAGMENT)
+	#define inout in
+#endif
 
-uniform sampler2D colorScene;
-uniform sampler2D depthScene;
-
-uniform float time;
-
-in Vertex
+inout Vertex
 {
   vec2 texcoord;
   vec3 position;
 } Vert;
 
-out vec4 color;
+uniform sampler2D colorScene;
+uniform sampler2D depthScene;
+uniform float time;
 
-//const vec3 factor = vec3(0.27, 0.67, 0.06);
+#if defined(VERTEX)
+
+layout(location = 0) in vec3 position;
+layout(location = 3) in vec2 texcoord;
+
+void main(void)
+{
+  Vert.texcoord = texcoord;
+  Vert.position = position;
+  gl_Position = vec4(position, 1.0);
+}
+
+#elif defined(FRAGMENT)
+
+out vec4 color;
 
 vec3 filter(in vec2 texcoord)
 {
@@ -34,3 +49,4 @@ void main(void)
   color = vec4(res, 1.0);
 }
 
+#endif
