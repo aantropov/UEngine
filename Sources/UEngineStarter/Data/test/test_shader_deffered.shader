@@ -19,13 +19,10 @@ uniform struct Transform
 uniform struct Material
 {
 	sampler2D texture;
+	sampler2D specular_tex;
 	
 #if defined(NORMAL)
 	sampler2D normal;
-#endif
-
-#if defined(SPECULAR)
-	sampler2D specular_tex;
 #endif
 
 	vec4  ambient;
@@ -119,7 +116,7 @@ void main(void)
 	Vert.t = (cross(n, Vert.b));
 
 #if defined(SKINNING)
-	Vert.normal = normalize(Vert.transformNormal * MVIN * normal);
+	Vert.normal = normalize(transform.normal * MVIN * normal);
 #else
 	Vert.normal = normalize(normal);
 #endif
@@ -129,16 +126,16 @@ void main(void)
 	Vert.viewDirTBN.x = dot(Vert.viewDir, Vert.t);
 	Vert.viewDirTBN.y = dot(Vert.viewDir, Vert.b);
 	Vert.viewDirTBN.z = dot(Vert.viewDir, n);
-
-    for(int i = 0; i < min(maxLight, lightsNum); i++)
+	
+	for(int i = 0; i < min(maxLight, lightsNum); i++)
 		ProcessLight(i, vertex, Vert.t, Vert.b, n);
 	
-    gl_Position = transform.viewProjection * (vertex);	
+	gl_Position = transform.viewProjection * (vertex);	
 }
 
 #elif defined(FRAGMENT)
 
-out vec4 color;
+out vec4 color[6];
 
 float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 {
@@ -161,78 +158,46 @@ float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 #endif
 }
 
-#if defined(SPECULAR)
-vec4 ProccessLight(int i, vec3 bump, vec4 specular, vec3 viewDir)
-#else
-vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
-#endif
-{
-	vec4 res = vec4(0);
-
-	float distance = length(Vert.lightDir[i]);
-	vec3 lVec = normalize(Vert.lightDirTBN[i] * inversesqrt(distance));	
-
-	float shadow  = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.1, 1.0);
-	
-	vec3 lightDir = normalize(Vert.lightDirTBN[i]);
+float ProccessLight(int i)
+{	
+	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
 	vec3 lightDirLight = normalize(Vert.lightDir[i]);
-
 	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDirLight);
 	float spot       = float(spotEffect > light_spotCosCutoff[i]);
 	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
 
-	float attenuation = spot * spotEffect / (light_attenuation[i].x +
-		light_attenuation[i].y * distance +
-		light_attenuation[i].z * distance * distance);
-
-	res = material.ambient * light_ambient[i] * attenuation;
-	
-	float NdotL = max(dot(bump, lVec), 0);
-	res = material.diffuse * light_diffuse[i] * NdotL * attenuation;
-	
-#if defined(SPECULAR)
-	float RdotVpow = max(pow(dot(reflect(-lVec, bump), Vert.viewDirTBN), material.shininess), 0.0);
-	res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow * attenuation;// * material.specular.w * specular.w;
-#endif
-
-	res *= shadow;
-	return res;
+	return shadow * spot * spotEffect;
 }
 
 void main(void)
 {
 	vec3 normal = Vert.normal;
-	
 #ifdef NORMAL
 	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;
-    //mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
-	//normal *= transpose(m);
+    mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
+	normal *= transpose(m);
 #endif
 
-    normal = normalize(normal);    
-	vec3 viewDir = normalize(Vert.viewDir);
-
-#if defined(SPECULAR)
-	vec4 specular = texture(material.specular_tex, Vert.texcoord);	
-#endif
+	vec4 specular = texture(material.specular_tex, Vert.texcoord);
 	
-	vec4 res = vec4(0.0);
-	for(int i = 0; i < lightsNum; i++)
-#if defined(SPECULAR)
-		res += ProccessLight(i, normal, specular, viewDir);
-#else
-		res += ProccessLight(i, normal, viewDir);
-#endif
-	
-	color = material.emission;
-	
+	float res = 0.0;
+	for(int i = 0; i < min(maxLight,lightsNum); i++)
+	 res += ProccessLight(i);    
+    
+    color[0] =  material.emission;
+    
 #if defined(REFLECTION_CUBEMAP)
-	vec3 reflectDir = normalize(reflect(viewDir, normal));
-	vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
-	color += reflectColor;
+    vec3 viewDir = normalize(Vert.viewDir);
+    vec3 reflectDir = normalize(reflect(viewDir, normal));
+    vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
+    color[0] += reflectColor;
 #endif
 	
-	color += texture(material.texture, Vert.texcoord) * res;
+	color[1] = vec4(normal * 0.5 + vec3(0.5), 1.0);
+	color[2] = material.diffuse * clamp(res, 0, 1.0) * texture(material.texture, Vert.texcoord);
+	color[3] = material.ambient * clamp(res, 0, 1.0);
+	color[4] = vec4(material.specular.xyz * specular.xyz * clamp(res, 0, 1.0), material.shininess);// * material.specular.w * specular.w;
+	color[5] = Vert.position;
+	//color[6] = vec4(0.0f);
 }
-
 #endif

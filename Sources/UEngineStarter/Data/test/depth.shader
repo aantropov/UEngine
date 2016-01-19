@@ -75,9 +75,7 @@ void main(void)
 	gl_Position = transform.viewProjection * vertex;
 }
 #elif defined(FRAGMENT)
-out vec4 color;
 void main()
 {
-color = vec4(1,1,1,0);
 }
 #endif

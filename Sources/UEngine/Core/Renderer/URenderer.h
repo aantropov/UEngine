@@ -23,7 +23,7 @@ class UScene;
 class UFrameBufferObject;
 class UCubemap;
 
-class URenderer : public USingleton<URenderer>
+class URenderer : public USingleton < URenderer >
 {
     UWindow uWnd;
 
@@ -47,9 +47,12 @@ class URenderer : public USingleton<URenderer>
     int CacheUniformLocation(string name);
     int CacheUniformLocation(string name, UShaderProgram *sh);
 
+    float shadow_bias;
 public:
 
     unsigned int drawCalls;
+    float GetShadowBias() const { return shadow_bias; }
+    std::string GetShaderVersion() const { return "#version 330 core"; }
 
     void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
     UScene UENGINE_DECLSPEC *GetCurrentScene();

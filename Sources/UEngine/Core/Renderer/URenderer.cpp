@@ -178,6 +178,8 @@ int URenderer::CreateTexture(UTexture *tex)
     auto wrap = GL_REPEAT;
     if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP)
         wrap = GL_CLAMP;
+    else if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP_TO_EDGE)
+        wrap = GL_CLAMP_TO_EDGE;
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
@@ -194,7 +196,15 @@ int URenderer::CreateTexture(UTexture *tex)
     {
         if (tex->GetType() == UTEXTURE_DEPTH_SHADOW)
         {
+            //OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE_ARB, GL_LUMINANCE));
             OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE));
+            //OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL));
+
+            /*OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE_ARB,
+                GL_COMPARE_R_TO_TEXTURE_ARB));
+                OPENGL_CALL(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FAIL_VALUE_ARB, 0.5f));
+                OPENGL_CALL(glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE));
+                */
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
         else if (tex->GetType() == UTEXTURE_DEPTH)
@@ -295,7 +305,7 @@ void URenderer::DrawSegment(const vec3& p1, const vec3& p2, const vec3& color)
     glColor4f(color.x, color.y, color.z, 1);
     GLfloat glVertices[] =
     {
-       p1.x, p1.y, p1.z, p2.x, p2.y, p2.z
+        p1.x, p1.y, p1.z, p2.x, p2.y, p2.z
     };
 
     glVertexPointer(3, GL_FLOAT, 0, glVertices);
@@ -420,16 +430,13 @@ int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::v
     GLchar *strings = (GLchar*)source->c_str();
 
     std::string shader_define;
-    std::string define_vertex("#version 330 core\n#define VERTEX\n");
-    std::string define_fragment("#version 330 core\n#define FRAGMENT\n");
+    std::string define_vertex(GetShaderVersion() + "\n#define VERTEX\n");
+    std::string define_fragment(GetShaderVersion() + "\n#define FRAGMENT\n");
 
     if (st == USHADER_VERTEX)
         shader_define = define_vertex;
     else if (st == USHADER_FRAGMENT)
         shader_define = define_fragment;
-
-    //GLchar* shader_strings[2] = { (GLchar*)define_vertex.c_str(), strings };
-    //GLint shader_strings_lengths[2] = { 17, (GLint)strlen((char*)strings) };
 
     std::vector<GLchar*> shader_strings(defines.size() + 2);
     std::vector<GLint> shader_strings_lengths(defines.size() + 2);
@@ -663,6 +670,8 @@ bool URenderer::Initialize()
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
     mainCamera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
+
+    shadow_bias = config->GetParamf("/xml/config/shadow_bias/");
 
     //init DevIl
     DEVIL_CALL(ilInit());

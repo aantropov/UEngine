@@ -11,21 +11,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UGameObject *gameObject = new UGameObject(test_model);
     //test_model->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
 
-    ULight *light = new ULight(&e.rf, vec4(10.0f, 10.0f, 0.0f, 0.0f));
-    light->SetAttenuation(vec3(0.25f, 0.f, 0.0f));
-    light->castShadows = true;
     // Main node in the scene
     UScene scene;
     UScene::USceneNode *node = new UScene::USceneNode(new UGameObject());
-    node->AddChild(new UScene::USceneNode(light));
     node->AddChild(new UScene::USceneNode(new UGameObject(test_model)));
-    
     scene.root = node;
-    scene.AddLight(light);
-
+    
     UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->LoadFromFile("data\\Scripts\\test_script.xml");
+    script->LoadFromFile("data\\Scripts\\test_script.xml");    
+    
+    ULight *light = new ULight(&e.rf, vec4(0.0f, 20.0f, 0.0f, 0.0f));
+    light->SetAttenuation(vec3(0.0f, 0.025f, 0.0f));
+    light->SetSpotExponent(2);
+    light->SetSpotCosCutoff(90);
+    light->castShadows = true;
+    node->AddChild(new UScene::USceneNode(light));
+    scene.AddLight(light);
     light->AddComponent((UComponent*)script);
+
+    vec3 atten = vec3(0.f, 0.1f, 0.f);
+
+    ULight *additional_light = new ULight(&e.rf, vec4(0.0f, 15.0f, 10.0f, 0.0f));
+    additional_light->SetAttenuation(atten);
+    additional_light->castShadows = true;
+    node->AddChild(new UScene::USceneNode(additional_light));
+    scene.AddLight(additional_light);
+    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    script->LoadFromFile("data\\Scripts\\test_script.xml");
+    additional_light->AddComponent((UComponent*)script);
+            
     /*
     auto go = new UScene::USceneNode(light1);
     go->AddChild(new UScene::USceneNode(light2));

@@ -8,8 +8,8 @@ void UScene::KeysProccessing()
     // Camera moving
     int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
 
-    moveDelta[0] = 0.125 * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
-    moveDelta[1] = 0.125 * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
+    moveDelta[0] = 0.5f * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
+    moveDelta[1] = 0.5f * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
 
     UInput::GetCursorPos(cursorPos, cursorPos + 1);
     rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;

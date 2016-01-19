@@ -50,5 +50,6 @@ public:
 
     vector<string> GetElements(std::string key);
     bool isExistElement(string key);
+    bool isExistElementStrict(string key);
 };
 

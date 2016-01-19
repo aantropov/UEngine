@@ -67,6 +67,14 @@ bool UXMLFile::isExistElement(string key)
     return false;
 }
 
+bool UXMLFile::isExistElementStrict(string key)
+{
+    for (unsigned int i = 0; i < elements.size(); i++)
+        if (key == elements[i].name)
+            return true;
+    return false;
+}
+
 vector<std::string> UXMLFile::GetElements(std::string key)
 {
     vector<std::string> res;

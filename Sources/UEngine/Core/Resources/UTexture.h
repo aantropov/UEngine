@@ -35,11 +35,13 @@ public:
     void SetType(UTEXTURE_TYPE type) { this->type = type; }
     void GenTexture() { glGenTextures(1, (GLuint*)&_id); }
 
-    void Create(int w, int h, UTEXTURE_TYPE t)
+    void Create(int w, int h, UTEXTURE_TYPE t, UTEXTURE_FILTER filt = UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP wr = UTEXTURE_WRAP_CLAMP)
     {
         width = w;
         height = h;
         type = t;
+        filter = filt;
+        wrap = wr;
         _id = URenderer::GetInstance()->CreateTexture(this);
     }
 

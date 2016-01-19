@@ -5,6 +5,6 @@
     <filter>linear</filter>
     <wrap>repeat</wrap>
 	<mipmap>1</mipmap>
-    <path>data\\Textures\\c.jpg</path>
+    <path>data\\Textures\\test\\red_brick_normal.png</path>
   </texture>
 </xml>

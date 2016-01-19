@@ -72,12 +72,12 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffu
 		light_attenuation[i].z * distance * distance);
 		
 	res = ambient * light_ambient[i] * attenuation;
-	
+	    
 	float NdotL = max(dot(bump, lightDir), 0);
 	res += diffuse * light_diffuse[i] * NdotL * attenuation;
-
-	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), (bump)), viewDir), specular[3] * 100f), 0.0);
-	res += vec4(specular.xyz, 1.0) * light_specular[i] * RdotVpow * attenuation;
+    
+	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w), 0.0);
+	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow * attenuation;
 	
 	return res;
 	//return vec4(bump,1.0);
@@ -93,12 +93,7 @@ void main(void)
   vec4 previous = texture(previousScene, Vert.texcoord);
   vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
-  vec4 res = vec4(0.0);
-
-  if(ambient.a > 0.9f)
-	res = vec4(0.0f);
-  else  
-  	res += ProccessLight(int(lightIndex), vertNormal, vertPosition, ambient, diffuse, specular);
+  vec4 res = ProccessLight(int(lightIndex), vertNormal, vertPosition, ambient, diffuse, specular);
   
   color = vec4(0);
   

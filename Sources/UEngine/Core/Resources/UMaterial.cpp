@@ -82,7 +82,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
         specular.z = (float)atof(xml.GetElement(path + "material/specular/b/").c_str());
         specular.w = (float)atof(xml.GetElement(path + "material/specular/a/").c_str());
 
-        shininess = (float)atof(xml.GetElement(path + "material/shininnes/").c_str());
+        shininess = (float)atof(xml.GetElement(path + "material/shininess/").c_str());
         //two_sides = atof(xml.GetElement(path + "material/two_sides/").c_str());
 
         if (xml.isExistElement(path + "material/shaders/forward/"))
@@ -241,7 +241,8 @@ void UMaterial::Render(URENDER_TYPE type)
         int cur = 0;
         for (unsigned int i = 0; i < lights.count; i++)
         {
-            sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
+            if (sceneLights[lights.lightIndex[i]]->castShadows)
+                sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
             cur++;
 
             if (cur > MAX_LIGHTS)

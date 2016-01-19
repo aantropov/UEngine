@@ -9,7 +9,7 @@
 			<path>data\\test\\test_cubemap.xml</path>
 		</cubemap_0>
 	</cubemaps>
-    <tex_num>2</tex_num>
+    <tex_num>3</tex_num>
     <textures>
       <tex_0>
         <name>material.texture</name>
@@ -30,13 +30,14 @@
     <shaders>
 	  <forward>
 		<shader>			
-			<defines>SPECULAR NORMAL</defines>
+			<defines>SPECULAR REFLECTION_CUBEMAP SHADOW_PCF</defines>
 			<path>data\\test\\test_shader.shader</path>
 		</shader>
 	  </forward>
   	  <deffered>
 		<shader>			
-			<path>data\\test\\test_shader.shader</path>
+            <defines>NORMAL REFLECTION_CUBEMAP SHADOW_PCF</defines>
+			<path>data\\test\\test_shader_deffered.shader</path>
 		</shader>
 	  </deffered>
       <depth>
@@ -75,6 +76,6 @@
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>
-    <shininnes>0.1f</shininnes>
+    <shininess>1.f</shininess>
   </material>
 </xml>

@@ -52,11 +52,13 @@ void URenderManager::Render(UScene* scene)
 
     glViewport(0, 0, depthTextureSize, depthTextureSize);
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    //glDepthMask(GL_TRUE);    
-    glCullFace(GL_FRONT);
+    glDepthMask(GL_TRUE);
+    //glCullFace(GL_FRONT);
 
     auto lights = scene->GetLights();
     auto lightParams = render->GetCurrentScene()->lightParams;
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(4, 4);
 
     for (unsigned int i = 0; i < lightParams.count; i++)
     {
@@ -66,11 +68,14 @@ void URenderManager::Render(UScene* scene)
         auto depthTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < depthTextures.size(); j++)
         {
+
             depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_DEPTH);
             glClear(GL_DEPTH_BUFFER_BIT);
             scene->Render(URENDER_DEPTH, lights[lightParams.lightIndex[i]]->GetCameras()[j]);
         }
     }
+
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     //URenderer::GetInstance()->SetCurrentCamera(previousCam);
     URenderer::GetInstance()->UnbindFBO();
