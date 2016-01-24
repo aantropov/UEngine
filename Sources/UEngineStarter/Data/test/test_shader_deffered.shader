@@ -21,7 +21,7 @@ uniform struct Material
 	sampler2D texture;
 	sampler2D specular_tex;
 	
-#if defined(NORMAL)
+#if defined(NORMAL_MAPPING)
 	sampler2D normal;
 #endif
 
@@ -116,9 +116,9 @@ void main(void)
 	Vert.t = (cross(n, Vert.b));
 
 #if defined(SKINNING)
-	Vert.normal = normalize(transform.normal * MVIN * normal);
+	Vert.normal = Vert.transformNormal * MVIN * normal;
 #else
-	Vert.normal = normalize(normal);
+	Vert.normal = Vert.transformNormal * normal;
 #endif
 
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
@@ -159,31 +159,39 @@ float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 }
 
 float ProccessLight(int i)
-{	
-	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
-	vec3 lightDirLight = normalize(Vert.lightDir[i]);
-	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDirLight);
+{		
+	vec3 lightDir = Vert.lightDir[i];
+	float distance = length(lightDir);
+	lightDir = normalize(lightDir);
+	
+	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
 	float spot       = float(spotEffect > light_spotCosCutoff[i]);
 	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
-
-	return shadow * spot * spotEffect;
+		
+	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
+	shadow *= spot * spotEffect;
+	
+	return shadow;
 }
 
 void main(void)
 {
 	vec3 normal = Vert.normal;
-#ifdef NORMAL
-	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;
-    mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
-	normal *= transpose(m);
+	mat3 tbn = transpose(mat3((Vert.t), (Vert.b), (Vert.normal)));
+	
+#ifdef NORMAL_MAPPING
+	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;  
+	normal *= tbn;	
 #endif
 
 	vec4 specular = texture(material.specular_tex, Vert.texcoord);
 	
 	float res = 0.0;
-	for(int i = 0; i < min(maxLight,lightsNum); i++)
+	float lights = min(maxLight,lightsNum);
+	for(int i = 0; i < lights; i++)
 	 res += ProccessLight(i);    
-    
+    res /= lights;
+	
     color[0] =  material.emission;
     
 #if defined(REFLECTION_CUBEMAP)
@@ -194,9 +202,9 @@ void main(void)
 #endif
 	
 	color[1] = vec4(normal * 0.5 + vec3(0.5), 1.0);
-	color[2] = material.diffuse * clamp(res, 0, 1.0) * texture(material.texture, Vert.texcoord);
-	color[3] = material.ambient * clamp(res, 0, 1.0);
-	color[4] = vec4(material.specular.xyz * specular.xyz * clamp(res, 0, 1.0), material.shininess);// * material.specular.w * specular.w;
+	color[2] = material.diffuse * res * texture(material.texture, Vert.texcoord);
+	color[3] = material.ambient * res;
+	color[4] = vec4(material.specular.xyz * specular.xyz * res, material.shininess);// * material.specular.w * specular.w;
 	color[5] = Vert.position;
 	//color[6] = vec4(0.0f);
 }

@@ -48,7 +48,7 @@ public:
     void UENGINE_DECLSPEC SetAttenuation(vec3 v){ attenuation = v; }
 
     void UENGINE_DECLSPEC SetSpotDirection(vec4 v){ spotDirection = v; }
-    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees){ spotCosCutoff = cosf(degrees*math_radians); }
+    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees){ spotCosCutoff = cosf(degrees * math_radians); }
     void UENGINE_DECLSPEC SetSpotExponent(float v){ spotExponent = v; }
 
     virtual UENGINE_DECLSPEC mat4 GetLightTransform();

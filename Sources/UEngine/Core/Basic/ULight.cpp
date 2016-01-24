@@ -26,7 +26,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     specular.set(0.9f, 0.9f, 0.9f, 1.0f);
     attenuation.set(0.5f, 0.1f, 0.001f);
     spotDirection.set(-1.0f, -2.0f, -1.0f);
-    spotCosCutoff = cosf(180.0f * math_radians);
+    spotCosCutoff = -1.0f;
     spotExponent = 5.0f;
 
     InitModel(rf);
@@ -38,7 +38,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     depthTextures.push_back(tex);
 
     UCamera cam;
-    cam.Perspective(spotCosCutoff * math_degrees *2.0f, (float)URenderer::GetInstance()->GetWidth() / (float)URenderer::GetInstance()->GetHeight(), 0.5f, 1000.0f);
+    cam.Perspective(spotCosCutoff * math_degrees * 2.0f, (float)URenderer::GetInstance()->GetWidth() / (float)URenderer::GetInstance()->GetHeight(), 0.5f, 1000.0f);
     cam.SetPosition(pos);
     cameras.push_back(cam);
 

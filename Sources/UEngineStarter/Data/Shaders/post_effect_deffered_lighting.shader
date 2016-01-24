@@ -66,21 +66,24 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffu
 	vec3 lightDir = light_position[i].xyz - vertPosition.xyz;
 	float distance = length(lightDir);
 	lightDir = normalize(lightDir);
-
-	float attenuation = 1.0f / (light_attenuation[i].x +
+	
+	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
+	float spot       = float(spotEffect > light_spotCosCutoff[i]);
+	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
+	
+	float attenuation = spot * spotEffect / (light_attenuation[i].x +
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
 		
-	res = ambient * light_ambient[i] * attenuation;
+	res = ambient * light_ambient[i];
 	    
 	float NdotL = max(dot(bump, lightDir), 0);
-	res += diffuse * light_diffuse[i] * NdotL * attenuation;
+	res += diffuse * light_diffuse[i] * NdotL;
     
 	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w), 0.0);
-	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow * attenuation;
+	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow;
 	
-	return res;
-	//return vec4(bump,1.0);
+	return res * attenuation;
 }
 
 void main(void)
@@ -94,7 +97,7 @@ void main(void)
   vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
   vec4 res = ProccessLight(int(lightIndex), vertNormal, vertPosition, ambient, diffuse, specular);
-  
+  //res = vec4(vertNormal,1);
   color = vec4(0);
   
   if(int(state) == 0)

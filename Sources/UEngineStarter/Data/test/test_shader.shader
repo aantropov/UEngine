@@ -20,7 +20,7 @@ uniform struct Material
 {
 	sampler2D texture;
 	
-#if defined(NORMAL)
+#if defined(NORMAL_MAPPING)
 	sampler2D normal;
 #endif
 
@@ -119,9 +119,9 @@ void main(void)
 	Vert.t = (cross(n, Vert.b));
 
 #if defined(SKINNING)
-	Vert.normal = normalize(Vert.transformNormal * MVIN * normal);
+	Vert.normal = Vert.transformNormal * MVIN * normal;
 #else
-	Vert.normal = normalize(normal);
+	Vert.normal = Vert.transformNormal * normal;
 #endif
 
 	Vert.viewDir = normalize(vec3(transform.viewPosition - vec3(vertex)));
@@ -168,49 +168,47 @@ vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
 #endif
 {
 	vec4 res = vec4(0);
-
-	float distance = length(Vert.lightDir[i]);
-	vec3 lVec = normalize(Vert.lightDirTBN[i] * inversesqrt(distance));	
-
-	float shadow  = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.1, 1.0);
+	vec3 lightDir = Vert.lightDir[i];
+	float distance = length(lightDir);
+	lightDir = normalize(lightDir);
 	
-	vec3 lightDir = normalize(Vert.lightDirTBN[i]);
-	vec3 lightDirLight = normalize(Vert.lightDir[i]);
-
-	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDirLight);
+	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
 	float spot       = float(spotEffect > light_spotCosCutoff[i]);
 	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
-
+	
 	float attenuation = spot * spotEffect / (light_attenuation[i].x +
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
-
-	res = material.ambient * light_ambient[i] * attenuation;
 	
-	float NdotL = max(dot(bump, lVec), 0);
-	res = material.diffuse * light_diffuse[i] * NdotL * attenuation;
+	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
+	shadow *= spot * spotEffect;
+	
+	res = material.ambient * light_ambient[i];
+	
+	float NdotL = max(dot(bump, lightDir), 0);
+	res += material.diffuse * light_diffuse[i] * NdotL;
 	
 #if defined(SPECULAR)
-	float RdotVpow = max(pow(dot(reflect(-lVec, bump), Vert.viewDirTBN), material.shininess), 0.0);
-	res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow * attenuation;// * material.specular.w * specular.w;
+	float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
+	res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
 #endif
 
-	res *= shadow;
+	res *= shadow * attenuation;
 	return res;
 }
 
 void main(void)
 {
 	vec3 normal = Vert.normal;
+	mat3 tbn = transpose(mat3((Vert.t), (Vert.b), (Vert.normal)));
 	
-#ifdef NORMAL
-	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;
-    //mat3 m = mat3((Vert.t), (Vert.b), (Vert.normal));
-	//normal *= transpose(m);
+#ifdef NORMAL_MAPPING
+	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;  
+	normal *= tbn;	
 #endif
-
-    normal = normalize(normal);    
-	vec3 viewDir = normalize(Vert.viewDir);
+    
+	normal = normalize(normal);
+	vec3 viewDir = normalize(Vert.viewDir);	
 
 #if defined(SPECULAR)
 	vec4 specular = texture(material.specular_tex, Vert.texcoord);	
@@ -226,7 +224,7 @@ void main(void)
 	
 	color = material.emission;
 	
-#if defined(REFLECTION_CUBEMAP)
+#if defined(REFLECTION_CUBEMAP)	
 	vec3 reflectDir = normalize(reflect(viewDir, normal));
 	vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
 	color += reflectColor;
