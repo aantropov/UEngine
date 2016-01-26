@@ -20,29 +20,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
 
+    vec3 atten = vec3(0.f, 0.004f, 0.f);
+
     ULight *light = new ULight(&e.rf, vec4(-20.0f, 20.0f, 0.0f, 0.0f));
-    light->SetAttenuation(vec3(0.0f, 0.0045f, 0.0f));
+    light->SetAttenuation(atten);
     light->SetSpotExponent(10.0f);
     light->SetSpotCosCutoff(45.0f);
     light->castShadows = true;
-    light->SetDiffuse(vec4_y);
-    
+    //light->SetDiffuse(vec4_y);
+
     node->AddChild(new UScene::USceneNode(light));
     scene.AddLight(light);
     light->AddComponent((UComponent*)script);
-    vec3 atten = vec3(0.f, 0.01f, 0.f);
 
-    ULight *additional_light = new ULight(&e.rf, vec4(0.0f, 15.0f, 10.0f, 0.0f));
-    additional_light->SetAttenuation(atten);
-    additional_light->castShadows = true;
-    additional_light->SetSpotExponent(2);
-    additional_light->SetDiffuse(vec4_x);
-    node->AddChild(new UScene::USceneNode(additional_light));
-    scene.AddLight(additional_light);
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
-    script->LoadFromFile("data\\Scripts\\test_script.xml");
-    additional_light->AddComponent((UComponent*)script);
-    
+    for (int i = 0; i < 0; i++)
+    {
+        ULight *additional_light = new ULight(&e.rf, vec4(rand() % 20 - 10.0f, rand() % 20, rand() % 20 - 10.0f, 0.0f));
+        additional_light->SetAttenuation(atten);
+        additional_light->castShadows = true;
+        additional_light->SetSpotExponent(2);
+        additional_light->SetDiffuse(vec4((rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1));
+        node->AddChild(new UScene::USceneNode(additional_light));
+        scene.AddLight(additional_light);
+        script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+        script->LoadFromFile("data\\Scripts\\test_script.xml");
+        additional_light->AddComponent((UComponent*)script);
+    }
+
     /*
     auto go = new UScene::USceneNode(light1);
     go->AddChild(new UScene::USceneNode(light2));

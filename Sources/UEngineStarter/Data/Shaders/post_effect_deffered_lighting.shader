@@ -80,7 +80,7 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffu
 	float NdotL = max(dot(bump, lightDir), 0);
 	res += diffuse * light_diffuse[i] * NdotL;
     
-	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w), 0.0);
+	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w * 255.0f), 0.0);
 	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow;
 	
 	return res * attenuation;

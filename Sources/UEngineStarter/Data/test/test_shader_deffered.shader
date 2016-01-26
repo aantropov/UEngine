@@ -204,7 +204,7 @@ void main(void)
 	color[1] = vec4(normal * 0.5 + vec3(0.5), 1.0);
 	color[2] = material.diffuse * res * texture(material.texture, Vert.texcoord);
 	color[3] = material.ambient * res;
-	color[4] = vec4(material.specular.xyz * specular.xyz * res, material.shininess);// * material.specular.w * specular.w;
+	color[4] = vec4(material.specular.xyz * specular.xyz * res, material.shininess / 255.0f);// * material.specular.w * specular.w;
 	color[5] = Vert.position;
 	//color[6] = vec4(0.0f);
 }
