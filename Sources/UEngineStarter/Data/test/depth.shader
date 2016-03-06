@@ -32,7 +32,6 @@ inout Vertex {
 	vec4 smcoord[maxLight];	
 	vec3 t;
 	vec3 b;
-	mat3 transformNormal;
 } Vert;
 
 
@@ -59,7 +58,7 @@ void main(void)
 	skinnedVertex = MVI * vertex;	
 	mat3 MVIN = mat3(transpose(inverse(MVI)));
 
-	vec4 vertex   =  transform.model * skinnedVertex;	
+	vec4 vertex = transform.model * skinnedVertex;	
 #else
 	vec4 vertex = transform.model * vec4(position, 1.0);
 #endif

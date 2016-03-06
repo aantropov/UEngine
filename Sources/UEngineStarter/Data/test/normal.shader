@@ -37,7 +37,6 @@ inout Vertex {
 	vec4 smcoord[maxLight];	
 	vec3 t;
 	vec3 b;
-	mat3 transformNormal;
 } Vert;
 
 
@@ -71,16 +70,14 @@ void main(void)
 	Vert.texcoord = texcoord;
 	Vert.position = vertex;		
 	
-	Vert.transformNormal = transform.normal;
-
-	vec3 n = Vert.transformNormal * normal;
-	Vert.b = Vert.transformNormal * binormal;
+	vec3 n = transform.normal * normal;
+	Vert.b = transform.normal * binormal;
 	Vert.t = (cross(n, Vert.b));
 
 #if defined(SKINNING)
-	Vert.normal = Vert.transformNormal * MVIN * normal;
+	Vert.normal = transform.normal * MVIN * normal;
 #else
-	Vert.normal = Vert.transformNormal * normal;
+	Vert.normal = transform.normal * normal;
 #endif
 
 	Vert.texcoord = texcoord;
