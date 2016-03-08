@@ -694,7 +694,7 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(45.0f, aspectRatio, 0.1f, 500.0f);
+    mainCamera.Perspective(45.0f, aspectRatio, 0.001f, 500.0f);
 
     shadow_bias = config->GetParamf("/xml/config/shadow_bias/");
 
