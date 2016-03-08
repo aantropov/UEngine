@@ -142,7 +142,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                 fread(&shin, 1, 1, file);
 
 
-                mesh->material = UMaterial(vec4(color(ar, ag, ab, 255)),
+                mesh->material = UMaterial(
                     vec4(color(dr, dg, db, da)),
                     vec4(color(sr, sg, sb, 255)),
                     vec4_zero,

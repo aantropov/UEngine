@@ -51,14 +51,33 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 {
     mat4 view = currentCamera.GetView();
     mat4 viewProjection = currentCamera.GetProjection() * view;
-    mat3 normal = transpose(mat3(inverse(model)));
-    mat4 modelViewProjection = viewProjection * model;
 
     UniformMatrix4(shd->locations.transform_model, 1, model.m);
+    UniformMatrix4(shd->locations.transform_view, 1, view.m);
     UniformMatrix4(shd->locations.transform_viewProjection, 1, viewProjection.m);
-    UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
-    UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
+
+    if (shd->locations.transform_viewProjectionInv != -1)
+    {
+        mat4 viewProjectionInv = inverse(viewProjection);
+        UniformMatrix4(shd->locations.transform_viewProjectionInv, 1, viewProjectionInv.m);
+    }
+
+    if (shd->locations.transform_normal != -1)
+    {
+        mat3 normal = transpose(mat3(inverse(model)));
+        UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
+    }
+
+    if (shd->locations.transform_modelViewProjection != -1)
+    {
+        mat4 modelViewProjection = viewProjection * model;
+        UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
+    }
+
     Uniform3(shd->locations.transform_viewPosition, 1, currentCamera.GetPosition().v);
+    Uniform1(shd->locations.camera_znear, currentCamera.GetZNear());
+    Uniform1(shd->locations.camera_zfar, currentCamera.GetZFar());
+    Uniform2(shd->locations.camera_screen_size, 1, vec2(this->GetWidth(), this->GetHeight()).v);
 }
 
 void  URenderer::PushModelMatrix()
@@ -632,6 +651,12 @@ void URenderer::Uniform3(unsigned int location, unsigned int num, float *variabl
         glUniform3fv(location, num, variable);
 }
 
+void URenderer::Uniform2(unsigned int location, unsigned int num, float *variable)
+{
+    if (location < MAX_UNIFORM_LOCATIONS)
+        glUniform2fv(location, num, variable);
+}
+
 bool URenderer::SetVerticalSynchronization(bool bEnabled)
 {
     if (!wglSwapIntervalEXT)
@@ -669,7 +694,7 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(45.0f, aspectRatio, 0.001f, 1000.0f);
+    mainCamera.Perspective(45.0f, aspectRatio, 0.1f, 500.0f);
 
     shadow_bias = config->GetParamf("/xml/config/shadow_bias/");
 

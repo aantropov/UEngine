@@ -27,8 +27,7 @@ uniform struct Material
 #if defined(SPECULAR)
 	sampler2D specular_tex;
 #endif
-
-	vec4  ambient;
+	
 	vec4  diffuse;
 	vec4  specular;
 	vec4  emission;
@@ -159,9 +158,9 @@ float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 }
 
 #if defined(SPECULAR)
-vec4 ProccessLight(int i, vec3 bump, vec4 specular, vec3 viewDir)
+vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec4 specular, vec3 viewDir)
 #else
-vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
+vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 #endif
 {
 	vec4 res = vec4(0);
@@ -180,10 +179,11 @@ vec4 ProccessLight(int i, vec3 bump, vec3 viewDir)
 	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
 	shadow *= spot * spotEffect;
 	
-	res = material.ambient * light_ambient[i];
+	res = light_ambient[i];
 	
 	float NdotL = max(dot(bump, lightDir), 0);
-	res += material.diffuse * light_diffuse[i] * NdotL;
+	res += light_diffuse[i] * NdotL;
+	res *= diffuse;
 	
 #if defined(SPECULAR)
 	float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
@@ -206,7 +206,9 @@ void main(void)
     
 	normal = normalize(normal);
 	vec3 viewDir = normalize(Vert.viewDir);	
-
+	
+	vec4 diffuse = material.diffuse * texture(material.texture, Vert.texcoord);
+	
 #if defined(SPECULAR)
 	vec4 specular = texture(material.specular_tex, Vert.texcoord);	
 #endif
@@ -214,9 +216,9 @@ void main(void)
 	vec4 res = vec4(0.0);
 	for(int i = 0; i < lightsNum; i++)
 #if defined(SPECULAR)
-		res += ProccessLight(i, normal, specular, viewDir);
+		res += ProccessLight(i, diffuse, normal, specular, viewDir);
 #else
-		res += ProccessLight(i, normal, viewDir);
+		res += ProccessLight(i, diffuse, normal, viewDir);
 #endif
 	
 	color = material.emission;
@@ -227,7 +229,7 @@ void main(void)
 	color += reflectColor;
 #endif
 	
-	color += texture(material.texture, Vert.texcoord) * res;
+	color += res;
 }
 
 #endif

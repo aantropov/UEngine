@@ -145,6 +145,7 @@ public:
     void Uniform4(unsigned int location, unsigned int num, float *variable);
     void Uniform1(unsigned int location, unsigned int num, float *variable);
     void Uniform1(unsigned int location, int value);
+    void Uniform2(unsigned int location, unsigned int num, float *variable);
     void Uniform3(unsigned int location, unsigned int num, float *variable);
     void UniformMatrix4(unsigned int location, unsigned int num, float *variable);
     void UniformMatrix3(unsigned int location, unsigned int num, float *variable);

@@ -19,11 +19,15 @@ void UCamera::Create(float x, float y, float z)
 
 void UCamera::Perspective(float fov, float aspect, float zNear, float zFar)
 {
+    znear = zNear;
+    zfar = zFar;
     projection = GLPerspective(fov, aspect, zNear, zFar);
 }
 
 void UCamera::Ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
+    znear = zNear;
+    zfar = zFar;
     projection = GLOrthographic(left, right, bottom, top, zNear, zFar);
 }
 

@@ -34,7 +34,7 @@ public:
 
     UTexture* colorScene;
     UTexture* diffuseScene;
-    UTexture* ambientScene;
+    //UTexture* ambientScene;
     UTexture* specularScene;
     UTexture* positionScene;
 

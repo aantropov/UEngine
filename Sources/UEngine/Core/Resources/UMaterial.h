@@ -7,7 +7,6 @@
 
 class UMaterial : public UResource, public UNode
 {
-    vec4  ambient;
     vec4  diffuse;
     vec4  specular;
     vec4  emission;
@@ -31,8 +30,8 @@ public:
     std::map<std::string, float> params;
 
     UMaterial();
-    UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
-    UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin);
+    UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
+    UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin);
 
     void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
 

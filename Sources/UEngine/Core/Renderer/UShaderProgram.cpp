@@ -19,7 +19,7 @@ void UShaderProgram::Render()
 void UShaderProgram::InitLocations()
 {
 
-    locations.material_ambient = glGetUniformLocation(_id, "material.ambient");
+    //locations.material_ambient = glGetUniformLocation(_id, "material.ambient");
     locations.material_diffuse = glGetUniformLocation(_id, "material.diffuse");
     locations.material_specular = glGetUniformLocation(_id, "material.specular");
     locations.material_emission = glGetUniformLocation(_id, "material.emission");
@@ -34,14 +34,19 @@ void UShaderProgram::InitLocations()
     locations.light_spotCosCutoff = glGetUniformLocation(_id, "light_spotCosCutoff");
     locations.light_transform = glGetUniformLocation(_id, "light_transform");
     locations.light_depthTextures = glGetUniformLocation(_id, "light_depthTexture");
+    locations.lightsNum = glGetUniformLocation(_id, "lightsNum");
 
     locations.transform_model = glGetUniformLocation(_id, "transform.model");
+    locations.transform_view = glGetUniformLocation(_id, "transform.view");
     locations.transform_viewProjection = glGetUniformLocation(_id, "transform.viewProjection");
+    locations.transform_viewProjectionInv = glGetUniformLocation(_id, "transform.viewProjectionInv");
     locations.transform_normal = glGetUniformLocation(_id, "transform.normal");
     locations.transform_modelViewProjection = glGetUniformLocation(_id, "transform.modelViewProjection");
     locations.transform_viewPosition = glGetUniformLocation(_id, "transform.viewPosition");
-    locations.lightsNum = glGetUniformLocation(_id, "lightsNum");
-
+    locations.camera_znear = glGetUniformLocation(_id, "camera.zNear");
+    locations.camera_zfar = glGetUniformLocation(_id, "camera.zFar");
+    locations.camera_screen_size = glGetUniformLocation(_id, "camera.screenSize");
+    
     locations.skinning_transformsNum = glGetUniformLocation(_id, "skinning_transformsNum");
     locations.skinning_transforms = glGetUniformLocation(_id, "skinning_transforms");
 

@@ -14,7 +14,7 @@ public:
 
     struct UUniformLocations
     {
-        unsigned int material_ambient;
+        //unsigned int material_ambient;
         unsigned int material_diffuse;
         unsigned int material_specular;
         unsigned int material_emission;
@@ -32,11 +32,16 @@ public:
         unsigned int light_depthTextures;
 
         unsigned int transform_model;
+        unsigned int transform_view;
         unsigned int transform_viewProjection;
+        unsigned int transform_viewProjectionInv;
         unsigned int transform_normal;
         unsigned int transform_modelViewProjection;
-        unsigned int transform_viewPosition;
-
+        unsigned int transform_viewPosition; 
+        
+        unsigned int camera_znear;
+        unsigned int camera_zfar;
+        unsigned int camera_screen_size;
         unsigned int lightsNum;
 
         unsigned int skinning_transformsNum;

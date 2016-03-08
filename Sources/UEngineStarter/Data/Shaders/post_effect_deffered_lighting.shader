@@ -23,6 +23,7 @@ uniform struct Transform
 {
 	mat4 model;
 	vec3 viewPosition;
+	mat4 viewProjectionInv;
 } transform;
 
 uniform vec4 light_position[maxLight];
@@ -58,7 +59,7 @@ void main(void)
 
 out vec4 color;
 
-vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffuse, vec4 specular)
+vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 {
 	vec4 res = vec4(0);
 
@@ -75,32 +76,32 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 ambient, vec4 diffu
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
 	
-	res = ambient * light_ambient[i];
+	res = light_ambient[i];
 	
 	float NdotL = max(dot(bump, lightDir), 0);
 	res += light_diffuse[i] * NdotL;
-    
+    res *= diffuse;
+	
 	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w * 255.0f), 0.0);
 	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow;
 	
-	return diffuse * res * attenuation;
+	return res * attenuation;
 }
 
 void main(void)
 {
   vec4 vertPosition  = texture(positionScene, Vert.texcoord);
+  
   vec3 vertNormal  = (texture(normalScene, Vert.texcoord).xyz * 2.0 - vec3(1.0));
-  vec4 ambient = texture(ambientScene, Vert.texcoord);
+  //vertNormal.z = sqrt(1 - (vertNormal.x * vertNormal.x + vertNormal.y * vertNormal.y));
+  
   vec4 diffuse = texture(diffuseScene, Vert.texcoord);
   vec4 specular = texture(specularScene, Vert.texcoord);  
   vec4 previous = texture(previousScene, Vert.texcoord);
   vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
-  vec4 res = ProccessLight(int(lightIndex), vertNormal, vertPosition, ambient, diffuse, specular);
+  vec4 res = ProccessLight(int(lightIndex), vertNormal, vertPosition, diffuse, specular);
   
-  //if(lightIndex == 0)
-  //res = vec4(0);
-  //res = vec4(vertNormal,1);
   color = vec4(0);
   
   if(int(state) == 0)

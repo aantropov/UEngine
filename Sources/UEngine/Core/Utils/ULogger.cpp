@@ -28,10 +28,10 @@ void ULogger::Message(string text, ULOG_MSG_TYPE msg_type, ULOG_OUT out)
     SYSTEMTIME st;
     GetSystemTime(&st);
 
-    static char message[1024];
+    static char message[4096];
     string type;
 
-    memset(message, '\0', 1024);
+    memset(message, '\0', 4096);
 
     if (msg_type == ULOG_MSG_INFO)
         type = "INFO";

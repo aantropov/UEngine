@@ -12,7 +12,7 @@ UDefferedLighting::UDefferedLighting()
     depthScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     normalScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     diffuseScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
-    ambientScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+    //ambientScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     specularScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     resScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     resSceneA = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
@@ -23,7 +23,7 @@ UDefferedLighting::UDefferedLighting()
     depthScene->name = "depthScene";
     normalScene->name = "normalScene";
     diffuseScene->name = "diffuseScene";
-    ambientScene->name = "ambientScene";
+    //ambientScene->name = "ambientScene";
     specularScene->name = "specularScene";
     positionScene->name = "positionScene";
     resScene->name = "colorScene";
@@ -35,7 +35,7 @@ UDefferedLighting::UDefferedLighting()
     colorScene->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
     normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT32);
     diffuseScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
-    ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
+    //ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     resSceneA->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
@@ -48,17 +48,17 @@ UDefferedLighting::UDefferedLighting()
     fb.BindTexture(colorScene, UFB_ATTACHMENT_COLOR0);
     fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR1);
     fb.BindTexture(diffuseScene, UFB_ATTACHMENT_COLOR2);
-    fb.BindTexture(ambientScene, UFB_ATTACHMENT_COLOR3);
-    fb.BindTexture(specularScene, UFB_ATTACHMENT_COLOR4);
-    fb.BindTexture(positionScene, UFB_ATTACHMENT_COLOR5);
+    //fb.BindTexture(ambientScene, UFB_ATTACHMENT_COLOR3);
+    fb.BindTexture(specularScene, UFB_ATTACHMENT_COLOR3);
+    fb.BindTexture(positionScene, UFB_ATTACHMENT_COLOR4);
 
     lighting->AddTexture(colorScene, 0);
     lighting->AddTexture(depthScene, 1);
     lighting->AddTexture(normalScene, 2);
     lighting->AddTexture(diffuseScene, 3);
-    lighting->AddTexture(ambientScene, 4);
-    lighting->AddTexture(specularScene, 5);
-    lighting->AddTexture(positionScene, 6);
+    //lighting->AddTexture(ambientScene, 4);
+    lighting->AddTexture(specularScene, 4);
+    lighting->AddTexture(positionScene, 5);
 }
 
 UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
@@ -89,9 +89,9 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
         lighting->AddTexture(depthScene, 1);
         lighting->AddTexture(normalScene, 2);
         lighting->AddTexture(diffuseScene, 3);
-        lighting->AddTexture(ambientScene, 4);
-        lighting->AddTexture(specularScene, 5);
-        lighting->AddTexture(positionScene, 6);
+        //lighting->AddTexture(ambientScene, 4);
+        lighting->AddTexture(specularScene, 4);
+        lighting->AddTexture(positionScene, 5);
 
         if (mod2 % 2 == 0)
         {

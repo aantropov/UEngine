@@ -14,16 +14,14 @@ UMaterial::UMaterial()
     spNormal = nullptr;
     spDeffered = nullptr;
 
-    ambient.set(0.6f, 0.6f, 0.6f, 1.0f);
     diffuse.set(0.5f, 0.5f, 0.5f, 1.0f);
     specular.set(0.8f, 0.8f, 0.8f, 1.0f);
     emission.set(0.50f, 0.50f, 0.50f, 1.0f);
     shininess = 20.0f;
 }
 
-UMaterial::UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp)
+UMaterial::UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp)
 {
-    ambient = amb;
     diffuse = dif;
     specular = spec;
     emission = emi;
@@ -38,9 +36,8 @@ UMaterial::UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin, UShade
     skinningTransformsNum = 0;
 }
 
-UMaterial::UMaterial(vec4 amb, vec4 dif, vec4 spec, vec4 emi, float shin)
+UMaterial::UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin)
 {
-    ambient = amb;
     diffuse = dif;
     specular = spec;
     emission = emi;
@@ -67,10 +64,12 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
         emission.z = (float)atof(xml.GetElement(path + "material/emission/b/").c_str());
         emission.w = (float)atof(xml.GetElement(path + "material/emission/a/").c_str());
 
+        /*
         ambient.x = (float)atof(xml.GetElement(path + "material/ambient/r/").c_str());
         ambient.y = (float)atof(xml.GetElement(path + "material/ambient/g/").c_str());
         ambient.z = (float)atof(xml.GetElement(path + "material/ambient/b/").c_str());
         ambient.w = (float)atof(xml.GetElement(path + "material/ambient/a/").c_str());
+        */
 
         diffuse.x = (float)atof(xml.GetElement(path + "material/diffuse/r/").c_str());
         diffuse.y = (float)atof(xml.GetElement(path + "material/diffuse/g/").c_str());
@@ -229,7 +228,6 @@ void UMaterial::Render(URENDER_TYPE type)
 
     if (type == URENDER_FORWARD || type == URENDER_DEFFERED)
     {
-        render->Uniform4(locs.material_ambient, 1, ambient.v);
         render->Uniform4(locs.material_diffuse, 1, diffuse.v);
         render->Uniform4(locs.material_specular, 1, specular.v);
         render->Uniform4(locs.material_emission, 1, emission.v);

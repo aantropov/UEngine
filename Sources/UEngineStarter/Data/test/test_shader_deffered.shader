@@ -7,6 +7,23 @@
 	#define inout in
 #endif
 
+vec4 packFloatToVec4i (const float value)
+{
+    const vec4 bitSh   = vec4 ( 256.0*256.0*256.0, 256.0 * 256.0, 256.0, 1.0 );
+    const vec4 bitMask = vec4 ( 0.0, vec3 ( 1.0 / 256.0 ) );
+	
+    vec4 res = fract ( value * bitSh );
+	
+    return res - res.xxyz * bitMask;
+}
+
+float unpackFloatFromVec4i (const vec4 value)
+{
+    const vec4 bitSh = vec4 ( 1.0 / (256.0*256.0*256.0), 1.0 / (256.0*256.0), 1.0 / 256.0, 1.0 );
+
+    return dot ( value, bitSh );
+}
+
 uniform struct Transform
 {
 	mat4 model;
@@ -25,7 +42,6 @@ uniform struct Material
 	sampler2D normal;
 #endif
 
-	vec4  ambient;
 	vec4  diffuse;
 	vec4  specular;
 	vec4  emission;
@@ -104,10 +120,10 @@ void main(void)
 #else
 	vec4 vertex = transform.model * vec4(position, 1.0);
 #endif	
-		
-	Vert.texcoord = texcoord;
-	Vert.position = vertex;		
 	
+	Vert.position = vertex;
+	Vert.texcoord = texcoord;
+		
 	vec3 n = transform.normal * normal;
 	Vert.b = transform.normal * binormal;
 	Vert.t = (cross(n, Vert.b));
@@ -180,6 +196,7 @@ void main(void)
 	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;  
 	normal *= tbn;	
 #endif
+	normal = normalize(normal);
 
 	vec4 specular = texture(material.specular_tex, Vert.texcoord);
 	
@@ -189,7 +206,7 @@ void main(void)
 	 res += ProccessLight(i);    
     res /= lights;
 	
-    color[0] =  material.emission;
+    color[0] = material.emission;
     
 #if defined(REFLECTION_CUBEMAP)
     vec3 viewDir = normalize(Vert.viewDir);
@@ -197,12 +214,10 @@ void main(void)
     vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
     color[0] += reflectColor;
 #endif
-	
-	color[1] = vec4(normal * 0.5 + vec3(0.5), 1.0);
+
+	color[1] = vec4(normal * 0.5 + vec3(0.5), 1);
 	color[2] = material.diffuse * res * texture(material.texture, Vert.texcoord);
-	color[3] = material.ambient * res;
-	color[4] = vec4(material.specular.xyz * specular.xyz * res, material.shininess / 255.0f);// * material.specular.w * specular.w;
-	color[5] = Vert.position;
-	//color[6] = vec4(0.0f);
+	color[3] = vec4(material.specular.xyz * specular.xyz * res, material.shininess / 255.0f);// * material.specular.w * specular.w;
+	color[4] = Vert.position;
 }
 #endif

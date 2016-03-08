@@ -30,13 +30,13 @@
     <shaders>
 	  <forward>
 		<shader>			
-			<defines>REFLECTION_CUBEMAP NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
+			<defines>NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
 			<path>data\\test\\test_shader.shader</path>
 		</shader>
 	  </forward>
   	  <deffered>
 		<shader>			
-            <defines>REFLECTION_CUBEMAP NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
+            <defines>NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
 			<path>data\\test\\test_shader_deffered.shader</path>
 		</shader>
 	  </deffered>
