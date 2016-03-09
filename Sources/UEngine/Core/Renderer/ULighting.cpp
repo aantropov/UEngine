@@ -18,7 +18,7 @@ UDefferedLighting::UDefferedLighting()
     resSceneA = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     resSceneB = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     positionScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
-
+    
     colorScene->name = "colorScene";
     depthScene->name = "depthScene";
     normalScene->name = "normalScene";
@@ -33,7 +33,7 @@ UDefferedLighting::UDefferedLighting()
     auto render = URenderer::GetInstance();
 
     colorScene->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
-    normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT32);
+    normalScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     diffuseScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     //ambientScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     specularScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
@@ -42,7 +42,6 @@ UDefferedLighting::UDefferedLighting()
     resSceneB->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_COLOR);
     positionScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_FLOAT32);
     depthScene->Create(render->GetWidth(), render->GetHeight(), UTEXTURE_DEPTH);
-
 
     fb.BindTexture(depthScene, UFB_ATTACHMENT_DEPTH);
     fb.BindTexture(colorScene, UFB_ATTACHMENT_COLOR0);
@@ -65,8 +64,8 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
 {
     auto render = URenderer::GetInstance();
     render->BindFBO(&fb);
-    GLenum buffers[] = { UFB_ATTACHMENT_COLOR0, UFB_ATTACHMENT_COLOR1, UFB_ATTACHMENT_COLOR2,UFB_ATTACHMENT_COLOR3, UFB_ATTACHMENT_COLOR4, UFB_ATTACHMENT_COLOR5 };
-    glDrawBuffers(6, buffers);
+    GLenum buffers[] = { UFB_ATTACHMENT_COLOR0, UFB_ATTACHMENT_COLOR1, UFB_ATTACHMENT_COLOR2,UFB_ATTACHMENT_COLOR3, UFB_ATTACHMENT_COLOR4 };
+    glDrawBuffers(5, buffers);
 
     glViewport(0, 0, colorScene->GetWidth(), colorScene->GetHeight());
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -74,12 +73,33 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     glCullFace(GL_BACK);
 
     scene->Render(URENDER_DEFFERED, camera);
-    URenderer::GetInstance()->UnbindFBO();
+    render->UnbindFBO();
 
     OPENGL_CHECK_FOR_ERRORS();
 
     auto lights = scene->GetLights();
-    auto lightParams = URenderer::GetInstance()->GetCurrentScene()->lightParams;
+    auto lightParams = render->GetCurrentScene()->lightParams;
+
+    //Update frustum
+    /*
+    UVertex* vertices = reinterpret_cast<UVertex*>(lighting->vb.Lock());
+    
+    mat4 view = render->currentCamera.GetView();
+    mat4 viewProjection = render->currentCamera.GetProjection() * view;
+    mat4 viewProjectionInv = inverse(viewProjection);
+
+    for (int i = 0; i < lighting->vb.GetNum(); i++)
+    {
+        vec3 pos = vertices[i].GetPosition();
+        vec4 frustumCorner = vec4(pos.x, pos.y, 1.0f, 1.0f);        
+        frustumCorner = viewProjectionInv * frustumCorner;
+        frustumCorner /= frustumCorner.w;
+
+        vertices[i].SetNormal(frustumCorner);
+    }
+
+    lighting->vb.Unlock();
+    */
 
     int mod2 = 0;
     for (unsigned int i = 0; i < lightParams.count; i++)
@@ -114,11 +134,11 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
             lighting->material.params["state"] = 1.0f;
 
         //////////////////////////////////////
-        URenderer::GetInstance()->BindFBO(&postfb);
+        render->BindFBO(&postfb);
         postfb.BindTexture(mod2 == lightParams.count - 1 ? resScene : (mod2 % 2 == 0 ? resSceneB : resSceneA), UFB_ATTACHMENT_COLOR0);
 
         OPENGL_CHECK_FOR_ERRORS();
-
+                
         lighting->Render(URENDER_FORWARD);
         render->UnbindFBO();
         //////////////////////////////////////
@@ -183,6 +203,5 @@ UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
 
     scene->Render(URENDER_NORMAL, camera);
     URenderer::GetInstance()->UnbindFBO();
-
     return resScene;
 }

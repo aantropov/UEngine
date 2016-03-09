@@ -3,6 +3,7 @@
 
 UVertexBuffer::UVertexBuffer(void)
 {
+    state = UVBO_DRAW::UVBO_STATIC;
     vertices = NULL;
 }
 

@@ -1,4 +1,7 @@
 #define maxLight 8
+#extension GL_ARB_texture_rectangle: enable
+
+precision highp float;
 
 #if defined(VERTEX)
 	#define inout out
@@ -21,6 +24,7 @@ uniform sampler2D previousScene;
 
 uniform struct Transform
 {
+	mat4 view;
 	mat4 model;
 	vec3 viewPosition;
 	mat4 viewProjectionInv;
@@ -39,25 +43,62 @@ uniform float light_spotCosCutoff[maxLight];
 inout Vertex
 {
   vec2 texcoord;
-  vec3 position;
+  highp vec3 position;
+  highp vec3 frustumFarPlane;
+  highp vec3 frustumNearPlane;
 } Vert;
 
+uniform struct Camera
+{
+   highp float zFar;
+   highp float zNear;
+} camera;
 
 #if defined(VERTEX)
 
-layout(location = 0) in vec3 position;
+layout(location = 0) in highp vec3 position;
+layout(location = 1) in vec3 normal;
 layout(location = 3) in vec2 texcoord;
 
 void main(void)
 {
   Vert.texcoord = texcoord;
   Vert.position = position;
-  gl_Position = vec4(position, 1.0);
+    
+  vec4 frustumFar = transform.viewProjectionInv * vec4(position.xy, 1.0f, 1.0f);
+  Vert.frustumFarPlane = frustumFar.xyz / frustumFar.w;
+  
+  vec4 frustumNear = transform.viewProjectionInv * vec4(position.xy, 0.0f, 1.0f);
+  Vert.frustumNearPlane = frustumNear.xyz / frustumNear.w;
+  
+  gl_Position = vec4(position, 1.0f);
 }
 
 #elif defined(FRAGMENT)
 
+#extension GL_ARB_texture_rectangle: enable
+
 out vec4 color;
+
+vec3 GetWorld(float zEye)
+{	
+	return transform.viewPosition + (Vert.frustumFarPlane - Vert.frustumNearPlane) * zEye;	
+}
+
+vec3 GetWorldFromDepth()
+{	
+    float depth = texture(depthScene, Vert.texcoord).r* 2.0 - 1.0;
+	
+	vec4 pos;
+	pos.xy = Vert.texcoord * 2.0 - 1.0;
+	pos.z = depth;
+	pos.w = 1.0;
+	
+	pos = transform.viewProjectionInv * pos;
+	pos /= pos.w;
+
+    return pos.xyz;
+}
 
 vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 {
@@ -90,8 +131,11 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specu
 
 void main(void)
 {
-  vec4 vertPosition  = texture(positionScene, Vert.texcoord);
+  vec4 vertPosition  = vec4(GetWorld(texture(positionScene, Vert.texcoord).r), 1.0f);
   
+  if(vertPosition.z > camera.zFar)
+	discard;
+	
   vec3 vertNormal  = (texture(normalScene, Vert.texcoord).xyz * 2.0 - vec3(1.0));
   //vertNormal.z = sqrt(1 - (vertNormal.x * vertNormal.x + vertNormal.y * vertNormal.y));
   
@@ -101,7 +145,7 @@ void main(void)
   vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
   vec4 res = ProccessLight(int(lightIndex), vertNormal, vertPosition, diffuse, specular);
-  
+
   color = vec4(0);
   
   if(int(state) == 0)

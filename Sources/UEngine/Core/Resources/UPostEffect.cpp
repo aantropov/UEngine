@@ -75,7 +75,7 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
                 material.AddUniformUnit(tex);
             }
         }
-
+        vb.SetState(UVBO_DRAW::UVBO_DYNAMIC);
         Initialize();
 
     }

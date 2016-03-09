@@ -4,6 +4,7 @@
 
 class UIndexBuffer : public UBuffer
 {
+    UVBO_DRAW state;
     unsigned int num_indices;    
     unsigned int *indices;
     
@@ -11,7 +12,12 @@ public:
     
     void* GetPointer() {return (void*)indices;}
     int GetNum() { return num_indices; }
-        
+    
+    void SetState(UVBO_DRAW newState)
+    {
+        state = newState;
+    }
+
     void Create(int num_faces)
     {
         Free();
@@ -38,7 +44,7 @@ public:
     {
         glBindBuffer(GL_ARRAY_BUFFER, UGLObject::_id);
         glBufferData(GL_ARRAY_BUFFER, num_indices * sizeof(indices), 0, GL_STREAM_DRAW_ARB);
-        UVertex* pBuffer = (UVertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY_ARB);            
+        UVertex* pBuffer = (UVertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE_ARB);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         return pBuffer;

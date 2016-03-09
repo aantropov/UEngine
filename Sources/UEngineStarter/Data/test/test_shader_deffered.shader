@@ -1,6 +1,8 @@
 #extension GL_NV_shadow_samplers_cube : enable
 #define maxLight 8
 
+precision highp float;
+
 #if defined(VERTEX)
 	#define inout out
 #elif defined(FRAGMENT)
@@ -24,10 +26,17 @@ float unpackFloatFromVec4i (const vec4 value)
     return dot ( value, bitSh );
 }
 
+uniform struct Camera
+{
+   highp float zFar;
+   highp float zNear;
+} camera;
+
 uniform struct Transform
 {
 	mat4 model;
-	mat4 viewProjection;	
+	mat4 view;
+	mat4 viewProjection;
 	mat3 normal;
 	vec3 viewPosition;
     mat4 modelViewProjection;
@@ -55,7 +64,7 @@ uniform struct Material
 
 inout Vertex 
 {
-	vec4  position;
+	highp vec4  position;
 	vec2  texcoord;
 	vec3  normal;
 	vec3  lightDir[maxLight];
@@ -121,7 +130,7 @@ void main(void)
 	vec4 vertex = transform.model * vec4(position, 1.0);
 #endif	
 	
-	Vert.position = vertex;
+	Vert.position = transform.view * vertex;	
 	Vert.texcoord = texcoord;
 		
 	vec3 n = transform.normal * normal;
@@ -148,7 +157,7 @@ void main(void)
 
 #elif defined(FRAGMENT)
 
-out vec4 color[6];
+out vec4 color[5];
 
 float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 {
@@ -218,6 +227,6 @@ void main(void)
 	color[1] = vec4(normal * 0.5 + vec3(0.5), 1);
 	color[2] = material.diffuse * res * texture(material.texture, Vert.texcoord);
 	color[3] = vec4(material.specular.xyz * specular.xyz * res, material.shininess / 255.0f);// * material.specular.w * specular.w;
-	color[4] = Vert.position;
+	color[4].r = -(Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);	
 }
 #endif

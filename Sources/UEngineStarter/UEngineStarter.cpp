@@ -20,9 +20,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
 
-    vec3 atten = vec3(0.1f, 0.1f, 0.f);
+    vec3 atten = vec3(0.1f, 0.005f, 0.f);
 
-    ULight *light = new ULight(&e.rf, vec4(-20.0f, 80.0f, 0.0f, 0.0f));
+    ULight *light = new ULight(&e.rf, vec4(-20.0f, 20.0f, 0.0f, 0.0f));
     light->SetAttenuation(atten);
     light->SetSpotExponent(1.0f);
     light->SetSpotCosCutoff(90.0f);
@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     scene.AddLight(light);
     //light->AddComponent((UComponent*)script);
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 1; i++)
     {
         ULight *additional_light = new ULight(&e.rf, vec4(rand() % 20 - 10.0f, rand() % 20, rand() % 20 - 10.0f, 0.0f));
         additional_light->SetAttenuation(atten);

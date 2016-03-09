@@ -22,7 +22,7 @@ public:
     std::string name;
 
     unsigned int GetTextureResId() { return texture_res_id; }
-    
+
     bool GetMipMap() const { return mipmap; }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
@@ -33,6 +33,7 @@ public:
     UTEXTURE_TYPE GetType() const { return type; }
 
     void SetType(UTEXTURE_TYPE type) { this->type = type; }
+    void SetMipMap(bool mipmapping) { mipmap = mipmapping; }
     void GenTexture() { glGenTextures(1, (GLuint*)&_id); }
 
     void Create(int w, int h, UTEXTURE_TYPE t, UTEXTURE_FILTER filt = UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP wr = UTEXTURE_WRAP_CLAMP)

@@ -156,4 +156,6 @@ public:
 
     void DrawBuffer(UVertexBuffer *vb);
     void DrawBuffer(UIndexBuffer* ib);
+
+    void DrawDebugLine(vec3 start, vec3 end, vec3 color);
 };

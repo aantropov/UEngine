@@ -74,9 +74,12 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
         UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
     }
 
+    float zFar = currentCamera.GetZFar();
+    float zNear = currentCamera.GetZNear();
+
     Uniform3(shd->locations.transform_viewPosition, 1, currentCamera.GetPosition().v);
-    Uniform1(shd->locations.camera_znear, currentCamera.GetZNear());
-    Uniform1(shd->locations.camera_zfar, currentCamera.GetZFar());
+    Uniform1(shd->locations.camera_znear, 1, &zNear);
+    Uniform1(shd->locations.camera_zfar, 1, &zFar);
     Uniform2(shd->locations.camera_screen_size, 1, vec2(this->GetWidth(), this->GetHeight()).v);
 }
 
@@ -88,7 +91,8 @@ void  URenderer::PushModelMatrix()
 void  URenderer::PopModelMatrix()
 {
     //Secure code
-    if (modelViewMatrixStack.size() > 0) {
+    if (modelViewMatrixStack.size() > 0)
+    {
         modelView = modelViewMatrixStack.back();
         modelViewMatrixStack.pop_back();
     }
@@ -241,7 +245,7 @@ int URenderer::CreateTexture(UTexture *tex)
         }
         else if (tex->GetType() == UTEXTURE_FLOAT32)
         {
-            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
+            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RED, GL_FLOAT, NULL));
         }
     }
 
@@ -294,7 +298,7 @@ int URenderer::CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)
     GLuint vbo;
     OPENGL_CALL(glGenBuffers(1, &vbo));
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    OPENGL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vb->GetPointer(), state));
+    OPENGL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vb->GetPointer(), GL_STREAM_DRAW));
 
     return vbo;
 }
@@ -420,6 +424,40 @@ int URenderer::CreateVAO()
     OPENGL_CALL(glGenVertexArrays(1, &vao));
     glBindVertexArray(vao);
     return vao;
+}
+
+void URenderer::DrawDebugLine(vec3 start, vec3 end, vec3 color)
+{
+#ifdef UE_DEBUG
+    mat4 view = currentCamera.GetView();
+    mat4 viewProjection = currentCamera.GetProjection() * view;
+    mat4 viewProjectionInv = inverse(viewProjection);
+
+    start = transpose(viewProjectionInv) * start;
+    end = transpose(viewProjectionInv) * end;
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+
+    glLineWidth(3);
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(color.x, color.y, color.z);
+    glBegin(GL_LINES);
+    glVertex3f(start.x, start.y, start.z);
+    glVertex3f(end.x, end.y, end.z);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+#endif
 }
 
 void URenderer::DeleteVAO(UVertexArrayObject *vao)
@@ -694,7 +732,10 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(45.0f, aspectRatio, 0.001f, 500.0f);
+    mainCamera.Perspective(45.0f, aspectRatio, 0.01f, 300.0f);
+    //mainCamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
+    //mainCamera.SetPosition(vec3_zero);
+    mainCamera.SetRotation(vec3_y * 90.0f);
 
     shadow_bias = config->GetParamf("/xml/config/shadow_bias/");
 

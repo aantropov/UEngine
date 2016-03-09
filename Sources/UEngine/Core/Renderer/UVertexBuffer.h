@@ -6,7 +6,8 @@
 class UIndexBuffer;
 
 class UVertexBuffer : public UBuffer
-{    
+{   
+    UVBO_DRAW state;
     int num_vertices;    
     UVertex *vertices;    
     UVertexArrayObject* vao;
@@ -14,7 +15,7 @@ class UVertexBuffer : public UBuffer
     void ComputeTBN(UIndexBuffer* ib);
     
 public:
-
+    
     sphere ComputeBoundSphere()
     {
         unsigned int index = 0;
@@ -24,6 +25,11 @@ public:
         return sphere(vec3_zero, length(vertices[index].GetPosition()));
     }
     
+    void SetState(UVBO_DRAW newState)
+    {
+        state = newState;
+    }
+
 	void* GetPointer()
 	{
 		return (void*)vertices;
@@ -61,7 +67,7 @@ public:
         URenderer::GetInstance()->BindVAO(this);
         
 		_id = -1;    
-        _id = URenderer::GetInstance()->CreateVBO(this, UVBO_STATIC);
+        _id = URenderer::GetInstance()->CreateVBO(this, state);
         
         return (_id != -1) && (vao->GetId() != -1);
     }
@@ -80,7 +86,7 @@ public:
     {
         glBindBuffer(GL_ARRAY_BUFFER, UGLObject::_id);
         glBufferData(GL_ARRAY_BUFFER, num_vertices * sizeof(UVertex), 0, GL_STREAM_DRAW_ARB);
-        UVertex* pBuffer = (UVertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY_ARB);            
+        UVertex* pBuffer = (UVertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE_ARB);            
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         return pBuffer;
