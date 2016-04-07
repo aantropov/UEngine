@@ -230,9 +230,12 @@ int URenderer::CreateTexture(UTexture *tex)
                 */
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
+        else if (tex->GetType() == UTEXTURE_RG16)
+        {
+            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, tex->GetWidth(), tex->GetHeight(), 0, GL_RG, GL_FLOAT, NULL));
+        }
         else if (tex->GetType() == UTEXTURE_DEPTH)
         {
-            //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
         else if (tex->GetType() == UTEXTURE_COLOR)
@@ -722,8 +725,16 @@ bool URenderer::Initialize()
 
     OPENGL_CALL(glClearColor(0.2f, 0.2f, 0.2f, 1.0f));
     OPENGL_CALL(glClearDepth(1.0f));
-    OPENGL_CALL(glEnable(GL_DEPTH_TEST));
+
+    //OPENGL_CALL(glDepthFunc(GL_LEQUAL));
+    //OPENGL_CALL(glDepthRange(0.0f, 1.0f));
+    //OPENGL_CALL(glEnable(GL_DEPTH_TEST));
     OPENGL_CALL(glEnable(GL_CULL_FACE));
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
 
     SetVerticalSynchronization(config->GetParami("/xml/config/vsync/") == 1);
 
@@ -732,7 +743,7 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(45.0f, aspectRatio, 0.01f, 300.0f);
+    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 300.0f);
     //mainCamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
     //mainCamera.SetPosition(vec3_zero);
     mainCamera.SetRotation(vec3_y * 90.0f);
