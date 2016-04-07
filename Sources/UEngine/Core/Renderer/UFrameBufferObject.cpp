@@ -22,5 +22,11 @@ bool UFrameBufferObject::Initialize()
 void UFrameBufferObject::BindTexture(UTexture *tex, UFRAMEBUFFER_ATTACHMENT type)
 {
     URenderer::GetInstance()->BindFBO(this);
-    glFramebufferTexture(GL_FRAMEBUFFER, type, tex->GetId(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, type, GL_TEXTURE_2D, tex->GetId(), 0);
+}
+
+void UFrameBufferObject::UnbindTexture(UFRAMEBUFFER_ATTACHMENT type)
+{
+    URenderer::GetInstance()->BindFBO(this);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, type, GL_TEXTURE_2D, 0, 0);
 }

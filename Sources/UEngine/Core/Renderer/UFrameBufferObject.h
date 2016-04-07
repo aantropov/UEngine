@@ -10,6 +10,7 @@ public:
 
     bool Initialize();
     void BindTexture(UTexture *tex, UFRAMEBUFFER_ATTACHMENT type);
+    void UnbindTexture(UFRAMEBUFFER_ATTACHMENT type);
 
     UFrameBufferObject(void);
     virtual ~UFrameBufferObject(void);
