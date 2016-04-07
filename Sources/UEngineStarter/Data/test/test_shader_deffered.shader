@@ -227,6 +227,6 @@ void main(void)
 	color[1] = vec4(normal * 0.5 + vec3(0.5), 1);
 	color[2] = material.diffuse * res * texture(material.texture, Vert.texcoord);
 	color[3] = vec4(material.specular.xyz * specular.xyz * res, material.shininess / 255.0f);// * material.specular.w * specular.w;
-	color[4].r = -(Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);	
+	color[4].r = -(Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);
 }
 #endif

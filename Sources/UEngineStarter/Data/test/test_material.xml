@@ -30,13 +30,13 @@
     <shaders>
 	  <forward>
 		<shader>			
-			<defines>NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
+			<defines>NORMAL_MAPPING SPECULAR</defines>
 			<path>data\\test\\test_shader.shader</path>
 		</shader>
 	  </forward>
   	  <deffered>
 		<shader>			
-            <defines>NORMAL_MAPPING SPECULAR SHADOW_PCF</defines>
+            <defines>NORMAL_MAPPING SPECULAR</defines>
 			<path>data\\test\\test_shader_deffered.shader</path>
 		</shader>
 	  </deffered>
@@ -75,7 +75,7 @@
       <b>0.3f</b>
       <a>1.0f</a>
     </specular>
-    <two_sides>1</two_sides>
+    <two_sides>0</two_sides>
     <shininess>1.f</shininess>
   </material>
 </xml>

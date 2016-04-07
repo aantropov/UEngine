@@ -12,6 +12,12 @@ uniform int skinning_transformsNum;
 uniform mat4 skinning_transforms[maxBones];
 #endif 
 
+uniform struct Camera
+{
+   highp float zFar;
+   highp float zNear;
+} camera;
+
 uniform struct Transform
 {
 	mat4 model;
@@ -33,7 +39,6 @@ inout Vertex {
 	vec3 t;
 	vec3 b;
 } Vert;
-
 
 #if defined(VERTEX)
 
@@ -70,11 +75,28 @@ void main(void)
 #endif
 
 	Vert.texcoord = texcoord;
-	Vert.position = vec4(position, 1);
-	gl_Position = transform.viewProjection * vertex;
+	Vert.position = transform.viewProjection * vertex;
+	gl_Position = Vert.position;
 }
 #elif defined(FRAGMENT)
+
+out vec2 color;
 void main()
 {
+    float depth = Vert.position.z / Vert.position.w;
+    
+	depth = (Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);
+    //depth = (Vert.position.z + camera.zNear);
+    
+    //depth = depth * 0.5 + 0.5;
+    
+	float moment1 = depth;
+	float moment2 = depth * depth;
+		
+	float dx = dFdx(depth);
+	float dy = dFdy(depth);
+	moment2 += 0.25*(dx*dx+dy*dy);	 
+    
+    color = vec2(moment1, moment2);    
 }
 #endif

@@ -23,7 +23,9 @@ class URenderManager
 
     ULighting *lighting;
     
+    UTexture* depthShadowMap;
     int depthTextureSize;
+
 public:
 
     void Render(UScene* scene);

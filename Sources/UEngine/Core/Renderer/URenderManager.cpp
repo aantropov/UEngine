@@ -36,6 +36,10 @@ URenderManager::URenderManager()
     postEffectSSAO->AddTexture(lighting->normalScene, 3);
 
     depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
+    depthShadowMap = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+    depthShadowMap->SetMipMap(false);
+    depthShadowMap->Create(depthTextureSize, depthTextureSize, UTEXTURE_DEPTH, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    depthShadowMap->name = "depth";
 }
 
 URenderManager::~URenderManager(void)
@@ -46,21 +50,15 @@ URenderManager::~URenderManager(void)
 void URenderManager::Render(UScene* scene)
 {
     auto render = URenderer::GetInstance();
-
+  
     UCamera previousCam = URenderer::GetInstance()->GetCurrentCamera();
-    render->BindFBO(&depthFbo);
-
-    glViewport(0, 0, depthTextureSize, depthTextureSize);
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glDepthMask(GL_TRUE);
-    //glCullFace(GL_FRONT);
-
+       
     auto lights = scene->GetLights();
     auto lightParams = render->GetCurrentScene()->lightParams;
-    glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(4, 4);
+    //glEnable(GL_POLYGON_OFFSET_FILL);
+    //glPolygonOffset(4, 4);
 
-    for (unsigned int i = 0; i < lightParams.count; i++)
+     for (unsigned int i = 0; i < lightParams.count; i++)
     {
         if (!lights[lightParams.lightIndex[i]]->castShadows)
             continue;
@@ -68,17 +66,42 @@ void URenderManager::Render(UScene* scene)
         auto depthTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < depthTextures.size(); j++)
         {
+            render->BindFBO(&depthFbo);
+            
+            //GLenum buffers[] = { UFB_ATTACHMENT_COLOR0};
+            //glDrawBuffers(1, buffers);
 
-            depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_DEPTH);
-            glClear(GL_DEPTH_BUFFER_BIT);
-            scene->Render(URENDER_DEPTH, lights[lightParams.lightIndex[i]]->GetCameras()[j]);
+            depthFbo.BindTexture(depthShadowMap, UFB_ATTACHMENT_DEPTH);
+            depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_COLOR0);
+
+            glViewport(0, 0, depthTextureSize, depthTextureSize);
+            glColorMask(GL_TRUE, GL_TRUE, GL_FALSE, GL_FALSE);
+            glDepthMask(GL_TRUE);
+
+            //glDepthMask(GL_TRUE);
+            //glDepthRange(0.0f, 1.0f);
+            //glCullFace(GL_FRONT);
+            //glClearColor(1000.0f, 1000.0f, 1.0f, .0f);
+            //glClearDepth(1000.0f);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            scene->Render(URENDER_DEPTH, lights[lightParams.lightIndex[i]]->GetCameras()[j]);                       
+         
+            render->UnbindFBO();
         }
     }
+    
+   
 
-    glDisable(GL_POLYGON_OFFSET_FILL);
+    //depthFbo.UnbindTexture(UFB_ATTACHMENT_COLOR0);
+    //depthFbo.UnbindTexture(UFB_ATTACHMENT_DEPTH);
+    //glDepthRange(0.0f, 1.0f);
+    //glDepthMask(GL_TRUE);
+    //glDisable(GL_POLYGON_OFFSET_FILL);
 
     //URenderer::GetInstance()->SetCurrentCamera(previousCam);
-    URenderer::GetInstance()->UnbindFBO();
+
+    postEffectSSAO->AddTexture(lights[lightParams.lightIndex[0]]->GetDepthTextures()[0], 2);
 
     OPENGL_CHECK_FOR_ERRORS();
 

@@ -68,7 +68,8 @@ uniform vec3 light_spotDirection[maxLight];
 uniform float light_spotExponent[maxLight];
 uniform float light_spotCosCutoff[maxLight];
 uniform mat4 light_transform[maxLight];
-uniform sampler2DShadow light_depthTexture[maxLight];
+//uniform sampler2DShadow light_depthTexture[maxLight];
+uniform sampler2D light_depthTexture[maxLight];
 
 #if defined(VERTEX)
 
@@ -79,7 +80,7 @@ layout(location = 3) in vec2 texcoord;
 
 void ProcessLight(int i, vec4 vertex, vec3 t, vec3 b, vec3 n)
 {
-	Vert.smcoord[i]  = light_transform[i] * vertex;
+	Vert.smcoord[i] = light_transform[i] * vertex;
 	vec3 lightDir = vec3(light_position[i] - vertex);
 	
 	Vert.lightDir[i] = lightDir;
@@ -134,9 +135,41 @@ void main(void)
 
 #elif defined(FRAGMENT)
 
+/*
+float linstep(float min, float max, float v)  
+{  
+  return saturate((v – min) / (max – min));
+}
+
+float ReduceLightBleeding(float p_max, float Amount)  
+{  
+  // Remove the [0, Amount] tail and linearly rescale (Amount, 1].  
+   return linstep(Amount, 1, p_max);  
+}  
+*/
+
+float ChebyshevUpperBound(in vec4 smcoord, sampler2D depthTexture, float distance)
+{
+    distance = smcoord.z;
+    
+    //vec2 moments = textureProjOffset(depthTexture, smcoord, ivec2(0,0)).xy;
+    vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
+        
+    if(distance <= moments.x)
+        return 1.0f;
+        return 1.0f;
+    float variance = moments.y - (moments.x * moments.x);
+    variance = max(variance,0.0);
+	
+	float d = distance - moments.x;
+	float p_max = variance / (variance + d*d);
+	
+	return p_max; 
+}
+
 out vec4 color;
 
-float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
+float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance)
 {
 #if defined(SHADOWS_PCF)
 	float res = 0.0;
@@ -153,7 +186,9 @@ float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 
 	return (res / 9.0);
 #else
-	return textureProjOffset(depthTexture, smcoord, ivec2( 0, 0));
+    smcoord /= smcoord.w;
+    //smcoord = smcoord * 0.5f + 0.5f;
+    return ChebyshevUpperBound(smcoord, depthTexture, distance);
 #endif
 }
 
@@ -176,7 +211,7 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
 	
-	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
+	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance), 0.0, 1.0);
 	shadow *= spot * spotEffect;
 	
 	res = light_ambient[i];
@@ -214,13 +249,14 @@ void main(void)
 #endif
 	
 	vec4 res = vec4(0.0);
+    
 	for(int i = 0; i < lightsNum; i++)
 #if defined(SPECULAR)
 		res += ProccessLight(i, diffuse, normal, specular, viewDir);
 #else
 		res += ProccessLight(i, diffuse, normal, viewDir);
 #endif
-	
+
 	color = material.emission;
 	
 #if defined(REFLECTION_CUBEMAP)	
