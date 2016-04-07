@@ -15,7 +15,13 @@ void UScene::KeysProccessing()
     rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
     rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
 
-    UInput::SetCursorPos(xCenter, yCenter);
+    static bool showCursor = false;
+    if (UInput::IsKeyPressed('L'))
+        showCursor = !showCursor;
+
+    if (!showCursor)
+        UInput::SetCursorPos(xCenter, yCenter);
+    UInput::ShowCursor(showCursor);
 }
 
 void UScene::UpdateLightParams()
@@ -50,7 +56,7 @@ void UScene::UpdateLightParams()
 //Update with deltaTime
 void UScene::Update(double deltaTime)
 {
-    UInput::ShowCursor(false);
+    //UInput::ShowCursor(false);
 
     //Camera movement
     URenderer::GetInstance()->mainCamera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
