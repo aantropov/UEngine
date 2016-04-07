@@ -18,16 +18,19 @@ class ULight : public UGameObject
     vec3 attenuation;
 
     vec3 spotDirection;
-    float spotCosCutoff;
+    float spotCosHalfAngle;
+    float spotAngle;
     float spotExponent;
 
     UModel* model;
-    
+
     std::vector<UTexture*> depthTextures;
     std::vector<UCamera> cameras;
 
+    void UpdateCamera();
+
 public:
-    
+
     bool castShadows;
 
     std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();
@@ -39,7 +42,7 @@ public:
     vec3 UENGINE_DECLSPEC GetAttenuation() const { return attenuation; }
 
     vec3 UENGINE_DECLSPEC GetSpotDirection() const { return spotDirection; }
-    float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosCutoff; }
+    float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosHalfAngle; }
     float UENGINE_DECLSPEC GetSpotExponent() const { return spotExponent; }
 
     void UENGINE_DECLSPEC SetAmbient(vec4 v){ ambient = v; }
@@ -48,22 +51,22 @@ public:
     void UENGINE_DECLSPEC SetAttenuation(vec3 v){ attenuation = v; }
 
     void UENGINE_DECLSPEC SetSpotDirection(vec4 v){ spotDirection = v; }
-    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees){ spotCosCutoff = cosf(degrees * math_radians); }
+    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees){ spotAngle = degrees;  spotCosHalfAngle = cosf(spotAngle * 0.5f * math_radians); }
     void UENGINE_DECLSPEC SetSpotExponent(float v){ spotExponent = v; }
 
     virtual UENGINE_DECLSPEC mat4 GetLightTransform();
     virtual UENGINE_DECLSPEC void SetLightTransform(string light);
     virtual UENGINE_DECLSPEC void SetShadowTexture(unsigned int location, int i);
-    
+
     // Deprecated!
     virtual void UENGINE_DECLSPEC SetShaderParameters(int numberOfLight);
 
     virtual void UENGINE_DECLSPEC Update(double delta);
 
     void UENGINE_DECLSPEC InitModel(UResourceFactory* rf);
-    
+
     UENGINE_DECLSPEC ULight();
-    UENGINE_DECLSPEC ULight(UResourceFactory* rf,  vec4 pos);
-    UENGINE_DECLSPEC ULight(UResourceFactory* rf,  vec4 pos, bool _castShadows);
+    UENGINE_DECLSPEC ULight(UResourceFactory* rf, vec4 pos);
+    UENGINE_DECLSPEC ULight(UResourceFactory* rf, vec4 pos, bool _castShadows);
     UENGINE_DECLSPEC ~ULight(void);
 };

@@ -26,19 +26,23 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     specular.set(0.9f, 0.9f, 0.9f, 1.0f);
     attenuation.set(0.5f, 0.1f, 0.001f);
     spotDirection.set(-1.0f, -2.0f, -1.0f);
-    spotCosCutoff = -1.0f;
+    spotCosHalfAngle = -1.0f;
+    spotAngle = 60.0f;
     spotExponent = 5.0f;
+
+    SetSpotCosCutoff(spotAngle);
 
     InitModel(rf);
 
     int size = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
 
     auto tex = dynamic_cast<UTexture*>(rf->Create(URESOURCE_TEXTURE));
-    tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    tex->SetMipMap(false);
+    tex->Create(size, size, UTEXTURE_COLOR, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
     depthTextures.push_back(tex);
 
     UCamera cam;
-    cam.Perspective(spotCosCutoff * math_degrees * 2.0f, (float)URenderer::GetInstance()->GetWidth() / (float)URenderer::GetInstance()->GetHeight(), 0.5f, 100.0f);
     cam.SetPosition(pos);
     cameras.push_back(cam);
 
@@ -102,7 +106,7 @@ void ULight::SetShaderParameters(int i)
     renderer->CacheUniform3(light + "attenuation", 1, attenuation.v);
     renderer->CacheUniform3(light + "spotDirection", 1, spotDirection.v);
     renderer->CacheUniform1(light + "spotExponent", 1, &spotExponent);
-    renderer->CacheUniform1(light + "spotCosCutoff", 1, &spotCosCutoff);
+    renderer->CacheUniform1(light + "spotCosCutoff", 1, &spotCosHalfAngle);
 
     SetLightTransform(light);
 }
@@ -126,15 +130,18 @@ void ULight::InitModel(UResourceFactory* rf)
     model = dynamic_cast<UModel*>(rf->Create(URESOURCE_MODEL));
     model->LoadFromFile("data\\Models\\light_model.xml");
 
-    components.push_back(model);
+    //components.push_back(model);
 }
 
 void ULight::Update(double delta)
 {
     UGameObject::Update(delta);
+    UpdateCamera();
+}
 
-    //spotDirection = -vec3_y;
+void ULight::UpdateCamera()
+{
     spotDirection = -normalize(world*(local.position));
-    //    world
+    cameras[0].Perspective(spotAngle, 1.0f, 0.0f, 100.0f);
     cameras[0].LookAt(world*(local.position), spotDirection + world * local.position, world * vec3_y);
 }
