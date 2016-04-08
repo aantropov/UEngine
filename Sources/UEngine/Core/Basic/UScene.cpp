@@ -81,7 +81,7 @@ void UScene::Render(URENDER_TYPE type, UCamera camera)
 
     if (root != NULL)
         root->Render(type);
-    render->modelView = mat4_identity;
+    render->model = mat4_identity;
 }
 
 void UScene::Render(UMaterial *m, UCamera camera)
@@ -93,7 +93,7 @@ void UScene::Render(UMaterial *m, UCamera camera)
 
     if (root != NULL)
         root->Render(m);
-    render->modelView = mat4_identity;
+    render->model = mat4_identity;
 }
 
 UScene::~UScene(void)

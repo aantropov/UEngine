@@ -14,7 +14,7 @@ URenderer::URenderer()
 {
     previousVAO = 0;
     previousIB = 0;
-    modelView = mat4_identity;
+    model = mat4_identity;
 }
 
 URenderer::~URenderer()
@@ -85,7 +85,7 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 
 void  URenderer::PushModelMatrix()
 {
-    modelViewMatrixStack.push_back(modelView);
+    modelViewMatrixStack.push_back(model);
 }
 
 void  URenderer::PopModelMatrix()
@@ -93,11 +93,11 @@ void  URenderer::PopModelMatrix()
     //Secure code
     if (modelViewMatrixStack.size() > 0)
     {
-        modelView = modelViewMatrixStack.back();
+        model = modelViewMatrixStack.back();
         modelViewMatrixStack.pop_back();
     }
     else
-        modelView = mat4_identity;
+        model = mat4_identity;
 }
 
 void URenderer::SetCurrentCamera(UCamera cam)

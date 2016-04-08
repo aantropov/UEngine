@@ -22,25 +22,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     vec3 atten = vec3(0.1f, 0.005f, 0.f);
 
-    ULight *light = new ULight(&e.rf, vec4(20.0f, 3.0f, 10.0f, 1.0f));
+    ULight *light = new ULight(&e.rf, vec4(20.0f, 50.0f, 10.0f, 1.0f));
     light->SetAttenuation(atten);
-    light->SetSpotExponent(5.0f);
+    light->SetSpotExponent(15.0f);
     light->SetSpotCosCutoff(90.0f);
     light->castShadows = true;
     //light->SetDiffuse(vec4_y);
 
     node->AddChild(new UScene::USceneNode(light));
     scene.AddLight(light);
-    //light->AddComponent((UComponent*)script);
+    light->AddComponent((UComponent*)script);
 
     for (int i = 0; i < 1; i++)
     {
-        ULight *additional_light = new ULight(&e.rf, vec4(rand() % 20 - 10.0f, rand() % 20, rand() % 20 - 10.0f, 0.0f));
+        ULight *additional_light = new ULight(&e.rf, vec4(-20.0f, 20.0f, -60, 0.0f));
         additional_light->SetAttenuation(atten);
         additional_light->castShadows = true;
-        additional_light->SetSpotExponent(10);
+        
+        additional_light->SetSpotExponent(15.0f);
+        additional_light->SetSpotCosCutoff(90.0f);
 
-        vec4 rand_color = vec4((rand() % 100) / 100.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f, 1);
+        vec4 rand_color = vec4(1,1,1,1);
         additional_light->SetDiffuse(rand_color);
         additional_light->SetAmbient(rand_color);
 

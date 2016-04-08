@@ -22,12 +22,12 @@ mat4 UMatrix::Get()
 
 void UMatrix::Set()
 {
-    URenderer::GetInstance()->modelView *= m;
+    URenderer::GetInstance()->model *= m;
 }
 
 void UMatrix::Render()
 {
-    URenderer::GetInstance()->modelView *= m;
+    URenderer::GetInstance()->model *= m;
 }    
 
 void UMatrix::Update()

@@ -83,10 +83,10 @@ void main(void)
 out vec2 color;
 void main()
 {
-    float depth = Vert.position.z / Vert.position.w;
+    float depth = -Vert.position.z / Vert.position.w;
     
-	depth = (Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);
-    //depth = (Vert.position.z + camera.zNear);
+	depth = (Vert.position.z + camera.zNear)/(camera.zFar);
+    depth = (Vert.position.z + camera.zNear);
     
     //depth = depth * 0.5 + 0.5;
     

@@ -215,7 +215,7 @@ void UMaterial::Render(URENDER_TYPE type)
     URenderer *render = URenderer::GetInstance();
 
     render->SetShaderProgram(sp);
-    render->SetupCameraForShaderProgram(GetShaderProgram(type), render->modelView);
+    render->SetupCameraForShaderProgram(GetShaderProgram(type), render->model);
     OPENGL_CHECK_FOR_ERRORS();
 
     UShaderProgram::UUniformLocations locs = sp->locations;

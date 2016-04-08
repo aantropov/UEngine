@@ -39,13 +39,14 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     auto tex = dynamic_cast<UTexture*>(rf->Create(URESOURCE_TEXTURE));
     //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
     tex->SetMipMap(false);
-    tex->Create(size, size, UTEXTURE_COLOR, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    tex->Create(size, size, UTEXTURE_RG16);// , UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
     depthTextures.push_back(tex);
 
     UCamera cam;
     cam.SetPosition(pos);
     cameras.push_back(cam);
-
+    UpdateCamera();
+    
     local.position = pos;
 }
 
@@ -142,6 +143,6 @@ void ULight::Update(double delta)
 void ULight::UpdateCamera()
 {
     spotDirection = -normalize(world*(local.position));
-    cameras[0].Perspective(spotAngle, 1.0f, 0.0f, 100.0f);
+    cameras[0].Perspective(spotAngle, 1.0f, 0.01f, 300.0f);
     cameras[0].LookAt(world*(local.position), spotDirection + world * local.position, world * vec3_y);
 }

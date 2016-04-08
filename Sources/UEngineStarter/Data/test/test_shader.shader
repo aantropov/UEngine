@@ -150,16 +150,16 @@ float ReduceLightBleeding(float p_max, float Amount)
 
 float ChebyshevUpperBound(in vec4 smcoord, sampler2D depthTexture, float distance)
 {
-    distance = smcoord.z;
+    //distance = smcoord.z;
     
     //vec2 moments = textureProjOffset(depthTexture, smcoord, ivec2(0,0)).xy;
     vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
         
     if(distance <= moments.x)
         return 1.0f;
-        return 1.0f;
+    
     float variance = moments.y - (moments.x * moments.x);
-    variance = max(variance,0.0);
+    variance = max(variance, 5.0);
 	
 	float d = distance - moments.x;
 	float p_max = variance / (variance + d*d);

@@ -75,7 +75,7 @@ public:
     void Release();
 
     //Operations with Stack
-    mat4 modelView;
+    mat4 model;
     void PushModelMatrix();
     void PopModelMatrix();
 
