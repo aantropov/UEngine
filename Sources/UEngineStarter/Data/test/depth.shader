@@ -83,13 +83,10 @@ void main(void)
 out vec2 color;
 void main()
 {
-    float depth = -Vert.position.z / Vert.position.w;
-    
-	depth = (Vert.position.z + camera.zNear)/(camera.zFar);
-    depth = (Vert.position.z + camera.zNear);
-    
-    //depth = depth * 0.5 + 0.5;
-    
+    float depth = (Vert.position.z + camera.zNear)/(camera.zFar + camera.zNear);
+	//depth = -gl_FragCoord.z;
+	//depth = depth*0.5 +0.5;
+
 	float moment1 = depth;
 	float moment2 = depth * depth;
 		
@@ -97,6 +94,6 @@ void main()
 	float dy = dFdy(depth);
 	moment2 += 0.25*(dx*dx+dy*dy);	 
     
-    color = vec2(moment1, moment2);    
+    color = vec2(moment1, moment2);
 }
 #endif

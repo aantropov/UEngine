@@ -774,6 +774,7 @@ bool URenderer::Initialize()
 
     PrintDebugInfo();
 
+    URendererHelper::GetInstance()->Initialize();
     return true;
 }
 

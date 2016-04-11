@@ -8,7 +8,7 @@ class UScene;
 
 class URenderManager
 {
-    UFrameBufferObject depthFbo;
+    UFrameBufferObject vsmFbo;
     UFrameBufferObject postEffectFbo;
     UFrameBufferObject postpostEffectFbo;
     

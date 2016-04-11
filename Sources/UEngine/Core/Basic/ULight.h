@@ -21,6 +21,8 @@ class ULight : public UGameObject
     float spotCosHalfAngle;
     float spotAngle;
     float spotExponent;
+    float shadowDistanceMax;
+    float shadowDistanceMin;
 
     UModel* model;
 
@@ -45,6 +47,9 @@ public:
     float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosHalfAngle; }
     float UENGINE_DECLSPEC GetSpotExponent() const { return spotExponent; }
 
+    float UENGINE_DECLSPEC GetShadowDistanceMax() const { return shadowDistanceMax; }
+    float UENGINE_DECLSPEC GetShadowDistanceMin() const { return shadowDistanceMin; }
+    
     void UENGINE_DECLSPEC SetAmbient(vec4 v){ ambient = v; }
     void UENGINE_DECLSPEC SetDiffuse(vec4 v){ diffuse = v; }
     void UENGINE_DECLSPEC SetSpecular(vec4 v){ specular = v; }

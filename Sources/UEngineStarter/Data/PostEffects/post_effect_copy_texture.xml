@@ -1,0 +1,8 @@
+<xml>
+  <post_effect>
+    <name>Blur</name>
+    <shader>
+      <path>data\\Shaders\\post_effect_copy_texture.shader</path>      
+    </shader>
+  </post_effect>
+</xml>

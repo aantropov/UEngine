@@ -21,6 +21,9 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
 {
     castShadows = false;
 
+    shadowDistanceMin = 1.1f;
+    shadowDistanceMax = 100.0f;
+    
     ambient.set(0.5f, 0.5f, 0.5f, 1.0f);
     diffuse.set(0.70f, 0.70f, 0.70f, 1.0f);
     specular.set(0.9f, 0.9f, 0.9f, 1.0f);
@@ -39,7 +42,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     auto tex = dynamic_cast<UTexture*>(rf->Create(URESOURCE_TEXTURE));
     //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
     tex->SetMipMap(false);
-    tex->Create(size, size, UTEXTURE_RG16);// , UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    tex->Create(size, size, UTEXTURE_RG16, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
     depthTextures.push_back(tex);
 
     UCamera cam;
@@ -100,7 +103,10 @@ void ULight::SetShaderParameters(int i)
 
     auto renderer = URenderer::GetInstance();
 
-    renderer->CacheUniform4(light + "position", 1, local.position.v);
+    vec4 position = local.position;
+    position.w = shadowDistanceMax + shadowDistanceMin;
+
+    renderer->CacheUniform4(light + "position", 1, position.v);
     renderer->CacheUniform4(light + "ambient", 1, ambient.v);
     renderer->CacheUniform4(light + "diffuse", 1, diffuse.v);
     renderer->CacheUniform4(light + "specular", 1, specular.v);
@@ -143,6 +149,6 @@ void ULight::Update(double delta)
 void ULight::UpdateCamera()
 {
     spotDirection = -normalize(world*(local.position));
-    cameras[0].Perspective(spotAngle, 1.0f, 0.01f, 300.0f);
-    cameras[0].LookAt(world*(local.position), spotDirection + world * local.position, world * vec3_y);
+    cameras[0].Perspective(spotAngle, 1.0f, shadowDistanceMin, shadowDistanceMax);
+    cameras[0].LookAt(world*(local.position), spotDirection + world * local.position, world * vec3_y);    
 }

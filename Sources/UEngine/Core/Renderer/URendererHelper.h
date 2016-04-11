@@ -106,6 +106,25 @@ extern ILenum g_DevILError;
 #define DEVIL_CALL(expression) expression;
 #endif //UE_RELEASE
 
+
+class UTexture;
+class UPostEffect;
+class UFrameBufferObject;
+
+class URendererHelper : USingleton<URendererHelper>
+{
+    UPostEffect* gauss_blur;
+    UPostEffect* copy_texture;
+    UFrameBufferObject* fbo;
+
+public:
+
+    static URendererHelper *GetInstance();
+
+    void Initialize();
+    void GaussBlur(UTexture* texture);
+};
+
 /*
 // extensions OpenGL
 // Texture

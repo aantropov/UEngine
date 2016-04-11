@@ -31,7 +31,10 @@ void UScene::UpdateLightParams()
     {
         if (lights[i] != NULL/* && lights[i]->castShadows*/)
         {
-            lightParams.position[cur] = (lights[cur]->world*(lights[cur]->local.position));
+            vec4 position = lights[cur]->world * lights[cur]->local.position;
+            position.w = lights[cur]->GetShadowDistanceMax() + lights[cur]->GetShadowDistanceMin();
+
+            lightParams.position[cur] = position;
             lightParams.ambient[cur] = lights[cur]->GetAmbient();
             lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
             lightParams.specular[cur] = lights[cur]->GetSpecular();

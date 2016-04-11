@@ -23,7 +23,7 @@ class UScene;
 class UFrameBufferObject;
 class UCubemap;
 
-class URenderer : public USingleton < URenderer >
+class URenderer : public USingleton <URenderer>
 {
     UWindow uWnd;
 

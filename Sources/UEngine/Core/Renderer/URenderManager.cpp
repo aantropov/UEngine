@@ -12,7 +12,7 @@ URenderManager::URenderManager()
     else
         lighting = new UForwardLighting();
 
-    depthFbo.Initialize();
+    vsmFbo.Initialize();
     postEffectFbo.Initialize();
     postpostEffectFbo.Initialize();
 
@@ -56,17 +56,16 @@ void URenderManager::Render(UScene* scene)
     auto lights = scene->GetLights();
     auto lightParams = render->GetCurrentScene()->lightParams;
    
+    render->BindFBO(&vsmFbo);
 
-    render->BindFBO(&depthFbo);
-
-    depthFbo.BindTexture(depthShadowMap, UFB_ATTACHMENT_DEPTH);
+    vsmFbo.BindTexture(depthShadowMap, UFB_ATTACHMENT_DEPTH);
     glCullFace(GL_FRONT);
     glColorMask(GL_TRUE, GL_TRUE, GL_FALSE, GL_FALSE);
     glDepthMask(GL_TRUE);
     glViewport(0, 0, depthTextureSize, depthTextureSize);
 
-    glClearColor(1000.0f, 1000.0f, 1.0f, .0f);
-    //glClearDepth(1000.0f);
+    glClearColor(1, 1, 1, 1);
+    glClearDepth(1);
 
     //glEnable(GL_POLYGON_OFFSET_FILL);
     //glPolygonOffset(4, 4);
@@ -76,17 +75,29 @@ void URenderManager::Render(UScene* scene)
         if (!lights[lightParams.lightIndex[i]]->castShadows)
             continue;
 
-        auto depthTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
-        for (unsigned int j = 0; j < depthTextures.size(); j++)
+        auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
+        for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
-            depthFbo.BindTexture(depthTextures[j], UFB_ATTACHMENT_COLOR0);
+            vsmFbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             scene->Render(URENDER_DEPTH, lights[lightParams.lightIndex[i]]->GetCameras()[j]);
         }
     }
-
+    
     render->UnbindFBO();
+
+    auto helper = URendererHelper::GetInstance();
+
+    for (unsigned int i = 0; i < lightParams.count; i++)
+    {
+        if (!lights[lightParams.lightIndex[i]]->castShadows)
+            continue;
+
+        auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
+        for (unsigned int j = 0; j < vsmTextures.size(); j++)
+            helper->GaussBlur(vsmTextures[j]);
+    }
 
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_COLOR0);
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_DEPTH);
@@ -103,4 +114,7 @@ void URenderManager::Render(UScene* scene)
     //postEffectSSAO->AddTexture(lights[lightParams.lightIndex[0]]->GetDepthTextures()[0], 2);
     postEffectSSAO->Render(URENDER_FORWARD);
     //postEffectRipple->Render(URENDER_FORWARD);
+
+  
+
 }

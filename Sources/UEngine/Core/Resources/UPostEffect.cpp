@@ -9,17 +9,25 @@ UPostEffect::~UPostEffect(void)
 {
 }
 
+void UPostEffect::ClearUniformUnits()
+{
+    material.ClearUniformUnits();
+}
+
 void UPostEffect::AddTexture(UTexture* tex, int channel)
 {
     //material.ClearTextures();
     material.AddUniformUnit(std::pair<UTexture*, int>(tex, channel));
 }
 
-void UPostEffect::Render(URENDER_TYPE type) {
+void UPostEffect::Render(URENDER_TYPE type)
+{
     this->material.params["time"] = (float)GetTickCount();
     this->UMesh::Render(type);
 }
-void UPostEffect::Update(double delta) {
+
+void UPostEffect::Update(double delta)
+{
     this->UMesh::Update(delta);
 }
 

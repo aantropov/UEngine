@@ -48,7 +48,7 @@ inout Vertex
 	vec3  lightDirTBN[maxLight];
 	vec3  viewDirTBN;
 	vec3  viewDir;
-	vec4 smcoord[maxLight];	
+	vec4  smcoord[maxLight];
 	vec3 t;
 	vec3 b;	
 } Vert;
@@ -81,7 +81,10 @@ layout(location = 3) in vec2 texcoord;
 void ProcessLight(int i, vec4 vertex, vec3 t, vec3 b, vec3 n)
 {
 	Vert.smcoord[i] = light_transform[i] * vertex;
-	vec3 lightDir = vec3(light_position[i] - vertex);
+	Vert.smcoord[i].xyz /= Vert.smcoord[i].w;
+	Vert.smcoord[i].w = light_position[i].w;
+	
+	vec3 lightDir = light_position[i].xyz - vertex.xyz;
 	
 	Vert.lightDir[i] = lightDir;
 
@@ -135,12 +138,12 @@ void main(void)
 
 #elif defined(FRAGMENT)
 
+
 /*
 float linstep(float min, float max, float v)  
 {  
   return saturate((v – min) / (max – min));
 }
-
 float ReduceLightBleeding(float p_max, float Amount)  
 {  
   // Remove the [0, Amount] tail and linearly rescale (Amount, 1].  
@@ -148,10 +151,13 @@ float ReduceLightBleeding(float p_max, float Amount)
 }  
 */
 
-float ChebyshevUpperBound(in vec4 smcoord, sampler2D depthTexture, float distance)
+float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance)
 {
-    //distance = smcoord.z;
-    
+    distance /= smcoord.w;
+	//distance -= 1.1f;
+    //distance /= (smcoord.z - 2.1);
+	//distance = smcoord.z;
+	
     //vec2 moments = textureProjOffset(depthTexture, smcoord, ivec2(0,0)).xy;
     vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
         
@@ -159,7 +165,7 @@ float ChebyshevUpperBound(in vec4 smcoord, sampler2D depthTexture, float distanc
         return 1.0f;
     
     float variance = moments.y - (moments.x * moments.x);
-    variance = max(variance, 5.0);
+    variance = max(variance, 0.00000000000001);
 	
 	float d = distance - moments.x;
 	float p_max = variance / (variance + d*d);
@@ -186,7 +192,7 @@ float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance)
 
 	return (res / 9.0);
 #else
-    smcoord /= smcoord.w;
+    //smcoord /= smcoord.w;
     //smcoord = smcoord * 0.5f + 0.5f;
     return ChebyshevUpperBound(smcoord, depthTexture, distance);
 #endif
