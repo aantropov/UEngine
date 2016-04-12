@@ -82,7 +82,9 @@ void ProcessLight(int i, vec4 vertex, vec3 t, vec3 b, vec3 n)
 {
 	Vert.smcoord[i] = light_transform[i] * vertex;
 	Vert.smcoord[i].xyz /= Vert.smcoord[i].w;
+	
 	Vert.smcoord[i].w = light_position[i].w;
+	Vert.smcoord[i].z = light_ambient[i].w;
 	
 	vec3 lightDir = light_position[i].xyz - vertex.xyz;
 	
@@ -138,44 +140,27 @@ void main(void)
 
 #elif defined(FRAGMENT)
 
-
-/*
-float linstep(float min, float max, float v)  
-{  
-  return saturate((v – min) / (max – min));
-}
-float ReduceLightBleeding(float p_max, float Amount)  
-{  
-  // Remove the [0, Amount] tail and linearly rescale (Amount, 1].  
-   return linstep(Amount, 1, p_max);  
-}  
-*/
-
-float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance)
+float linstep(float low, float high, float v)
 {
-    distance /= smcoord.w;
-	//distance -= 1.1f;
-    //distance /= (smcoord.z - 2.1);
-	//distance = smcoord.z;
+    return clamp((v-low)/(high-low), 0.0, 1.0);
+}
+
+float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, float bias)
+{
+	float compare = (distance - smcoord.z)/(smcoord.w - smcoord.z);
+	vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
 	
-    //vec2 moments = textureProjOffset(depthTexture, smcoord, ivec2(0,0)).xy;
-    vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
-        
-    if(distance <= moments.x)
-        return 1.0f;
-    
-    float variance = moments.y - (moments.x * moments.x);
-    variance = max(variance, 0.00000000000001);
+	float p = smoothstep(compare-0.00001, compare, moments.x);
+    float variance = max(moments.y - moments.x*moments.x, -0.001);
+    float d = compare - moments.x + bias;
 	
-	float d = distance - moments.x;
-	float p_max = variance / (variance + d*d);
-	
-	return p_max; 
+	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
+    return clamp(max(p, p_max), 0.0, 1.0);
 }
 
 out vec4 color;
 
-float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance)
+float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance, float bias)
 {
 #if defined(SHADOWS_PCF)
 	float res = 0.0;
@@ -192,9 +177,7 @@ float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance)
 
 	return (res / 9.0);
 #else
-    //smcoord /= smcoord.w;
-    //smcoord = smcoord * 0.5f + 0.5f;
-    return ChebyshevUpperBound(smcoord, depthTexture, distance);
+    return ChebyshevUpperBound(smcoord, depthTexture, distance, bias);
 #endif
 }
 
@@ -217,21 +200,27 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
 	
-	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance), 0.0, 1.0);
-	shadow *= spot * spotEffect;
-	
 	res = light_ambient[i];
 	
-	float NdotL = max(dot(bump, lightDir), 0);
-	res += light_diffuse[i] * NdotL;
-	res *= diffuse;
+	float rawNdotL = dot(bump, lightDir);
+	float NdotL = max(rawNdotL, 0);
 	
-#if defined(SPECULAR)
-	float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
-	res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
-#endif
-
-	res *= shadow * attenuation;
+	float shadow = 0;
+	if(rawNdotL > 0)
+	{
+		res += light_diffuse[i] * NdotL;
+		res *= diffuse;
+		
+		shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL*0.01), 0.0, 1.0);
+		shadow *= spot * spotEffect;
+		
+		#if defined(SPECULAR)
+			float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
+			res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
+		#endif
+		res *= shadow * attenuation;
+	}
+	
 	return res;
 }
 

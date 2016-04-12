@@ -230,13 +230,13 @@ int URenderer::CreateTexture(UTexture *tex)
                 */
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_RG16)
+        else if (tex->GetType() == UTEXTURE_RG32F)
         {
-            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, tex->GetWidth(), tex->GetHeight(), 0, GL_RG, GL_FLOAT, NULL));
+            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RG, GL_FLOAT, NULL));
         }
         else if (tex->GetType() == UTEXTURE_DEPTH)
         {
-            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+            OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
         else if (tex->GetType() == UTEXTURE_COLOR)
         {
@@ -568,6 +568,7 @@ int URenderer::CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh)
 
 void URenderer::DeleteShaderProgram(UShaderProgram *shd)
 {
+    CacheReleaseUniformLocation(shd);
     OPENGL_CALL(glDeleteProgram(shd->GetId()));
 }
 
@@ -579,6 +580,11 @@ void URenderer::SetShaderProgram(UShaderProgram *sh)
     shaderProgram = sh;
     OPENGL_CALL(glUseProgram(sh->GetId()));
     OPENGL_CHECK_FOR_ERRORS();
+}
+
+void  URenderer:: CacheReleaseUniformLocation(UShaderProgram* sh)
+{
+    uniformsCache.erase(sh->GetId());
 }
 
 int URenderer::CacheUniformLocation(string name)

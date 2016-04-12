@@ -119,14 +119,21 @@ vec4 ProccessLight(int i, vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specu
 	
 	res = light_ambient[i];
 	
-	float NdotL = max(dot(bump, lightDir), 0);
-	res += light_diffuse[i] * NdotL;
-    res *= diffuse;
+	float rawNdotL = dot(bump, lightDir);
+	float NdotL = max(rawNdotL, 0);
+		
+	if(rawNdotL > 0)
+	{
+		res += light_diffuse[i] * NdotL;
+		res *= diffuse;
+		
+		float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w * 255.0f), 0.0);
+		res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow;
+		
+		res *= attenuation;
+	}
 	
-	float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position[i].xyz), bump), viewDir), specular.w * 255.0f), 0.0);
-	res += vec4(specular.xyz * light_specular[i].xyz, 1.0) * RdotVpow;
-	
-	return res * attenuation;
+	return res;
 }
 
 void main(void)

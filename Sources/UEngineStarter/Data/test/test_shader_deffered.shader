@@ -91,7 +91,7 @@ uniform vec3 light_spotDirection[maxLight];
 uniform float light_spotExponent[maxLight];
 uniform float light_spotCosCutoff[maxLight];
 uniform mat4 light_transform[maxLight];
-uniform sampler2DShadow light_depthTexture[maxLight];
+uniform sampler2D light_depthTexture[maxLight];
 
 #if defined(VERTEX)
 
@@ -103,6 +103,10 @@ layout(location = 3) in vec2 texcoord;
 void ProcessLight(int i, vec4 vertex, vec3 t, vec3 b, vec3 n)
 {
 	Vert.smcoord[i]  = light_transform[i] * vertex;
+	Vert.smcoord[i].xyz /= Vert.smcoord[i].w;
+	Vert.smcoord[i].w = light_position[i].w;
+	Vert.smcoord[i].z = light_ambient[i].w;
+	
 	vec3 lightDir = vec3(light_position[i] - vertex);
 	
 	Vert.lightDir[i] = lightDir;
@@ -159,7 +163,25 @@ void main(void)
 
 out vec4 color[5];
 
-float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
+float linstep(float low, float high, float v)
+{
+    return clamp((v-low)/(high-low), 0.0, 1.0);
+}
+
+float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, float bias)
+{
+	float compare = (distance - smcoord.z)/(smcoord.w - smcoord.z);
+	vec2 moments = texture2D(depthTexture, smcoord.xy).rg;
+	
+	float p = smoothstep(compare-0.00001, compare, moments.x);
+    float variance = max(moments.y - moments.x*moments.x, -0.001);
+    float d = compare - moments.x + bias;
+	
+	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
+    return clamp(max(p, p_max), 0.0, 1.0);
+}
+
+float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance, float bias)
 {
 #if defined(SHADOWS_PCF)
 	float res = 0.0;
@@ -176,7 +198,7 @@ float SampleShadow(in vec4 smcoord, sampler2DShadow depthTexture)
 
 	return (res / 9.0);
 #else
-	return textureProjOffset(depthTexture, smcoord, ivec2( 0, 0));
+    return ChebyshevUpperBound(smcoord, depthTexture, distance, bias);
 #endif
 }
 
@@ -189,8 +211,8 @@ float ProccessLight(int i)
 	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
 	float spot       = float(spotEffect > light_spotCosCutoff[i]);
 	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
-		
-	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i]), 0.0, 1.0);
+	
+	float shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, 0.01), 0.0, 1.0);
 	shadow *= spot * spotEffect;
 	
 	return shadow;

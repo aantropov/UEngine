@@ -22,8 +22,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     vec3 atten = vec3(0.1f, 0.005f, 0.f);
 
-    ULight *light = new ULight(&e.rf, vec4(20.0f, 50.0f, 10.0f, 1.0f));
+    ULight *light = new ULight(&e.rf, vec4(20.0f, 30.0f, 10.0f, 1.0f));
     light->SetAttenuation(atten);
+    light->SetAmbient(vec4_x * 0.01f);
     light->SetSpotExponent(15.0f);
     light->SetSpotCosCutoff(90.0f);
     light->castShadows = true;
@@ -33,24 +34,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     scene.AddLight(light);
     light->AddComponent((UComponent*)script);
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 5; i++)
     {
-        ULight *additional_light = new ULight(&e.rf, vec4(-20.0f, 20.0f, -60, 0.0f));
-        additional_light->SetAttenuation(atten);
+        ULight *additional_light = new ULight(&e.rf, vec4(i * 10 - rand() % 140, rand() % 30, i * 10 - rand() % 140, 0.0f));
+        additional_light->SetAttenuation(atten * 2);
         additional_light->castShadows = true;
-        
-        additional_light->SetSpotExponent(15.0f);
-        additional_light->SetSpotCosCutoff(90.0f);
 
-        vec4 rand_color = vec4(1,1,1,1);
+        additional_light->SetSpotExponent(15.0f);
+        additional_light->SetSpotCosCutoff(90);
+
+        vec4 rand_color = vec4(clamp(rand() % 100, 0.0f, 100.0f) / 100.0f,
+                               clamp(rand() % 100, 0.0f, 100.0f) / 100.0f,
+                               clamp(rand() % 100, 0.0f, 100.0f) / 100.0f,
+                               1);
+
         additional_light->SetDiffuse(rand_color);
-        additional_light->SetAmbient(rand_color);
+        additional_light->SetAmbient(vec4_x * 0.01f);
 
         node->AddChild(new UScene::USceneNode(additional_light));
         //scene.AddLight(additional_light);
         script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
         script->LoadFromFile("data\\Scripts\\test_script.xml");
-        additional_light->AddComponent((UComponent*)script);
+        //additional_light->AddComponent((UComponent*)script);
     }
 
     /*

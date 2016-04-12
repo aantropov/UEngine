@@ -178,18 +178,11 @@ UShaderProgram* UMaterial::GetShaderProgram(URENDER_TYPE type)
     if (type == URENDER_FORWARD)
         return spForward;
     else if (type == URENDER_DEPTH)
-    {
         return spDepth;
-    }
     else if (type == URENDER_NORMAL)
-    {
         return spNormal;
-    }
     else if (type == URENDER_DEFFERED)
-    {
         return spDeffered;
-    }
-
     return nullptr;
 }
 

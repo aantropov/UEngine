@@ -37,13 +37,13 @@ class URenderer : public USingleton <URenderer>
 
     UShaderProgram *shaderProgram;
 
-    // Optimization
+    // Cache
     unsigned int previousVAO;
     unsigned int previousIB;
 
     map<unsigned int, unordered_map<string, unsigned int>> uniformsCache;
     map<unsigned int, unsigned int> texChannelsCache;
-
+    
     int CacheUniformLocation(string name);
     int CacheUniformLocation(string name, UShaderProgram *sh);
 
@@ -126,6 +126,7 @@ public:
     void SetShaderProgram(UShaderProgram *sh);
     void DeleteShaderProgram(UShaderProgram *sh);
 
+    void CacheReleaseUniformLocation(UShaderProgram* sh);
     void CacheUniform4(UShaderProgram *sh, std::string name, unsigned int num, float *variable);
     void CacheUniform4(std::string name, unsigned int num, float *variable);
 

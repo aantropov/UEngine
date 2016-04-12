@@ -96,9 +96,11 @@ void URenderManager::Render(UScene* scene)
 
         auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
-            helper->GaussBlur(vsmTextures[j]);
+        {
+            helper->GaussBlur(vsmTextures[j], 0.7f);
+        }
     }
-
+    
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_COLOR0);
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_DEPTH);
     //glDisable(GL_POLYGON_OFFSET_FILL);

@@ -6,6 +6,35 @@
 GLenum g_OpenGLError = GL_NO_ERROR;
 ILenum g_DevILError = IL_NO_ERROR;
 
+UTexture* URendererHelper::GetTemporaryTexture(int width, int height, UTEXTURE_TYPE type)
+{
+    TempTexture text;
+    text.width = width;
+    text.height = height;
+    text.type = type;
+
+    auto res = temporaryTextures[text.ToString()];
+    if (res == nullptr)
+    {
+        res = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+        res->Create(width, height, type);
+        temporaryTextures[text.ToString()] = res;
+    }
+
+    return res;
+}
+
+void URendererHelper::ReleaseTemporaryTexture(UTexture* texture)
+{
+    TempTexture text;
+    text.width = texture->GetWidth();
+    text.height = texture->GetHeight();
+    text.type = texture->GetType();
+
+    UEngine::rf.Release(temporaryTextures[text.ToString()]);
+    temporaryTextures.erase(temporaryTextures.find(text.ToString()));
+}
+
 void URendererHelper::Initialize()
 {
     gauss_blur = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_gauss_blur.xml", URESOURCE_POST_EFFECT));
@@ -15,12 +44,11 @@ void URendererHelper::Initialize()
     fbo->Initialize();
 }
 
-void URendererHelper::GaussBlur(UTexture* texture)
+void URendererHelper::GaussBlur(UTexture* texture, float amount)
 {
     auto render = URenderer::GetInstance();
 
-    auto temp_texture = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
-    temp_texture->Create(texture->GetWidth(), texture->GetHeight(), texture->GetType(), texture->GetImageFilter(), texture->GetImageWrap());
+    auto temp_texture = GetTemporaryTexture(texture->GetWidth(), texture->GetHeight(), texture->GetType());
     temp_texture->name = "colorScene";
 
     auto prev_name = texture->name;
@@ -43,21 +71,21 @@ void URendererHelper::GaussBlur(UTexture* texture)
     fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
 
     OPENGL_CHECK_FOR_ERRORS();
-    
+
     gauss_blur->ClearUniformUnits();
     gauss_blur->AddTexture(temp_texture, 0);
+    gauss_blur->material.params["blurAmount"] = amount;
+
     fbo->BindTexture(texture, UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
     render->BindFBO(fbo);
     glDrawBuffers(1, buffers);
     gauss_blur->Render(URENDER_FORWARD);
     render->UnbindFBO();
     //fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
-    
-    OPENGL_CHECK_FOR_ERRORS();
-    
-    texture->name = prev_name;
 
-    UEngine::rf.Release(temp_texture);
+    OPENGL_CHECK_FOR_ERRORS();
+
+    texture->name = prev_name;
 }
 
 URendererHelper* URendererHelper::GetInstance()

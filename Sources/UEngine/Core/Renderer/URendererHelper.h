@@ -24,7 +24,6 @@
 #pragma comment(lib, "Ilut.lib")
 #pragma comment(lib, "Ilu.lib")
 
-
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
@@ -32,6 +31,8 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include <unordered_map>
+#include <map>
 
 // Global variable for error reporting
 extern GLenum g_OpenGLError;
@@ -113,16 +114,39 @@ class UFrameBufferObject;
 
 class URendererHelper : USingleton<URendererHelper>
 {
+    class TempTexture
+    {
+    public:
+        int width;
+        int height;
+        UTEXTURE_TYPE type;              
+
+        string ToString()
+        {
+            char buffer[64];
+            memset(buffer, 256, sizeof(char));
+
+            sprintf_s(buffer, "%d%d%d", width, height, type);
+            
+            return string(buffer);
+        }
+    };
+
     UPostEffect* gauss_blur;
     UPostEffect* copy_texture;
     UFrameBufferObject* fbo;
+    
+    std::map<string, UTexture*> temporaryTextures;
 
 public:
 
     static URendererHelper *GetInstance();
 
     void Initialize();
-    void GaussBlur(UTexture* texture);
+    void GaussBlur(UTexture* texture, float amount);
+
+    UTexture* GetTemporaryTexture(int width, int height, UTEXTURE_TYPE type);
+    void ReleaseTemporaryTexture(UTexture* texture);
 };
 
 /*

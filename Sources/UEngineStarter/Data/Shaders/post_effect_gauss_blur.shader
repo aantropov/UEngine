@@ -13,6 +13,7 @@ inout Vertex
 
 uniform sampler2D colorScene;
 uniform float time;
+uniform float blurAmount;
 
 #if defined(VERTEX)
 
@@ -30,20 +31,19 @@ void main(void)
 
 out vec4 color;
 
-uniform float offset[3] = float[]( 0.0, 1.3846153846, 3.2307692308 );
+uniform float offset[3] = float[]( 0.0, 0.0013846153846, 0.0032307692308 );
 uniform float weight[3] = float[]( 0.2270270270, 0.3162162162, 0.0702702703 );
 
 void main(void)
 {
-	color = texture( colorScene, vec2(gl_FragCoord)/512.0 ) * weight[0];
+	color = texture(colorScene, Vert.texcoord ) * weight[0] * 2;
     for (int i=1; i<3; i++) {
-        color +=
-            texture( colorScene, ( vec2(gl_FragCoord)+vec2(0.0, offset[i]) )/512.0 )
-                * weight[i];
-        color +=
-            texture( colorScene, ( vec2(gl_FragCoord)-vec2(0.0, offset[i]) )/512.0 )
-                * weight[i];
-    }
+        color += texture(colorScene, (Vert.texcoord+vec2(0.0, offset[i] * blurAmount)))* weight[i];
+        color += texture(colorScene, (Vert.texcoord-vec2(0.0, offset[i] * blurAmount)))* weight[i];
+		color += texture(colorScene, (Vert.texcoord+vec2(offset[i] * blurAmount, 0.0)))* weight[i];
+        color += texture(colorScene, (Vert.texcoord-vec2(offset[i] * blurAmount, 0.0)))* weight[i];
+    }	
+	color /= 2;
 }
 
 #endif

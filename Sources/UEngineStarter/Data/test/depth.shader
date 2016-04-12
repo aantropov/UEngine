@@ -75,18 +75,16 @@ void main(void)
 #endif
 
 	Vert.texcoord = texcoord;
-	Vert.position = transform.viewProjection * vertex;
-	gl_Position = Vert.position;
+	Vert.position = vertex;
+	gl_Position = transform.viewProjection * vertex;
 }
 #elif defined(FRAGMENT)
 
 out vec2 color;
 void main()
 {
-    float depth = (Vert.position.z + camera.zNear)/(camera.zFar + camera.zNear);
-	//depth = -gl_FragCoord.z;
-	//depth = depth*0.5 +0.5;
-
+    float depth = (length(Vert.position.xyz - transform.viewPosition.xyz) - camera.zNear)/(camera.zFar - camera.zNear);
+	
 	float moment1 = depth;
 	float moment2 = depth * depth;
 		
