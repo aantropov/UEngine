@@ -122,16 +122,16 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
             lighting->AddTexture(resSceneB, 7);
         }
 
-        lighting->material.params["lightIndex"] = (float)i;
+        lighting->material.params["lightIndex"] = UUniformParam((float)i);
 
         if (lightParams.count == 1)
-            lighting->material.params["state"] = 3.0f;
+            lighting->material.params["state"] = UUniformParam(3.0f);
         else if (mod2 == 0)
-            lighting->material.params["state"] = 0.0f;
+            lighting->material.params["state"] = UUniformParam(0.0f);
         else if (mod2 == lightParams.count - 1)
-            lighting->material.params["state"] = 2.0f;
+            lighting->material.params["state"] = UUniformParam(2.0f);
         else
-            lighting->material.params["state"] = 1.0f;
+            lighting->material.params["state"] = UUniformParam(1.0f);
 
         //////////////////////////////////////
         render->BindFBO(&postfb);

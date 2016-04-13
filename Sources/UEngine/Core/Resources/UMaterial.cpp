@@ -161,7 +161,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
                 sprintf_s(tex_buffer, "%d", j);
                 std::string current_param = path + "material/params/param_" + string(tex_buffer) + "/";
 
-                params[xml.GetElement(current_param + "name/")] = xml.GetElementf(current_param + "value/");
+                params[xml.GetElement(current_param + "name/")] = UUniformParam(xml.GetElementf(current_param + "value/"));
             }
         }
     }
@@ -258,14 +258,22 @@ void UMaterial::Render(URENDER_TYPE type)
     }
 
     OPENGL_CHECK_FOR_ERRORS();
-    params["time"] = (float)GetTickCount();
+    params["time"] = UUniformParam((float)GetTickCount());
 
     if (params.size() > 0)
     {
-        map<string, float>::iterator i = params.begin();
+        map<string, UUniformParam>::iterator i = params.begin();
         do
         {
-            render->CacheUniform1((*i).first, 1, &(*i).second);
+            if ((*i).second.data_size == 1)
+                render->CacheUniform1((*i).first, 1, (*i).second.data.v);
+            if ((*i).second.data_size == 2)
+                render->CacheUniform2((*i).first, 1, (*i).second.data.v);
+            if ((*i).second.data_size == 3)
+                render->CacheUniform3((*i).first, 1, (*i).second.data.v);
+            if ((*i).second.data_size == 4)
+                render->CacheUniform4((*i).first, 1, (*i).second.data.v);
+
             OPENGL_CHECK_FOR_ERRORS();
 
             i++;

@@ -660,6 +660,16 @@ void URenderer::CacheUniform3(std::string name, unsigned int num, float *variabl
 {
     Uniform3(CacheUniformLocation(name), num, variable);
 }
+
+void URenderer::CacheUniform2(std::string name, unsigned int num, float *variable)
+{
+    Uniform2(CacheUniformLocation(name), num, variable);
+}
+
+void URenderer::CacheUniform2(UShaderProgram *sh, std::string name, unsigned int num, float *variable)
+{
+    Uniform2(CacheUniformLocation(name, sh), num, variable);
+}
 ///////////////
 
 void URenderer::Uniform4(unsigned int location, unsigned int num, float *variable)

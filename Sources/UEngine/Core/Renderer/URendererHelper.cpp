@@ -44,7 +44,7 @@ void URendererHelper::Initialize()
     fbo->Initialize();
 }
 
-void URendererHelper::GaussBlur(UTexture* texture, float amount)
+void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
 {
     auto render = URenderer::GetInstance();
 
@@ -74,7 +74,9 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount)
 
     gauss_blur->ClearUniformUnits();
     gauss_blur->AddTexture(temp_texture, 0);
-    gauss_blur->material.params["blurAmount"] = amount;
+    gauss_blur->material.params["resolution"] = UUniformParam(texture->GetWidth());
+    gauss_blur->material.params["radius"] = UUniformParam(amount);
+    gauss_blur->material.params["dir"] = UUniformParam(dir);
 
     fbo->BindTexture(texture, UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
     render->BindFBO(fbo);

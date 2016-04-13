@@ -33,6 +33,7 @@
 #include <cstdlib>
 #include <unordered_map>
 #include <map>
+#include "../math/vec2.h"
 
 // Global variable for error reporting
 extern GLenum g_OpenGLError;
@@ -143,7 +144,7 @@ public:
     static URendererHelper *GetInstance();
 
     void Initialize();
-    void GaussBlur(UTexture* texture, float amount);
+    void GaussBlur(UTexture* texture, float amount, vec2 dir);
 
     UTexture* GetTemporaryTexture(int width, int height, UTEXTURE_TYPE type);
     void ReleaseTemporaryTexture(UTexture* texture);

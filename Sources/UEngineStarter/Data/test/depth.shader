@@ -1,6 +1,8 @@
 #define maxLight 8
 #define maxBones 64
 
+precision highp float;
+
 #if defined(VERTEX)
 	#define inout out
 #elif defined(FRAGMENT)

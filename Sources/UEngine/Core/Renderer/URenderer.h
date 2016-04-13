@@ -134,6 +134,9 @@ public:
     void CacheUniform1(std::string name, unsigned int num, float *variable);
     void CacheUniform1(std::string name, int value);
 
+    void CacheUniform2(std::string name, unsigned int num, float *variable);
+    void CacheUniform2(UShaderProgram *sh, std::string name, unsigned int num, float *variable);
+
     void CacheUniform3(UShaderProgram *sh, std::string name, unsigned int num, float *variable);
     void CacheUniform3(std::string name, unsigned int num, float *variable);
 

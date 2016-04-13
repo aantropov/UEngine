@@ -21,7 +21,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
 {
     castShadows = false;
 
-    shadowDistanceMin = 1.1f;
+    shadowDistanceMin = 0.1f;
     shadowDistanceMax = 100.0f;
     
     ambient.set(0.5f, 0.5f, 0.5f, 1.0f);

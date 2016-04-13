@@ -31,19 +31,33 @@ void main(void)
 
 out vec4 color;
 
-uniform float offset[3] = float[]( 0.0, 0.0013846153846, 0.0032307692308 );
-uniform float weight[3] = float[]( 0.2270270270, 0.3162162162, 0.0702702703 );
+uniform float resolution;
+uniform float radius;
+uniform vec2 dir;
 
 void main(void)
 {
-	color = texture(colorScene, Vert.texcoord ) * weight[0] * 2;
-    for (int i=1; i<3; i++) {
-        color += texture(colorScene, (Vert.texcoord+vec2(0.0, offset[i] * blurAmount)))* weight[i];
-        color += texture(colorScene, (Vert.texcoord-vec2(0.0, offset[i] * blurAmount)))* weight[i];
-		color += texture(colorScene, (Vert.texcoord+vec2(offset[i] * blurAmount, 0.0)))* weight[i];
-        color += texture(colorScene, (Vert.texcoord-vec2(offset[i] * blurAmount, 0.0)))* weight[i];
-    }	
-	color /= 2;
+	vec4 sum = vec4(0.0);
+    vec2 tc = Vert.texcoord;
+    float blur = radius/resolution; 
+
+    float hstep = dir.x;
+    float vstep = dir.y;
+
+    sum += texture2D(colorScene, vec2(tc.x - 4.0*blur*hstep, tc.y - 4.0*blur*vstep)) * 0.0162162162;
+    sum += texture2D(colorScene, vec2(tc.x - 3.0*blur*hstep, tc.y - 3.0*blur*vstep)) * 0.0540540541;
+    sum += texture2D(colorScene, vec2(tc.x - 2.0*blur*hstep, tc.y - 2.0*blur*vstep)) * 0.1216216216;
+    sum += texture2D(colorScene, vec2(tc.x - 1.0*blur*hstep, tc.y - 1.0*blur*vstep)) * 0.1945945946;
+
+    sum += texture2D(colorScene, vec2(tc.x, tc.y)) * 0.2270270270;
+
+    sum += texture2D(colorScene, vec2(tc.x + 1.0*blur*hstep, tc.y + 1.0*blur*vstep)) * 0.1945945946;
+    sum += texture2D(colorScene, vec2(tc.x + 2.0*blur*hstep, tc.y + 2.0*blur*vstep)) * 0.1216216216;
+    sum += texture2D(colorScene, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.0540540541;
+    sum += texture2D(colorScene, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.0162162162;
+
+    
+    color =  vec4(sum.rgb, 1.0);
 }
 
 #endif

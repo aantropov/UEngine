@@ -1,6 +1,8 @@
 #extension GL_NV_shadow_samplers_cube : enable
 #define maxLight 8
 
+precision highp float;
+
 #if defined(VERTEX)
 	#define inout out
 #elif defined(FRAGMENT)

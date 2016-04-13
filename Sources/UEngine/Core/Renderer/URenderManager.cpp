@@ -97,10 +97,12 @@ void URenderManager::Render(UScene* scene)
         auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
-            helper->GaussBlur(vsmTextures[j], 0.7f);
+            helper->GaussBlur(vsmTextures[j], 0.75f, vec2_x);
+            helper->GaussBlur(vsmTextures[j], 0.75f, vec2_y);
         }
     }
     
+    glClearColor(0, 0, 0, 1);
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_COLOR0);
     //depthFbo.UnbindTexture(UFB_ATTACHMENT_DEPTH);
     //glDisable(GL_POLYGON_OFFSET_FILL);
@@ -116,7 +118,4 @@ void URenderManager::Render(UScene* scene)
     //postEffectSSAO->AddTexture(lights[lightParams.lightIndex[0]]->GetDepthTextures()[0], 2);
     postEffectSSAO->Render(URENDER_FORWARD);
     //postEffectRipple->Render(URENDER_FORWARD);
-
-  
-
 }
