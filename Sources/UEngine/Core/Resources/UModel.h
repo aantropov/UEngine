@@ -10,7 +10,7 @@ class UModel : public UResource, public UComponent, public UIRenderable, public 
 
 public:
 
-    virtual void Render(URENDER_TYPE type);
+    virtual void Render(URENDER_TYPE type, int lightIndex = 0);
     virtual void Render(UMaterial *mat);
     virtual void Update(double delta);
 

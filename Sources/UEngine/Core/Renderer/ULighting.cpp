@@ -139,7 +139,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
 
         OPENGL_CHECK_FOR_ERRORS();
                 
-        lighting->Render(URENDER_FORWARD);
+        lighting->Render(URENDER_DEFFERED, i);
         render->UnbindFBO();
         //////////////////////////////////////
 

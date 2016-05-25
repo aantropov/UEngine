@@ -3,7 +3,7 @@
 #include "UTexture.h"
 #include "stdio.h"
 
-void UModel::Render(URENDER_TYPE type)
+void UModel::Render(URENDER_TYPE type, int lightIndex)
 {
     URenderer::GetInstance()->PushModelMatrix();
     m.Set();
@@ -13,7 +13,7 @@ void UModel::Render(URENDER_TYPE type)
         {
             meshes[i]->material.SetSkinningMatrixes(boneMatrixes, currentFrame.bones.size());
         }
-        meshes[i]->Render(type);
+        meshes[i]->Render(type, lightIndex);
     }
     URenderer::GetInstance()->PopModelMatrix();
 }

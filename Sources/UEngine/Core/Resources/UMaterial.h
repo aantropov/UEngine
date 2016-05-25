@@ -78,7 +78,7 @@ public:
     void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
 
     //Setup material parameters in Shader
-    virtual void Render(URENDER_TYPE type);
+    virtual void Render(URENDER_TYPE type, int lightIndex = -1);
     void Render(UShaderProgram* sp);
     ~UMaterial(void) {}
 

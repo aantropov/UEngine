@@ -125,11 +125,11 @@ public:
         URenderer::GetInstance()->PopModelMatrix();
     }
 
-    virtual void Render(URENDER_TYPE type)
+    virtual void Render(URENDER_TYPE type, int lightIndex = 0)
     {
         URenderer::GetInstance()->PushModelMatrix();
         m.Set();
-        material.Render(type);
+        material.Render(type, lightIndex);
         URenderer::GetInstance()->BindVAO(&vb);
         URenderer::GetInstance()->BindVBO(&ib);
         URenderer::GetInstance()->DrawBuffer(&ib);

@@ -198,7 +198,7 @@ void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type)
         spDeffered = _sp;
 }
 
-void UMaterial::Render(URENDER_TYPE type)
+void UMaterial::Render(URENDER_TYPE type, int lightIndex)
 {
     UShaderProgram *sp = GetShaderProgram(type);
 
@@ -227,33 +227,51 @@ void UMaterial::Render(URENDER_TYPE type)
         render->Uniform1(locs.material_shininess, 1, &shininess);
 
         auto sceneLights = render->GetCurrentScene()->GetLights();
-        auto lights = render->GetCurrentScene()->lightParams;
-
-        int cur = 0;
-        for (unsigned int i = 0; i < lights.count; i++)
-        {
-            if (sceneLights[lights.lightIndex[i]]->castShadows)
-                sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
-            cur++;
-
-            if (cur > MAX_LIGHTS)
-                break;
-        }
-
-        OPENGL_CHECK_FOR_ERRORS();
-
+        auto lights = render->GetCurrentScene()->lightParams;           
+        
         if (lights.count != 0)
         {
-            render->Uniform1(locs.lightsNum, (int)lights.count);
-            render->Uniform4(locs.light_position, lights.count, reinterpret_cast<float*>(lights.position));
-            render->Uniform4(locs.light_ambient, lights.count, reinterpret_cast<float*>(lights.ambient));
-            render->Uniform4(locs.light_diffuse, lights.count, reinterpret_cast<float*>(lights.diffuse));
-            render->Uniform4(locs.light_specular, lights.count, reinterpret_cast<float*>(lights.specular));
-            render->Uniform3(locs.light_attenuation, lights.count, reinterpret_cast<float*>(lights.attenuation));
-            render->Uniform3(locs.light_spotDirection, lights.count, reinterpret_cast<float*>(lights.spotDirection));
-            render->Uniform1(locs.light_spotExponent, lights.count, reinterpret_cast<float*>(lights.spotExponent));
-            render->Uniform1(locs.light_spotCosCutoff, lights.count, reinterpret_cast<float*>(lights.spotCosCutoff));
-            render->UniformMatrix4(locs.light_transform, lights.count, reinterpret_cast<float*>(lights.transforms));
+            if(type == URENDER_DEFFERED)
+            {
+                render->Uniform4(locs.light_position, 1, reinterpret_cast<float*>(&lights.position[lightIndex]));
+                render->Uniform4(locs.light_ambient, 1, reinterpret_cast<float*>(&lights.ambient[lightIndex]));
+                render->Uniform4(locs.light_diffuse, 1, reinterpret_cast<float*>(&lights.diffuse[lightIndex]));
+                render->Uniform4(locs.light_specular, 1, reinterpret_cast<float*>(&lights.specular[lightIndex]));
+                render->Uniform3(locs.light_attenuation, 1, reinterpret_cast<float*>(&lights.attenuation[lightIndex]));
+                render->Uniform3(locs.light_spotDirection, 1, reinterpret_cast<float*>(&lights.spotDirection[lightIndex]));
+                render->Uniform1(locs.light_spotExponent, 1, reinterpret_cast<float*>(&lights.spotExponent[lightIndex]));
+                render->Uniform1(locs.light_spotCosCutoff, 1, reinterpret_cast<float*>(&lights.spotCosCutoff[lightIndex]));
+                render->UniformMatrix4(locs.light_transform, 1, reinterpret_cast<float*>(&lights.transforms[lightIndex]));
+
+                if (sceneLights[lights.lightIndex[lightIndex]]->castShadows)
+                    sceneLights[lights.lightIndex[lightIndex]]->SetShadowTexture(locs.light_depthTextures, 0);
+            }
+            else
+            {
+                render->Uniform1(locs.lightsNum, (int)lights.count);
+                render->Uniform4(locs.light_position, lights.count, reinterpret_cast<float*>(lights.position));
+                render->Uniform4(locs.light_ambient, lights.count, reinterpret_cast<float*>(lights.ambient));
+                render->Uniform4(locs.light_diffuse, lights.count, reinterpret_cast<float*>(lights.diffuse));
+                render->Uniform4(locs.light_specular, lights.count, reinterpret_cast<float*>(lights.specular));
+                render->Uniform3(locs.light_attenuation, lights.count, reinterpret_cast<float*>(lights.attenuation));
+                render->Uniform3(locs.light_spotDirection, lights.count, reinterpret_cast<float*>(lights.spotDirection));
+                render->Uniform1(locs.light_spotExponent, lights.count, reinterpret_cast<float*>(lights.spotExponent));
+                render->Uniform1(locs.light_spotCosCutoff, lights.count, reinterpret_cast<float*>(lights.spotCosCutoff));
+                render->UniformMatrix4(locs.light_transform, lights.count, reinterpret_cast<float*>(lights.transforms));
+
+                int cur = 0;
+                for (unsigned int i = 0; i < lights.count; i++)
+                {
+                    if (sceneLights[lights.lightIndex[i]]->castShadows)
+                        sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
+                    cur++;
+
+                    if (cur > MAX_LIGHTS)
+                        break;
+                }
+                OPENGL_CHECK_FOR_ERRORS();
+
+            }
         }
     }
 

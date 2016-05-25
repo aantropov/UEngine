@@ -9,7 +9,7 @@ public:
     void ClearUniformUnits();
     void AddTexture(UTexture* tex, int channel);
 
-    virtual void Render(URENDER_TYPE type);
+    virtual void Render(URENDER_TYPE type, int lightIndex = 0);
     virtual void Update(double delta);
     virtual void Free();
     virtual bool Load(UXMLFile &xml, std:: string path);
