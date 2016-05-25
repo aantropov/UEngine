@@ -32,10 +32,10 @@ void UScene::UpdateLightParams()
         if (lights[i] != NULL/* && lights[i]->castShadows*/)
         {
             vec4 position = lights[cur]->world * lights[cur]->local.position;
-            position.w = lights[cur]->GetShadowDistanceMax();
-
             vec4 ambient = lights[cur]->GetAmbient();
+
             ambient.w = lights[cur]->GetShadowDistanceMin();
+            position.w = lights[cur]->GetShadowDistanceMax();
 
             lightParams.position[cur] = position;
             lightParams.ambient[cur] = ambient;
@@ -48,6 +48,8 @@ void UScene::UpdateLightParams()
             lightParams.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
 
             lightParams.transforms[cur] = lights[cur]->GetLightTransform();
+            lightParams.types[cur] = lights[cur]->GetType() + lights[cur]->IsShadowCaster();
+
             lightParams.lightIndex[cur] = i;
 
             cur++;

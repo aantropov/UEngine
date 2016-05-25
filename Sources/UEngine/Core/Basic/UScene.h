@@ -32,6 +32,7 @@ public:
     float spotExponent[MAX_LIGHTS];
     float spotCosCutoff[MAX_LIGHTS];
     mat4 transforms[MAX_LIGHTS];
+    int types[MAX_LIGHTS];
 
     ULightParams() : count(0) { std::memset(lightIndex, 0, sizeof(unsigned int) * MAX_LIGHTS); }
 };

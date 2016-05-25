@@ -241,9 +241,10 @@ void UMaterial::Render(URENDER_TYPE type, int lightIndex)
                 render->Uniform3(locs.light_spotDirection, 1, reinterpret_cast<float*>(&lights.spotDirection[lightIndex]));
                 render->Uniform1(locs.light_spotExponent, 1, reinterpret_cast<float*>(&lights.spotExponent[lightIndex]));
                 render->Uniform1(locs.light_spotCosCutoff, 1, reinterpret_cast<float*>(&lights.spotCosCutoff[lightIndex]));
+                render->Uniform1(locs.light_type, 1, reinterpret_cast<int*>(&lights.types[lightIndex]));
                 render->UniformMatrix4(locs.light_transform, 1, reinterpret_cast<float*>(&lights.transforms[lightIndex]));
 
-                if (sceneLights[lights.lightIndex[lightIndex]]->castShadows)
+                if (sceneLights[lights.lightIndex[lightIndex]]->IsShadowCaster())
                     sceneLights[lights.lightIndex[lightIndex]]->SetShadowTexture(locs.light_depthTextures, 0);
             }
             else
@@ -258,11 +259,12 @@ void UMaterial::Render(URENDER_TYPE type, int lightIndex)
                 render->Uniform1(locs.light_spotExponent, lights.count, reinterpret_cast<float*>(lights.spotExponent));
                 render->Uniform1(locs.light_spotCosCutoff, lights.count, reinterpret_cast<float*>(lights.spotCosCutoff));
                 render->UniformMatrix4(locs.light_transform, lights.count, reinterpret_cast<float*>(lights.transforms));
+                render->Uniform1(locs.light_type, lights.count, reinterpret_cast<int*>(&lights.types));
 
                 int cur = 0;
                 for (unsigned int i = 0; i < lights.count; i++)
                 {
-                    if (sceneLights[lights.lightIndex[i]]->castShadows)
+                    if (sceneLights[lights.lightIndex[i]]->IsShadowCaster())
                         sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
                     cur++;
 

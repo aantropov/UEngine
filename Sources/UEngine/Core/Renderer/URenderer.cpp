@@ -582,7 +582,7 @@ void URenderer::SetShaderProgram(UShaderProgram *sh)
     OPENGL_CHECK_FOR_ERRORS();
 }
 
-void  URenderer:: CacheReleaseUniformLocation(UShaderProgram* sh)
+void  URenderer::CacheReleaseUniformLocation(UShaderProgram* sh)
 {
     uniformsCache.erase(sh->GetId());
 }
@@ -672,43 +672,49 @@ void URenderer::CacheUniform2(UShaderProgram *sh, std::string name, unsigned int
 }
 ///////////////
 
-void URenderer::Uniform4(unsigned int location, unsigned int num, float *variable)
+void URenderer::Uniform4(const unsigned int location, const unsigned int num, const float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniform4fv(location, num, variable);
 }
 
-void URenderer::UniformMatrix4(unsigned int location, unsigned int num, float *variable)
+void URenderer::UniformMatrix4(const unsigned int location, const unsigned int num, const float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix4fv(location, num, GL_TRUE, variable);
 }
 
-void URenderer::UniformMatrix3(unsigned int location, unsigned int num, float *variable)
+void URenderer::UniformMatrix3(const unsigned int location, const unsigned int num, const  float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniformMatrix3fv(location, num, GL_TRUE, variable);
 }
 
-void URenderer::Uniform1(unsigned int location, unsigned int num, float *variable)
+void URenderer::Uniform1(const unsigned int location, const unsigned int num, const float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniform1fv(location, num, variable);
 }
 
-void URenderer::Uniform1(unsigned int location, int value)
+void URenderer::Uniform1(const unsigned int location, const int value) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniform1i(location, value);
 }
 
-void URenderer::Uniform3(unsigned int location, unsigned int num, float *variable)
+void URenderer::Uniform1(const unsigned int location, const unsigned int num, const int* value) const
+{
+    if (location < MAX_UNIFORM_LOCATIONS)
+        glUniform1iv(location, num, value);
+}
+
+void URenderer::Uniform3(const unsigned int location, const unsigned int num, const float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniform3fv(location, num, variable);
 }
 
-void URenderer::Uniform2(unsigned int location, unsigned int num, float *variable)
+void URenderer::Uniform2(const unsigned int location, const unsigned int num, const float *variable) const
 {
     if (location < MAX_UNIFORM_LOCATIONS)
         glUniform2fv(location, num, variable);

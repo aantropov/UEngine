@@ -146,13 +146,14 @@ public:
     void CacheUniformMatrix4(UShaderProgram *sh, std::string name, unsigned int num, float *variable);
     void CacheUniformMatrix3(UShaderProgram *sh, std::string name, unsigned int num, float *variable);
 
-    void Uniform4(unsigned int location, unsigned int num, float *variable);
-    void Uniform1(unsigned int location, unsigned int num, float *variable);
-    void Uniform1(unsigned int location, int value);
-    void Uniform2(unsigned int location, unsigned int num, float *variable);
-    void Uniform3(unsigned int location, unsigned int num, float *variable);
-    void UniformMatrix4(unsigned int location, unsigned int num, float *variable);
-    void UniformMatrix3(unsigned int location, unsigned int num, float *variable);
+    void Uniform4(const unsigned int location, const unsigned int num, const float *variable) const;
+    void Uniform1(const unsigned int location, const unsigned int num, const float *variable) const;
+    void Uniform1(const unsigned int location, const int value) const;
+    void Uniform1(const unsigned int location, const unsigned int num, const int* value) const;
+    void Uniform2(const unsigned int location, const unsigned int num, const float *variable) const;
+    void Uniform3(const unsigned int location, const unsigned int num, const float *variable) const;
+    void UniformMatrix4(const unsigned int location, const unsigned int num, const float *variable) const;
+    void UniformMatrix3(const unsigned int location, const unsigned int num, const float *variable) const;
 
     void DrawSegment(const vec3& p1, const vec3& p2, const vec3& color);
     void DrawTransform(::transform xf);

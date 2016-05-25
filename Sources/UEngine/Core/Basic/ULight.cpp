@@ -8,7 +8,6 @@
 ULight::ULight()
 {
     ULight(&UEngine::rf, vec4_zero);
-
 }
 
 ULight::ULight(UResourceFactory* rf, vec4 pos, bool cast)
@@ -19,6 +18,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos, bool cast)
 
 ULight::ULight(UResourceFactory* rf, vec4 pos)
 {
+    type = ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL;
     castShadows = false;
 
     shadowDistanceMin = 0.1f;
@@ -37,20 +37,26 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
 
     InitModel(rf);
 
-    int size = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
-
-    auto tex = dynamic_cast<UTexture*>(rf->Create(URESOURCE_TEXTURE));
-    //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
-    tex->SetMipMap(false);
-    tex->Create(size, size, UTEXTURE_RG32F, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
-    depthTextures.push_back(tex);
-
     UCamera cam;
     cam.SetPosition(pos);
     cameras.push_back(cam);
     UpdateCamera();
     
     local.position = pos;
+}
+
+void ULight::UpdateDepthTextures()
+{
+    if (castShadows && depthTextures.size() == 0)
+    {
+        int size = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
+
+        auto tex = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+        //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
+        tex->SetMipMap(false);
+        tex->Create(size, size, UTEXTURE_RG32F, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+        depthTextures.push_back(tex);
+    }
 }
 
 mat4 ULight::GetLightTransform()

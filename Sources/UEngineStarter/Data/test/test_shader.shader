@@ -70,6 +70,7 @@ uniform vec3 light_spotDirection[maxLight];
 uniform float light_spotExponent[maxLight];
 uniform float light_spotCosCutoff[maxLight];
 uniform mat4 light_transform[maxLight];
+uniform int light_type[maxLight];
 //uniform sampler2DShadow light_depthTexture[maxLight];
 uniform sampler2D light_depthTexture[maxLight];
 
@@ -207,13 +208,14 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 	float rawNdotL = dot(bump, lightDir);
 	float NdotL = max(rawNdotL, 0);
 	
-	float shadow = 0;
+	float shadow = 1;
 	if(rawNdotL > 0)
 	{
 		res += light_diffuse[i] * NdotL;
 		res *= diffuse;
 		
-		shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL*0.01), 0.0, 1.0);
+		if(light_type[i] % 2 == 1)
+			shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL*0.01), 0.0, 1.0);
 		shadow *= spot * spotEffect;
 		
 		#if defined(SPECULAR)

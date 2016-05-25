@@ -12,6 +12,8 @@ class UShaderProgram;
 
 class ULight : public UGameObject
 {
+    ULIGHT_TYPE type;
+
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
@@ -24,24 +26,27 @@ class ULight : public UGameObject
     float shadowDistanceMax;
     float shadowDistanceMin;
 
+    bool castShadows;
+
     UModel* model;
 
     std::vector<UTexture*> depthTextures;
     std::vector<UCamera> cameras;
 
     void UpdateCamera();
+    void UpdateDepthTextures();
 
 public:
-
-    bool castShadows;
 
     std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();
     std::vector<UCamera> UENGINE_DECLSPEC GetCameras();
 
+    ULIGHT_TYPE UENGINE_DECLSPEC GetType() const { return type; }
     vec4 UENGINE_DECLSPEC GetAmbient() const { return ambient; }
     vec4 UENGINE_DECLSPEC GetDiffuse() const { return diffuse; }
     vec4 UENGINE_DECLSPEC GetSpecular() const { return specular; }
     vec3 UENGINE_DECLSPEC GetAttenuation() const { return attenuation; }
+    bool UENGINE_DECLSPEC IsShadowCaster() const { return castShadows; }
 
     vec3 UENGINE_DECLSPEC GetSpotDirection() const { return spotDirection; }
     float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosHalfAngle; }
@@ -49,15 +54,17 @@ public:
 
     float UENGINE_DECLSPEC GetShadowDistanceMax() const { return shadowDistanceMax; }
     float UENGINE_DECLSPEC GetShadowDistanceMin() const { return shadowDistanceMin; }
-    
-    void UENGINE_DECLSPEC SetAmbient(vec4 v){ ambient = v; }
-    void UENGINE_DECLSPEC SetDiffuse(vec4 v){ diffuse = v; }
-    void UENGINE_DECLSPEC SetSpecular(vec4 v){ specular = v; }
-    void UENGINE_DECLSPEC SetAttenuation(vec3 v){ attenuation = v; }
 
-    void UENGINE_DECLSPEC SetSpotDirection(vec4 v){ spotDirection = v; }
-    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees){ spotAngle = degrees;  spotCosHalfAngle = cosf(spotAngle * 0.5f * math_radians); }
-    void UENGINE_DECLSPEC SetSpotExponent(float v){ spotExponent = v; }
+    void UENGINE_DECLSPEC IsShadowCaster(bool cast) { castShadows = cast; UpdateDepthTextures(); }
+    void UENGINE_DECLSPEC SetType(ULIGHT_TYPE t) { type = t; }
+    void UENGINE_DECLSPEC SetAmbient(vec4 v) { ambient = v; }
+    void UENGINE_DECLSPEC SetDiffuse(vec4 v) { diffuse = v; }
+    void UENGINE_DECLSPEC SetSpecular(vec4 v) { specular = v; }
+    void UENGINE_DECLSPEC SetAttenuation(vec3 v) { attenuation = v; }
+
+    void UENGINE_DECLSPEC SetSpotDirection(vec4 v) { spotDirection = v; }
+    void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees) { spotAngle = degrees;  spotCosHalfAngle = cosf(spotAngle * 0.5f * math_radians); }
+    void UENGINE_DECLSPEC SetSpotExponent(float v) { spotExponent = v; }
 
     virtual UENGINE_DECLSPEC mat4 GetLightTransform();
     virtual UENGINE_DECLSPEC void SetLightTransform(string light);

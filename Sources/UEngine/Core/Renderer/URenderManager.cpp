@@ -72,7 +72,7 @@ void URenderManager::Render(UScene* scene)
 
     for (unsigned int i = 0; i < lightParams.count; i++)
     {
-        if (!lights[lightParams.lightIndex[i]]->castShadows)
+        if (!lights[lightParams.lightIndex[i]]->IsShadowCaster())
             continue;
 
         auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
@@ -91,7 +91,7 @@ void URenderManager::Render(UScene* scene)
 
     for (unsigned int i = 0; i < lightParams.count; i++)
     {
-        if (!lights[lightParams.lightIndex[i]]->castShadows)
+        if (!lights[lightParams.lightIndex[i]]->IsShadowCaster())
             continue;
 
         auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();

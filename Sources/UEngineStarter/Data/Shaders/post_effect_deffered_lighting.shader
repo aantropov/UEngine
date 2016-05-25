@@ -38,6 +38,7 @@ uniform vec3 light_spotDirection;
 uniform float light_spotExponent;
 uniform float light_spotCosCutoff;
 uniform sampler2D light_depthTexture;
+uniform int light_type;
 
 inout Vertex
 {
@@ -161,18 +162,22 @@ vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 	float rawNdotL = dot(bump, lightDir);
 	float NdotL = max(rawNdotL, 0);
 	
-	float shadow = 0;
+	float shadow = 1;
 	if(rawNdotL > 0)
 	{
 		res += light_diffuse * NdotL;
 		res *= diffuse;
 		
-		vec4 smcoord = light_transform * vertPosition;
-		smcoord.xyz /= smcoord.w;
-		smcoord.w = light_position.w;
-		smcoord.z = light_ambient.w;
+		if(light_type % 2 == 1)
+		{
+			vec4 smcoord = light_transform * vertPosition;
+			smcoord.xyz /= smcoord.w;
+			smcoord.w = light_position.w;
+			smcoord.z = light_ambient.w;
+			
+			shadow = clamp(SampleShadow(smcoord, light_depthTexture, distance, NdotL*0.01), 0.0, 1.0);
+		}
 		
-		shadow = clamp(SampleShadow(smcoord, light_depthTexture, distance, NdotL*0.01), 0.0, 1.0);
 		shadow *= spot * spotEffect;
 		
 		float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position.xyz), bump), viewDir), specular.w * 255.0f), 0.0);

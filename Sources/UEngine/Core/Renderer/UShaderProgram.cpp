@@ -35,6 +35,7 @@ void UShaderProgram::InitLocations()
     locations.light_transform = glGetUniformLocation(_id, "light_transform");
     locations.light_depthTextures = glGetUniformLocation(_id, "light_depthTexture");
     locations.lightsNum = glGetUniformLocation(_id, "lightsNum");
+    locations.light_type = glGetUniformLocation(_id, "light_type");
 
     locations.transform_model = glGetUniformLocation(_id, "transform.model");
     locations.transform_view = glGetUniformLocation(_id, "transform.view");

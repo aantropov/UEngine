@@ -30,6 +30,7 @@ public:
         unsigned int light_spotCosCutoff;
         unsigned int light_transform;
         unsigned int light_depthTextures;
+        unsigned int light_type;
 
         unsigned int transform_model;
         unsigned int transform_view;
