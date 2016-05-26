@@ -20,16 +20,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
 
-    vec3 atten = vec3(0.1f, 0.005f, 0.f);
+    vec3 atten = vec3(0.5f, 0.0f, 0.f);
     vec4 rand_color = vec4(rand() % 1000, rand() % 1000, rand() % 1000, rand() % 1000) * 0.001f;
-
+    
     ULight *light = new ULight(&e.rf, vec4(20.0f, 30.0f, 10.0f, 1.0f));
 
-    light->SetAttenuation(atten * 0.75);
-    light->SetAmbient(vec4_x * 0.01f);
-    light->SetSpotExponent(15.0f);
-    light->SetSpotCosCutoff(90.0f);
+    light->SetAttenuation(atten * 0.55);
+    light->SetAmbient(vec4_one * 0.0025f);
     light->IsShadowCaster(true);
+    light->SetType(ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL);
     light->SetDiffuse(rand_color);
 
     node->AddChild(new UScene::USceneNode(light));
@@ -40,6 +39,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     {
         vec4 rand_pos = vec4(rand() % 80 - 40, rand() % 40, rand() % 80 - 40, rand() % 80) * 1.5f;
         rand_color = vec4(rand() % 1000, rand() % 1000, rand() % 1000, rand() % 1000)* 0.001f;
+        rand_color = vec4_x;
+        if (i == 1)
+            rand_color = vec4_y;
 
         ULight *additional_light = new ULight(&e.rf, rand_pos);
         additional_light->SetAttenuation(atten * 1.2);
@@ -50,6 +52,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         additional_light->SetDiffuse(rand_color);
         additional_light->SetAmbient(vec4_x * 0.01f);
+        additional_light->SetType(ULIGHT_TYPE::ULIGHT_TYPE_SPOT);
 
         node->AddChild(new UScene::USceneNode(additional_light));
         scene.AddLight(additional_light);

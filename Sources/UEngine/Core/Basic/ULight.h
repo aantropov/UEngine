@@ -19,7 +19,7 @@ class ULight : public UGameObject
     vec4 specular;
     vec3 attenuation;
 
-    vec3 spotDirection;
+    vec3 lightDirection;
     float spotCosHalfAngle;
     float spotAngle;
     float spotExponent;
@@ -48,7 +48,7 @@ public:
     vec3 UENGINE_DECLSPEC GetAttenuation() const { return attenuation; }
     bool UENGINE_DECLSPEC IsShadowCaster() const { return castShadows; }
 
-    vec3 UENGINE_DECLSPEC GetSpotDirection() const { return spotDirection; }
+    vec3 UENGINE_DECLSPEC GetSpotDirection() const { return lightDirection; }
     float UENGINE_DECLSPEC GetSpotCosCutoff() const { return spotCosHalfAngle; }
     float UENGINE_DECLSPEC GetSpotExponent() const { return spotExponent; }
 
@@ -62,7 +62,7 @@ public:
     void UENGINE_DECLSPEC SetSpecular(vec4 v) { specular = v; }
     void UENGINE_DECLSPEC SetAttenuation(vec3 v) { attenuation = v; }
 
-    void UENGINE_DECLSPEC SetSpotDirection(vec4 v) { spotDirection = v; }
+    void UENGINE_DECLSPEC SetSpotDirection(vec4 v) { lightDirection = v; }
     void UENGINE_DECLSPEC SetSpotCosCutoff(float degrees) { spotAngle = degrees;  spotCosHalfAngle = cosf(spotAngle * 0.5f * math_radians); }
     void UENGINE_DECLSPEC SetSpotExponent(float v) { spotExponent = v; }
 

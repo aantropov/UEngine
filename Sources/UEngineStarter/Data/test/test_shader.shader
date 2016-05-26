@@ -158,7 +158,7 @@ float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, 
     float d = compare - moments.x + bias;
 	
 	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
-    return clamp(max(p, p_max), 0.0, 1.0);
+	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(compare, 256));
 }
 
 out vec4 color;
@@ -180,7 +180,7 @@ float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance, floa
 
 	return (res / 9.0);
 #else
-    return ChebyshevUpperBound(smcoord, depthTexture, distance, bias);
+	return ChebyshevUpperBound(smcoord, depthTexture, distance, bias);
 #endif
 }
 
@@ -190,18 +190,31 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec4 specular, vec3 viewDir)
 vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 #endif
 {
-	vec4 res = vec4(0);
-	vec3 lightDir = Vert.lightDir[i];
-	float distance = length(lightDir);
-	lightDir = normalize(lightDir);
+	vec4 res = vec4(1);
 	
-	float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
-	float spot       = float(spotEffect > light_spotCosCutoff[i]);
-	spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);
-	
-	float attenuation = spot * spotEffect / (light_attenuation[i].x +
+	vec3 lightDir = vec3(0); 
+	float distance = length(Vert.lightDir[i]);
+	 
+	float attenuation =  1 / (light_attenuation[i].x +
 		light_attenuation[i].y * distance +
 		light_attenuation[i].z * distance * distance);
+		
+	if(light_type[i] == 2 || light_type[i] == 3)
+	{	
+		//spot light
+		lightDir = normalize(Vert.lightDir[i]);
+		
+		float spotEffect = dot(normalize(light_spotDirection[i]), -lightDir);
+		float spot       = float(spotEffect > light_spotCosCutoff[i]);
+		spotEffect = max(pow(spotEffect, light_spotExponent[i]), 0.0);		
+		
+		attenuation *= spotEffect * spotEffect;
+	}
+	else
+	{
+		//directional light
+		lightDir = normalize(-light_spotDirection[i]);		
+	}	
 	
 	res = light_ambient[i];
 	
@@ -215,15 +228,14 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		res *= diffuse;
 		
 		if(light_type[i] % 2 == 1)
-			shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL*0.01), 0.0, 1.0);
-		shadow *= spot * spotEffect;
+			shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL * 0.01), 0.0, 1.0);
 		
 		#if defined(SPECULAR)
 			float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
 			res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
 		#endif
-		res *= shadow * attenuation;
 	}
+	res *= shadow * attenuation;
 	
 	return res;
 }

@@ -115,7 +115,7 @@ float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, 
     float d = compare - moments.x + bias;
 	
 	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
-    return clamp(max(p, p_max), 0.0, 1.0);
+	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(compare, 256));
 }
 
 
@@ -149,13 +149,24 @@ vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 	float distance = length(lightDir);
 	lightDir = normalize(lightDir);
 	
-	float spotEffect = dot(normalize(light_spotDirection), -lightDir);
-	float spot       = float(spotEffect > light_spotCosCutoff);
-	spotEffect = max(pow(spotEffect, light_spotExponent), 0.0);
-	
-	float attenuation = spot * spotEffect / (light_attenuation.x +
+	float attenuation = 1 / (light_attenuation.x +
 		light_attenuation.y * distance +
 		light_attenuation.z * distance * distance);
+	
+	if(light_type == 2 || light_type == 3)
+	{
+		//spot light
+		float spotEffect = dot(normalize(light_spotDirection), -lightDir);
+		float spot       = float(spotEffect > light_spotCosCutoff);
+		spotEffect = max(pow(spotEffect, light_spotExponent), 0.0);
+		
+		attenuation *= spotEffect * spotEffect;
+	}
+	else
+	{
+		//directional light
+		lightDir = normalize(-light_spotDirection);		
+	}
 	
 	res = light_ambient;
 	
@@ -178,7 +189,7 @@ vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 			shadow = clamp(SampleShadow(smcoord, light_depthTexture, distance, NdotL*0.01), 0.0, 1.0);
 		}
 		
-		shadow *= spot * spotEffect;
+		//shadow *= spot * spotEffect;
 		
 		float RdotVpow = max(pow(dot(reflect(normalize(vertPosition.xyz - light_position.xyz), bump), viewDir), specular.w * 255.0f), 0.0);
 		res += vec4(specular.xyz * light_specular.xyz, 1.0) * RdotVpow;

@@ -97,8 +97,8 @@ void URenderManager::Render(UScene* scene)
         auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
-            helper->GaussBlur(vsmTextures[j], 0.75f, vec2_x);
-            helper->GaussBlur(vsmTextures[j], 0.75f, vec2_y);
+            helper->GaussBlur(vsmTextures[j], 0.5f, vec2_x);
+            helper->GaussBlur(vsmTextures[j], 0.5f, vec2_y);
         }
     }
     

@@ -133,6 +133,7 @@ const vec3 vec3_z(0, 0, 1);
 
 const vec4 vec4_zero(0, 0, 0, 0);
 const vec4 vec4_x(1, 0, 0, 0);
+const vec4 vec4_one(1, 1, 1, 1);
 const vec4 vec4_y(0, 1, 0, 0);
 const vec4 vec4_z(0, 0, 1, 0);
 
