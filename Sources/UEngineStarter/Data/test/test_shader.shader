@@ -29,6 +29,10 @@ uniform struct Material
 #if defined(SPECULAR)
 	sampler2D specular_tex;
 #endif
+
+#if defined(EMISSION)
+	sampler2D emission_text;
+#endif	
 	
 	vec4  diffuse;
 	vec4  specular;
@@ -158,7 +162,10 @@ float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, 
     float d = compare - moments.x + bias;
 	
 	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
-	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(compare, 256));
+		
+	vec2 t = abs((smcoord.xy - 0.5) * 2); //mix(0, 1, );
+		
+	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(max(max(t.x,t.y), compare), 10));
 }
 
 out vec4 color;
@@ -210,11 +217,16 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		
 		attenuation *= spotEffect * spotEffect;
 	}
-	else
+	else if(light_type[i] == 0 || light_type[i] == 1)
 	{
 		//directional light
 		lightDir = normalize(-light_spotDirection[i]);		
 	}	
+	else
+	{
+		//point light
+		lightDir = normalize(Vert.lightDir[i]);
+	}
 	
 	res = light_ambient[i];
 	
@@ -227,8 +239,10 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		res += light_diffuse[i] * NdotL;
 		res *= diffuse;
 		
+#if defined(SHADOW_RECEIVER)
 		if(light_type[i] % 2 == 1)
 			shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL * 0.01), 0.0, 1.0);
+#endif
 		
 		#if defined(SPECULAR)
 			float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
@@ -275,8 +289,12 @@ void main(void)
 	vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
 	color += reflectColor;
 #endif
+
+#if defined(EMISSION)
+	color += texture(material.emission_text, Vert.texcoord);
+#endif	
 	
-	color += res;
+	color += res;	
 }
 
 #endif

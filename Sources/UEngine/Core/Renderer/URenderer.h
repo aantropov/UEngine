@@ -48,6 +48,7 @@ class URenderer : public USingleton <URenderer>
     int CacheUniformLocation(string name, UShaderProgram *sh);
 
     float shadow_bias;
+
 public:
 
     unsigned int drawCalls;
@@ -80,7 +81,7 @@ public:
     void PopModelMatrix();
 
     //Camera
-    UCamera GetCurrentCamera();
+    UCamera GetCurrentCamera() const;
     void SetCurrentCamera(UCamera cam);
     void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model);
     void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model);
@@ -95,6 +96,7 @@ public:
     void BindTexture(UTexture *tex);
     void DeleteTexture(UTexture *tex);
     void BindTexture(UTexture *tex, unsigned int channel);
+    void UnbindTexture(unsigned int channel);
 
     //VBO
     void BindVBO(UVertexBuffer *vb);

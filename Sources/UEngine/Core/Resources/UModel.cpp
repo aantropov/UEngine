@@ -28,6 +28,7 @@ void UModel::Render(UMaterial *mat)
 
     for (int i = mesh_num - 1; i >= 0; i--)
         meshes[i]->Render(mat);
+
     URenderer::GetInstance()->PopModelMatrix();
 }
 
@@ -140,8 +141,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                 fread(&sb, 1, 1, file);
 
                 fread(&shin, 1, 1, file);
-
-
+                
                 mesh->material = UMaterial(
                     vec4(color(dr, dg, db, da)),
                     vec4(color(sr, sg, sb, 255)),

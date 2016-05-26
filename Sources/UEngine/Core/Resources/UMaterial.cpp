@@ -227,11 +227,11 @@ void UMaterial::Render(URENDER_TYPE type, int lightIndex)
         render->Uniform1(locs.material_shininess, 1, &shininess);
 
         auto sceneLights = render->GetCurrentScene()->GetLights();
-        auto lights = render->GetCurrentScene()->lightParams;           
-        
+        auto lights = render->GetCurrentScene()->lightParams;
+
         if (lights.count != 0)
         {
-            if(type == URENDER_DEFFERED)
+            if (type == URENDER_DEFFERED)
             {
                 render->Uniform4(locs.light_position, 1, reinterpret_cast<float*>(&lights.position[lightIndex]));
                 render->Uniform4(locs.light_ambient, 1, reinterpret_cast<float*>(&lights.ambient[lightIndex]));

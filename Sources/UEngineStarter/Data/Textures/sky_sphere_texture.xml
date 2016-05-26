@@ -1,0 +1,10 @@
+<xml>
+  <texture>
+    <name>emission</name>
+    <mipmap>1</mipmap>
+    <filter>linear</filter>
+    <wrap>repeat</wrap>
+	<mipmap>0</mipmap>
+    <path>data\\Textures\\sky_sphere.jpg</path>
+  </texture>
+</xml>

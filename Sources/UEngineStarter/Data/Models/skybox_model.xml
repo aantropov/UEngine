@@ -5,7 +5,7 @@
     <mesh_num>0</mesh_num>
     <tex_num>1</tex_num>
     <anim_num>0</anim_num>
-	<common_material>data\\Materials\\skybox_material.xml</common_material> 
+	<common_material>data\\test\\sky_sphere_material.xml</common_material> 
     <common_textures>
       <tex_0>
         <name>material.specular_tex</name>

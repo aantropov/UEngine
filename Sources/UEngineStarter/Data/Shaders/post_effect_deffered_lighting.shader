@@ -115,7 +115,9 @@ float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, 
     float d = compare - moments.x + bias;
 	
 	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
-	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(compare, 256));
+	vec2 t = abs((smcoord.xy - 0.5) * 2); //mix(0, 1, );
+		
+	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(max(max(t.x,t.y), compare), 10));
 }
 
 
@@ -140,7 +142,7 @@ float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance, floa
 #endif
 }
 
-vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
+vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular, float shadow_receiver)
 {
 	vec4 res = vec4(0);
 
@@ -162,7 +164,7 @@ vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 		
 		attenuation *= spotEffect * spotEffect;
 	}
-	else
+	else if(light_type == 0 || light_type == 1)
 	{
 		//directional light
 		lightDir = normalize(-light_spotDirection);		
@@ -179,7 +181,7 @@ vec4 ProccessLight(vec3 bump, vec4 vertPosition, vec4 diffuse, vec4 specular)
 		res += light_diffuse * NdotL;
 		res *= diffuse;
 		
-		if(light_type % 2 == 1)
+		if(light_type % 2 == 1 && shadow_receiver == 1)
 		{
 			vec4 smcoord = light_transform * vertPosition;
 			smcoord.xyz /= smcoord.w;
@@ -206,8 +208,9 @@ void main(void)
   
   if(vertPosition.z > camera.zFar)
 	discard;
-	
-  vec3 vertNormal  = (texture(normalScene, Vert.texcoord).xyz * 2.0 - vec3(1.0));
+
+  vec4 normal_tex = texture(normalScene, Vert.texcoord);
+  vec3 vertNormal  = (normal_tex.xyz * 2.0 - vec3(1.0));
   //vertNormal.z = sqrt(1 - (vertNormal.x * vertNormal.x + vertNormal.y * vertNormal.y));
   
   vec4 diffuse = texture(diffuseScene, Vert.texcoord);
@@ -215,7 +218,7 @@ void main(void)
   vec4 previous = texture(previousScene, Vert.texcoord);
   vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
 	
-  vec4 res = ProccessLight(vertNormal, vertPosition, diffuse, specular);
+  vec4 res = ProccessLight(vertNormal, vertPosition, diffuse, specular, normal_tex.w);
 
   color = vec4(0); 
   
@@ -231,7 +234,7 @@ void main(void)
   if(int(state) == 3)
     color = res + vec4(emission, 1.0);	
 	
-	//color = vec4(emission, 1);
+	//color = vec4(res);
 }
 
 #endif

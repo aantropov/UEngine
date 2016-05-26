@@ -34,6 +34,10 @@ uniform struct Material
 	sampler2D normal;
 #endif
 
+#if defined(EMISSION)
+	sampler2D emission_text;
+#endif
+
 	vec4  diffuse;
 	vec4  specular;
 	vec4  emission;
@@ -109,11 +113,11 @@ out vec4 color[5];
 void main(void)
 {
 	vec3 normal = Vert.normal;
-	mat3 tbn = transpose(mat3((Vert.t), (Vert.b), (Vert.normal)));
 	
 #ifdef NORMAL_MAPPING
 	normal = texture(material.normal, Vert.texcoord).xyz * 2.0 - 1.0;  
-	normal *= tbn;	
+	mat3 tbn = transpose(mat3((Vert.t), (Vert.b), (Vert.normal)));
+	normal *= tbn;
 #endif
 	normal = normalize(normal);
 
@@ -121,6 +125,10 @@ void main(void)
 	
     color[0] = material.emission;
     
+#if defined(EMISSION)
+	color[0] += texture(material.emission_text, Vert.texcoord); ;
+#endif	
+
 #if defined(REFLECTION_CUBEMAP)
     vec3 viewDir = normalize(Vert.viewDir);
     vec3 reflectDir = normalize(reflect(viewDir, normal));
@@ -128,7 +136,13 @@ void main(void)
     color[0] += reflectColor;
 #endif
 
-	color[1] = vec4(normal * 0.5 + vec3(0.5), 1);
+	float shadow_receiver = 0;
+	
+#if defined(SHADOW_RECEIVER)
+	shadow_receiver = 1;
+#endif
+
+	color[1] = vec4(normal * 0.5 + vec3(0.5), shadow_receiver);
 	color[2] = material.diffuse * texture(material.texture, Vert.texcoord);
 	color[3] = vec4(material.specular.xyz * specular.xyz, material.shininess / 255.0f);// * material.specular.w * specular.w;
 	color[4].r = -(Vert.position.z - camera.zNear)/(camera.zFar - camera.zNear);

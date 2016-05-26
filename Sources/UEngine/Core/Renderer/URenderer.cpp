@@ -105,7 +105,7 @@ void URenderer::SetCurrentCamera(UCamera cam)
     currentCamera = cam;
 }
 
-UCamera URenderer::GetCurrentCamera()
+UCamera URenderer::GetCurrentCamera() const
 {
     return currentCamera;
 }
@@ -113,6 +113,13 @@ UCamera URenderer::GetCurrentCamera()
 void URenderer::BindTexture(UTexture *tex)
 {
     BindTexture(tex, 0);
+}
+
+void URenderer::UnbindTexture(unsigned int channel)
+{
+    texChannelsCache[channel] = -1;
+    glActiveTexture(GL_TEXTURE0 + channel);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void URenderer::BindTexture(UTexture *tex, unsigned int channel)
@@ -765,7 +772,7 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 300.0f);
+    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 500.0f);
     //mainCamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
     //mainCamera.SetPosition(vec3_zero);
     mainCamera.SetRotation(vec3_y * 90.0f);
