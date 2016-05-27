@@ -772,7 +772,7 @@ bool URenderer::Initialize()
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
     mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 500.0f);
+    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 1000.0f);
     //mainCamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
     //mainCamera.SetPosition(vec3_zero);
     mainCamera.SetRotation(vec3_y * 90.0f);

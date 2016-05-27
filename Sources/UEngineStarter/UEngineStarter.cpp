@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     auto sky = new UGameObject(sky_sphere_model);
     sky->AddComponent(new USkyboxComponent());
-    sky->local.scale = vec3(0.5f, 0.5f, 0.5f);
+    sky->local.scale = vec3(1.0f, 1.0f, 1.0f);
     scene.root->AddChild(new UScene::USceneNode(sky));
 
     for (int i = 0; i < sqrt(maxObjs); i++)

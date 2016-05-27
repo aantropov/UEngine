@@ -1,7 +1,7 @@
 <xml>
   <model>   
     <name>test Model</name>
-	<upm>data\\Models\\skysphere.upm</upm>
+	<upm>data\\Models\\skybox.upm</upm>
     <mesh_num>0</mesh_num>
     <anim_num>0</anim_num>
     <common_material>data\\test\\sky_sphere_material.xml</common_material>    	

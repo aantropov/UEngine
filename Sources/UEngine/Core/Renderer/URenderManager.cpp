@@ -116,6 +116,6 @@ void URenderManager::Render(UScene* scene)
     //postEffectDOF->Render(URENDER_FORWARD);
 
     //postEffectSSAO->AddTexture(lights[lightParams.lightIndex[0]]->GetDepthTextures()[0], 2);
-    postEffectSSAO->Render(URENDER_FORWARD);
-    //postEffectRipple->Render(URENDER_FORWARD);
+    //postEffectSSAO->Render(URENDER_FORWARD);
+    postEffectRipple->Render(URENDER_FORWARD);
 }
