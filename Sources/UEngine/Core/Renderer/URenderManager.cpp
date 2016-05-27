@@ -72,16 +72,16 @@ void URenderManager::Render(UScene* scene)
 
     for (unsigned int i = 0; i < lightParams.count; i++)
     {
-        if (!lights[lightParams.lightIndex[i]]->IsShadowCaster())
+        if (!lights[lightParams.light_index[i]]->IsShadowCaster())
             continue;
 
-        auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
+        auto vsmTextures = lights[lightParams.light_index[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
             vsm_fbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            scene->Render(URENDER_PASS_DEPTH_SHADOW, lights[lightParams.lightIndex[i]]->GetCameras()[j]);
+            scene->Render(URENDER_PASS_DEPTH_SHADOW, lights[lightParams.light_index[i]]->GetCameras()[j]);
         }
     }
     
@@ -91,10 +91,10 @@ void URenderManager::Render(UScene* scene)
 
     for (unsigned int i = 0; i < lightParams.count; i++)
     {
-        if (!lights[lightParams.lightIndex[i]]->IsShadowCaster())
+        if (!lights[lightParams.light_index[i]]->IsShadowCaster())
             continue;
 
-        auto vsmTextures = lights[lightParams.lightIndex[i]]->GetDepthTextures();
+        auto vsmTextures = lights[lightParams.light_index[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
             helper->GaussBlur(vsmTextures[j], 0.5f, vec2_x);
@@ -112,10 +112,10 @@ void URenderManager::Render(UScene* scene)
 
     OPENGL_CHECK_FOR_ERRORS();
 
-    lighting->Render(scene, render->mainCamera);
+    lighting->Render(scene, render->main_ñamera);
     //postEffectDOF->Render(URENDER_FORWARD);
 
-    //postEffectSSAO->AddTexture(lights[lightParams.lightIndex[0]]->GetDepthTextures()[0], 2);
+    //postEffectSSAO->AddTexture(lights[lightParams.light_index[0]]->GetDepthTextures()[0], 2);
     //postEffectSSAO->Render(URENDER_FORWARD);
     postEffectRipple->Render(URENDER_PASS_FORWARD);
 }

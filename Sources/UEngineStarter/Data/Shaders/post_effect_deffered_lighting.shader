@@ -115,7 +115,7 @@ float ChebyshevUpperBound(vec4 smcoord, sampler2D depthTexture, float distance, 
     float d = compare - moments.x + bias;
 	
 	float p_max = linstep(0.8, 1.0, variance / (variance + d*d));
-	vec2 t = abs((smcoord.xy - 0.5) * 2); //mix(0, 1, );
+	vec2 t = abs((smcoord.xy - 0.5) * 2);
 		
 	return mix(clamp(max(p, p_max), 0.0, 1.0), 1, pow(max(max(t.x,t.y), compare), 10));
 }
@@ -216,8 +216,8 @@ void main(void)
   vec4 diffuse = texture(diffuseScene, Vert.texcoord);
   vec4 specular = texture(specularScene, Vert.texcoord);  
   vec4 previous = texture(previousScene, Vert.texcoord);
-  vec3 emission  = texture(colorScene, Vert.texcoord).xyz;  
-	
+  vec4 emission  = texture(colorScene, Vert.texcoord);  
+    
   vec4 res = ProccessLight(vertNormal, vertPosition, diffuse, specular, normal_tex.w);
 
   color = vec4(0); 
@@ -229,10 +229,10 @@ void main(void)
     color = res + previous;
   
   if(int(state) == 2)
-	color = (res + previous) + vec4(emission, 1.0);
+	color = (res + previous) + emission;
 
   if(int(state) == 3)
-    color = res + vec4(emission, 1.0);	
+    color = res + emission;	
 	
 	//color = vec4(res);
 }

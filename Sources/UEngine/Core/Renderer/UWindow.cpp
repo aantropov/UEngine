@@ -330,8 +330,8 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_MBUTTONDOWN:
         case WM_MBUTTONUP:
         {
-            g_input.cursorPos[0] = (int)LOWORD(lParam);
-            g_input.cursorPos[1] = (int)HIWORD(lParam);
+            g_input.cursor_position[0] = (int)LOWORD(lParam);
+            g_input.cursor_position[1] = (int)HIWORD(lParam);
 
             if (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONUP)
                 g_input.buttonState[0] = (msg == WM_LBUTTONDOWN ? UINPUT_PRESSED : UINPUT_UP);
@@ -347,8 +347,8 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_MOUSEMOVE:
         {
-            g_input.cursorPos[0] = (int)LOWORD(lParam);
-            g_input.cursorPos[1] = (int)HIWORD(lParam);
+            g_input.cursor_position[0] = (int)LOWORD(lParam);
+            g_input.cursor_position[1] = (int)HIWORD(lParam);
 
             return FALSE;
         }
@@ -434,8 +434,8 @@ bool UInput:: IsButtonClick(unsigned short int  button)
 
 void UInput:: GetCursorPos(int *x, int *y)
 {
-    *x = g_input.cursorPos[0];
-    *y = g_input.cursorPos[1];
+    *x = g_input.cursor_position[0];
+    *y = g_input.cursor_position[1];
 }
 
 void UInput:: SetCursorPos(int x, int y)
@@ -446,8 +446,8 @@ void UInput:: SetCursorPos(int x, int y)
     // bvahaha, it was bug, because I did not use "::" and there was a recursion //_-
     ::SetCursorPos(pos.x, pos.y);
 
-    g_input.cursorPos[0] = x;
-    g_input.cursorPos[1] = y;
+    g_input.cursor_position[0] = x;
+    g_input.cursor_position[1] = y;
 }
 
 void UInput:: ShowCursor(bool visible)

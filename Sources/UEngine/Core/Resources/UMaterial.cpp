@@ -152,8 +152,8 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
             }
         }
 
-        if (xml.isExistElement(path + "material/is_shadow_caster/"))
-            is_shadow_caster = atoi(xml.GetElement(path + "material/is_shadow_caster/").c_str()) == 1;
+        xml.TryGetElementb(path + "material/is_shadow_caster/", is_shadow_caster);
+        xml.TryGetElementi(path + "material/queue/", queue);
 
         if (xml.isExistElement(path + "material/param_num/"))
         {
@@ -201,7 +201,7 @@ void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_PASS type)
         shader_deffered = _sp;
 }
 
-void UMaterial::Render(URENDER_PASS type, int lightIndex)
+void UMaterial::Render(URENDER_PASS type, int light_index)
 {
     UShaderProgram *sp = GetShaderProgram(type);
 
@@ -236,19 +236,19 @@ void UMaterial::Render(URENDER_PASS type, int lightIndex)
         {
             if (type == URENDER_PASS_DEFFERED)
             {
-                render->Uniform4(locs.light_position, 1, reinterpret_cast<float*>(&lights.position[lightIndex]));
-                render->Uniform4(locs.light_ambient, 1, reinterpret_cast<float*>(&lights.ambient[lightIndex]));
-                render->Uniform4(locs.light_diffuse, 1, reinterpret_cast<float*>(&lights.diffuse[lightIndex]));
-                render->Uniform4(locs.light_specular, 1, reinterpret_cast<float*>(&lights.specular[lightIndex]));
-                render->Uniform3(locs.light_attenuation, 1, reinterpret_cast<float*>(&lights.attenuation[lightIndex]));
-                render->Uniform3(locs.light_spotDirection, 1, reinterpret_cast<float*>(&lights.spotDirection[lightIndex]));
-                render->Uniform1(locs.light_spotExponent, 1, reinterpret_cast<float*>(&lights.spotExponent[lightIndex]));
-                render->Uniform1(locs.light_spotCosCutoff, 1, reinterpret_cast<float*>(&lights.spotCosCutoff[lightIndex]));
-                render->Uniform1(locs.light_type, 1, reinterpret_cast<int*>(&lights.types[lightIndex]));
-                render->UniformMatrix4(locs.light_transform, 1, reinterpret_cast<float*>(&lights.transforms[lightIndex]));
+                render->Uniform4(locs.light_position, 1, reinterpret_cast<float*>(&lights.position[light_index]));
+                render->Uniform4(locs.light_ambient, 1, reinterpret_cast<float*>(&lights.ambient[light_index]));
+                render->Uniform4(locs.light_diffuse, 1, reinterpret_cast<float*>(&lights.diffuse[light_index]));
+                render->Uniform4(locs.light_specular, 1, reinterpret_cast<float*>(&lights.specular[light_index]));
+                render->Uniform3(locs.light_attenuation, 1, reinterpret_cast<float*>(&lights.attenuation[light_index]));
+                render->Uniform3(locs.light_spotDirection, 1, reinterpret_cast<float*>(&lights.spotDirection[light_index]));
+                render->Uniform1(locs.light_spotExponent, 1, reinterpret_cast<float*>(&lights.spotExponent[light_index]));
+                render->Uniform1(locs.light_spotCosCutoff, 1, reinterpret_cast<float*>(&lights.spotCosCutoff[light_index]));
+                render->Uniform1(locs.light_type, 1, reinterpret_cast<int*>(&lights.types[light_index]));
+                render->UniformMatrix4(locs.light_transform, 1, reinterpret_cast<float*>(&lights.transforms[light_index]));
 
-                if (sceneLights[lights.lightIndex[lightIndex]]->IsShadowCaster())
-                    sceneLights[lights.lightIndex[lightIndex]]->SetShadowTexture(locs.light_depthTextures, 0);
+                if (sceneLights[lights.light_index[light_index]]->IsShadowCaster())
+                    sceneLights[lights.light_index[light_index]]->SetShadowTexture(locs.light_depthTextures, 0);
             }
             else
             {
@@ -267,8 +267,8 @@ void UMaterial::Render(URENDER_PASS type, int lightIndex)
                 int cur = 0;
                 for (unsigned int i = 0; i < lights.count; i++)
                 {
-                    if (sceneLights[lights.lightIndex[i]]->IsShadowCaster())
-                        sceneLights[lights.lightIndex[i]]->SetShadowTexture(locs.light_depthTextures, i);
+                    if (sceneLights[lights.light_index[i]]->IsShadowCaster())
+                        sceneLights[lights.light_index[i]]->SetShadowTexture(locs.light_depthTextures, i);
                     cur++;
 
                     if (cur > MAX_LIGHTS)

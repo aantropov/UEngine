@@ -84,8 +84,8 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     /*
     UVertex* vertices = reinterpret_cast<UVertex*>(lighting->vb.Lock());
     
-    mat4 view = render->currentCamera.GetView();
-    mat4 viewProjection = render->currentCamera.GetProjection() * view;
+    mat4 view = render->current_camera.GetView();
+    mat4 viewProjection = render->current_camera.GetProjection() * view;
     mat4 viewProjectionInv = inverse(viewProjection);
 
     for (int i = 0; i < lighting->vb.GetNum(); i++)

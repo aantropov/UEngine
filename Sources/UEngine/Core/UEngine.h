@@ -55,8 +55,8 @@ using namespace std;
 
 class UEngine
 {
-    UScene* currentScene;
-    URenderManager* renderManager;
+    UScene* current_scene;
+    URenderManager* render_manager;
 
     unsigned int fps;
     float elapsedTime;
@@ -65,10 +65,10 @@ public:
 
     UENGINE_DECLSPEC static UResourceFactory  rf;
 
-    void UENGINE_DECLSPEC SetCurrentScene(UScene* _currentScene)
+    void UENGINE_DECLSPEC SetCurrentScene(UScene* _current_scene)
     {
-        this->currentScene = _currentScene;
-        URenderer::GetInstance()->SetCurrentScene(currentScene);
+        this->current_scene = _current_scene;
+        URenderer::GetInstance()->SetCurrentScene(current_scene);
     }
 
     bool UENGINE_DECLSPEC Initialize();

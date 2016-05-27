@@ -1,26 +1,26 @@
 <xml>
   <material>
     <name>Emission</name>
-	<cubemaps_num>0</cubemaps_num>
-	<tex_num>1</tex_num>
-    <textures>
-      <tex_0>
-        <name>material.emission_tex</name>
-        <channel>0</channel>
-        <path>data\\textures\\sky_sphere_texture.xml</path>
-      </tex_0>
-    </textures>		
+	<cubemaps_num>1</cubemaps_num>
+	<cubemaps>
+		<cubemap_0>
+			<name>material.cubemap</name>
+			<channel>3</channel>
+			<path>data\\test\\test_cubemap.xml</path>
+		</cubemap_0>
+	</cubemaps>
+	<tex_num>0</tex_num>
     <shaders>
 	  <forward>
 		<shader>			
-			<defines>EMISSION</defines>
-			<path>data\\test\\test_shader.shader</path>
+			<defines></defines>
+			<path>data\\test\\skybox.shader</path>
 		</shader>
 	  </forward>
   	  <deffered>
 		<shader>			
-            <defines>EMISSION</defines>
-			<path>data\\test\\test_shader_deffered.shader</path>
+            <defines>DEFFERED</defines>
+			<path>data\\test\\skybox.shader</path>
 		</shader>
 	  </deffered>
       <depth>

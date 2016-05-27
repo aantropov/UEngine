@@ -11,7 +11,7 @@ UXMLFile::~UXMLFile()
 {
 }
 
-std::string UXMLFile::GetPath()
+std::string UXMLFile::GetPath()  const
 {
     return sPath;
 }
@@ -40,7 +40,7 @@ void UXMLFile::CloseFile()
     }
 }
 
-string UXMLFile::GetElement(string key)
+string UXMLFile::GetElement(string key) const
 {
     for (unsigned int i = 0; i < elements.size(); i++)
         if (key == elements[i].name)
@@ -48,18 +48,54 @@ string UXMLFile::GetElement(string key)
     return NULL;
 }
 
+bool UXMLFile::TryGetElement(std::string path, std::string &var) const
+{
+    if (!isExistElement(path))
+        return false;
+    var = GetElement(path);
+    return true;
+}
 
-int UXMLFile::GetElementi(std::string param_path)
+bool UXMLFile::TryGetElementi(std::string path, int &var) const
+{
+    if (!isExistElement(path))
+        return false;
+    var = GetElementi(path);
+    return true;
+}
+
+bool UXMLFile::TryGetElementb(std::string path, bool &var) const
+{
+    if (!isExistElement(path))
+        return false;
+    var = GetElementb(path);
+    return true;
+}
+
+bool UXMLFile::TryGetElementf(std::string path, float &var) const
+{
+    if (!isExistElement(path))
+        return false;
+    var = GetElementf(path);
+    return true;
+}
+
+int UXMLFile::GetElementi(std::string param_path) const
 {
     return std::atoi(GetElement(param_path).c_str());
 }
 
-float UXMLFile::GetElementf(std::string param_path)
+float UXMLFile::GetElementf(std::string param_path) const
 {
     return (float)std::atof(GetElement(param_path).c_str());
 }
 
-bool UXMLFile::isExistElement(string key)
+bool UXMLFile::GetElementb(std::string param_path) const
+{
+    return std::atoi(GetElement(param_path).c_str()) == 1;
+}
+
+bool UXMLFile::isExistElement(string key) const
 {
     for (unsigned int i = 0; i < elements.size(); i++)
         if (key == elements[i].name || key == elements[i].name.substr(0, key.size()))
@@ -67,7 +103,7 @@ bool UXMLFile::isExistElement(string key)
     return false;
 }
 
-bool UXMLFile::isExistElementStrict(string key)
+bool UXMLFile::isExistElementStrict(string key) const
 {
     for (unsigned int i = 0; i < elements.size(); i++)
         if (key == elements[i].name)
@@ -75,7 +111,7 @@ bool UXMLFile::isExistElementStrict(string key)
     return false;
 }
 
-vector<std::string> UXMLFile::GetElements(std::string key)
+vector<std::string> UXMLFile::GetElements(std::string key) const
 {
     vector<std::string> res;
     for (unsigned int i = 0; i < elements.size(); i++)

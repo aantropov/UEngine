@@ -7,7 +7,7 @@ struct UKeys
 
     UINPUT_KEY_STATE keyState[256];
     UINPUT_KEY_STATE buttonState[3];
-    int     cursorPos[2];
+    int     cursor_position[2];
 };
 
 class UInput

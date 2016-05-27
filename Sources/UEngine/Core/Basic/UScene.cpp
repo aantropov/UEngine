@@ -8,12 +8,12 @@ void UScene::KeysProccessing()
     // Camera moving
     int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
 
-    moveDelta[0] = 0.5f * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
-    moveDelta[1] = 0.5f * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
+    move_delta[0] = 0.5f * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
+    move_delta[1] = 0.5f * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
 
-    UInput::GetCursorPos(cursorPos, cursorPos + 1);
-    rotateDelta[0] += (cursorPos[0] - xCenter)*0.1;
-    rotateDelta[1] += (cursorPos[1] - yCenter)*0.1;
+    UInput::GetCursorPos(cursor_position, cursor_position + 1);
+    rotate_delta[0] += (cursor_position[0] - xCenter)*0.1;
+    rotate_delta[1] += (cursor_position[1] - yCenter)*0.1;
 
     static bool showCursor = false;
     if (UInput::IsKeyPressed('L'))
@@ -50,7 +50,7 @@ void UScene::UpdateLightParams()
             lightParams.transforms[cur] = lights[cur]->GetLightTransform();
             lightParams.types[cur] = lights[cur]->GetType() + lights[cur]->IsShadowCaster();
 
-            lightParams.lightIndex[cur] = i;
+            lightParams.light_index[cur] = i;
 
             cur++;
         }
@@ -67,11 +67,11 @@ void UScene::Update(double deltaTime)
     //UInput::ShowCursor(false);
 
     //Camera movement
-    URenderer::GetInstance()->mainCamera.Rotate((float)rotateDelta[1], (float)rotateDelta[0], 0);
-    URenderer::GetInstance()->mainCamera.Move((float)moveDelta[0], 0.0f, (float)moveDelta[1]);
+    URenderer::GetInstance()->main_ñamera.Rotate((float)rotate_delta[1], (float)rotate_delta[0], 0);
+    URenderer::GetInstance()->main_ñamera.Move((float)move_delta[0], 0.0f, (float)move_delta[1]);
 
-    rotateDelta[0] = rotateDelta[1] = 0;
-    moveDelta[0] = moveDelta[1] = 0;
+    rotate_delta[0] = rotate_delta[1] = 0;
+    move_delta[0] = move_delta[1] = 0;
 
     //Nodes Update only one time per Global Update!
     if (root != NULL)
@@ -85,7 +85,7 @@ void UScene::Render(URENDER_PASS type, UCamera camera)
     auto render = URenderer::GetInstance();
 
     render->SetCurrentCamera(camera);
-    render->currentCamera.UpdateFrustum();
+    render->current_camera.UpdateFrustum();
 
     if (root != NULL)
         root->Render(type);
@@ -97,7 +97,7 @@ void UScene::Render(UMaterial *m, UCamera camera)
     auto render = URenderer::GetInstance();
 
     render->SetCurrentCamera(camera);
-    render->currentCamera.UpdateFrustum();
+    render->current_camera.UpdateFrustum();
 
     if (root != NULL)
         root->Render(m);

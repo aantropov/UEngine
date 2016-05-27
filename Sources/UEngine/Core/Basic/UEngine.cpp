@@ -21,7 +21,7 @@ bool UEngine::Initialize()
     if (URenderer::GetInstance()->Initialize())
         ULogger::GetInstance()->Message("UEngine: UEngine is initialized succesfully");
 
-    renderManager = new URenderManager();
+    render_manager = new URenderManager();
 
     return true;
 }
@@ -63,24 +63,24 @@ void UEngine::Run()
         if (UInput::IsKeyPressed(VK_ESCAPE))
             this->Stop();
 
-        if (currentScene != NULL)
-            currentScene->KeysProccessing();
+        if (current_scene != NULL)
+            current_scene->KeysProccessing();
 
         if (UWindow::IsRunning() && UWindow::IsActive())
         {
             OPENGL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-            render->drawCalls = 0;
+            render->draw_ñalls = 0;
 
-            if (currentScene != NULL)
-                renderManager->Render(currentScene);
+            if (current_scene != NULL)
+                render_manager->Render(current_scene);
 
             SwapBuffers(UWindow::GetHDC());
 
             deltaTime += GetTickCount() - beginFrameTime;
 
-            if (currentScene != NULL)
-                currentScene->Update(GetTickCount() - beginFrameTime);
+            if (current_scene != NULL)
+                current_scene->Update(GetTickCount() - beginFrameTime);
 
             elapsedTime += (float)(GetTickCount() - beginFrameTime) / 1000.0f;
             ++fps;
@@ -88,7 +88,7 @@ void UEngine::Run()
             if (elapsedTime >= 1.0f)
             {
                 WCHAR buff[50];
-                wsprintf(buff, L"UEngine FPS: %u, Draw Calls: %u", fps, render->drawCalls);
+                wsprintf(buff, L"UEngine FPS: %u, Draw Calls: %u", fps, render->draw_ñalls);
 
                 UWindow::SetWindowTitle(buff);
                 fps = 0;
@@ -104,7 +104,7 @@ void UEngine::Run()
 void UEngine::Release()
 {
     rf.ReleaseAll();
-    delete renderManager;
+    delete render_manager;
 
     URenderer::GetInstance()->Release();
     URenderer::Free();

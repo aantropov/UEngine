@@ -10,6 +10,6 @@ public:
         UComponent::Update(delta);
         auto renderer = URenderer::GetInstance();
 
-        this->gameObject->local_transform.position = vec4(renderer->currentCamera.GetPosition());
+        this->gameObject->local_transform.position = vec4(renderer->current_camera.GetPosition());
     }
 };

@@ -21,7 +21,7 @@ class ULightParams
 public:
 
     unsigned int count;
-    unsigned int lightIndex[MAX_LIGHTS];
+    unsigned int light_index[MAX_LIGHTS];
 
     vec4 position[MAX_LIGHTS];
     vec4 ambient[MAX_LIGHTS];
@@ -34,15 +34,14 @@ public:
     mat4 transforms[MAX_LIGHTS];
     int types[MAX_LIGHTS];
 
-    ULightParams() : count(0) { std::memset(lightIndex, 0, sizeof(unsigned int) * MAX_LIGHTS); }
+    ULightParams() : count(0) { std::memset(light_index, 0, sizeof(unsigned int) * MAX_LIGHTS); }
 };
 
 class UScene
 {
-
-    int cursorPos[2];
-    double rotateDelta[2];
-    double moveDelta[2];
+    int cursor_position[2];
+    double rotate_delta[2];
+    double move_delta[2];
 
     vector<ULight*> lights;
 
@@ -52,11 +51,11 @@ public:
     {
         UGameObject* node;
         std::vector<USceneNode*> children;
-        bool isAlreadyUpdated;
+        bool is_already_updated;
 
     public:
 
-        UENGINE_DECLSPEC USceneNode(UGameObject* n) : node(n), isAlreadyUpdated(false) {}
+        UENGINE_DECLSPEC USceneNode(UGameObject* n) : node(n), is_already_updated(false) {}
 
         void UENGINE_DECLSPEC AddChild(USceneNode* n)
         {
@@ -84,10 +83,10 @@ public:
 
         void UENGINE_DECLSPEC Update(double delta)
         {
-            if (node != NULL && !isAlreadyUpdated)
+            if (node != NULL && !is_already_updated)
             {
                 node->Update(delta);
-                isAlreadyUpdated = true;
+                is_already_updated = true;
             }
 
             for (unsigned int i = 0; i < children.size(); i++)
@@ -97,7 +96,7 @@ public:
                 children[i]->Update(delta);
             }
 
-            isAlreadyUpdated = false;
+            is_already_updated = false;
         }
 
         void UENGINE_DECLSPEC DeleteTopology()
@@ -147,8 +146,8 @@ public:
 
     UENGINE_DECLSPEC UScene(void) : root(NULL)
     {
-        rotateDelta[0] = rotateDelta[1] = 0.0;
-        moveDelta[0] = moveDelta[1] = 0.0;
+        rotate_delta[0] = rotate_delta[1] = 0.0;
+        move_delta[0] = move_delta[1] = 0.0;
     }
 
     void UENGINE_DECLSPEC Free()

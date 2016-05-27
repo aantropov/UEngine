@@ -20,10 +20,10 @@ void UPostEffect::AddTexture(UTexture* tex, int channel)
     material.AddUniformUnit(std::pair<UTexture*, int>(tex, channel));
 }
 
-void UPostEffect::Render(URENDER_PASS type, int lightIndex)
+void UPostEffect::Render(URENDER_PASS type, int light_index)
 {
     this->material.params["time"] = (float)GetTickCount();
-    this->UMesh::Render(type, lightIndex);
+    this->UMesh::Render(type, light_index);
 }
 
 void UPostEffect::Update(double delta)

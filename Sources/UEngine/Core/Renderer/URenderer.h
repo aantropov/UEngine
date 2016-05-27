@@ -25,37 +25,36 @@ class UCubemap;
 
 class URenderer : public USingleton <URenderer>
 {
-    UWindow uWnd;
+    UWindow window;
 
-    bool InitExtensions();
-    bool SetVerticalSynchronization(bool enabled);
-
-    void PrintDebugInfo();
-
-    std::vector<mat4> modelViewMatrixStack;
-    UScene* currentScene;
-
-    UShaderProgram *shaderProgram;
+    UScene* current_scene;
+    std::vector<mat4> model_view_matrix_stack;
 
     // Cache
     unsigned int previousVAO;
     unsigned int previousIB;
 
-    map<unsigned int, unordered_map<string, unsigned int>> uniformsCache;
-    map<unsigned int, unsigned int> texChannelsCache;
-    
+    UShaderProgram *shader_program;
+
+    map<unsigned int, unordered_map<string, unsigned int>> uniforms_ñache;
+    map<unsigned int, unsigned int> tex_ñhannels_ñache;
+
     int CacheUniformLocation(string name);
     int CacheUniformLocation(string name, UShaderProgram *sh);
 
     float shadow_bias;
 
+    bool InitExtensions();
+    bool SetVerticalSynchronization(bool enabled);
+    void PrintDebugInfo();
+
 public:
 
-    unsigned int drawCalls;
+    unsigned int draw_ñalls;
     float GetShadowBias() const { return shadow_bias; }
     std::string GetShaderVersion() const { return "#version 330 core"; }
 
-    void UENGINE_DECLSPEC SetCurrentScene(UScene* currentScene);
+    void UENGINE_DECLSPEC SetCurrentScene(UScene* current_scene);
     UScene UENGINE_DECLSPEC *GetCurrentScene();
 
     static URenderer UENGINE_DECLSPEC *GetInstance();
@@ -63,15 +62,15 @@ public:
     URenderer();
     ~URenderer();
 
-    UCamera currentCamera;
-    UCamera mainCamera;
+    UCamera current_camera;
+    UCamera main_ñamera;
 
     bool Initialize();
 
-    HWND GetHWND() { return uWnd.GetHWND(); }
+    HWND GetHWND() { return window.GetHWND(); }
 
-    int GetWidth() { return uWnd.GetWidth(); }
-    int GetHeight() { return uWnd.GetHeight(); }
+    int GetWidth() { return window.GetWidth(); }
+    int GetHeight() { return window.GetHeight(); }
 
     void Release();
 
@@ -88,43 +87,43 @@ public:
     void SetupCameraLightForShaderProgram(UCamera &camera);
 
     //Texture & Cubemap
-    int CreateCubemap(UCubemap *tex);
+    int CreateCubemap(UCubemap *tex) const;
     void BindCubemap(UCubemap *tex, unsigned int channel);
-    void DeleteCubemap(UCubemap *tex);
+    void DeleteCubemap(UCubemap *tex) const;
 
-    int CreateTexture(UTexture *tex);
+    int CreateTexture(UTexture *tex) const;
     void BindTexture(UTexture *tex);
-    void DeleteTexture(UTexture *tex);
+    void DeleteTexture(UTexture *tex) const;
     void BindTexture(UTexture *tex, unsigned int channel);
     void UnbindTexture(unsigned int channel);
 
     //VBO
-    void BindVBO(UVertexBuffer *vb);
+    void BindVBO(UVertexBuffer *vb)  const;
     void BindVBO(UIndexBuffer *ib);
-    void UnbindVBO(bool is_vertex_buffer);
+    void UnbindVBO(bool is_vertex_buffer)  const;
 
-    int CreateVBO(UVertexBuffer *vb, UVBO_DRAW state);
-    int CreateVBO(UIndexBuffer *ib, UVBO_DRAW state);
-    void DeleteVBO(UBuffer *vb);
+    int CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)  const;
+    int CreateVBO(UIndexBuffer *ib, UVBO_DRAW state)  const;
+    void DeleteVBO(UBuffer *vb)  const;
 
     //FBO
-    int CreateFBO();
-    void DeleteFBO(UFrameBufferObject *fb);
-    void BindFBO(UFrameBufferObject *fb);
-    void UnbindFBO();
+    int CreateFBO()  const;
+    void DeleteFBO(UFrameBufferObject *fb)  const;
+    void BindFBO(UFrameBufferObject *fb)  const;
+    void UnbindFBO()  const;
 
     //VAO
     void BindVAO(UVertexBuffer *vb);
-    void UnbindVAO();
+    void UnbindVAO()  const;
 
-    int CreateVAO();
-    void DeleteVAO(UVertexArrayObject *vao);
+    int CreateVAO()  const;
+    void DeleteVAO(UVertexArrayObject *vao)  const;
 
     //Shaders    
-    int  CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines);
-    void DeleteShader(UShader* shd);
+    int  CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines)  const;
+    void DeleteShader(UShader* shd)  const;
 
-    int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh);
+    int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh)  const;
     void SetShaderProgram(UShaderProgram *sh);
     void DeleteShaderProgram(UShaderProgram *sh);
 

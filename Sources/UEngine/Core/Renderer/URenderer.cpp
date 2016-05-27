@@ -32,14 +32,14 @@ URenderer* URenderer::GetInstance()
     return instance;
 }
 
-void URenderer::SetCurrentScene(UScene* currentScene)
+void URenderer::SetCurrentScene(UScene* current_scene)
 {
-    this->currentScene = currentScene;
+    this->current_scene = current_scene;
 }
 
 UScene* URenderer::GetCurrentScene()
 {
-    return this->currentScene;
+    return this->current_scene;
 }
 
 void URenderer::SetupCameraLightForShaderProgram(UCamera &camera)
@@ -49,8 +49,8 @@ void URenderer::SetupCameraLightForShaderProgram(UCamera &camera)
 
 void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 {
-    mat4 view = currentCamera.GetView();
-    mat4 viewProjection = currentCamera.GetProjection() * view;
+    mat4 view = current_camera.GetView();
+    mat4 viewProjection = current_camera.GetProjection() * view;
 
     UniformMatrix4(shd->locations.transform_model, 1, model.m);
     UniformMatrix4(shd->locations.transform_view, 1, view.m);
@@ -74,10 +74,10 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
         UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
     }
 
-    float zFar = currentCamera.GetZFar();
-    float zNear = currentCamera.GetZNear();
+    float zFar = current_camera.GetZFar();
+    float zNear = current_camera.GetZNear();
 
-    Uniform3(shd->locations.transform_viewPosition, 1, currentCamera.GetPosition().v);
+    Uniform3(shd->locations.transform_viewPosition, 1, current_camera.GetPosition().v);
     Uniform1(shd->locations.camera_znear, 1, &zNear);
     Uniform1(shd->locations.camera_zfar, 1, &zFar);
     Uniform2(shd->locations.camera_screen_size, 1, vec2(this->GetWidth(), this->GetHeight()).v);
@@ -85,16 +85,16 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 
 void  URenderer::PushModelMatrix()
 {
-    modelViewMatrixStack.push_back(model);
+    model_view_matrix_stack.push_back(model);
 }
 
 void  URenderer::PopModelMatrix()
 {
     //Secure code
-    if (modelViewMatrixStack.size() > 0)
+    if (model_view_matrix_stack.size() > 0)
     {
-        model = modelViewMatrixStack.back();
-        modelViewMatrixStack.pop_back();
+        model = model_view_matrix_stack.back();
+        model_view_matrix_stack.pop_back();
     }
     else
         model = mat4_identity;
@@ -102,12 +102,12 @@ void  URenderer::PopModelMatrix()
 
 void URenderer::SetCurrentCamera(UCamera cam)
 {
-    currentCamera = cam;
+    current_camera = cam;
 }
 
 UCamera URenderer::GetCurrentCamera() const
 {
-    return currentCamera;
+    return current_camera;
 }
 
 void URenderer::BindTexture(UTexture *tex)
@@ -117,24 +117,24 @@ void URenderer::BindTexture(UTexture *tex)
 
 void URenderer::UnbindTexture(unsigned int channel)
 {
-    texChannelsCache[channel] = -1;
+    tex_ñhannels_ñache[channel] = -1;
     glActiveTexture(GL_TEXTURE0 + channel);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void URenderer::BindTexture(UTexture *tex, unsigned int channel)
 {
-    if (texChannelsCache[channel] == tex->GetId())
+    if (tex_ñhannels_ñache[channel] == tex->GetId())
         return;
     else
     {
-        texChannelsCache[channel] = tex->GetId();
+        tex_ñhannels_ñache[channel] = tex->GetId();
         glActiveTexture(GL_TEXTURE0 + channel);
         glBindTexture(GL_TEXTURE_2D, tex->GetId());
     }
 }
 
-int URenderer::CreateCubemap(UCubemap *tex)
+int URenderer::CreateCubemap(UCubemap *tex) const
 {
     tex->GenTexture();
     GLuint id = tex->GetId();
@@ -174,23 +174,23 @@ int URenderer::CreateCubemap(UCubemap *tex)
 
 void URenderer::BindCubemap(UCubemap *tex, unsigned int channel)
 {
-    if (texChannelsCache[channel] == tex->GetId())
+    if (tex_ñhannels_ñache[channel] == tex->GetId())
         return;
     else
     {
-        texChannelsCache[channel] = tex->GetId();
+        tex_ñhannels_ñache[channel] = tex->GetId();
         glActiveTexture(GL_TEXTURE0 + channel);
         glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, tex->GetId());
     }
 }
 
-void URenderer::DeleteCubemap(UCubemap *tex)
+void URenderer::DeleteCubemap(UCubemap *tex) const
 {
     GLuint t = tex->GetId();
     OPENGL_CALL(glDeleteTextures(1, &t));
 }
 
-int URenderer::CreateTexture(UTexture *tex)
+int URenderer::CreateTexture(UTexture *tex) const
 {
     tex->GenTexture();
     GLuint texture = tex->GetId();
@@ -269,23 +269,23 @@ int URenderer::CreateTexture(UTexture *tex)
     return texture;
 }
 
-void URenderer::DeleteTexture(UTexture *tex)
+void URenderer::DeleteTexture(UTexture *tex) const
 {
     GLuint t = tex->GetId();
     OPENGL_CALL(glDeleteTextures(1, &t));
 }
 
-void URenderer::UnbindFBO()
+void URenderer::UnbindFBO() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void URenderer::BindFBO(UFrameBufferObject *fb)
+void URenderer::BindFBO(UFrameBufferObject *fb) const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fb->GetId());
 }
 
-int URenderer::CreateFBO()
+int URenderer::CreateFBO() const
 {
     GLuint depthFBO = 0;
 
@@ -295,13 +295,13 @@ int URenderer::CreateFBO()
     return depthFBO;
 }
 
-void URenderer::DeleteFBO(UFrameBufferObject *fb)
+void URenderer::DeleteFBO(UFrameBufferObject *fb) const
 {
     GLuint fbo = fb->GetId();
     OPENGL_CALL(glDeleteBuffers(1, &fbo));
 }
 
-int URenderer::CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)
+int URenderer::CreateVBO(UVertexBuffer *vb, UVBO_DRAW state) const
 {
     int size = vb->GetNum()*sizeof(UVertex);
 
@@ -313,7 +313,7 @@ int URenderer::CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)
     return vbo;
 }
 
-int URenderer::CreateVBO(UIndexBuffer *ib, UVBO_DRAW state)
+int URenderer::CreateVBO(UIndexBuffer *ib, UVBO_DRAW state) const
 {
     int size = ib->GetNum()*sizeof(unsigned int);
 
@@ -325,7 +325,7 @@ int URenderer::CreateVBO(UIndexBuffer *ib, UVBO_DRAW state)
     return vbo;
 }
 
-void URenderer::DeleteVBO(UBuffer *vb)
+void URenderer::DeleteVBO(UBuffer *vb)  const
 {
     GLuint vbo = vb->GetId();
     OPENGL_CALL(glDeleteBuffers(1, &vbo));
@@ -390,24 +390,23 @@ void URenderer::DrawSolidPolygon(const UVertex* vertices, int vertexCount, const
 
 void URenderer::DrawBuffer(UVertexBuffer* vb)
 {
-    drawCalls++;
+    draw_ñalls++;
     OPENGL_CALL(glDrawArrays(GL_TRIANGLES, 0, vb->GetNum()));
 }
 
 void URenderer::DrawBuffer(UIndexBuffer* ib)
 {
-    drawCalls++;
+    draw_ñalls++;
     OPENGL_CALL(glDrawElements(GL_TRIANGLES, ib->GetNum(), GL_UNSIGNED_INT, NULL));
 }
 
-void URenderer::BindVBO(UVertexBuffer *vb)
+void URenderer::BindVBO(UVertexBuffer *vb) const
 {
     glBindBuffer(GL_ARRAY_BUFFER, vb->GetId());
 }
 
 void URenderer::BindVBO(UIndexBuffer *vb)
 {
-
     if (previousIB != vb->GetId())
     {
         previousIB = vb->GetId();
@@ -415,20 +414,16 @@ void URenderer::BindVBO(UIndexBuffer *vb)
     }
 }
 
-void URenderer::UnbindVBO(bool vertex_buffer)
+void URenderer::UnbindVBO(bool vertex_buffer) const
 {
     if (vertex_buffer)
-    {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
     else
-    {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
 }
 
 //VAO
-int URenderer::CreateVAO()
+int URenderer::CreateVAO() const
 {
     GLuint vao;
     OPENGL_CALL(glGenVertexArrays(1, &vao));
@@ -439,8 +434,8 @@ int URenderer::CreateVAO()
 void URenderer::DrawDebugLine(vec3 start, vec3 end, vec3 color)
 {
 #ifdef UE_DEBUG
-    mat4 view = currentCamera.GetView();
-    mat4 viewProjection = currentCamera.GetProjection() * view;
+    mat4 view = current_camera.GetView();
+    mat4 viewProjection = current_camera.GetProjection() * view;
     mat4 viewProjectionInv = inverse(viewProjection);
 
     start = transpose(viewProjectionInv) * start;
@@ -470,7 +465,7 @@ void URenderer::DrawDebugLine(vec3 start, vec3 end, vec3 color)
 #endif
 }
 
-void URenderer::DeleteVAO(UVertexArrayObject *vao)
+void URenderer::DeleteVAO(UVertexArrayObject *vao) const
 {
     GLuint id = vao->GetId();
     OPENGL_CALL(glDeleteVertexArrays(1, &id));
@@ -485,13 +480,13 @@ void URenderer::BindVAO(UVertexBuffer *vb)
     }
 }
 
-void URenderer::UnbindVAO()
+void URenderer::UnbindVAO() const
 {
     glBindVertexArray(0);
 }
 
 //Shaders
-int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines)
+int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines) const
 {
     GLuint shd;
     GLchar *strings = (GLchar*)source->c_str();
@@ -543,12 +538,12 @@ int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::v
     return shd;
 }
 
-void URenderer::DeleteShader(UShader *shd)
+void URenderer::DeleteShader(UShader *shd) const
 {
     OPENGL_CALL(glDeleteShader(shd->GetId()));
 }
 
-int URenderer::CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh)
+int URenderer::CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh) const
 {
     GLuint sh_pr_id = glCreateProgram();
     OPENGL_CALL(glAttachShader(sh_pr_id, vertex_sh->GetId()));
@@ -581,27 +576,27 @@ void URenderer::DeleteShaderProgram(UShaderProgram *shd)
 
 void URenderer::SetShaderProgram(UShaderProgram *sh)
 {
-    if (sh == nullptr || (shaderProgram != nullptr && sh == shaderProgram))
+    if (sh == nullptr || (shader_program != nullptr && sh == shader_program))
         return;
 
-    shaderProgram = sh;
+    shader_program = sh;
     OPENGL_CALL(glUseProgram(sh->GetId()));
     OPENGL_CHECK_FOR_ERRORS();
 }
 
 void  URenderer::CacheReleaseUniformLocation(UShaderProgram* sh)
 {
-    uniformsCache.erase(sh->GetId());
+    uniforms_ñache.erase(sh->GetId());
 }
 
 int URenderer::CacheUniformLocation(string name)
 {
-    return CacheUniformLocation(name, shaderProgram);
+    return CacheUniformLocation(name, shader_program);
 }
 
 int URenderer::CacheUniformLocation(string name, UShaderProgram *sh)
 {
-    unsigned int *res = &uniformsCache[sh->GetId()][name];
+    unsigned int *res = &uniforms_ñache[sh->GetId()][name];
     if (*res == 0)
     {
         unsigned int  loc = glGetUniformLocation(sh->GetId(), name.c_str());
@@ -744,7 +739,7 @@ bool URenderer::Initialize()
 {
     auto config = UConfig::GetInstance();
 
-    if (!uWnd.Create(L"UEngine", config->GetParami("/xml/config/width/"), config->GetParami("/xml/config/height/"), config->GetParami("/xml/config/fullscreen/") == 1))
+    if (!window.Create(L"UEngine", config->GetParami("/xml/config/width/"), config->GetParami("/xml/config/height/"), config->GetParami("/xml/config/fullscreen/") == 1))
         return false;
 
     if (!InitExtensions())
@@ -771,11 +766,11 @@ bool URenderer::Initialize()
 
     //Initialize camera
     float aspectRatio = config->GetParamf("/xml/config/width/") / config->GetParamf("/xml/config/height/");
-    mainCamera.Create(0.0f, 1.0f, 0.0f);
-    mainCamera.Perspective(60.0f, aspectRatio, 0.01f, 1000.0f);
-    //mainCamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
-    //mainCamera.SetPosition(vec3_zero);
-    mainCamera.SetRotation(vec3_y * 90.0f);
+    main_ñamera.Create(0.0f, 1.0f, 0.0f);
+    main_ñamera.Perspective(60.0f, aspectRatio, 0.01f, 1000.0f);
+    //main_ñamera.Ortho(-100, 100, -100, 100, 0.1, 4000);
+    //main_ñamera.SetPosition(vec3_zero);
+    main_ñamera.SetRotation(vec3_y * 90.0f);
 
     shadow_bias = config->GetParamf("/xml/config/shadow_bias/");
 
@@ -809,7 +804,7 @@ bool URenderer::Initialize()
 
 void URenderer::Release()
 {
-    uWnd.Destroy();
+    window.Destroy();
 }
 
 void URenderer::PrintDebugInfo()

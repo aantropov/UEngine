@@ -125,14 +125,14 @@ public:
         URenderer::GetInstance()->PopModelMatrix();
     }
 
-    virtual void Render(URENDER_PASS type, int lightIndex = 0)
+    virtual void Render(URENDER_PASS type, int light_index = 0)
     {		
         if (type == URENDER_PASS_DEPTH_SHADOW && !material.IsShadowCaster())
 			return;
 
 		URenderer::GetInstance()->PushModelMatrix();
 		m.Set();
-        material.Render(type, lightIndex);
+        material.Render(type, light_index);
         URenderer::GetInstance()->BindVAO(&vb);
         URenderer::GetInstance()->BindVBO(&ib);
         URenderer::GetInstance()->DrawBuffer(&ib);

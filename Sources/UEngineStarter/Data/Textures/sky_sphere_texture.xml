@@ -1,10 +1,9 @@
 <xml>
   <texture>
-    <name>emission</name>
-    <mipmap>1</mipmap>
+    <name>emission</name>    
     <filter>linear</filter>
     <wrap>repeat</wrap>
 	<mipmap>1</mipmap>
-    <path>data\\Textures\\skybox.png</path>
+    <path>data\\Textures\\skybox.jpg</path>
   </texture>
 </xml>

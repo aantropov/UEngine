@@ -30,14 +30,14 @@
     <shaders>
 	  <forward>
 		<shader>			
-			<defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER</defines>
-			<path>data\\test\\test_shader.shader</path>
+			<defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER REFLECTION_CUBEMAP</defines>
+			<path>data\\test\\forward_lighting.shader</path>
 		</shader>
 	  </forward>
   	  <deffered>
 		<shader>			
-            <defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER</defines>
-			<path>data\\test\\test_shader_deffered.shader</path>
+            <defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER REFLECTION_CUBEMAP</defines>
+			<path>data\\test\\deffered_lighting.shader</path>
 		</shader>
 	  </deffered>
       <depth>

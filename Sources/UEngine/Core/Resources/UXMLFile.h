@@ -33,7 +33,7 @@ public:
     UXMLFile();
     ~UXMLFile();
 
-    std::string GetPath();
+    std::string GetPath() const;
     virtual bool LoadFromFile(std::string path) override;
     virtual bool Load(UXMLFile &xml, std::string path) { return false; }
 
@@ -44,12 +44,18 @@ public:
     <a><a1></a1><b><c>Test<c></b></a>
     result:Test
     */
-    std::string GetElement(std::string path);
-    int GetElementi(std::string param_path);
-    float GetElementf(std::string param_path);
+    std::string GetElement(std::string path) const;
+    int GetElementi(std::string param_path) const;
+    bool GetElementb(std::string param_path) const;
+    float GetElementf(std::string param_path) const;
 
-    vector<string> GetElements(std::string key);
-    bool isExistElement(string key);
-    bool isExistElementStrict(string key);
+    bool TryGetElement(std::string path, std::string &var) const;
+    bool TryGetElementi(std::string path, int &var) const;
+    bool TryGetElementf(std::string path, float &var) const;
+    bool TryGetElementb(std::string path, bool &var) const;
+
+    vector<string> GetElements(std::string key) const;
+    bool isExistElement(string key) const;
+    bool isExistElementStrict(string key) const;
 };
 

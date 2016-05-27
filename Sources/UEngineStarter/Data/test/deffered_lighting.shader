@@ -126,7 +126,7 @@ void main(void)
     color[0] = material.emission;
     
 #if defined(EMISSION)
-	color[0] += texture(material.emission_text, Vert.texcoord); ;
+	color[0] += texture(material.emission_text, Vert.texcoord);
 #endif	
 
 #if defined(REFLECTION_CUBEMAP)
@@ -141,7 +141,7 @@ void main(void)
 #if defined(SHADOW_RECEIVER)
 	shadow_receiver = 1;
 #endif
-
+	color[0].a = 1.0f;
 	color[1] = vec4(normal * 0.5 + vec3(0.5), shadow_receiver);
 	color[2] = material.diffuse * texture(material.texture, Vert.texcoord);
 	color[3] = vec4(material.specular.xyz * specular.xyz, material.shininess / 255.0f);// * material.specular.w * specular.w;

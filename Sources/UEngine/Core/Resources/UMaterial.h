@@ -60,6 +60,7 @@ class UMaterial : public UResource, public UNode
     std::string name;
 
     bool is_shadow_caster = true;
+    int queue = 200;
 
 public:
 
@@ -72,6 +73,9 @@ public:
     bool IsShadowCaster() { return is_shadow_caster; } const
     void IsShadowCaster(bool value) { is_shadow_caster = value; }
 
+    int GetQueue() { return queue; } const
+    void SetQueue(unsigned int value) { queue = value; }
+
     void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
 
     UShaderProgram* GetShaderProgram(URENDER_PASS type);
@@ -83,7 +87,7 @@ public:
     void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
 
     //Setup material parameters in Shader
-    virtual void Render(URENDER_PASS type, int lightIndex = -1);
+    virtual void Render(URENDER_PASS type, int light_index = -1);
 
     void Render(UShaderProgram* sp);
     ~UMaterial(void) {}
