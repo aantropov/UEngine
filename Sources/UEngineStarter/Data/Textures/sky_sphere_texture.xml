@@ -4,7 +4,7 @@
     <mipmap>1</mipmap>
     <filter>linear</filter>
     <wrap>repeat</wrap>
-	<mipmap>0</mipmap>
-    <path>data\\Textures\\sky_sphere.jpg</path>
+	<mipmap>1</mipmap>
+    <path>data\\Textures\\skybox.png</path>
   </texture>
 </xml>

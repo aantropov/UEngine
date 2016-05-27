@@ -22,11 +22,11 @@ UScriptEngine* UScriptEngine:: GetInstance()
 
 UGameObject* UScriptEngine::GetGameObjectByComponent(UComponent* component){ return component->gameObject; }
 //UComponent* UScriptEngine::GetComponent(UGameObject* gameObject, std::string name){ }
-UGameObject* UScriptEngine::GetParent(UGameObject* gameObject){ return gameObject->parentObject; }
+UGameObject* UScriptEngine::GetParent(UGameObject* gameObject){ return gameObject->parent_object; }
 std::vector<UGameObject*> UScriptEngine::GetChildren(UGameObject* gameObject){ return gameObject->children; }
-bool UScriptEngine::SetTransform(UGameObject* gameObject, transform local){ gameObject->local = local; return true; }
-transform UScriptEngine::GetTransform(UGameObject* gameObject){ return gameObject->local; }
-transform UScriptEngine::GetWorldTransform(UGameObject* gameObject){ return gameObject->world; }
+bool UScriptEngine::SetTransform(UGameObject* gameObject, transform local){ gameObject->local_transform = local; return true; }
+transform UScriptEngine::GetTransform(UGameObject* gameObject){ return gameObject->local_transform; }
+transform UScriptEngine::GetWorldTransform(UGameObject* gameObject){ return gameObject->parent_transform; }
 
 static bool SetName(UGameObject* gameObject, std::string name){ gameObject->name = name; return true; }
 static std::string GetName(UGameObject* gameObject){ return gameObject->name; }

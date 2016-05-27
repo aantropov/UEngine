@@ -31,7 +31,7 @@ void UScene::UpdateLightParams()
     {
         if (lights[i] != NULL/* && lights[i]->castShadows*/)
         {
-            vec4 position = lights[cur]->world * lights[cur]->local.position;
+            vec4 position = lights[cur]->parent_transform * lights[cur]->local_transform.position;
             vec4 ambient = lights[cur]->GetAmbient();
 
             ambient.w = lights[cur]->GetShadowDistanceMin();

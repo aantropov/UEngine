@@ -14,11 +14,11 @@ public:
 
     std::string name;
 
-    ::transform local;
-    ::transform world;
+    ::transform local_transform;
+    ::transform parent_transform;
 
+	UGameObject *parent_object;
     std::vector<UGameObject*> children;
-    UGameObject *parentObject;
 
     void UENGINE_DECLSPEC GetBounds() const;
     void UENGINE_DECLSPEC AddComponent(UComponent *component);

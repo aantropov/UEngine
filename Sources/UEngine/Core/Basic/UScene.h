@@ -92,8 +92,8 @@ public:
 
             for (unsigned int i = 0; i < children.size(); i++)
             {
-                children[i]->node->parentObject = node;
-                children[i]->node->world = node->local * node->world;
+                children[i]->node->parent_object = node;
+                children[i]->node->parent_transform = node->local_transform * node->parent_transform;
                 children[i]->Update(delta);
             }
 

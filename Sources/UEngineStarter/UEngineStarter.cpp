@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     auto sky = new UGameObject(sky_sphere_model);
     sky->AddComponent(new USkyboxComponent());
-    sky->local.scale = vec3(1.0f, 1.0f, 1.0f);
+    //sky->local_transform.scale = vec3(1.0f, 1.0f, 1.0f);
     scene.root->AddChild(new UScene::USceneNode(sky));
 
     for (int i = 0; i < sqrt(maxObjs); i++)
@@ -27,7 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         {
             float offset = (float)sqrt(maxObjs) / 2.0f;
             gameObject[i + i*j] = new UGameObject(test_model);
-            gameObject[i + i*j]->local.position = vec4_x * 77 * ((float)i - offset) + vec4_z * 77 * ((float)j - offset);
+            gameObject[i + i*j]->local_transform.position = vec4_x * 77 * ((float)i - offset) + vec4_z * 77 * ((float)j - offset);
             scene.root->AddChild(new UScene::USceneNode(gameObject[i + i*j]));
         }
 

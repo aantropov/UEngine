@@ -42,7 +42,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     cameras.push_back(cam);
     UpdateCamera();
 
-    local.position = pos;
+    local_transform.position = pos;
 }
 
 mat4 ULight::GetLightTransform()
@@ -95,7 +95,7 @@ void ULight::SetShaderParameters(int i)
 
     auto renderer = URenderer::GetInstance();
 
-    vec4 position = local.position;
+    vec4 position = local_transform.position;
     position.w = shadow_distance_max + shadow_distance_min;
 
     renderer->CacheUniform4(light + "position", 1, position.v);
@@ -140,7 +140,7 @@ void ULight::Update(double delta)
 
 void ULight::UpdateCamera()
 {
-    light_direction = -normalize(world*(local.position));
+    light_direction = -normalize(parent_transform*(local_transform.position));
 
     if (type == ULIGHT_TYPE::ULIGHT_TYPE_SPOT)
         cameras[0].Perspective(spot_angle, 1.0f, shadow_distance_min, shadow_distance_max);
@@ -151,7 +151,7 @@ void ULight::UpdateCamera()
         cameras[0].Ortho(-size, size, -size, size, shadow_distance_min, shadow_distance_max);
     }
 
-    cameras[0].LookAt(world*(local.position), light_direction + world * local.position, world * vec3_y);
+    cameras[0].LookAt(parent_transform*(local_transform.position), light_direction + parent_transform * local_transform.position, parent_transform * vec3_y);
 }
 
 void ULight::UpdateDepthTextures()
