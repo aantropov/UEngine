@@ -8,7 +8,7 @@ mat4 UCamera::GetView() const { return GLRotation(rotation.x, rotation.y, rotati
 
 void UCamera::UpdateFrustum()
 {
-    frustumPlanes.extract(GetView(), GetProjection());
+    frustum_planes.extract(GetView(), GetProjection());
 }
 
 void UCamera::Create(float x, float y, float z)
@@ -19,15 +19,15 @@ void UCamera::Create(float x, float y, float z)
 
 void UCamera::Perspective(float fov, float aspect, float zNear, float zFar)
 {
-    znear = zNear;
-    zfar = zFar;
+	z_near = zNear;
+	z_far = zFar;
     projection = GLPerspective(fov, aspect, zNear, zFar);
 }
 
 void UCamera::Ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
-    znear = zNear;
-    zfar = zFar;
+    z_near = zNear;
+    z_far = zFar;
     projection = GLOrthographic(left, right, bottom, top, zNear, zFar);
 }
 

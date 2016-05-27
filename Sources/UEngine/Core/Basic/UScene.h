@@ -64,7 +64,7 @@ public:
             children.push_back(n);
         }
 
-        void UENGINE_DECLSPEC Render(URENDER_TYPE type)
+        void UENGINE_DECLSPEC Render(URENDER_PASS type)
         {
             node->Render(type);
             for (unsigned int i = 0; i < children.size(); i++) {
@@ -142,7 +142,7 @@ public:
     void UENGINE_DECLSPEC Update(double deltaTime);
     void UENGINE_DECLSPEC UpdateLightParams();
 
-    void UENGINE_DECLSPEC Render(URENDER_TYPE type, UCamera camera);
+    void UENGINE_DECLSPEC Render(URENDER_PASS type, UCamera camera);
     void UENGINE_DECLSPEC Render(UMaterial *m, UCamera camera);
 
     UENGINE_DECLSPEC UScene(void) : root(NULL)

@@ -33,7 +33,7 @@ void UGameObject::Render(UMaterial *m)
     }
 }
 
-void UGameObject::Render(URENDER_TYPE type)
+void UGameObject::Render(URENDER_PASS type)
 {
     auto render = URenderer::GetInstance();
     for each(auto el in components)

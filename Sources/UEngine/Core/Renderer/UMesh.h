@@ -12,16 +12,16 @@
 
 class UMesh : public UNode, public UIRenderable
 {
-    class UShaderParameters
+    class UShaderLocations
     {
     public:
 
-        int positionLocation;
-        int normalLocation;
-        int textureCoordLocation;
-        int binormalLocation;
-        int boneIndicesLocation;
-        int boneWeightsLocation;
+        int position;
+        int normal;
+        int texture_coord;
+        int binormal;
+        int bone_indices;
+        int bone_weights;
     };
 
     bool InitializeBuffers()
@@ -29,7 +29,7 @@ class UMesh : public UNode, public UIRenderable
         return ib.Initialize() & vb.Initialize(&ib);
     }
 
-    map<URENDER_TYPE, UShaderParameters> parameters;
+    map<URENDER_PASS, UShaderLocations> locations;
     sphere boundSphere;
 
 public:
@@ -42,55 +42,55 @@ public:
     UIndexBuffer ib;
     UMaterial material;
 
-    void InitializeMaterial(URENDER_TYPE type)
+    void InitializeMaterial(URENDER_PASS type)
     {
         if (material.GetShaderProgram(type) == nullptr)
             return;
 
         URenderer::GetInstance()->SetShaderProgram(material.GetShaderProgram(type));
 
-        parameters[type].positionLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "position");
-        parameters[type].normalLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "normal");
-        parameters[type].textureCoordLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "texcoord");
-        parameters[type].binormalLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "binormal");
-        parameters[type].boneIndicesLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_indices");
-        parameters[type].boneWeightsLocation = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_weights");
+        locations[type].position = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "position");
+        locations[type].normal = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "normal");
+        locations[type].texture_coord = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "texcoord");
+        locations[type].binormal = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "binormal");
+        locations[type].bone_indices = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_indices");
+        locations[type].bone_weights = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_weights");
 
 
-        if (parameters[type].positionLocation != -1)
+        if (locations[type].position != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].positionLocation, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)0));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].positionLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].position, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)0));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].position));
         }
 
-        if (parameters[type].normalLocation != -1)
+        if (locations[type].normal != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].normalLocation, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(sizeof(vec3))));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].normalLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].normal, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(sizeof(vec3))));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].normal));
         }
 
-        if (parameters[type].textureCoordLocation != -1)
+        if (locations[type].texture_coord != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].textureCoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(2 * sizeof(vec3))));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].textureCoordLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].texture_coord, 2, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(2 * sizeof(vec3))));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].texture_coord));
         }
 
-        if (parameters[type].binormalLocation != -1)
+        if (locations[type].binormal != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].binormalLocation, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(2 * sizeof(vec3) + sizeof(vec2))));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].binormalLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].binormal, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(2 * sizeof(vec3) + sizeof(vec2))));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].binormal));
         }
 
-        if (parameters[type].boneIndicesLocation != -1)
+        if (locations[type].bone_indices != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].boneIndicesLocation, 4, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(3 * sizeof(vec3) + sizeof(vec2))));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].boneIndicesLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].bone_indices, 4, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(3 * sizeof(vec3) + sizeof(vec2))));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].bone_indices));
         }
 
-        if (parameters[type].boneWeightsLocation != -1)
+        if (locations[type].bone_weights != -1)
         {
-            OPENGL_CALL(glVertexAttribPointer(parameters[type].boneWeightsLocation, 4, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(3 * sizeof(vec3) + sizeof(vec2) + sizeof(vec4))));
-            OPENGL_CALL(glEnableVertexAttribArray(parameters[type].boneWeightsLocation));
+            OPENGL_CALL(glVertexAttribPointer(locations[type].bone_weights, 4, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)(3 * sizeof(vec3) + sizeof(vec2) + sizeof(vec4))));
+            OPENGL_CALL(glEnableVertexAttribArray(locations[type].bone_weights));
         }
     }
 
@@ -104,10 +104,10 @@ public:
         renderer->BindVBO(&vb);
         renderer->BindVBO(&ib);
 
-        InitializeMaterial(URENDER_NORMAL);
-        InitializeMaterial(URENDER_DEPTH);
-        InitializeMaterial(URENDER_FORWARD);
-        InitializeMaterial(URENDER_DEFFERED);
+        InitializeMaterial(URENDER_PASS_NORMAL);
+        InitializeMaterial(URENDER_PASS_DEPTH);
+        InitializeMaterial(URENDER_PASS_FORWARD);
+        InitializeMaterial(URENDER_PASS_DEFFERED);
 
         OPENGL_CHECK_FOR_ERRORS();
     }
@@ -117,7 +117,7 @@ public:
         URenderer::GetInstance()->PushModelMatrix();
 
         m.Set();
-        mat->Render(URENDER_FORWARD);
+        mat->Render(URENDER_PASS_FORWARD);
 
         URenderer::GetInstance()->BindVAO(&vb);
         URenderer::GetInstance()->BindVBO(&ib);
@@ -125,10 +125,13 @@ public:
         URenderer::GetInstance()->PopModelMatrix();
     }
 
-    virtual void Render(URENDER_TYPE type, int lightIndex = 0)
-    {
-        URenderer::GetInstance()->PushModelMatrix();
-        m.Set();
+    virtual void Render(URENDER_PASS type, int lightIndex = 0)
+    {		
+        if (type == URENDER_PASS_DEPTH_SHADOW && !material.IsShadowCaster())
+			return;
+
+		URenderer::GetInstance()->PushModelMatrix();
+		m.Set();
         material.Render(type, lightIndex);
         URenderer::GetInstance()->BindVAO(&vb);
         URenderer::GetInstance()->BindVBO(&ib);

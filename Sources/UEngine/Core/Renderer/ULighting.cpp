@@ -72,7 +72,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->Render(URENDER_DEFFERED, camera);
+    scene->Render(URENDER_PASS_DEFFERED, camera);
     render->UnbindFBO();
 
     OPENGL_CHECK_FOR_ERRORS();
@@ -139,7 +139,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
 
         OPENGL_CHECK_FOR_ERRORS();
                 
-        lighting->Render(URENDER_DEFFERED, i);
+        lighting->Render(URENDER_PASS_DEFFERED, i);
         render->UnbindFBO();
         //////////////////////////////////////
 
@@ -187,7 +187,7 @@ UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->Render(URENDER_FORWARD, camera);
+    scene->Render(URENDER_PASS_FORWARD, camera);
     URenderer::GetInstance()->UnbindFBO();
 
     // normal    
@@ -201,7 +201,7 @@ UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    scene->Render(URENDER_NORMAL, camera);
+    scene->Render(URENDER_PASS_NORMAL, camera);
     URenderer::GetInstance()->UnbindFBO();
     return resScene;
 }

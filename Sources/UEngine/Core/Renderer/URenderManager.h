@@ -8,9 +8,9 @@ class UScene;
 
 class URenderManager
 {
-    UFrameBufferObject vsmFbo;
-    UFrameBufferObject postEffectFbo;
-    UFrameBufferObject postpostEffectFbo;
+    UFrameBufferObject vsm_fbo;
+    UFrameBufferObject post_effect_fbo;
+    UFrameBufferObject post_post_effect_fbo;
     
     UPostEffect* postEffectRipple;
     UPostEffect* postEffectSSAO;

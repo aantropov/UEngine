@@ -34,6 +34,7 @@
 		</shader>
 	  </normal>  
     </shaders>
+    <is_shadow_caster>0</is_shadow_caster>
     <emission>
       <r>0.0f</r>
       <g>0.0f</g>

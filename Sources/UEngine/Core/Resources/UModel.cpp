@@ -3,7 +3,7 @@
 #include "UTexture.h"
 #include "stdio.h"
 
-void UModel::Render(URENDER_TYPE type, int lightIndex)
+void UModel::Render(URENDER_PASS type, int lightIndex)
 {
     URenderer::GetInstance()->PushModelMatrix();
     m.Set();
@@ -194,16 +194,16 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                 }
 
                 if (xml.isExistElement(path + "model/common_shaders/forward/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/forward/"), URESOURCE_SHADER_PROGRAM), URENDER_FORWARD);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/forward/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_FORWARD);
 
                 if (xml.isExistElement(path + "model/common_shaders/normal"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/normal/"), URESOURCE_SHADER_PROGRAM), URENDER_NORMAL);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/normal/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_NORMAL);
 
                 if (xml.isExistElement(path + "model/common_shaders/depth/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/depth/"), URESOURCE_SHADER_PROGRAM), URENDER_DEPTH);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/depth/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_DEPTH);
 
                 if (xml.isExistElement(path + "model/common_shaders/deffered/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/deffered/"), URESOURCE_SHADER_PROGRAM), URENDER_DEFFERED);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/deffered/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_DEFFERED);
 
                 if (xml.isExistElement(path + "model/tex_num/"))
                 {

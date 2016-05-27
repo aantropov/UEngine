@@ -20,7 +20,7 @@ void UPostEffect::AddTexture(UTexture* tex, int channel)
     material.AddUniformUnit(std::pair<UTexture*, int>(tex, channel));
 }
 
-void UPostEffect::Render(URENDER_TYPE type, int lightIndex)
+void UPostEffect::Render(URENDER_PASS type, int lightIndex)
 {
     this->material.params["time"] = (float)GetTickCount();
     this->UMesh::Render(type, lightIndex);
@@ -44,8 +44,8 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
         UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " shader program", URESOURCE_SHADER_PROGRAM);
         shader_program->Load(xml, path + "post_effect/");
 
-        material.SetShaderProgram(shader_program, URENDER_FORWARD);
-        material.SetShaderProgram(shader_program, URENDER_DEFFERED);
+        material.SetShaderProgram(shader_program, URENDER_PASS_FORWARD);
+        material.SetShaderProgram(shader_program, URENDER_PASS_DEFFERED);
 
         ib.Create(2);
 

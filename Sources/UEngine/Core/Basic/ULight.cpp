@@ -12,28 +12,28 @@ ULight::ULight()
 
 ULight::ULight(UResourceFactory* rf, vec4 pos, bool cast)
 {
-    this->castShadows = cast;
+    this->is_casting_shadows = cast;
     ULight(&UEngine::rf, pos);
 }
 
 ULight::ULight(UResourceFactory* rf, vec4 pos)
 {
     type = ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL;
-    castShadows = false;
+    is_casting_shadows = false;
 
-    shadowDistanceMin = 0.1f;
-    shadowDistanceMax = 150.0f;
+    shadow_distance_min = 0.1f;
+    shadow_distance_max = 150.0f;
 
     ambient.set(0.5f, 0.5f, 0.5f, 1.0f);
     diffuse.set(0.70f, 0.70f, 0.70f, 1.0f);
     specular.set(0.9f, 0.9f, 0.9f, 1.0f);
     attenuation.set(0.5f, 0.1f, 0.001f);
-    lightDirection.set(-1.0f, -2.0f, -1.0f);
-    spotCosHalfAngle = -1.0f;
-    spotAngle = 60.0f;
-    spotExponent = 5.0f;
+    light_direction.set(-1.0f, -2.0f, -1.0f);
+    spot_ños_half_angle = -1.0f;
+    spot_angle = 60.0f;
+    spot_exponent = 5.0f;
 
-    SetSpotCosCutoff(spotAngle);
+    SetSpotCosCutoff(spot_angle);
 
     InitModel(rf);
 
@@ -61,7 +61,7 @@ mat4 ULight::GetLightTransform()
 
 void ULight::SetShadowTexture(unsigned int location, int i)
 {
-    if (castShadows)
+    if (is_casting_shadows)
     {
         URenderer::GetInstance()->BindTexture(depthTextures[0], SHADOW_TEXTURE_CHANNEL + i);
         URenderer::GetInstance()->Uniform1(max(location + i, location), SHADOW_TEXTURE_CHANNEL + i);
@@ -96,16 +96,16 @@ void ULight::SetShaderParameters(int i)
     auto renderer = URenderer::GetInstance();
 
     vec4 position = local.position;
-    position.w = shadowDistanceMax + shadowDistanceMin;
+    position.w = shadow_distance_max + shadow_distance_min;
 
     renderer->CacheUniform4(light + "position", 1, position.v);
     renderer->CacheUniform4(light + "ambient", 1, ambient.v);
     renderer->CacheUniform4(light + "diffuse", 1, diffuse.v);
     renderer->CacheUniform4(light + "specular", 1, specular.v);
     renderer->CacheUniform3(light + "attenuation", 1, attenuation.v);
-    renderer->CacheUniform3(light + "spotDirection", 1, lightDirection.v);
-    renderer->CacheUniform1(light + "spotExponent", 1, &spotExponent);
-    renderer->CacheUniform1(light + "spotCosCutoff", 1, &spotCosHalfAngle);
+    renderer->CacheUniform3(light + "spotDirection", 1, light_direction.v);
+    renderer->CacheUniform1(light + "spotExponent", 1, &spot_exponent);
+    renderer->CacheUniform1(light + "spotCosCutoff", 1, &spot_ños_half_angle);
 
     SetLightTransform(light);
 }
@@ -140,23 +140,23 @@ void ULight::Update(double delta)
 
 void ULight::UpdateCamera()
 {
-    lightDirection = -normalize(world*(local.position));
+    light_direction = -normalize(world*(local.position));
 
     if (type == ULIGHT_TYPE::ULIGHT_TYPE_SPOT)
-        cameras[0].Perspective(spotAngle, 1.0f, shadowDistanceMin, shadowDistanceMax);
+        cameras[0].Perspective(spot_angle, 1.0f, shadow_distance_min, shadow_distance_max);
     else if (type == ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL)
     {
-        auto size = 0.5f * (shadowDistanceMax - shadowDistanceMin);
+        auto size = 0.5f * (shadow_distance_max - shadow_distance_min);
         //size = 1000.0f;
-        cameras[0].Ortho(-size, size, -size, size, shadowDistanceMin, shadowDistanceMax);
+        cameras[0].Ortho(-size, size, -size, size, shadow_distance_min, shadow_distance_max);
     }
 
-    cameras[0].LookAt(world*(local.position), lightDirection + world * local.position, world * vec3_y);
+    cameras[0].LookAt(world*(local.position), light_direction + world * local.position, world * vec3_y);
 }
 
 void ULight::UpdateDepthTextures()
 {
-    if (castShadows && depthTextures.size() == 0)
+    if (is_casting_shadows && depthTextures.size() == 0)
     {
         int size = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
         

@@ -24,7 +24,7 @@ public:
     void UENGINE_DECLSPEC AddComponent(UComponent *component);
 
     void UENGINE_DECLSPEC Render(UMaterial *m);
-    void UENGINE_DECLSPEC Render(URENDER_TYPE type);
+    void UENGINE_DECLSPEC Render(URENDER_PASS type);
     virtual void UENGINE_DECLSPEC Update(double delta);
 
     UENGINE_DECLSPEC UGameObject();

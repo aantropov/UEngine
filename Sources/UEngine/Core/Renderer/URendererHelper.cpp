@@ -66,7 +66,7 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
     glCullFace(GL_BACK);
     glDrawBuffers(1, buffers);
     glViewport(0, 0, texture->GetWidth(), texture->GetHeight());
-    copy_texture->Render(URENDER_FORWARD);
+    copy_texture->Render(URENDER_PASS_FORWARD);
     render->UnbindFBO();
     fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
 
@@ -81,7 +81,7 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
     fbo->BindTexture(texture, UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
     render->BindFBO(fbo);
     glDrawBuffers(1, buffers);
-    gauss_blur->Render(URENDER_FORWARD);
+    gauss_blur->Render(URENDER_PASS_FORWARD);
     render->UnbindFBO();
     //fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
 

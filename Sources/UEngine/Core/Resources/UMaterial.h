@@ -36,7 +36,7 @@ struct UUniformParam
         data.y = param.y;
         data.z = param.z;
         data.w = param.w;
-    }      
+    }
 };
 
 class UMaterial : public UResource, public UNode
@@ -46,10 +46,10 @@ class UMaterial : public UResource, public UNode
     vec4  emission;
     float shininess;
 
-    UShaderProgram *spForward;
-    UShaderProgram *spDepth;
-    UShaderProgram *spNormal;
-    UShaderProgram *spDeffered;
+    UShaderProgram *shader_forward;
+    UShaderProgram *shader_depth;
+    UShaderProgram *shader_normal;
+    UShaderProgram *shader_deffered;
 
     std::vector<std::pair<UTexture*, unsigned int>> textures;
     std::vector<std::pair<UCubemap*, unsigned int>> cubemaps;
@@ -59,6 +59,8 @@ class UMaterial : public UResource, public UNode
 
     std::string name;
 
+    bool is_shadow_caster = true;
+
 public:
 
     std::map<std::string, UUniformParam> params;
@@ -67,10 +69,13 @@ public:
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin);
 
+    bool IsShadowCaster() { return is_shadow_caster; } const
+    void IsShadowCaster(bool value) { is_shadow_caster = value; }
+
     void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
 
-    UShaderProgram* GetShaderProgram(URENDER_TYPE type);
-    void SetShaderProgram(UShaderProgram *_sp, URENDER_TYPE type);
+    UShaderProgram* GetShaderProgram(URENDER_PASS type);
+    void SetShaderProgram(UShaderProgram *_sp, URENDER_PASS type);
 
     void AddUniformUnit(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
     void AddUniformUnit(pair<UCubemap*, unsigned int> tex) { cubemaps.push_back(tex); }
@@ -78,7 +83,7 @@ public:
     void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
 
     //Setup material parameters in Shader
-    virtual void Render(URENDER_TYPE type, int lightIndex = -1);
+    virtual void Render(URENDER_PASS type, int lightIndex = -1);
 
     void Render(UShaderProgram* sp);
     ~UMaterial(void) {}

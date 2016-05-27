@@ -4,14 +4,14 @@
 
 class UCamera
 {
-    float znear;
-    float zfar;
+    float z_near;
+    float z_far;
 
     vec3 position;
     vec3 rotation;
     mat4 projection;
 
-    frustum frustumPlanes;
+    frustum frustum_planes;
 
 public:
 
@@ -19,10 +19,10 @@ public:
 
     vec3 UENGINE_DECLSPEC GetPosition() const;
     vec3 UENGINE_DECLSPEC GetRotation()  const;
-    const frustum UENGINE_DECLSPEC GetFrustum() const { return frustumPlanes; }
+    const frustum UENGINE_DECLSPEC GetFrustum() const { return frustum_planes; }
 
-    const float UENGINE_DECLSPEC GetZNear() const { return znear; }
-    const float UENGINE_DECLSPEC GetZFar() const { return zfar; }
+    const float UENGINE_DECLSPEC GetZNear() const { return z_near; }
+    const float UENGINE_DECLSPEC GetZFar() const { return z_far; }
 
     void UENGINE_DECLSPEC SetPosition(vec3 p) { position = p; }
     void UENGINE_DECLSPEC SetRotation(vec3 r) { rotation = r; }
