@@ -115,7 +115,7 @@ public:
     double frameRate;
     std::string name;
     std::vector<UKeyFrame> frames;
-    UKeyFrame currentFrame;
+    UKeyFrame current_frame;
 
     void StopAnimation()
     {
@@ -132,7 +132,7 @@ public:
         this->state = state;
         this->startTime = startTime;
         lastUpdateTime = startTime;
-        currentFrame = frames[0];
+        current_frame = frames[0];
     }
 
     void Update(double delta)
@@ -153,7 +153,7 @@ public:
 
         if (nextFrame < frames.size())
         {
-            currentFrame = UKeyFrame::Lerp(frames[nextFrame - 1], frames[nextFrame], fractpart);
+            current_frame = UKeyFrame::Lerp(frames[nextFrame - 1], frames[nextFrame], fractpart);
         }
         else
         {
@@ -178,13 +178,13 @@ class UISkinAnimatable : public UIAnimatable
 {
 public:
 
-    mat4 boneMatrixes[MAX_BONES];
+    mat4 bone_matrixes[MAX_BONES];
     std::unordered_map<std::string, UAnimation*> animations;
 
-    unsigned int countPlayableAnimations;
-    UKeyFrame currentFrame;
+    unsigned int count_playable_animations;
+    UKeyFrame current_frame;
 
-    UISkinAnimatable() { for (int i = 0; i < MAX_BONES; i++) boneMatrixes[i] = mat4_identity; countPlayableAnimations = 0; }
+    UISkinAnimatable() { for (int i = 0; i < MAX_BONES; i++) bone_matrixes[i] = mat4_identity; count_playable_animations = 0; }
     virtual ~UISkinAnimatable() {}
 
     virtual void UpdateAnimation(double delta)
@@ -198,20 +198,20 @@ public:
                 t.second->Update(delta);
 
                 if (tempFrame.bones.size() == 0)
-                    tempFrame = t.second->currentFrame;
+                    tempFrame = t.second->current_frame;
                 else
-                    tempFrame = tempFrame + t.second->currentFrame;
+                    tempFrame = tempFrame + t.second->current_frame;
 
                 count++;
             }
 
         }
 
-        countPlayableAnimations = (unsigned int)count;
+        count_playable_animations = (unsigned int)count;
         if (tempFrame.bones.size() == 0)
             return;
 
-        currentFrame = tempFrame * (1.0f / (float)count);
-        currentFrame.UpdateMatrixes(boneMatrixes);
+        current_frame = tempFrame * (1.0f / (float)count);
+        current_frame.UpdateMatrixes(bone_matrixes);
     }
 };

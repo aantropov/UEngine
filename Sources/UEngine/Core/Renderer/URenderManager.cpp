@@ -54,7 +54,7 @@ void URenderManager::Render(UScene* scene)
     UCamera previousCam = URenderer::GetInstance()->GetCurrentCamera();
 
     auto lights = scene->GetLights();
-    auto lightParams = render->GetCurrentScene()->lightParams;
+    auto light_params = render->GetCurrentScene()->light_params;
    
     render->BindFBO(&vsm_fbo);
 
@@ -70,18 +70,18 @@ void URenderManager::Render(UScene* scene)
     //glEnable(GL_POLYGON_OFFSET_FILL);
     //glPolygonOffset(4, 4);
 
-    for (unsigned int i = 0; i < lightParams.count; i++)
+    for (unsigned int i = 0; i < light_params.count; i++)
     {
-        if (!lights[lightParams.light_index[i]]->IsShadowCaster())
+        if (!lights[light_params.light_index[i]]->IsShadowCaster())
             continue;
 
-        auto vsmTextures = lights[lightParams.light_index[i]]->GetDepthTextures();
+        auto vsmTextures = lights[light_params.light_index[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
             vsm_fbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            scene->Render(URENDER_PASS_DEPTH_SHADOW, lights[lightParams.light_index[i]]->GetCameras()[j]);
+            scene->Render(URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
         }
     }
     
@@ -89,12 +89,12 @@ void URenderManager::Render(UScene* scene)
 
     auto helper = URendererHelper::GetInstance();
 
-    for (unsigned int i = 0; i < lightParams.count; i++)
+    for (unsigned int i = 0; i < light_params.count; i++)
     {
-        if (!lights[lightParams.light_index[i]]->IsShadowCaster())
+        if (!lights[light_params.light_index[i]]->IsShadowCaster())
             continue;
 
-        auto vsmTextures = lights[lightParams.light_index[i]]->GetDepthTextures();
+        auto vsmTextures = lights[light_params.light_index[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
             helper->GaussBlur(vsmTextures[j], 0.5f, vec2_x);
@@ -115,7 +115,7 @@ void URenderManager::Render(UScene* scene)
     lighting->Render(scene, render->main_ñamera);
     //postEffectDOF->Render(URENDER_FORWARD);
 
-    //postEffectSSAO->AddTexture(lights[lightParams.light_index[0]]->GetDepthTextures()[0], 2);
+    //postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);
     //postEffectSSAO->Render(URENDER_FORWARD);
     postEffectRipple->Render(URENDER_PASS_FORWARD);
 }

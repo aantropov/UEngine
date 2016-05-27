@@ -3,18 +3,21 @@
 #include "..\Renderer\URenderer.h"
 #include "..\Basic\UCamera.h"
 #include <vector>
+#include <map>
 #include "UIRenderable.h"
 #include "..\Utils\ExportDef.h"
 #include "..\Utils\enum.h"
 #include "..\math\umath.h"
 #include "UIAnimatable.h"
 #include "..\GameMechanics\UGameMechanics.h"
+#include "..\Utils\enum.h"
 
 using namespace std;
 
 class URenderer;
 class ULight;
 class UMaterial;
+class UMesh;
 
 class ULightParams
 {
@@ -44,6 +47,7 @@ class UScene
     double move_delta[2];
 
     vector<ULight*> lights;
+    map<int, vector<UMesh*>> render_queue;
 
 public:
 
@@ -61,6 +65,11 @@ public:
         {
             node->children.push_back(n->node);
             children.push_back(n);
+        }
+
+        void UENGINE_DECLSPEC RefreshRenderQueue()
+        {
+        
         }
 
         void UENGINE_DECLSPEC Render(URENDER_PASS type)
@@ -134,7 +143,7 @@ public:
     }
 
     USceneNode *root;
-    ULightParams lightParams;
+    ULightParams light_params;
 
     void UENGINE_DECLSPEC KeysProccessing();
 

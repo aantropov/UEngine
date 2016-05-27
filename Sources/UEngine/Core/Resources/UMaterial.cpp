@@ -230,7 +230,7 @@ void UMaterial::Render(URENDER_PASS type, int light_index)
         render->Uniform1(locs.material_shininess, 1, &shininess);
 
         auto sceneLights = render->GetCurrentScene()->GetLights();
-        auto lights = render->GetCurrentScene()->lightParams;
+        auto lights = render->GetCurrentScene()->light_params;
 
         if (lights.count != 0)
         {

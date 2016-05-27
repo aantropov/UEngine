@@ -78,7 +78,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     OPENGL_CHECK_FOR_ERRORS();
 
     auto lights = scene->GetLights();
-    auto lightParams = render->GetCurrentScene()->lightParams;
+    auto light_params = render->GetCurrentScene()->light_params;
 
     //Update frustum
     /*
@@ -102,7 +102,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     */
 
     int mod2 = 0;
-    for (unsigned int i = 0; i < lightParams.count; i++)
+    for (unsigned int i = 0; i < light_params.count; i++)
     {
         lighting->material.ClearUniformUnits();
         lighting->AddTexture(colorScene, 0);
@@ -124,18 +124,18 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
 
         lighting->material.params["lightIndex"] = UUniformParam((float)i);
 
-        if (lightParams.count == 1)
+        if (light_params.count == 1)
             lighting->material.params["state"] = UUniformParam(3.0f);
         else if (mod2 == 0)
             lighting->material.params["state"] = UUniformParam(0.0f);
-        else if (mod2 == lightParams.count - 1)
+        else if (mod2 == light_params.count - 1)
             lighting->material.params["state"] = UUniformParam(2.0f);
         else
             lighting->material.params["state"] = UUniformParam(1.0f);
 
         //////////////////////////////////////
         render->BindFBO(&postfb);
-        postfb.BindTexture(mod2 == lightParams.count - 1 ? resScene : (mod2 % 2 == 0 ? resSceneB : resSceneA), UFB_ATTACHMENT_COLOR0);
+        postfb.BindTexture(mod2 == light_params.count - 1 ? resScene : (mod2 % 2 == 0 ? resSceneB : resSceneA), UFB_ATTACHMENT_COLOR0);
 
         OPENGL_CHECK_FOR_ERRORS();
                 

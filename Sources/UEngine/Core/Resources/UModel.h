@@ -2,6 +2,7 @@
 #include "..\GameMechanics\UGameMechanics.h"
 #include "..\Renderer\UMesh.h"
 #include "..\Basic\UIAnimatable.h"
+#include "..\Utils\enum.h"
 
 class UModel : public UResource, public UComponent, public UIRenderable, public UISkinAnimatable
 {
@@ -10,6 +11,7 @@ class UModel : public UResource, public UComponent, public UIRenderable, public 
 
 public:
 
+    virtual void AddToRenderQueue(map<int, vector<UMesh*>>& render_queue);
     virtual void Render(URENDER_PASS type, int light_index = 0);
     virtual void Render(UMaterial *mat);
     virtual void Update(double delta);
@@ -20,14 +22,14 @@ public:
 
     sphere GetBounds() const
     {
-        float maxRadius = 0.0f;
+        float max_radius = 0.0f;
         for each(auto mesh in meshes)
         {
-            if (maxRadius < mesh->GetBounds().radius)
-                maxRadius = mesh->GetBounds().radius;
+            if (max_radius < mesh->GetBounds().radius)
+                max_radius = mesh->GetBounds().radius;
         }
 
-        return sphere(vec3_zero, maxRadius);
+        return sphere(vec3_zero, max_radius);
     }
 
     UModel(void) {}

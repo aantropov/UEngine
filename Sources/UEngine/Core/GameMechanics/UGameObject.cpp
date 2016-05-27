@@ -15,7 +15,7 @@ void UGameObject::Render(UMaterial *m)
         auto renderable = dynamic_cast<UIRenderable*>(el);
         if (renderable != NULL)
         {
-            auto currentTransform = (local_transform * parent_transform);
+            auto currentTransform = local_transform * parent_transform;
             renderable->m.Set(currentTransform.matrix());
 
             auto model = dynamic_cast<UModel*>(el);
@@ -41,14 +41,14 @@ void UGameObject::Render(URENDER_PASS type)
         auto renderable = dynamic_cast<UIRenderable*>(el);
         if (renderable != NULL)
         {
-            auto currentTransform = (local_transform * parent_transform);
-            renderable->m.Set(currentTransform.matrix());
+            auto current_transform = local_transform * parent_transform;
+            renderable->m.Set(current_transform.matrix());
 
             auto model = dynamic_cast<UModel*>(el);
             if (model != nullptr)
             {
                 auto sph = model->GetBounds();
-                sph.center = currentTransform * sph.center;
+                sph.center = current_transform * sph.center;
 
                 if (IsSphereInFrustum(sph, render->current_camera.GetFrustum()))
                     renderable->Render(type);

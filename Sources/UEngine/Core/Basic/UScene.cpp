@@ -6,22 +6,22 @@
 void UScene::KeysProccessing()
 {
     // Camera moving
-    int xCenter = URenderer::GetInstance()->GetWidth() / 2, yCenter = URenderer::GetInstance()->GetHeight() / 2;
+    int x_center = URenderer::GetInstance()->GetWidth() / 2, y_center = URenderer::GetInstance()->GetHeight() / 2;
 
     move_delta[0] = 0.5f * ((double)UInput::IsKeyDown('D') - (double)UInput::IsKeyDown('A'));
     move_delta[1] = 0.5f * ((double)UInput::IsKeyDown('S') - (double)UInput::IsKeyDown('W'));
 
     UInput::GetCursorPos(cursor_position, cursor_position + 1);
-    rotate_delta[0] += (cursor_position[0] - xCenter)*0.1;
-    rotate_delta[1] += (cursor_position[1] - yCenter)*0.1;
+    rotate_delta[0] += (cursor_position[0] - x_center)*0.1;
+    rotate_delta[1] += (cursor_position[1] - y_center)*0.1;
 
-    static bool showCursor = false;
+    static bool show_cursor = false;
     if (UInput::IsKeyPressed('L'))
-        showCursor = !showCursor;
+        show_cursor = !show_cursor;
 
-    if (!showCursor)
-        UInput::SetCursorPos(xCenter, yCenter);
-    UInput::ShowCursor(showCursor);
+    if (!show_cursor)
+        UInput::SetCursorPos(x_center, y_center);
+    UInput::ShowCursor(show_cursor);
 }
 
 void UScene::UpdateLightParams()
@@ -37,20 +37,20 @@ void UScene::UpdateLightParams()
             ambient.w = lights[cur]->GetShadowDistanceMin();
             position.w = lights[cur]->GetShadowDistanceMax();
 
-            lightParams.position[cur] = position;
-            lightParams.ambient[cur] = ambient;
-            lightParams.diffuse[cur] = lights[cur]->GetDiffuse();
-            lightParams.specular[cur] = lights[cur]->GetSpecular();
-            lightParams.attenuation[cur] = vec3(lights[cur]->GetAttenuation());
+            light_params.position[cur] = position;
+            light_params.ambient[cur] = ambient;
+            light_params.diffuse[cur] = lights[cur]->GetDiffuse();
+            light_params.specular[cur] = lights[cur]->GetSpecular();
+            light_params.attenuation[cur] = vec3(lights[cur]->GetAttenuation());
 
-            lightParams.spotDirection[cur] = vec3(lights[cur]->GetSpotDirection());
-            lightParams.spotExponent[cur] = lights[cur]->GetSpotExponent();
-            lightParams.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
+            light_params.spotDirection[cur] = vec3(lights[cur]->GetSpotDirection());
+            light_params.spotExponent[cur] = lights[cur]->GetSpotExponent();
+            light_params.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
 
-            lightParams.transforms[cur] = lights[cur]->GetLightTransform();
-            lightParams.types[cur] = lights[cur]->GetType() + lights[cur]->IsShadowCaster();
+            light_params.transforms[cur] = lights[cur]->GetLightTransform();
+            light_params.types[cur] = lights[cur]->GetType() + lights[cur]->IsShadowCaster();
 
-            lightParams.light_index[cur] = i;
+            light_params.light_index[cur] = i;
 
             cur++;
         }
@@ -58,7 +58,7 @@ void UScene::UpdateLightParams()
         if (cur > MAX_LIGHTS)
             break;
     }
-    lightParams.count = cur;
+    light_params.count = cur;
 }
 
 //Update with deltaTime
@@ -89,6 +89,7 @@ void UScene::Render(URENDER_PASS type, UCamera camera)
 
     if (root != NULL)
         root->Render(type);
+
     render->model = mat4_identity;
 }
 

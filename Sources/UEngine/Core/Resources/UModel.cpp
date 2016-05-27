@@ -2,6 +2,22 @@
 #include "..\Utils\utils.h"
 #include "UTexture.h"
 #include "stdio.h"
+#include "..\Basic\UScene.h"
+
+void UModel:: AddToRenderQueue(map<int, vector<UMesh*>>& render_queue)
+{
+    URenderer::GetInstance()->PushModelMatrix();
+    m.Set();
+    for (int i = mesh_num - 1; i >= 0; i--)
+    {
+        if (count_playable_animations > 0)
+        {
+            meshes[i]->material.SetSkinningMatrixes(bone_matrixes, current_frame.bones.size());
+        }
+        meshes[i]->AddToRenderQueue(render_queue);
+    }
+    URenderer::GetInstance()->PopModelMatrix();
+}
 
 void UModel::Render(URENDER_PASS type, int light_index)
 {
@@ -9,9 +25,9 @@ void UModel::Render(URENDER_PASS type, int light_index)
     m.Set();
     for (int i = mesh_num - 1; i >= 0; i--)
     {
-        if (countPlayableAnimations > 0)
+        if (count_playable_animations > 0)
         {
-            meshes[i]->material.SetSkinningMatrixes(boneMatrixes, currentFrame.bones.size());
+            meshes[i]->material.SetSkinningMatrixes(bone_matrixes, current_frame.bones.size());
         }
         meshes[i]->Render(type, light_index);
     }
@@ -23,8 +39,8 @@ void UModel::Render(UMaterial *mat)
     URenderer::GetInstance()->PushModelMatrix();
     m.Set();
 
-    if (countPlayableAnimations > 0)
-        mat->SetSkinningMatrixes(boneMatrixes, currentFrame.bones.size());
+    if (count_playable_animations > 0)
+        mat->SetSkinningMatrixes(bone_matrixes, current_frame.bones.size());
 
     for (int i = mesh_num - 1; i >= 0; i--)
         meshes[i]->Render(mat);
@@ -141,7 +157,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                 fread(&sb, 1, 1, file);
 
                 fread(&shin, 1, 1, file);
-                
+
                 mesh->material = UMaterial(
                     vec4(color(dr, dg, db, da)),
                     vec4(color(sr, sg, sb, 255)),
