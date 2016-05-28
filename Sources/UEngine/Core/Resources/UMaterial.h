@@ -59,6 +59,7 @@ class UMaterial : public UResource, public UNode
 
     std::string name;
 
+    bool is_depth_write_enabled = true;
     bool is_shadow_caster = true;
     int queue = 200;
 

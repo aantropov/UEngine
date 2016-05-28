@@ -3,7 +3,7 @@
 #include "ULight.h"
 #include "..\Renderer\UMesh.h"
 
-void UScene::USceneNode:: AddChild(USceneNode* n)
+void UScene::USceneNode::AddChild(USceneNode* n)
 {
     node->children.push_back(n->node);
     children.push_back(n);
@@ -174,6 +174,8 @@ void UScene::RenderQueue(URENDER_PASS type, UCamera camera)
     vector<int> keys;
     for (auto it = render_queue.begin(); it != render_queue.end(); ++it)
         keys.push_back(it->first);
+
+    keys.erase(unique(keys.begin(), keys.end()), keys.end());
 
     std::sort(keys.begin(), keys.end());
 

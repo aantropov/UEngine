@@ -156,6 +156,8 @@ public:
     void UniformMatrix4(const unsigned int location, const unsigned int num, const float *variable) const;
     void UniformMatrix3(const unsigned int location, const unsigned int num, const float *variable) const;
 
+    void DepthWrite(bool value) const;
+
     void DrawSegment(const vec3& p1, const vec3& p2, const vec3& color);
     void DrawTransform(::transform xf);
     void DrawSolidPolygon(const UVertex* vertices, int vertexCount, const vec4 color);

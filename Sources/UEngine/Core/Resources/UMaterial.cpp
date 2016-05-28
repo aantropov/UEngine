@@ -152,7 +152,8 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
             }
         }
 
-        xml.TryGetElementb(path + "material/is_shadow_caster/", is_shadow_caster);
+        xml.TryGetElementb(path + "material/shadow_caster/", is_shadow_caster);
+        xml.TryGetElementb(path + "material/depth_write/", is_depth_write_enabled);
         xml.TryGetElementi(path + "material/queue/", queue);
 
         if (xml.isExistElement(path + "material/param_num/"))
@@ -322,6 +323,8 @@ void UMaterial::Render(URENDER_PASS type, int light_index)
         OPENGL_CHECK_FOR_ERRORS();
 
     }
+
+    render->DepthWrite(is_depth_write_enabled);
 }
 
 void UMaterial::Render(UShaderProgram* sp)

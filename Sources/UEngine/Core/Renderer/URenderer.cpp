@@ -722,6 +722,11 @@ void URenderer::Uniform2(const unsigned int location, const unsigned int num, co
         glUniform2fv(location, num, variable);
 }
 
+void URenderer::DepthWrite(bool value) const
+{
+    glDepthMask(value);
+}
+
 bool URenderer::SetVerticalSynchronization(bool bEnabled)
 {
     if (!wglSwapIntervalEXT)
