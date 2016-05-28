@@ -3,6 +3,70 @@
 #include "ULight.h"
 #include "..\Renderer\UMesh.h"
 
+void UScene::USceneNode:: AddChild(USceneNode* n)
+{
+    node->children.push_back(n->node);
+    children.push_back(n);
+}
+
+void UScene::USceneNode::AddToRenderQueue(map<int, list<pair<mat4, UMesh*>>>& render_queue)
+{
+    auto render = URenderer::GetInstance();
+    render->PushModelMatrix();
+
+    auto currentTransform = node->local_transform * node->parent_transform;
+    render->model_view *= currentTransform.matrix();
+
+    node->AddToRenderQueue(render_queue);
+    for (unsigned int i = 0; i < children.size(); i++) {
+        if (children[i] != NULL)
+            children[i]->AddToRenderQueue(render_queue);
+    }
+
+    render->PopModelMatrix();
+}
+
+void UScene::USceneNode::Update(double delta)
+{
+    if (node != NULL && !is_already_updated)
+    {
+        node->Update(delta);
+        is_already_updated = true;
+    }
+
+    for (unsigned int i = 0; i < children.size(); i++)
+    {
+        children[i]->node->parent_object = node;
+        children[i]->node->parent_transform = node->local_transform * node->parent_transform;
+        children[i]->Update(delta);
+    }
+
+    is_already_updated = false;
+}
+
+void UScene::USceneNode::DeleteTopology()
+{
+    for (unsigned int i = 0; i < children.size(); i++) {
+        USceneNode *temp = NULL;
+        temp = dynamic_cast<USceneNode*>(children[i]);
+
+        if (temp != NULL) {
+            temp->DeleteTopology();
+            delete temp;
+        }
+    }
+}
+
+void UScene::USceneNode::Free()
+{
+    children.clear();
+}
+
+UScene::USceneNode:: ~USceneNode()
+{
+    Free();
+}
+
 //Process input keys
 void UScene::KeysProccessing()
 {

@@ -60,71 +60,13 @@ public:
     public:
 
         UENGINE_DECLSPEC USceneNode(UGameObject* n) : node(n), is_already_updated(false) {}
+        UENGINE_DECLSPEC ~USceneNode();
 
-        void UENGINE_DECLSPEC AddChild(USceneNode* n)
-        {
-            node->children.push_back(n->node);
-            children.push_back(n);
-        }
-
-        void UENGINE_DECLSPEC AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
-        {
-            node->AddToRenderQueue(render_queue);
-            for (unsigned int i = 0; i < children.size(); i++) {
-                if (children[i] != NULL)
-                    children[i]->AddToRenderQueue(render_queue);
-            }
-        }
-
-        void UENGINE_DECLSPEC Render(URENDER_PASS type)
-        {
-            node->Render(type);
-            for (unsigned int i = 0; i < children.size(); i++) {
-                if (children[i] != NULL)
-                    children[i]->Render(type);
-            }
-        }
-
-        void UENGINE_DECLSPEC Update(double delta)
-        {
-            if (node != NULL && !is_already_updated)
-            {
-                node->Update(delta);
-                is_already_updated = true;
-            }
-
-            for (unsigned int i = 0; i < children.size(); i++)
-            {
-                children[i]->node->parent_object = node;
-                children[i]->node->parent_transform = node->local_transform * node->parent_transform;
-                children[i]->Update(delta);
-            }
-
-            is_already_updated = false;
-        }
-
-        void UENGINE_DECLSPEC DeleteTopology()
-        {
-            for (unsigned int i = 0; i < children.size(); i++) {
-                USceneNode *temp = NULL;
-                temp = dynamic_cast<USceneNode*>(children[i]);
-
-                if (temp != NULL) {
-                    temp->DeleteTopology();
-                    delete temp;
-                }
-            }
-        }
-
-        void UENGINE_DECLSPEC Free()
-        {
-            children.clear();
-        }
-
-        UENGINE_DECLSPEC ~USceneNode()
-        {
-            Free();
-        }
+        void UENGINE_DECLSPEC AddChild(USceneNode* n);
+        void UENGINE_DECLSPEC AddToRenderQueue(map<int, list<pair<mat4, UMesh*>>>& render_queue);
+        void UENGINE_DECLSPEC Update(double delta);
+        void UENGINE_DECLSPEC DeleteTopology();
+        void UENGINE_DECLSPEC Free();
     };
 
     void UENGINE_DECLSPEC AddLight(ULight* n)

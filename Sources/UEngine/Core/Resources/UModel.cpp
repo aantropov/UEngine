@@ -7,7 +7,6 @@
 void UModel:: AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    render_transform.Set();
     for (int i = mesh_num - 1; i >= 0; i--)
     {
         if (count_playable_animations > 0)
@@ -22,7 +21,6 @@ void UModel:: AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
 void UModel::Render(URENDER_PASS type, int light_index)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    render_transform.Set();
     for (int i = mesh_num - 1; i >= 0; i--)
     {
         if (count_playable_animations > 0)

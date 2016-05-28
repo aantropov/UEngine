@@ -15,8 +15,6 @@ class UIRenderable
 protected:
 public:
     
-    UMatrix render_transform;
-
     virtual void Render(URENDER_PASS type, int light_index = 0) = 0;   
     virtual void AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue) = 0;
 

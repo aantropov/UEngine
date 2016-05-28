@@ -12,10 +12,7 @@ UMesh::~UMesh(void)
 
 void UMesh::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
 {
-    URenderer::GetInstance()->PushModelMatrix();
-    render_transform.Set();
     render_queue[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
-    URenderer::GetInstance()->PopModelMatrix();
 }
 
 void UMesh::InitializeMaterial(URENDER_PASS type)
@@ -93,13 +90,10 @@ void UMesh::Render(URENDER_PASS type, int light_index)
     if (type == URENDER_PASS_DEPTH_SHADOW && !material.IsShadowCaster())
         return;
 
-    URenderer::GetInstance()->PushModelMatrix();
-    render_transform.Set();
     material.Render(type, light_index);
     URenderer::GetInstance()->BindVAO(&vb);
     URenderer::GetInstance()->BindVBO(&ib);
     URenderer::GetInstance()->DrawBuffer(&ib);
-    URenderer::GetInstance()->PopModelMatrix();
 }
 
 sphere UMesh::GetBounds() const { return boundSphere; }

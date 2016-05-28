@@ -10,16 +10,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     UModel *test_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\test_model.xml", URESOURCE_MODEL));
     UModel *sky_sphere_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\sky_sphere_model.xml", URESOURCE_MODEL));
-    
-    const int maxObjs = 16;
+
+    const int maxObjs = 4;
     UGameObject *gameObject[maxObjs];
-   
+
     UScene scene;
     scene.root = new UScene::USceneNode(new UGameObject());
 
     auto sky = new UGameObject(sky_sphere_model);
     sky->AddComponent(new USkyboxComponent());
-    //sky->local_transform.scale = vec3(1.0f, 1.0f, 1.0f);
     scene.root->AddChild(new UScene::USceneNode(sky));
 
     for (int i = 0; i < sqrt(maxObjs); i++)

@@ -16,14 +16,11 @@ void UGameObject::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_que
         auto renderable = dynamic_cast<UIRenderable*>(el);
         if (renderable != NULL)
         {
-            auto currentTransform = local_transform * parent_transform;
-            renderable->render_transform.Set(currentTransform.matrix());
-
             auto model = dynamic_cast<UModel*>(el);
             if (model != nullptr)
             {
                 auto sph = model->GetBounds();
-                sph.center = currentTransform * sph.center;
+                sph.center = render->model_view * sph.center;
 
                 if (IsSphereInFrustum(sph, render->current_camera.GetFrustum()))
                     renderable->AddToRenderQueue(render_queue);
@@ -34,37 +31,10 @@ void UGameObject::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_que
     }
 }
 
-void UGameObject::Render(URENDER_PASS type)
-{
-    auto render = URenderer::GetInstance();
-    for each(auto el in components)
-    {
-        auto renderable = dynamic_cast<UIRenderable*>(el);
-        if (renderable != NULL)
-        {
-            auto current_transform = local_transform * parent_transform;
-            renderable->render_transform.Set(current_transform.matrix());
-
-            auto model = dynamic_cast<UModel*>(el);
-            if (model != nullptr)
-            {
-                auto sph = model->GetBounds();
-                sph.center = current_transform * sph.center;
-
-                if (IsSphereInFrustum(sph, render->current_camera.GetFrustum()))
-                    renderable->Render(type);
-            }
-            else
-                renderable->Render(type);
-        }
-    }
-}
-
 void UGameObject::Update(double delta)
 {
     for each(auto el in components)
         el->Update(delta);
-
 }
 
 UGameObject::UGameObject()
