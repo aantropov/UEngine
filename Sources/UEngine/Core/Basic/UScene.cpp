@@ -1,6 +1,7 @@
 #include "UScene.h"
 #include "..\Renderer\URenderer.h"
 #include "ULight.h"
+#include "..\Renderer\UMesh.h"
 
 //Process input keys
 void UScene::KeysProccessing()
@@ -79,7 +80,7 @@ void UScene::Update(double deltaTime)
 
     UpdateLightParams();
 }
-
+/*
 void UScene::Render(URENDER_PASS type, UCamera camera)
 {
     auto render = URenderer::GetInstance();
@@ -90,7 +91,7 @@ void UScene::Render(URENDER_PASS type, UCamera camera)
     if (root != NULL)
         root->Render(type);
 
-    render->model = mat4_identity;
+    render->model_view = mat4_identity;
 }
 
 void UScene::Render(UMaterial *m, UCamera camera)
@@ -102,7 +103,43 @@ void UScene::Render(UMaterial *m, UCamera camera)
 
     if (root != NULL)
         root->Render(m);
-    render->model = mat4_identity;
+    render->model_view = mat4_identity;
+}
+*/
+
+void  UScene::PrepareRenderQueue()
+{
+    auto render = URenderer::GetInstance();
+    render->model_view = mat4_identity;
+
+    render_queue.clear();
+    root->AddToRenderQueue(render_queue);
+}
+
+void UScene::RenderQueue(URENDER_PASS type, UCamera camera)
+{
+    vector<int> keys;
+    for (auto it = render_queue.begin(); it != render_queue.end(); ++it)
+        keys.push_back(it->first);
+
+    std::sort(keys.begin(), keys.end());
+
+    auto render = URenderer::GetInstance();
+
+    render->SetCurrentCamera(camera);
+    render->current_camera.UpdateFrustum();
+
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        auto vec = render_queue[*it];
+        for (auto mesh_it = vec.begin(); mesh_it != vec.end(); ++mesh_it)
+        {
+            render->model_view = (*mesh_it).first;
+            (*mesh_it).second->Render(type);
+        }
+    }
+
+    render->model_view = mat4_identity;
 }
 
 UScene::~UScene(void)

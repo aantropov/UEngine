@@ -4,10 +4,10 @@
 #include "stdio.h"
 #include "..\Basic\UScene.h"
 
-void UModel:: AddToRenderQueue(map<int, vector<UMesh*>>& render_queue)
+void UModel:: AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    m.Set();
+    render_transform.Set();
     for (int i = mesh_num - 1; i >= 0; i--)
     {
         if (count_playable_animations > 0)
@@ -22,7 +22,7 @@ void UModel:: AddToRenderQueue(map<int, vector<UMesh*>>& render_queue)
 void UModel::Render(URENDER_PASS type, int light_index)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    m.Set();
+    render_transform.Set();
     for (int i = mesh_num - 1; i >= 0; i--)
     {
         if (count_playable_animations > 0)
@@ -37,7 +37,7 @@ void UModel::Render(URENDER_PASS type, int light_index)
 void UModel::Render(UMaterial *mat)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    m.Set();
+    render_transform.Set();
 
     if (count_playable_animations > 0)
         mat->SetSkinningMatrixes(bone_matrixes, current_frame.bones.size());

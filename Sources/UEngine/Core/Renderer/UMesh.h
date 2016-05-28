@@ -34,8 +34,6 @@ class UMesh : public UNode, public UIRenderable
 
 public:
 
-    UMatrix m;
-
     // Data    
     std::string name;
     UVertexBuffer vb;
@@ -45,7 +43,7 @@ public:
     void InitializeMaterial(URENDER_PASS type);
     virtual void Initialize();
 
-    virtual void AddToRenderQueue(map<int, vector<UMesh*>>& render_queue);
+    virtual void AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue);
     virtual void Render(UMaterial *mat);
     virtual void Render(URENDER_PASS type, int light_index = 0);
 

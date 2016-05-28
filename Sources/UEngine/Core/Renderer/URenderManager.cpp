@@ -81,7 +81,7 @@ void URenderManager::Render(UScene* scene)
             vsm_fbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            scene->Render(URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
+            scene->RenderQueue(URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
         }
     }
     

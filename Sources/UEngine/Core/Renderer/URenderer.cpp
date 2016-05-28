@@ -14,7 +14,7 @@ URenderer::URenderer()
 {
     previousVAO = 0;
     previousIB = 0;
-    model = mat4_identity;
+    model_view = mat4_identity;
 }
 
 URenderer::~URenderer()
@@ -47,12 +47,12 @@ void URenderer::SetupCameraLightForShaderProgram(UCamera &camera)
     //deprecated
 }
 
-void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
+void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model_view)
 {
     mat4 view = current_camera.GetView();
     mat4 viewProjection = current_camera.GetProjection() * view;
 
-    UniformMatrix4(shd->locations.transform_model, 1, model.m);
+    UniformMatrix4(shd->locations.transform_model, 1, model_view.m);
     UniformMatrix4(shd->locations.transform_view, 1, view.m);
     UniformMatrix4(shd->locations.transform_viewProjection, 1, viewProjection.m);
 
@@ -64,13 +64,13 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 
     if (shd->locations.transform_normal != -1)
     {
-        mat3 normal = transpose(mat3(inverse(model)));
+        mat3 normal = transpose(mat3(inverse(model_view)));
         UniformMatrix3(shd->locations.transform_normal, 1, normal.m);
     }
 
     if (shd->locations.transform_modelViewProjection != -1)
     {
-        mat4 modelViewProjection = viewProjection * model;
+        mat4 modelViewProjection = viewProjection * model_view;
         UniformMatrix4(shd->locations.transform_modelViewProjection, 1, modelViewProjection.m);
     }
 
@@ -85,7 +85,7 @@ void URenderer::SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model)
 
 void  URenderer::PushModelMatrix()
 {
-    model_view_matrix_stack.push_back(model);
+    model_view_matrix_stack.push_back(model_view);
 }
 
 void  URenderer::PopModelMatrix()
@@ -93,11 +93,11 @@ void  URenderer::PopModelMatrix()
     //Secure code
     if (model_view_matrix_stack.size() > 0)
     {
-        model = model_view_matrix_stack.back();
+        model_view = model_view_matrix_stack.back();
         model_view_matrix_stack.pop_back();
     }
     else
-        model = mat4_identity;
+        model_view = mat4_identity;
 }
 
 void URenderer::SetCurrentCamera(UCamera cam)

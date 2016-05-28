@@ -75,15 +75,15 @@ public:
     void Release();
 
     //Operations with Stack
-    mat4 model;
+    mat4 model_view;
     void PushModelMatrix();
     void PopModelMatrix();
 
     //Camera
     UCamera GetCurrentCamera() const;
     void SetCurrentCamera(UCamera cam);
-    void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model);
-    void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model);
+    void SetupCameraForShaderProgram(UShaderProgram *shd, mat4 &model_view);
+    void SetupCameraForShaderProgram(UCamera *cam, UShaderProgram *shd, const mat4 &model_view);
     void SetupCameraLightForShaderProgram(UCamera &camera);
 
     //Texture & Cubemap

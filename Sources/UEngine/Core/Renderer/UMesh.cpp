@@ -10,11 +10,11 @@ UMesh::~UMesh(void)
     Free();
 }
 
-void UMesh::AddToRenderQueue(map<int, vector<UMesh*>>& render_queue)
+void UMesh::AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
-    m.Set();
-    render_queue[material.GetQueue()].push_back(this);
+    render_transform.Set();
+    render_queue[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
     URenderer::GetInstance()->PopModelMatrix();
 }
 
@@ -92,7 +92,7 @@ void UMesh::Render(UMaterial *mat)
 {
     URenderer::GetInstance()->PushModelMatrix();
 
-    m.Set();
+    render_transform.Set();
     mat->Render(URENDER_PASS_FORWARD);
 
     URenderer::GetInstance()->BindVAO(&vb);
@@ -107,7 +107,7 @@ void UMesh::Render(URENDER_PASS type, int light_index)
         return;
 
     URenderer::GetInstance()->PushModelMatrix();
-    m.Set();
+    render_transform.Set();
     material.Render(type, light_index);
     URenderer::GetInstance()->BindVAO(&vb);
     URenderer::GetInstance()->BindVBO(&ib);

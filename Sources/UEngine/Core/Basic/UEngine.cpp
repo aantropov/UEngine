@@ -73,14 +73,19 @@ void UEngine::Run()
             render->draw_ñalls = 0;
 
             if (current_scene != NULL)
+            {
+                current_scene->PrepareRenderQueue();
                 render_manager->Render(current_scene);
+            }
 
             SwapBuffers(UWindow::GetHDC());
 
             deltaTime += GetTickCount() - beginFrameTime;
 
             if (current_scene != NULL)
-                current_scene->Update(GetTickCount() - beginFrameTime);
+            {
+                current_scene->Update(GetTickCount() - beginFrameTime);                
+            }
 
             elapsedTime += (float)(GetTickCount() - beginFrameTime) / 1000.0f;
             ++fps;

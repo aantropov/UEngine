@@ -47,7 +47,7 @@ class UScene
     double move_delta[2];
 
     vector<ULight*> lights;
-    map<int, vector<UMesh*>> render_queue;
+    map<int, vector<pair<mat4,UMesh*>>> render_queue;
 
 public:
 
@@ -67,9 +67,13 @@ public:
             children.push_back(n);
         }
 
-        void UENGINE_DECLSPEC RefreshRenderQueue()
+        void UENGINE_DECLSPEC AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue)
         {
-        
+            node->AddToRenderQueue(render_queue);
+            for (unsigned int i = 0; i < children.size(); i++) {
+                if (children[i] != NULL)
+                    children[i]->AddToRenderQueue(render_queue);
+            }
         }
 
         void UENGINE_DECLSPEC Render(URENDER_PASS type)
@@ -150,8 +154,11 @@ public:
     void UENGINE_DECLSPEC Update(double deltaTime);
     void UENGINE_DECLSPEC UpdateLightParams();
 
-    void UENGINE_DECLSPEC Render(URENDER_PASS type, UCamera camera);
-    void UENGINE_DECLSPEC Render(UMaterial *m, UCamera camera);
+    void UENGINE_DECLSPEC PrepareRenderQueue();
+    void UENGINE_DECLSPEC RenderQueue(URENDER_PASS type, UCamera camera);
+
+    //void UENGINE_DECLSPEC Render(URENDER_PASS type, UCamera camera);
+    //void UENGINE_DECLSPEC Render(UMaterial *m, UCamera camera);
 
     UENGINE_DECLSPEC UScene(void) : root(NULL)
     {
