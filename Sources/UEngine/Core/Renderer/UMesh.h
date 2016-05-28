@@ -43,8 +43,7 @@ public:
     void InitializeMaterial(URENDER_PASS type);
     virtual void Initialize();
 
-    virtual void AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue);
-    virtual void Render(UMaterial *mat);
+    virtual void AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue);
     virtual void Render(URENDER_PASS type, int light_index = 0);
 
     sphere GetBounds() const;

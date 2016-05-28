@@ -10,7 +10,7 @@ UMesh::~UMesh(void)
     Free();
 }
 
-void UMesh::AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue)
+void UMesh::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
     render_transform.Set();
@@ -86,19 +86,6 @@ void UMesh::Initialize()
     InitializeMaterial(URENDER_PASS_DEFFERED);
 
     OPENGL_CHECK_FOR_ERRORS();
-}
-
-void UMesh::Render(UMaterial *mat)
-{
-    URenderer::GetInstance()->PushModelMatrix();
-
-    render_transform.Set();
-    mat->Render(URENDER_PASS_FORWARD);
-
-    URenderer::GetInstance()->BindVAO(&vb);
-    URenderer::GetInstance()->BindVBO(&ib);
-    URenderer::GetInstance()->DrawBuffer(&ib);
-    URenderer::GetInstance()->PopModelMatrix();
 }
 
 void UMesh::Render(URENDER_PASS type, int light_index)

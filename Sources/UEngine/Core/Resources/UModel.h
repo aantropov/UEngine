@@ -11,9 +11,8 @@ class UModel : public UResource, public UComponent, public UIRenderable, public 
 
 public:
 
-    virtual void AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue);
+    virtual void AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue);
     virtual void Render(URENDER_PASS type, int light_index = 0);
-    virtual void Render(UMaterial *mat);
     virtual void Update(double delta);
 
     virtual void Free();

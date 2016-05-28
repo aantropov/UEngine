@@ -80,6 +80,7 @@ void UScene::Update(double deltaTime)
 
     UpdateLightParams();
 }
+
 /*
 void UScene::Render(URENDER_PASS type, UCamera camera)
 {
@@ -93,21 +94,9 @@ void UScene::Render(URENDER_PASS type, UCamera camera)
 
     render->model_view = mat4_identity;
 }
-
-void UScene::Render(UMaterial *m, UCamera camera)
-{
-    auto render = URenderer::GetInstance();
-
-    render->SetCurrentCamera(camera);
-    render->current_camera.UpdateFrustum();
-
-    if (root != NULL)
-        root->Render(m);
-    render->model_view = mat4_identity;
-}
 */
 
-void  UScene::PrepareRenderQueue()
+void UScene::PrepareRenderQueue()
 {
     auto render = URenderer::GetInstance();
     render->model_view = mat4_identity;

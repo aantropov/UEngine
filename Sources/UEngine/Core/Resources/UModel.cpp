@@ -4,7 +4,7 @@
 #include "stdio.h"
 #include "..\Basic\UScene.h"
 
-void UModel:: AddToRenderQueue(map<int, vector<pair<mat4,UMesh*>>>& render_queue)
+void UModel:: AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
     render_transform.Set();
@@ -31,20 +31,6 @@ void UModel::Render(URENDER_PASS type, int light_index)
         }
         meshes[i]->Render(type, light_index);
     }
-    URenderer::GetInstance()->PopModelMatrix();
-}
-
-void UModel::Render(UMaterial *mat)
-{
-    URenderer::GetInstance()->PushModelMatrix();
-    render_transform.Set();
-
-    if (count_playable_animations > 0)
-        mat->SetSkinningMatrixes(bone_matrixes, current_frame.bones.size());
-
-    for (int i = mesh_num - 1; i >= 0; i--)
-        meshes[i]->Render(mat);
-
     URenderer::GetInstance()->PopModelMatrix();
 }
 
