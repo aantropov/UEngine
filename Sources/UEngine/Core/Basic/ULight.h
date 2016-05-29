@@ -12,7 +12,7 @@ class UShaderProgram;
 
 class ULight : public UGameObject
 {
-    ULIGHT_TYPE type;
+    ULightType type;
 
     vec4 ambient;
     vec4 diffuse;
@@ -41,7 +41,7 @@ public:
     std::vector<UTexture*> UENGINE_DECLSPEC GetDepthTextures();
     std::vector<UCamera> UENGINE_DECLSPEC GetCameras();
 
-    ULIGHT_TYPE UENGINE_DECLSPEC GetType() const { return type; }
+    ULightType UENGINE_DECLSPEC GetType() const { return type; }
     vec4 UENGINE_DECLSPEC GetAmbient() const { return ambient; }
     vec4 UENGINE_DECLSPEC GetDiffuse() const { return diffuse; }
     vec4 UENGINE_DECLSPEC GetSpecular() const { return specular; }
@@ -56,7 +56,7 @@ public:
     float UENGINE_DECLSPEC GetShadowDistanceMin() const { return shadow_distance_min; }
 
     void UENGINE_DECLSPEC IsShadowCaster(bool cast) { is_casting_shadows = cast; UpdateDepthTextures(); }
-    void UENGINE_DECLSPEC SetType(ULIGHT_TYPE t) { type = t; }
+    void UENGINE_DECLSPEC SetType(ULightType t) { type = t; }
     void UENGINE_DECLSPEC SetAmbient(vec4 v) { ambient = v; }
     void UENGINE_DECLSPEC SetDiffuse(vec4 v) { diffuse = v; }
     void UENGINE_DECLSPEC SetSpecular(vec4 v) { specular = v; }

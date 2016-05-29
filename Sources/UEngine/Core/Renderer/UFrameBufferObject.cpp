@@ -19,14 +19,14 @@ bool UFrameBufferObject::Initialize()
     return (_id != -1);
 }
 
-void UFrameBufferObject::BindTexture(UTexture *tex, UFRAMEBUFFER_ATTACHMENT type)
+void UFrameBufferObject::BindTexture(UTexture *tex, UFramebufferAttachment type)
 {
     URenderer::GetInstance()->BindFBO(this);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, type, GL_TEXTURE_2D, tex->GetId(), 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum)type, GL_TEXTURE_2D, tex->GetId(), 0);
 }
 
-void UFrameBufferObject::UnbindTexture(UFRAMEBUFFER_ATTACHMENT type)
+void UFrameBufferObject::UnbindTexture(UFramebufferAttachment type)
 {
     URenderer::GetInstance()->BindFBO(this);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, type, GL_TEXTURE_2D, 0, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum)type, GL_TEXTURE_2D, 0, 0);
 }

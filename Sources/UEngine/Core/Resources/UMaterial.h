@@ -79,8 +79,8 @@ public:
 
     void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }
 
-    UShaderProgram* GetShaderProgram(URENDER_PASS type);
-    void SetShaderProgram(UShaderProgram *_sp, URENDER_PASS type);
+    UShaderProgram* GetShaderProgram(URenderPass type);
+    void SetShaderProgram(UShaderProgram *_sp, URenderPass type);
 
     void AddUniformUnit(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
     void AddUniformUnit(pair<UCubemap*, unsigned int> tex) { cubemaps.push_back(tex); }
@@ -88,7 +88,7 @@ public:
     void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
 
     //Setup material parameters in Shader
-    virtual void Render(URENDER_PASS type, int light_index = -1);
+    virtual void Render(URenderPass type, int light_index = -1);
 
     void Render(UShaderProgram* sp);
     ~UMaterial(void) {}

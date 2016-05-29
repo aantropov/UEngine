@@ -17,9 +17,9 @@ public:
     
     static UScriptEngine* GetInstance();
     
-    static bool MessageBox(std::string text)
+    static bool MsgBox(std::string text)
     {
-        ULogger::GetInstance()->Message(text, ULOG_MSG_INFO, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message(text, ULogType::Info, ULogTarget::MsgBox);
         return true;
     }
     

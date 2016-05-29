@@ -20,7 +20,7 @@ void UPostEffect::AddTexture(UTexture* tex, int channel)
     material.AddUniformUnit(std::pair<UTexture*, int>(tex, channel));
 }
 
-void UPostEffect::Render(URENDER_PASS type, int light_index)
+void UPostEffect::Render(URenderPass type, int light_index)
 {
     this->material.params["time"] = (float)GetTickCount();
     this->UMesh::Render(type, light_index);
@@ -41,11 +41,11 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
     {
         this->name = xml.GetElement(path + "post_effect/name/");
 
-        UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " shader program", URESOURCE_SHADER_PROGRAM);
+        UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " shader program", UResourceType::ShaderProgram);
         shader_program->Load(xml, path + "post_effect/");
 
-        material.SetShaderProgram(shader_program, URENDER_PASS_FORWARD);
-        material.SetShaderProgram(shader_program, URENDER_PASS_DEFFERED);
+        material.SetShaderProgram(shader_program, URenderPass::Forward);
+        material.SetShaderProgram(shader_program, URenderPass::Deffered);
 
         ib.Create(2);
 
@@ -79,19 +79,19 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
                 std::string current_tex = path + "post_effect/textures/tex_" + string(tex_buffer) + "/";
 
                 auto tex = pair<UTexture*, unsigned int>(
-                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)),
+                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
                     atoi(xml.GetElement(current_tex + "channel/").c_str()));
                 tex.first->name = xml.GetElement(current_tex + "name/");
                 material.AddUniformUnit(tex);
             }
         }
-        vb.SetState(UVBO_DRAW::UVBO_DYNAMIC);
+        vb.SetState(UBufferUsage::Dynamic);
         Initialize();
 
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load post effect (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load post effect (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;

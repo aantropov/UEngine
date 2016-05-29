@@ -89,7 +89,7 @@ public:
 
     void UENGINE_DECLSPEC PrepareRenderQueue(URenderQueue& render_queue);
 
-    //void UENGINE_DECLSPEC Render(URENDER_PASS type, UCamera camera);
+    //void UENGINE_DECLSPEC Render(URenderPass type, UCamera camera);
     
     UENGINE_DECLSPEC UScene(void) : root(NULL)
     {

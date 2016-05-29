@@ -31,7 +31,7 @@ extern int g_LuaError;
         { \
             char message[UE_MAXCHAR]; \
             sprintf_s(message,"Lua expression \"" #expression "\" Error: %s\n", lua_tostring(state, -1)); \
-            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+            ULogger::GetInstance()->Message(message, ULogType::Error, ULogTarget::MsgBox); \
         } \
     }
 #endif //UE_DEBUG

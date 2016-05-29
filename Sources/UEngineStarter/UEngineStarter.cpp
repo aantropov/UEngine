@@ -8,8 +8,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UEngine e;
     e.Initialize();
 
-    UModel *test_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\test_model.xml", URESOURCE_MODEL));
-    UModel *sky_sphere_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\sky_sphere_model.xml", URESOURCE_MODEL));
+    UModel *test_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\test_model.xml", UResourceType::Model));
+    UModel *sky_sphere_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\sky_sphere_model.xml", UResourceType::Model));
 
     const int maxObjs = 4;
     UGameObject *gameObject[maxObjs];
@@ -30,9 +30,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             scene.root->AddChild(new UScene::USceneNode(gameObject[i + i*j]));
         }
 
-    //test_model->animations["Test"]->StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
+    //test_model->animations["Test"]->StartAnimation(GetTickCount(), PlayLoop);
 
-    UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    UScript *script = dynamic_cast<UScript*>(e.rf.Create(UResourceType::Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
 
     vec3 atten = vec3(0.5f, 0.0f, 0.f);
@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     light->SetAttenuation(atten * 1.75);
     light->SetAmbient(vec4_one * 0.0025f);
     light->IsShadowCaster(true);
-    light->SetType(ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL);
+    light->SetType(ULightType::Directional);
     light->SetDiffuse(rand_color);
 
     scene.root->AddChild(new UScene::USceneNode(light));
@@ -64,11 +64,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         additional_light->SetDiffuse(rand_color);
         additional_light->SetAmbient(vec4_x * 0.01f);
-        additional_light->SetType(ULIGHT_TYPE::ULIGHT_TYPE_SPOT);
+        additional_light->SetType(ULightType::Spot);
 
         scene.root->AddChild(new UScene::USceneNode(additional_light));
         scene.AddLight(additional_light);
-        script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+        script = dynamic_cast<UScript*>(e.rf.Create(UResourceType::Script));
         script->LoadFromFile("data\\Scripts\\test_script.xml");
         //additional_light->AddComponent((UComponent*)script);
     }
@@ -84,7 +84,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     node->AddChild(new UScene::USceneNode(light7));
     node->AddChild(new UScene::USceneNode(light8));
 
-    /*UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", URESOURCE_MODEL));
+    /*UModel *m = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\scene_model.xml", Model));
 
     ULight *light1 = new ULight(&e.rf, vec4(10.0f, 10.0f, 0.0f, 0.0f));
     ULight *light2 = new ULight(&e.rf, vec4(1.0f, 1.0f, 1.0f, 0.0f));
@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     ULight *light7 = new ULight(&e.rf, vec4(-5.0f, 4.0f, 5.0f, 0.0f));
     ULight *light8 = new ULight(&e.rf, vec4(-2.0f, 30.0f, 1.0f, 0.0f));
 
-    UScript *script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    UScript *script = dynamic_cast<UScript*>(e.rf.Create(Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
 
     light8->SetAttenuation(vec3(0.0f, 0.004f, 0.0f));
@@ -104,25 +104,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     light8->SetSpotExponent(10.0f);
     light8->SetSpotDirection(vec4(0.0f, -1.0f, 0.0f, 1.0f));
 
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    script = dynamic_cast<UScript*>(e.rf.Create(Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
     light7->AddComponent((UComponent*)script);
 
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    script = dynamic_cast<UScript*>(e.rf.Create(Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
     light6->AddComponent((UComponent*)script);
 
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    script = dynamic_cast<UScript*>(e.rf.Create(Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
     light5->AddComponent((UComponent*)script);
 
-    script = dynamic_cast<UScript*>(e.rf.Create(URESOURCE_SCRIPT));
+    script = dynamic_cast<UScript*>(e.rf.Create(Script));
     script->LoadFromFile("data\\Scripts\\test_script.xml");
     light1->AddComponent((UComponent*)script);
 
     light8->castShadows = true;
 
-    UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\skybox_model.xml", URESOURCE_MODEL));
+    UModel *skybox_s = dynamic_cast<UModel*>(e.rf.Load("data\\Models\\skybox_model.xml", Model));
 
     node->AddChild(new UScene::USceneNode(new UGameObject(skybox_s)));
     node->AddChild(new UScene::USceneNode(gameObject));

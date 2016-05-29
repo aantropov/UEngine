@@ -21,7 +21,7 @@ bool UXMLFile::OpenFile(string path)
     fopen_s(&fXml, path.c_str(), "rb");
     if (fXml == NULL)
     {
-        ULogger::GetInstance()->Message("XMLFile: Can`t open file " + path, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message("XMLFile: Can`t open file " + path, ULogType::Error);
         return false;
     }
 
@@ -191,7 +191,7 @@ bool UXMLFile::LoadFromFile(string path)
     }
     catch (exception ex)
     {
-        ULogger::GetInstance()->Message("UXMLFile: Uncorrect xml", ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message("UXMLFile: Uncorrect xml", ULogType::Error);
     }
     return true;
 }

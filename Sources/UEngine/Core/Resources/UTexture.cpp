@@ -16,10 +16,10 @@ bool UTexture::Load(UXMLFile& xml, std::string path)
     this->name = xml.GetElement(path + "texture/name/");
 
     if (xml.isExistElement(path + "texture/wrap/"))
-        wrap = xml.GetElement(path + "texture/wrap/") == "repeat" ? UTEXTURE_WRAP_REPEAT : UTEXTURE_WRAP_CLAMP;
+        wrap = xml.GetElement(path + "texture/wrap/") == "repeat" ? UTextureWrapMode::Repeat : UTextureWrapMode::Clamp;
 
     if (xml.isExistElement(path + "texture/filter/"))
-        filter = xml.GetElement(path + "texture/filter/") == "linear" ? UTEXTURE_FILTER_LINEAR : UTEXTURE_FILTER_NEAREST;
+        filter = xml.GetElement(path + "texture/filter/") == "linear" ? UTextureFiltration::Linear : UTextureFiltration::Nearest;
 
     if (xml.isExistElement(path + "texture/mipmap/"))
         mipmap = atoi(xml.GetElement(path + "texture/mipmap/").c_str()) == 1;

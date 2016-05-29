@@ -70,7 +70,7 @@ bool UAnimation::Load(UXMLFile& xml, std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load animation (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load animation (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
 

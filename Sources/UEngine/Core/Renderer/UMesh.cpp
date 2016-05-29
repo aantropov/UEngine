@@ -16,7 +16,7 @@ void UMesh::AddToRenderQueue(URenderQueue& render_queue)
     render_queue.data[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
 }
 
-void UMesh::InitializeMaterial(URENDER_PASS type)
+void UMesh::InitializeMaterial(URenderPass type)
 {
     if (material.GetShaderProgram(type) == nullptr)
         return;
@@ -78,17 +78,17 @@ void UMesh::Initialize()
     renderer->BindVBO(&vb);
     renderer->BindVBO(&ib);
 
-    InitializeMaterial(URENDER_PASS_NORMAL);
-    InitializeMaterial(URENDER_PASS_DEPTH);
-    InitializeMaterial(URENDER_PASS_FORWARD);
-    InitializeMaterial(URENDER_PASS_DEFFERED);
+    InitializeMaterial(URenderPass::Normal);
+    InitializeMaterial(URenderPass::Depth);
+    InitializeMaterial(URenderPass::Forward);
+    InitializeMaterial(URenderPass::Deffered);
 
     OPENGL_CHECK_FOR_ERRORS();
 }
 
-void UMesh::Render(URENDER_PASS type, int light_index)
+void UMesh::Render(URenderPass type, int light_index)
 {
-    if (type == URENDER_PASS_DEPTH_SHADOW && !material.IsShadowCaster())
+    if (type == URenderPass::DepthShadow && !material.IsShadowCaster())
         return;
 
     material.Render(type, light_index);

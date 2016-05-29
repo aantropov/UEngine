@@ -16,7 +16,7 @@ class UIRenderable
 protected:
 public:
     
-    virtual void Render(URENDER_PASS type, int light_index = 0) = 0;   
+    virtual void Render(URenderPass type, int light_index = 0) = 0;   
     virtual void AddToRenderQueue(URenderQueue& render_queue) = 0;
 
     UIRenderable(void);

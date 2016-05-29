@@ -102,8 +102,8 @@ public:
     void BindVBO(UIndexBuffer *ib);
     void UnbindVBO(bool is_vertex_buffer)  const;
 
-    int CreateVBO(UVertexBuffer *vb, UVBO_DRAW state)  const;
-    int CreateVBO(UIndexBuffer *ib, UVBO_DRAW state)  const;
+    int CreateVBO(UVertexBuffer *vb, UBufferUsage state)  const;
+    int CreateVBO(UIndexBuffer *ib, UBufferUsage state)  const;
     void DeleteVBO(UBuffer *vb)  const;
 
     //FBO
@@ -120,7 +120,7 @@ public:
     void DeleteVAO(UVertexArrayObject *vao)  const;
 
     //Shaders    
-    int  CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines)  const;
+    int  CompileShader(const std::string* source, UShaderType st, std::vector<std::string> defines)  const;
     void DeleteShader(UShader* shd)  const;
 
     int CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh)  const;

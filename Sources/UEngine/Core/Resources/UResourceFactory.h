@@ -42,9 +42,9 @@ public:
     //Load resource from hard disk
     UResource UENGINE_DECLSPEC *Get(std::string path);
     bool UENGINE_DECLSPEC Add(std::string path, UResource* res);
-    UResource UENGINE_DECLSPEC *Load(std::string path, URESOURCE_TYPE type);
-    UResource UENGINE_DECLSPEC *Create(URESOURCE_TYPE type);
-    UResource UENGINE_DECLSPEC *Create(std::string path, URESOURCE_TYPE type);
+    UResource UENGINE_DECLSPEC *Load(std::string path, UResourceType type);
+    UResource UENGINE_DECLSPEC *Create(UResourceType type);
+    UResource UENGINE_DECLSPEC *Create(std::string path, UResourceType type);
 
     void UENGINE_DECLSPEC Release(std::string path);
     void UENGINE_DECLSPEC Release(UResource *resource);

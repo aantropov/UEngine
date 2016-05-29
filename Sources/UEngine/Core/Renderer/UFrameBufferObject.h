@@ -9,8 +9,8 @@ class UFrameBufferObject : public UGLObject
 public:
 
     bool Initialize();
-    void BindTexture(UTexture *tex, UFRAMEBUFFER_ATTACHMENT type);
-    void UnbindTexture(UFRAMEBUFFER_ATTACHMENT type);
+    void BindTexture(UTexture *tex, UFramebufferAttachment type);
+    void UnbindTexture(UFramebufferAttachment type);
 
     UFrameBufferObject(void);
     virtual ~UFrameBufferObject(void);

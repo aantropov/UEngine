@@ -34,7 +34,7 @@ class URenderManager
     UTexture* depthShadowMap;
     int depthTextureSize;       
  
-    static void RenderQueue(const URenderQueue& render_queue, const URENDER_PASS type, const UCamera& camera);
+    static void RenderQueue(const URenderQueue& render_queue, const URenderPass type, const UCamera& camera);
     friend class UForwardLighting;
     friend class UDefferedLighting;
 

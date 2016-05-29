@@ -140,11 +140,11 @@ int URenderer::CreateCubemap(UCubemap *tex) const
     GLuint id = tex->GetId();
 
     auto filter = GL_LINEAR;
-    if (tex->GetImageFilter() == UTEXTURE_FILTER_NEAREST)
+    if (tex->GetImageFilter() == UTextureFiltration:: Nearest)
         filter = GL_NEAREST;
 
     auto wrap = GL_REPEAT;
-    if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP)
+    if (tex->GetImageWrap() == UTextureWrapMode::Clamp)
         wrap = GL_CLAMP_TO_EDGE;
 
     glEnable(GL_TEXTURE_CUBE_MAP_ARB);
@@ -199,16 +199,16 @@ int URenderer::CreateTexture(UTexture *tex) const
 
     auto minFilter = tex->GetMipMap() ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR;
     auto magFilter = GL_LINEAR;
-    if (tex->GetImageFilter() == UTEXTURE_FILTER_NEAREST)
+    if (tex->GetImageFilter() == UTextureFiltration::Nearest)
     {
         minFilter = GL_NEAREST;
         magFilter = GL_NEAREST;
     }
 
     auto wrap = GL_REPEAT;
-    if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP)
+    if (tex->GetImageWrap() == UTextureWrapMode::Clamp)
         wrap = GL_CLAMP;
-    else if (tex->GetImageWrap() == UTEXTURE_WRAP_CLAMP_TO_EDGE)
+    else if (tex->GetImageWrap() == UTextureWrapMode::ClampToEdge)
         wrap = GL_CLAMP_TO_EDGE;
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
@@ -219,12 +219,12 @@ int URenderer::CreateTexture(UTexture *tex) const
 
     if (tex->GetTextureResId() != 0)
     {
-        tex->SetType(UTEXTURE_COLOR);
+        tex->SetType(UTextureFormat::RGBA);
         OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, tex->GetImageFormat(), tex->GetWidth(), tex->GetHeight(), 0, tex->GetImageFormat(), tex->GetImageType(), ilGetData()));
     }
     else
     {
-        if (tex->GetType() == UTEXTURE_DEPTH_SHADOW)
+        if (tex->GetFormat() == UTextureFormat::DepthShadow)
         {
             //OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE_ARB, GL_LUMINANCE));
             OPENGL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE));
@@ -237,23 +237,23 @@ int URenderer::CreateTexture(UTexture *tex) const
                 */
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_RG32F)
+        else if (tex->GetFormat() == UTextureFormat::RG32F)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RG, GL_FLOAT, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_DEPTH)
+        else if (tex->GetFormat() == UTextureFormat::Depth32F)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, tex->GetWidth(), tex->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_COLOR)
+        else if (tex->GetFormat() == UTextureFormat::RGBA)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_FLOAT)
+        else if (tex->GetFormat() == UTextureFormat::RGBA_FLOAT)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }
-        else if (tex->GetType() == UTEXTURE_FLOAT32)
+        else if (tex->GetFormat() == UTextureFormat::R32F)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, tex->GetWidth(), tex->GetHeight(), 0, GL_RED, GL_FLOAT, NULL));
         }
@@ -301,26 +301,26 @@ void URenderer::DeleteFBO(UFrameBufferObject *fb) const
     OPENGL_CALL(glDeleteBuffers(1, &fbo));
 }
 
-int URenderer::CreateVBO(UVertexBuffer *vb, UVBO_DRAW state) const
+int URenderer::CreateVBO(UVertexBuffer *vb, UBufferUsage state) const
 {
     int size = vb->GetNum()*sizeof(UVertex);
 
     GLuint vbo;
     OPENGL_CALL(glGenBuffers(1, &vbo));
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    OPENGL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vb->GetPointer(), GL_STREAM_DRAW));
+    OPENGL_CALL(glBufferData(GL_ARRAY_BUFFER, size, vb->GetPointer(), (GLenum)state));
 
     return vbo;
 }
 
-int URenderer::CreateVBO(UIndexBuffer *ib, UVBO_DRAW state) const
+int URenderer::CreateVBO(UIndexBuffer *ib, UBufferUsage state) const
 {
     int size = ib->GetNum()*sizeof(unsigned int);
 
     GLuint vbo;
     OPENGL_CALL(glGenBuffers(1, &vbo));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo);
-    OPENGL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, ib->GetPointer(), state));
+    OPENGL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, ib->GetPointer(), (GLenum)state));
 
     return vbo;
 }
@@ -486,7 +486,7 @@ void URenderer::UnbindVAO() const
 }
 
 //Shaders
-int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::vector<std::string> defines) const
+int  URenderer::CompileShader(const std::string* source, UShaderType st, std::vector<std::string> defines) const
 {
     GLuint shd;
     GLchar *strings = (GLchar*)source->c_str();
@@ -495,9 +495,9 @@ int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::v
     std::string define_vertex(GetShaderVersion() + "\n#define VERTEX\n");
     std::string define_fragment(GetShaderVersion() + "\n#define FRAGMENT\n");
 
-    if (st == USHADER_VERTEX)
+    if (st == UShaderType::Vertex)
         shader_define = define_vertex;
-    else if (st == USHADER_FRAGMENT)
+    else if (st == UShaderType::Fragment)
         shader_define = define_fragment;
 
     std::vector<GLchar*> shader_strings(defines.size() + 2);
@@ -516,7 +516,7 @@ int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::v
     shader_strings[defines.size() + 1] = strings;
     shader_strings_lengths[defines.size() + 1] = (GLint)strlen((char*)strings);
 
-    shd = glCreateShader(st);
+    shd = glCreateShader((GLenum)st);
     glShaderSource(shd, defines.size() + 2, (const GLchar**)&shader_strings[0], (const GLint*)&shader_strings_lengths[0]);
     glCompileShader(shd);
 
@@ -532,7 +532,7 @@ int  URenderer::CompileShader(const std::string* source, USHADER_TYPE st, std::v
         std::string log(length, '\0');
         glGetShaderInfoLog(shd, length, &length, &log[0]);
 
-        ULogger::GetInstance()->Message(log, ULOG_MSG_ERROR, ULOG_OUT_FILE);
+        ULogger::GetInstance()->Message(log, ULogType::Error, ULogTarget::File);
     }
 
     return shd;
@@ -562,7 +562,7 @@ int URenderer::CreateShaderProgram(UShader *vertex_sh, UShader *pixel_sh) const
         std::string log(length, '\0');
         glGetProgramInfoLog(sh_pr_id, length, &length, &log[0]);
 
-        ULogger::GetInstance()->Message(log, ULOG_MSG_ERROR, ULOG_OUT_FILE);
+        ULogger::GetInstance()->Message(log, ULogType::Error, ULogTarget::File);
     }
 
     return sh_pr_id;

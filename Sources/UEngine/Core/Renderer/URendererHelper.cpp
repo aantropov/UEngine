@@ -6,7 +6,7 @@
 GLenum g_OpenGLError = GL_NO_ERROR;
 ILenum g_DevILError = IL_NO_ERROR;
 
-UTexture* URendererHelper::GetTemporaryTexture(int width, int height, UTEXTURE_TYPE type)
+UTexture* URendererHelper::GetTemporaryTexture(int width, int height, UTextureFormat type)
 {
     TempTexture text;
     text.width = width;
@@ -16,7 +16,7 @@ UTexture* URendererHelper::GetTemporaryTexture(int width, int height, UTEXTURE_T
     auto res = temporaryTextures[text.ToString()];
     if (res == nullptr)
     {
-        res = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+        res = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
         res->Create(width, height, type);
         temporaryTextures[text.ToString()] = res;
     }
@@ -29,7 +29,7 @@ void URendererHelper::ReleaseTemporaryTexture(UTexture* texture)
     TempTexture text;
     text.width = texture->GetWidth();
     text.height = texture->GetHeight();
-    text.type = texture->GetType();
+    text.type = texture->GetFormat();
 
     UEngine::rf.Release(temporaryTextures[text.ToString()]);
     temporaryTextures.erase(temporaryTextures.find(text.ToString()));
@@ -37,8 +37,8 @@ void URendererHelper::ReleaseTemporaryTexture(UTexture* texture)
 
 void URendererHelper::Initialize()
 {
-    gauss_blur = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_gauss_blur.xml", URESOURCE_POST_EFFECT));
-    copy_texture = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_copy_texture.xml", URESOURCE_POST_EFFECT));
+    gauss_blur = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_gauss_blur.xml", UResourceType::PostEffect));
+    copy_texture = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_copy_texture.xml", UResourceType::PostEffect));
 
     fbo = new UFrameBufferObject();
     fbo->Initialize();
@@ -48,7 +48,7 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
 {
     auto render = URenderer::GetInstance();
 
-    auto temp_texture = GetTemporaryTexture(texture->GetWidth(), texture->GetHeight(), texture->GetType());
+    auto temp_texture = GetTemporaryTexture(texture->GetWidth(), texture->GetHeight(), texture->GetFormat());
     temp_texture->name = "colorScene";
 
     auto prev_name = texture->name;
@@ -57,18 +57,18 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
     copy_texture->ClearUniformUnits();
     copy_texture->AddTexture(texture, 0);
 
-    GLenum buffers[] = { UFB_ATTACHMENT_COLOR0 };
+    GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
 
-    fbo->BindTexture(temp_texture, UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
+    fbo->BindTexture(temp_texture, UFramebufferAttachment::Color0);
     render->BindFBO(fbo);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     glDrawBuffers(1, buffers);
     glViewport(0, 0, texture->GetWidth(), texture->GetHeight());
-    copy_texture->Render(URENDER_PASS_FORWARD);
+    copy_texture->Render(URenderPass::Forward);
     render->UnbindFBO();
-    fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
+    fbo->UnbindTexture(UFramebufferAttachment::Color0);
 
     OPENGL_CHECK_FOR_ERRORS();
 
@@ -78,12 +78,12 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
     gauss_blur->material.params["radius"] = UUniformParam(amount);
     gauss_blur->material.params["dir"] = UUniformParam(dir);
 
-    fbo->BindTexture(texture, UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
+    fbo->BindTexture(texture, UFramebufferAttachment::Color0);
     render->BindFBO(fbo);
     glDrawBuffers(1, buffers);
-    gauss_blur->Render(URENDER_PASS_FORWARD);
+    gauss_blur->Render(URenderPass::Forward);
     render->UnbindFBO();
-    //fbo->UnbindTexture(UFRAMEBUFFER_ATTACHMENT::UFB_ATTACHMENT_COLOR0);
+    //fbo->UnbindTexture(UFramebufferAttachment::Color0);
 
     OPENGL_CHECK_FOR_ERRORS();
 

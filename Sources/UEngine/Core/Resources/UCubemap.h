@@ -14,9 +14,9 @@ class UCubemap : public UResource, public UGLObject
     int image_type;
     bool mipmap;
 
-    UTEXTURE_TYPE type;
-    UTEXTURE_FILTER filter;
-    UTEXTURE_WRAP wrap;
+    UTextureFormat type;
+    UTextureFiltration filter;
+    UTextureWrapMode wrap;
 
 public:
 
@@ -30,9 +30,9 @@ public:
     int GetHeight() const { return height; }
     int GetImageType() const { return image_type; }
     int GetImageFormat() const { return image_format; }
-    UTEXTURE_FILTER GetImageFilter() const { return filter; }
-    UTEXTURE_WRAP GetImageWrap() const { return wrap; }
-    UTEXTURE_TYPE GetType() const { return type; }
+    UTextureFiltration GetImageFilter() const { return filter; }
+    UTextureWrapMode GetImageWrap() const { return wrap; }
+    UTextureFormat GetFormat() const { return type; }
 
     void GenTexture() { glGenTextures(1, (GLuint*)&_id); }
 

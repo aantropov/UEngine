@@ -4,7 +4,7 @@
 
 class UIndexBuffer : public UBuffer
 {
-    UVBO_DRAW state;
+    UBufferUsage state;
     unsigned int num_indices;    
     unsigned int *indices;
     
@@ -13,7 +13,7 @@ public:
     void* GetPointer() {return (void*)indices;}
     int GetNum() { return num_indices; }
     
-    void SetState(UVBO_DRAW newState)
+    void SetState(UBufferUsage newState)
     {
         state = newState;
     }
@@ -28,7 +28,7 @@ public:
     bool Initialize()
     {
         _id = -1;
-        _id = URenderer::GetInstance()->CreateVBO(this, UVBO_STATIC );        
+        _id = URenderer::GetInstance()->CreateVBO(this, UBufferUsage::Static );
         return (_id != -1);
     }
         

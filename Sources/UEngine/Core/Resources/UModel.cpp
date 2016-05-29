@@ -5,7 +5,7 @@
 #include "..\Basic\UScene.h"
 #include "..\Renderer\URenderManager.h"
 
-void UModel:: AddToRenderQueue(URenderQueue& render_queue)
+void UModel::AddToRenderQueue(URenderQueue& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
     for (int i = mesh_num - 1; i >= 0; i--)
@@ -19,7 +19,7 @@ void UModel:: AddToRenderQueue(URenderQueue& render_queue)
     URenderer::GetInstance()->PopModelMatrix();
 }
 
-void UModel::Render(URENDER_PASS type, int light_index)
+void UModel::Render(URenderPass type, int light_index)
 {
     URenderer::GetInstance()->PushModelMatrix();
     for (int i = mesh_num - 1; i >= 0; i--)
@@ -190,21 +190,21 @@ bool UModel::Load(UXMLFile& xml, std::string path)
 
                 if (xml.isExistElement(path + "model/common_material/"))
                 {
-                    mesh->material = *dynamic_cast<UMaterial*>(rf->Create(URESOURCE_MATERIAL));
+                    mesh->material = *dynamic_cast<UMaterial*>(rf->Create(UResourceType::Material));
                     mesh->material.LoadFromFile(xml.GetElement(path + "model/common_material/"));
                 }
 
                 if (xml.isExistElement(path + "model/common_shaders/forward/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/forward/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_FORWARD);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/forward/"), UResourceType::ShaderProgram), URenderPass::Forward);
 
                 if (xml.isExistElement(path + "model/common_shaders/normal"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/normal/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_NORMAL);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/normal/"), UResourceType::ShaderProgram), URenderPass::Normal);
 
                 if (xml.isExistElement(path + "model/common_shaders/depth/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/depth/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_DEPTH);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/depth/"), UResourceType::ShaderProgram), URenderPass::Depth);
 
                 if (xml.isExistElement(path + "model/common_shaders/deffered/"))
-                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/deffered/"), URESOURCE_SHADER_PROGRAM), URENDER_PASS_DEFFERED);
+                    mesh->material.SetShaderProgram((UShaderProgram*)rf->Load(xml.GetElement(path + "model/common_shaders/deffered/"), UResourceType::ShaderProgram), URenderPass::Deffered);
 
                 if (xml.isExistElement(path + "model/tex_num/"))
                 {
@@ -216,7 +216,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                         std::string current_tex = path + "model/common_textures/tex_" + string(tex_buffer) + "/";
 
                         auto tex = pair<UTexture*, unsigned int>(
-                            dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)),
+                            dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
                             atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                         tex.first->name = xml.GetElement(current_tex + "name/");
@@ -228,7 +228,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                 {
                     if (xml.isExistElement(current_mesh + "material/"))
                     {
-                        mesh->material = *dynamic_cast<UMaterial*>(rf->Create(URESOURCE_MATERIAL));
+                        mesh->material = *dynamic_cast<UMaterial*>(rf->Create(UResourceType::Material));
                         mesh->material.LoadFromFile(xml.GetElement(current_mesh + "material/"));
                     }
 
@@ -242,7 +242,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                             std::string current_tex = current_mesh + "textures/tex_" + string(tex_buffer) + "/";
 
                             auto tex = pair<UTexture*, unsigned int>(
-                                dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)),
+                                dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
                                 atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                             tex.first->name = xml.GetElement(current_tex + "name/");
@@ -261,7 +261,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                         sprintf_s(tex_buffer, "%d", j);
                         std::string current_anim = path + "model/animations/animation_" + string(tex_buffer) + "/";
 
-                        animations[xml.GetElement(current_anim + "name/")] = dynamic_cast<UAnimation*>(rf->Create(URESOURCE_SKIN_ANIMATION));
+                        animations[xml.GetElement(current_anim + "name/")] = dynamic_cast<UAnimation*>(rf->Create(UResourceType::Animation));
                         animations[xml.GetElement(current_anim + "name/")]->LoadFromFile(xml.GetElement(current_anim + "path/"));
                     }
                 }
@@ -275,7 +275,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load model (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;

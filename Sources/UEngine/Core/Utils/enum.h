@@ -1,4 +1,3 @@
-// enum.h 
 #pragma once
 
 #define UE_MAXCHAR     8024
@@ -16,128 +15,117 @@
 //#define UE_DEBUG
 //#define UE_RELEASE
 
-// Enumerations
-
-// Log message type
-enum ULOG_MSG_TYPE : int
+enum class ULogType : int
 {
-    ULOG_MSG_WARNING = 0,
-    ULOG_MSG_ERROR,
-    ULOG_MSG_INFO
+    Warning = 0,
+    Error,
+    Info
 };
 
-// Log message out
-enum ULOG_OUT : int
+enum class ULogTarget : int
 {
-    ULOG_OUT_FILE = 1,
-    ULOG_OUT_MSG = 2,
-    ULOG_OUT_NONE = 4
+    None = 0,
+    File = 1,
+    MsgBox = 2    
 };
 
-// Window type (IT IS NOT USED!)
-enum UWND_STATE : int
+enum class UBufferUsage : int
 {
-    UWND_STATE_WINDOW = 0,
-    UWND_STATE_FULLSCREEN
+    Static = 0x88E4,
+    Dynamic = 0x88E8
 };
 
-// VBO
-enum UVBO_DRAW : int
+enum class UShaderType : int
 {
-    UVBO_STATIC = 0x88E4,
-    UVBO_DYNAMIC = 0x88E8
+    Vertex = 0x8B31,
+    Fragment = 0x8B30
 };
 
-// Shader
-enum USHADER_TYPE : int
+enum class UKeyState : int
 {
-    USHADER_VERTEX = 0x8B31,
-    USHADER_FRAGMENT = 0x8B30
+    Up = 0,
+    Down,
+    Pressed
 };
 
-//Input
-enum UINPUT_KEY_STATE : int
+enum class UTextureFormat : int
 {
-    UINPUT_UP = 0,
-    UINPUT_DOWN,
-    UINPUT_PRESSED
+    RGBA = 0,
+    RG32F,
+    RGBA_FLOAT,
+    R32F,
+    Depth32F,
+    DepthShadow
 };
 
-//Texture
-enum UTEXTURE_TYPE : int
+enum class UTextureFiltration : int
 {
-    UTEXTURE_COLOR = 0,
-    UTEXTURE_ARRAY,
-    UTEXTURE_RG32F,
-    UTEXTURE_FLOAT,
-    UTEXTURE_FLOAT16,
-    UTEXTURE_FLOAT32,
-    UTEXTURE_DEPTH,
-    UTEXTURE_DEPTH_SHADOW
+    Linear = 0,
+    Nearest
 };
 
-enum UTEXTURE_FILTER : int
+enum class UTextureWrapMode : int
 {
-    UTEXTURE_FILTER_LINEAR = 0,
-    UTEXTURE_FILTER_NEAREST
+    Repeat = 0,
+    Clamp,
+    ClampToEdge
 };
 
-enum UTEXTURE_WRAP : int
+enum class UResourceType : int
 {
-    UTEXTURE_WRAP_REPEAT = 0,
-    UTEXTURE_WRAP_CLAMP,
-    UTEXTURE_WRAP_CLAMP_TO_EDGE
+    Shader = 0,
+    ShaderProgram,
+    Texture,
+    Cubemap,
+    Model,
+    PostEffect,
+    Animation,
+    Material,
+    Script
 };
 
-//Resource
-enum URESOURCE_TYPE : int
+enum class URenderPass : int
 {
-    URESOURCE_SHADER = 0,
-    URESOURCE_SHADER_PROGRAM,
-    URESOURCE_TEXTURE,
-    URESOURCE_CUBEMAP,
-    URESOURCE_MODEL,
-    URESOURCE_POST_EFFECT,
-    URESOURCE_SKIN_ANIMATION,
-    URESOURCE_MATERIAL,
-    URESOURCE_SCRIPT
+    Forward = 0,
+    Deffered,
+    Depth,
+	DepthShadow,
+    Normal
 };
 
-enum URENDER_PASS : int
+enum class UFramebufferAttachment : int
 {
-    URENDER_PASS_FORWARD = 0,
-    URENDER_PASS_DEFFERED,
-    URENDER_PASS_DEPTH,
-	URENDER_PASS_DEPTH_SHADOW,
-    URENDER_PASS_NORMAL
+    Depth = 0x8D00,
+    Color0 = 0x8CE0,
+    Color1 = 0x8CE1,
+    Color2 = 0x8CE2,
+    Color3 = 0x8CE3,
+    Color4 = 0x8CE4,
+    Color5 = 0x8CE5,
+    Color6 = 0x8CE6,
+    Color7 = 0x8CE7,
+    Color8 = 0x8CE8
+
 };
 
-enum UFRAMEBUFFER_ATTACHMENT : int
+enum class UPlayState : int
 {
-    UFB_ATTACHMENT_DEPTH = 0x8D00,
-    UFB_ATTACHMENT_COLOR0 = 0x8CE0,
-    UFB_ATTACHMENT_COLOR1 = 0x8CE1,
-    UFB_ATTACHMENT_COLOR2 = 0x8CE2,
-    UFB_ATTACHMENT_COLOR3 = 0x8CE3,
-    UFB_ATTACHMENT_COLOR4 = 0x8CE4,
-    UFB_ATTACHMENT_COLOR5 = 0x8CE5,
-    UFB_ATTACHMENT_COLOR6 = 0x8CE6
+    PlayOnce = 0,
+    PlayLoop,
+    Stop
 };
 
-//Animation
-enum UANIMATION_STATE : int
+//1,3,5 are used for pack shadow casting info
+enum class ULightType : int
 {
-    UANIMATION_PLAY_ONCE,
-    UANIMATION_PLAY_LOOP,
-    UANIMATION_STOP
+    Directional = 0,
+    Spot = 2,
+    Point= 4
 };
 
-enum ULIGHT_TYPE : int
+enum class UBlendMode : int
 {
-    ULIGHT_TYPE_DIRECTIONAL = 0,
-    //ULIGHT_TYPE_DIRECTIONAL_SHADOW_CASTER,
-    ULIGHT_TYPE_SPOT = 2,
-    //ULIGHT_TYPE_SPOT_SHADOW_CASTER,
-    ULIGHT_TYPE_POINT= 4
-    //ULIGHT_TYPE_POINT_SHADOW_CASTER
+    Opaque = 0,
+    Translucent,
+    Additive
 };

@@ -77,16 +77,16 @@ bool UShaderProgram::Load(UXMLFile& xml, std::string path)
 
         if (vertex_sh == nullptr)
         {
-            vertex_sh = (UShader*)rf->Create(vertex_shader_path, URESOURCE_SHADER);
+            vertex_sh = (UShader*)rf->Create(vertex_shader_path, UResourceType::Shader);
             vertex_sh->LoadFromFile(shader_path);
-            vertex_sh->Create(USHADER_VERTEX, defines_array);
+            vertex_sh->Create(UShaderType::Vertex, defines_array);
         }
 
         if (fragment_sh == nullptr)
         {
-            fragment_sh = (UShader*)rf->Create(fragment_shader_path, URESOURCE_SHADER);
+            fragment_sh = (UShader*)rf->Create(fragment_shader_path, UResourceType::Shader);
             fragment_sh->LoadFromFile(shader_path);
-            fragment_sh->Create(USHADER_FRAGMENT, defines_array);
+            fragment_sh->Create(UShaderType::Fragment, defines_array);
         }
 
         _id = URenderer::GetInstance()->CreateShaderProgram(vertex_sh, fragment_sh);
@@ -95,7 +95,7 @@ bool UShaderProgram::Load(UXMLFile& xml, std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load shader (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load shader (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;
@@ -107,7 +107,7 @@ void UShaderProgram:: CreateShaderProgram(std::string vertexshd_path, std::strin
         vertex_sh.Load(vertexshd_path,&vertex_sh);
         pixel_sh.Load(pixelshd_path, &pixel_sh);
 
-        vertex_sh.Create(USHADER_VERTEX);
+        vertex_sh.Create(Vertex);
         pixel_sh.Create(USHADER_PIXEL);
 
         shader_program_id = URenderer::GetInstance()->CreateShaderProgram(&vertex_sh, &pixel_sh);

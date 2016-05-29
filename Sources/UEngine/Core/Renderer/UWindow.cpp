@@ -81,7 +81,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"RegisterClassEx fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
 
@@ -109,7 +109,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"CreateWindowEx fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
 
@@ -120,7 +120,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"GetDC fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
 
@@ -139,7 +139,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Setting pixel format fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
 
@@ -150,7 +150,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Ñreating temp render context fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
 
@@ -169,7 +169,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"wglCreateContextAttribsARB fail (%d), try to create context with wglCreateContext", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         //return false;
         
         // Create context with OpenGL 2 support
@@ -185,7 +185,7 @@ bool UWindow:: Create(LPCWSTR title, int width, int height, bool fullScreen)
     {
         char message[MAXCHAR];
         sprintf_s(message,"Creating render context fail (%d)", GetLastError());
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message(message, ULogType::Error);
         return false;
     }
     
@@ -230,7 +230,7 @@ void UWindow::SetSize(int width, int height, bool isFullScreen)
         {
             char message[MAXCHAR];
             sprintf_s(message,"ChangeDisplaySettings fail %dx%d (%d)", width, height, result);
-            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR);
+            ULogger::GetInstance()->Message(message, ULogType::Error);
             fullscreen = false;
         }
     }
@@ -334,13 +334,13 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             g_input.cursor_position[1] = (int)HIWORD(lParam);
 
             if (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONUP)
-                g_input.buttonState[0] = (msg == WM_LBUTTONDOWN ? UINPUT_PRESSED : UINPUT_UP);
+                g_input.buttonState[0] = (msg == WM_LBUTTONDOWN ? UKeyState::Pressed : UKeyState::Up);
 
             if (msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP)
-                g_input.buttonState[1] = (msg == WM_RBUTTONDOWN ? UINPUT_PRESSED : UINPUT_UP);
+                g_input.buttonState[1] = (msg == WM_RBUTTONDOWN ? UKeyState::Pressed : UKeyState::Up);
 
             if (msg == WM_MBUTTONDOWN || msg == WM_MBUTTONUP)
-                g_input.buttonState[2] = (msg == WM_MBUTTONDOWN ? UINPUT_PRESSED : UINPUT_UP);
+                g_input.buttonState[2] = (msg == WM_MBUTTONDOWN ? UKeyState::Pressed : UKeyState::Up);
 
             return FALSE;
         }
@@ -357,7 +357,7 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_SYSKEYDOWN:
         {
             if (wParam < 256 && (lParam & 0x40000000) == 0)
-                g_input.keyState[wParam] = UINPUT_PRESSED;
+                g_input.keyState[wParam] = UKeyState::Pressed;
 
             return FALSE;
         }
@@ -365,7 +365,7 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_SYSKEYUP:
         {
             if (wParam < 256)
-                g_input.keyState[wParam] = UINPUT_UP;
+                g_input.keyState[wParam] = UKeyState::Up;
 
             return FALSE;
         }
@@ -410,25 +410,25 @@ LRESULT CALLBACK UWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 bool UInput:: IsKeyDown(unsigned short int  key)
 {
-    return (g_input.keyState[key] != UINPUT_UP );
+    return (g_input.keyState[key] != UKeyState::Up );
 }
 
 bool UInput::IsKeyPressed(unsigned short int  key)
 {
-    bool pressed = (g_input.keyState[key] == UINPUT_PRESSED);
-    g_input.keyState[key] = UINPUT_DOWN;
+    bool pressed = (g_input.keyState[key] == UKeyState::Pressed);
+    g_input.keyState[key] = UKeyState::Down;
     return pressed;
 }
 
 bool UInput:: IsButtonDown(unsigned short int  button)
 {
-    return (g_input.buttonState[button] != UINPUT_UP);
+    return (g_input.buttonState[button] != UKeyState::Up);
 }
 
 bool UInput:: IsButtonClick(unsigned short int  button)
 {    
-    bool pressed = (g_input.buttonState[button] == UINPUT_PRESSED);
-    g_input.buttonState[button] = UINPUT_DOWN;
+    bool pressed = (g_input.buttonState[button] == UKeyState::Pressed);
+    g_input.buttonState[button] = UKeyState::Down;
     return pressed;
 }
 

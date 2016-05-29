@@ -114,7 +114,7 @@ void UScene::UpdateLightParams()
             light_params.spotCosCutoff[cur] = lights[cur]->GetSpotCosCutoff();
 
             light_params.transforms[cur] = lights[cur]->GetLightTransform();
-            light_params.types[cur] = lights[cur]->GetType() + lights[cur]->IsShadowCaster();
+            light_params.types[cur] = (int)lights[cur]->GetType() + lights[cur]->IsShadowCaster();
 
             light_params.light_index[cur] = i;
 
@@ -147,7 +147,7 @@ void UScene::Update(double deltaTime)
 }
 
 /*
-void UScene::Render(URENDER_PASS type, UCamera camera)
+void UScene::Render(URenderPass type, UCamera camera)
 {
     auto render = URenderer::GetInstance();
 

@@ -86,34 +86,34 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
 
         if (xml.isExistElement(path + "material/shaders/forward/"))
         {
-            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " forward shader program", URESOURCE_SHADER_PROGRAM);
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " forward shader program", UResourceType::ShaderProgram);
             shader_program->Load(xml, path + "material/shaders/forward/");
 
-            SetShaderProgram(shader_program, URENDER_PASS_FORWARD);
+            SetShaderProgram(shader_program, URenderPass::Forward);
         }
 
         if (xml.isExistElement(path + "material/shaders/normal/"))
         {
-            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " normal shader program", URESOURCE_SHADER_PROGRAM);
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " normal shader program", UResourceType::ShaderProgram);
             shader_program->Load(xml, path + "material/shaders/normal/");
 
-            SetShaderProgram(shader_program, URENDER_PASS_NORMAL);
+            SetShaderProgram(shader_program, URenderPass::Normal);
         }
 
         if (xml.isExistElement(path + "material/shaders/depth/"))
         {
-            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " depth shader program", URESOURCE_SHADER_PROGRAM);
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " depth shader program", UResourceType::ShaderProgram);
             shader_program->Load(xml, path + "material/shaders/depth/");
 
-            SetShaderProgram(shader_program, URENDER_PASS_DEPTH);
+            SetShaderProgram(shader_program, URenderPass::Depth);
         }
 
         if (xml.isExistElement(path + "material/shaders/deffered/"))
         {
-            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " deffered shader program", URESOURCE_SHADER_PROGRAM);
+            UShaderProgram* shader_program = (UShaderProgram*)rf->Create(xml.GetPath() + " deffered shader program", UResourceType::ShaderProgram);
             shader_program->Load(xml, path + "material/shaders/deffered/");
 
-            SetShaderProgram(shader_program, URENDER_PASS_DEFFERED);
+            SetShaderProgram(shader_program, URenderPass::Deffered);
         }
 
         if (xml.isExistElement(path + "material/tex_num/"))
@@ -126,7 +126,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
                 std::string current_tex = path + "material/textures/tex_" + string(tex_buffer) + "/";
 
                 auto tex = pair<UTexture*, unsigned int>(
-                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_TEXTURE)),
+                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
                     atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                 tex.first->name = xml.GetElement(current_tex + "name/");
@@ -144,7 +144,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
                 std::string current_tex = path + "material/cubemaps/cubemap_" + string(tex_buffer) + "/";
 
                 auto tex = pair<UCubemap*, unsigned int>(
-                    dynamic_cast<UCubemap*>(rf->Load(xml.GetElement(current_tex + "path/"), URESOURCE_CUBEMAP)),
+                    dynamic_cast<UCubemap*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Cubemap)),
                     atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                 tex.first->name = xml.GetElement(current_tex + "name/");
@@ -171,38 +171,38 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load material (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load material (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;
 }
 
-UShaderProgram* UMaterial::GetShaderProgram(URENDER_PASS type)
+UShaderProgram* UMaterial::GetShaderProgram(URenderPass type)
 {
-    if (type == URENDER_PASS_FORWARD)
+    if (type == URenderPass::Forward)
         return shader_forward;
-    else if (type == URENDER_PASS_DEPTH || type == URENDER_PASS_DEPTH_SHADOW)
+    else if (type == URenderPass::Depth || type == URenderPass::DepthShadow)
         return shader_depth;
-    else if (type == URENDER_PASS_NORMAL)
+    else if (type == URenderPass::Normal)
         return shader_normal;
-    else if (type == URENDER_PASS_DEFFERED)
+    else if (type == URenderPass::Deffered)
         return shader_deffered;
     return nullptr;
 }
 
-void UMaterial::SetShaderProgram(UShaderProgram *_sp, URENDER_PASS type)
+void UMaterial::SetShaderProgram(UShaderProgram *_sp, URenderPass type)
 {
-    if (type == URENDER_PASS_FORWARD)
+    if (type == URenderPass::Forward)
         shader_forward = _sp;
-    else if (type == URENDER_PASS_DEPTH)
+    else if (type == URenderPass::Depth)
         shader_depth = _sp;
-    else if (type == URENDER_PASS_NORMAL)
+    else if (type == URenderPass::Normal)
         shader_normal = _sp;
-    else if (type == URENDER_PASS_DEFFERED)
+    else if (type == URenderPass::Deffered)
         shader_deffered = _sp;
 }
 
-void UMaterial::Render(URENDER_PASS type, int light_index)
+void UMaterial::Render(URenderPass type, int light_index)
 {
     UShaderProgram *sp = GetShaderProgram(type);
 
@@ -223,7 +223,7 @@ void UMaterial::Render(URENDER_PASS type, int light_index)
         render->UniformMatrix4(locs.skinning_transforms, skinningTransformsNum, reinterpret_cast<float*>(skinningTransforms[0].m));
     }
 
-    if (type == URENDER_PASS_FORWARD || type == URENDER_PASS_DEFFERED)
+    if (type == URenderPass::Forward || type == URenderPass::Deffered)
     {
         render->Uniform4(locs.material_diffuse, 1, diffuse.v);
         render->Uniform4(locs.material_specular, 1, specular.v);
@@ -235,7 +235,7 @@ void UMaterial::Render(URENDER_PASS type, int light_index)
 
         if (lights.count != 0)
         {
-            if (type == URENDER_PASS_DEFFERED)
+            if (type == URenderPass::Deffered)
             {
                 render->Uniform4(locs.light_position, 1, reinterpret_cast<float*>(&lights.position[light_index]));
                 render->Uniform4(locs.light_ambient, 1, reinterpret_cast<float*>(&lights.ambient[light_index]));
@@ -306,7 +306,7 @@ void UMaterial::Render(URENDER_PASS type, int light_index)
 
     OPENGL_CHECK_FOR_ERRORS();
 
-    if (type == URENDER_PASS_FORWARD || type == URENDER_PASS_DEFFERED || type == URENDER_PASS_NORMAL)
+    if (type == URenderPass::Forward || type == URenderPass::Deffered || type == URenderPass::Normal)
     {
         for each(auto el in textures)
         {

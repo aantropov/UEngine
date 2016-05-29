@@ -8,7 +8,7 @@ void UScript::Initialize()
     luaVM = luaL_newstate();
     if (luaVM == nullptr)
     {
-        return ULogger::GetInstance()->Message("Lua script cannot be initialized, cannot get new lua state", ULOG_MSG_ERROR);
+        return ULogger::GetInstance()->Message("Lua script cannot be initialized, cannot get new lua state", ULogType::Error);
     }
 
     luaL_openlibs(luaVM);
@@ -43,7 +43,7 @@ bool UScript::Load(UXMLFile& xml, std::string path)
 
     }
     catch (exception e) {
-        ULogger::GetInstance()->Message("Error to load script (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load script (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;

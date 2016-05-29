@@ -14,7 +14,7 @@ class UModel : public UResource, public UComponent, public UIRenderable, public 
 public:
 
     virtual void AddToRenderQueue(URenderQueue& render_queue);
-    virtual void Render(URENDER_PASS type, int light_index = 0);
+    virtual void Render(URenderPass type, int light_index = 0);
     virtual void Update(double delta);
 
     virtual void Free();

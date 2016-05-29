@@ -13,9 +13,9 @@ class UTexture : public UResource, public UGLObject
     int image_type;
     bool mipmap;
 
-    UTEXTURE_TYPE type;
-    UTEXTURE_FILTER filter;
-    UTEXTURE_WRAP wrap;
+    UTextureFormat type;
+    UTextureFiltration filter;
+    UTextureWrapMode wrap;
 
 public:
 
@@ -28,15 +28,15 @@ public:
     int GetHeight() const { return height; }
     int GetImageType() const { return image_type; }
     int GetImageFormat() const { return image_format; }
-    UTEXTURE_FILTER GetImageFilter() const { return filter; }
-    UTEXTURE_WRAP GetImageWrap() const { return wrap; }
-    UTEXTURE_TYPE GetType() const { return type; }
+    UTextureFiltration GetImageFilter() const { return filter; }
+    UTextureWrapMode GetImageWrap() const { return wrap; }
+    UTextureFormat GetFormat() const { return type; }
 
-    void SetType(UTEXTURE_TYPE type) { this->type = type; }
+    void SetType(UTextureFormat type) { this->type = type; }
     void SetMipMap(bool mipmapping) { mipmap = mipmapping; }
     void GenTexture() { glGenTextures(1, (GLuint*)&_id); }
 
-    void Create(int w, int h, UTEXTURE_TYPE t, UTEXTURE_FILTER filt = UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP wr = UTEXTURE_WRAP_CLAMP)
+    void Create(int w, int h, UTextureFormat t, UTextureFiltration filt = UTextureFiltration::Linear, UTextureWrapMode wr = UTextureWrapMode::Clamp)
     {
         width = w;
         height = h;

@@ -7,7 +7,7 @@ class UIndexBuffer;
 
 class UVertexBuffer : public UBuffer
 {   
-    UVBO_DRAW state;
+    UBufferUsage state;
     int num_vertices;    
     UVertex *vertices;    
     UVertexArrayObject* vao;
@@ -25,7 +25,7 @@ public:
         return sphere(vec3_zero, length(vertices[index].GetPosition()));
     }
     
-    void SetState(UVBO_DRAW newState)
+    void SetState(UBufferUsage newState)
     {
         state = newState;
     }

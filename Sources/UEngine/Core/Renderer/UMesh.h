@@ -31,7 +31,7 @@ class UMesh : public UNode, public UIRenderable
         return ib.Initialize() & vb.Initialize(&ib);
     }
 
-    map<URENDER_PASS, UShaderLocations> locations;
+    map<URenderPass, UShaderLocations> locations;
     sphere boundSphere;
 
 public:
@@ -42,11 +42,11 @@ public:
     UIndexBuffer ib;
     UMaterial material;
 
-    void InitializeMaterial(URENDER_PASS type);
+    void InitializeMaterial(URenderPass type);
     virtual void Initialize();
 
     virtual void AddToRenderQueue(URenderQueue& render_queue);
-    virtual void Render(URENDER_PASS type, int light_index = 0);
+    virtual void Render(URenderPass type, int light_index = 0);
 
     sphere GetBounds() const;
     void ComputeBoundSphere();

@@ -15,7 +15,7 @@ bool UResource::LoadFromFile(std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load resource: " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load resource: " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
     return true;

@@ -101,13 +101,13 @@ class UAnimation : public UResource
 {
 public:
 
-    UAnimation() { frameRate = 0.0; startTime = 0.0; lastUpdateTime = 0.0; state = UANIMATION_STOP; }
+    UAnimation() { frameRate = 0.0; startTime = 0.0; lastUpdateTime = 0.0; state = UPlayState::Stop; }
 
     virtual ~UAnimation() {}
     virtual bool Load(UXMLFile& xml, std::string path) override;
     virtual void Free() {}
 
-    UANIMATION_STATE state;
+    UPlayState state;
 
     double startTime;
     double lastUpdateTime;
@@ -119,15 +119,15 @@ public:
 
     void StopAnimation()
     {
-        state = UANIMATION_STOP;
+        state = UPlayState::Stop;
     }
 
     void StartAnimation()
     {
-        StartAnimation(GetTickCount(), UANIMATION_PLAY_ONCE);
+        StartAnimation(GetTickCount(), UPlayState::PlayOnce);
     }
 
-    void StartAnimation(double startTime, UANIMATION_STATE state)
+    void StartAnimation(double startTime, UPlayState state)
     {
         this->state = state;
         this->startTime = startTime;
@@ -137,7 +137,7 @@ public:
 
     void Update(double delta)
     {
-        if (state == UANIMATION_STOP || GetTickCount() < startTime)
+        if (state == UPlayState::Stop || GetTickCount() < startTime)
             return;
 
         lastUpdateTime += delta;
@@ -157,10 +157,10 @@ public:
         }
         else
         {
-            if (state == UANIMATION_PLAY_LOOP)
-                StartAnimation(GetTickCount(), UANIMATION_PLAY_LOOP);
+            if (state == UPlayState::PlayLoop)
+                StartAnimation(GetTickCount(), UPlayState::PlayLoop);
             else
-                state = UANIMATION_STOP;
+                state = UPlayState::Stop;
         }
     }
 };
@@ -193,7 +193,7 @@ public:
         int count = 0;
         for each(auto t in animations)
         {
-            if (t.second->state != UANIMATION_STOP)
+            if (t.second->state != UPlayState::Stop)
             {
                 t.second->Update(delta);
 

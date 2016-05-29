@@ -35,7 +35,7 @@ void UScriptEngine::RegisterFunctions(UScript* script)
 {
     URegistry<lua_State*, UScript*>::Registry[script->GetLuaVM()] = script;
 
-    WrapFunc1<bool, std::string, UScriptEngine::MessageBoxW>().registerFunc(script->GetLuaVM(), "MessageBox");
+    WrapFunc1<bool, std::string, UScriptEngine::MsgBox>().registerFunc(script->GetLuaVM(), "MessageBox");
     WrapFuncObj0<UGameObject*, UScript, &UScript::GetGameObject>().registerFunc(script->GetLuaVM(), "GetGameObject");
     WrapFunc1<UGameObject*, UComponent*, UScriptEngine::GetGameObjectByComponent>().registerFunc(script->GetLuaVM(), "GetGameObjectByComponent");
     WrapFunc1<UGameObject*, UGameObject*, UScriptEngine::GetParent>().registerFunc(script->GetLuaVM(), "GetParent");

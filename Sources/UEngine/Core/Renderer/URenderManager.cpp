@@ -18,13 +18,13 @@ URenderManager::URenderManager()
     post_effect_fbo.Initialize();
     post_post_effect_fbo.Initialize();
 
-    postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", URESOURCE_POST_EFFECT));
-    postEffectDOF = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_dof.xml", URESOURCE_POST_EFFECT));
-    postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", URESOURCE_POST_EFFECT));
+    postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", UResourceType::PostEffect));
+    postEffectDOF = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_dof.xml", UResourceType::PostEffect));
+    postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", UResourceType::PostEffect));
 
-    posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+    posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 
-    posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTEXTURE_COLOR);
+    posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
     posteffectScene->name = "colorScene";
 
     postEffectRipple->AddTexture(lighting->resScene, 0);
@@ -38,9 +38,9 @@ URenderManager::URenderManager()
     postEffectSSAO->AddTexture(lighting->normalScene, 3);
 
     depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
-    depthShadowMap = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
+    depthShadowMap = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 
-    depthShadowMap->Create(depthTextureSize, depthTextureSize, UTEXTURE_DEPTH, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+    depthShadowMap->Create(depthTextureSize, depthTextureSize, UTextureFormat::Depth32F, UTextureFiltration::Linear, UTextureWrapMode::ClampToEdge);
     depthShadowMap->name = "depth";
 }
 
@@ -52,9 +52,9 @@ URenderManager::~URenderManager(void)
 void URenderManager::Render(UScene* scene)
 {
     URenderQueue render_queue;
-    scene->PrepareRenderQueue(render_queue);
-
     auto render = URenderer::GetInstance();
+
+    scene->PrepareRenderQueue(render_queue);
 
     UCamera previousCam = URenderer::GetInstance()->GetCurrentCamera();
 
@@ -63,7 +63,7 @@ void URenderManager::Render(UScene* scene)
    
     render->BindFBO(&vsm_fbo);
 
-    vsm_fbo.BindTexture(depthShadowMap, UFB_ATTACHMENT_DEPTH);
+    vsm_fbo.BindTexture(depthShadowMap, UFramebufferAttachment:: Depth);
     glCullFace(GL_FRONT);
     glColorMask(GL_TRUE, GL_TRUE, GL_FALSE, GL_FALSE);
     glDepthMask(GL_TRUE);
@@ -83,10 +83,10 @@ void URenderManager::Render(UScene* scene)
         auto vsmTextures = lights[light_params.light_index[i]]->GetDepthTextures();
         for (unsigned int j = 0; j < vsmTextures.size(); j++)
         {
-            vsm_fbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
+            vsm_fbo.BindTexture(vsmTextures[j], UFramebufferAttachment::Color0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            RenderQueue(render_queue, URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
+            RenderQueue(render_queue, URenderPass::DepthShadow, lights[light_params.light_index[i]]->GetCameras()[j]);
         }
     }
     
@@ -108,8 +108,8 @@ void URenderManager::Render(UScene* scene)
     }
     
     glClearColor(0, 0, 0, 1);
-    //depthFbo.UnbindTexture(UFB_ATTACHMENT_COLOR0);
-    //depthFbo.UnbindTexture(UFB_ATTACHMENT_DEPTH);
+    //depthFbo.UnbindTexture(Color0);
+    //depthFbo.UnbindTexture(Depth);
     //glDisable(GL_POLYGON_OFFSET_FILL);
 
 
@@ -122,10 +122,10 @@ void URenderManager::Render(UScene* scene)
 
     //postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);
     //postEffectSSAO->Render(URENDER_FORWARD);
-    postEffectRipple->Render(URENDER_PASS_FORWARD);
+    postEffectRipple->Render(URenderPass::Forward);
 }
 
-void URenderManager::RenderQueue(const URenderQueue& render_queue, const URENDER_PASS type, const UCamera& camera)
+void URenderManager::RenderQueue(const URenderQueue& render_queue, const URenderPass type, const UCamera& camera)
 {
     vector<int> keys;
     for (auto it = render_queue.data.begin(); it != render_queue.data.end(); ++it)

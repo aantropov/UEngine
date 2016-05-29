@@ -18,7 +18,7 @@ ULight::ULight(UResourceFactory* rf, vec4 pos, bool cast)
 
 ULight::ULight(UResourceFactory* rf, vec4 pos)
 {
-    type = ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL;
+    type = ULightType::Directional;
     is_casting_shadows = false;
 
     shadow_distance_min = 0.1f;
@@ -126,7 +126,7 @@ ULight::~ULight(void)
 
 void ULight::InitModel(UResourceFactory* rf)
 {
-    model = dynamic_cast<UModel*>(rf->Create(URESOURCE_MODEL));
+    model = dynamic_cast<UModel*>(rf->Create(UResourceType::Model));
     model->LoadFromFile("data\\Models\\light_model.xml");
 
     //components.push_back(model);
@@ -142,9 +142,9 @@ void ULight::UpdateCamera()
 {
     light_direction = -normalize(parent_transform*(local_transform.position));
 
-    if (type == ULIGHT_TYPE::ULIGHT_TYPE_SPOT)
+    if (type == ULightType::Spot)
         cameras[0].Perspective(spot_angle, 1.0f, shadow_distance_min, shadow_distance_max);
-    else if (type == ULIGHT_TYPE::ULIGHT_TYPE_DIRECTIONAL)
+    else if (type == ULightType::Directional)
     {
         auto size = 0.5f * (shadow_distance_max - shadow_distance_min);
         //size = 1000.0f;
@@ -160,10 +160,10 @@ void ULight::UpdateDepthTextures()
     {
         int size = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
         
-        auto tex = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
-        //tex->Create(size, size, UTEXTURE_DEPTH_SHADOW, UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP_CLAMP_TO_EDGE);
+        auto tex = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
+        //tex->Create(size, size, DepthShadow, Linear, ClampToEdge);
         tex->SetMipMap(false);
-        tex->Create(size, size, UTEXTURE_RG32F, UTEXTURE_FILTER::UTEXTURE_FILTER_LINEAR, UTEXTURE_WRAP::UTEXTURE_WRAP_CLAMP_TO_EDGE);
+        tex->Create(size, size, UTextureFormat::RG32F, UTextureFiltration::Linear, UTextureWrapMode::ClampToEdge);
         depthTextures.push_back(tex);
     }
 }

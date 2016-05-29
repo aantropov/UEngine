@@ -47,7 +47,7 @@ extern ILenum g_DevILError;
     n = (p)wglGetProcAddress(#n); \
     if (n == NULL) \
     { \
-    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
+    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULogType::Error); \
         /*return false;*/ \
     }
 
@@ -56,7 +56,7 @@ extern ILenum g_DevILError;
     { \
         char message[UE_MAXCHAR]; \
         sprintf_s(message, "DevIL error 0x%X", (unsigned)g_DevILError); \
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+        ULogger::GetInstance()->Message(message, ULogType::Error, ULogTarget::MsgBox); \
     }
 
 #define OPENGL_CHECK_FOR_ERRORS() \
@@ -64,7 +64,7 @@ extern ILenum g_DevILError;
     { \
         char message[UE_MAXCHAR]; \
         sprintf_s(message, "OpenGL error 0x%X", (unsigned)g_OpenGLError); \
-        ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+        ULogger::GetInstance()->Message(message, ULogType::Error, ULogTarget::MsgBox); \
     }
 
 #define OPENGL_CALL(expression) \
@@ -74,7 +74,7 @@ extern ILenum g_DevILError;
         { \
             char message[UE_MAXCHAR]; \
             sprintf_s(message,"OpenGL expression \"" #expression "\" error %d\n", (int)g_OpenGLError); \
-            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+            ULogger::GetInstance()->Message(message, ULogType::Error, ULogTarget::MsgBox); \
         } \
     }
 
@@ -85,7 +85,7 @@ extern ILenum g_DevILError;
         { \
             char message[UE_MAXCHAR]; \
             sprintf_s(message,"DevIL expression \"" #expression "\" error %d\n", (int)g_DevILError); \
-            ULogger::GetInstance()->Message(message, ULOG_MSG_ERROR, ULOG_OUT_MSG); \
+            ULogger::GetInstance()->Message(message, ULogType::Error, ULogTarget::MsgBox); \
         } \
     }
 #endif //UE_DEBUG
@@ -101,7 +101,7 @@ extern ILenum g_DevILError;
     n = (p)wglGetProcAddress(#n); \
     if (n == NULL) \
     { \
-    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed", ULOG_MSG_ERROR); \
+    ULogger::GetInstance()->Message("Loading extension \"" #n "\" is failed",  ULogType::Error); \
         return false; \
     }
 
@@ -120,7 +120,7 @@ class URendererHelper : USingleton<URendererHelper>
     public:
         int width;
         int height;
-        UTEXTURE_TYPE type;              
+        UTextureFormat type;
 
         string ToString()
         {
@@ -128,7 +128,7 @@ class URendererHelper : USingleton<URendererHelper>
             memset(buffer, 256, sizeof(char));
 
             sprintf_s(buffer, "%d%d%d", width, height, type);
-            
+
             return string(buffer);
         }
     };
@@ -136,7 +136,7 @@ class URendererHelper : USingleton<URendererHelper>
     UPostEffect* gauss_blur;
     UPostEffect* copy_texture;
     UFrameBufferObject* fbo;
-    
+
     std::map<string, UTexture*> temporaryTextures;
 
 public:
@@ -146,7 +146,7 @@ public:
     void Initialize();
     void GaussBlur(UTexture* texture, float amount, vec2 dir);
 
-    UTexture* GetTemporaryTexture(int width, int height, UTEXTURE_TYPE type);
+    UTexture* GetTemporaryTexture(int width, int height, UTextureFormat type);
     void ReleaseTemporaryTexture(UTexture* texture);
 };
 

@@ -26,10 +26,10 @@ bool UCubemap::Load(UXMLFile& xml, std::string path)
         this->name = xml.GetElement(path + "cubemap/name/");
 
         if (xml.isExistElement(path + "cubemap/wrap/"))
-            wrap = xml.GetElement(path + "cubemap/wrap/") == "repeat" ? UTEXTURE_WRAP_REPEAT : UTEXTURE_WRAP_CLAMP;
+            wrap = xml.GetElement(path + "cubemap/wrap/") == "repeat" ? UTextureWrapMode::Repeat : UTextureWrapMode::Clamp;
 
         if (xml.isExistElement(path + "cubemap/filter/"))
-            filter = xml.GetElement(path + "cubemap/filter/") == "linear" ? UTEXTURE_FILTER_LINEAR : UTEXTURE_FILTER_NEAREST;
+            filter = xml.GetElement(path + "cubemap/filter/") == "linear" ? UTextureFiltration::Linear : UTextureFiltration::Nearest;
 
         if (xml.isExistElement(path + "cubemap/mipmap/"))
             mipmap = atoi(xml.GetElement(path + "cubemap/mipmap/").c_str()) == 1;
@@ -49,7 +49,7 @@ bool UCubemap::Load(UXMLFile& xml, std::string path)
     }
     catch (exception e)
     {
-        ULogger::GetInstance()->Message("Error to load cubemap (xml): " + path, ULOG_MSG_ERROR, ULOG_OUT_MSG);
+        ULogger::GetInstance()->Message("Error to load cubemap (xml): " + path, ULogType::Error, ULogTarget::MsgBox);
         return false;
     }
 

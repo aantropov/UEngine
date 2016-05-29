@@ -20,7 +20,7 @@ public:
 
     static ULogger* GetInstance();
     static const string ULOG_FILE_PATH;
-    void Message(string text, ULOG_MSG_TYPE msg_type = ULOG_MSG_INFO, ULOG_OUT out = ULOG_OUT_FILE);
+    void Message(string text, ULogType msg_type = ULogType::Info, ULogTarget out = ULogTarget::File);
     
     ~ULogger();
 };

@@ -242,13 +242,15 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 #if defined(SHADOW_RECEIVER)
 		if(light_type[i] % 2 == 1)
 			shadow = clamp(SampleShadow(Vert.smcoord[i], light_depthTexture[i], distance, NdotL * 0.01), 0.0, 1.0);
-#endif
-		
-		#if defined(SPECULAR)
+#endif		
+
+#if defined(SPECULAR)
 			float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
 			res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
-		#endif
+#endif
+
 	}
+	
 	res *= shadow * attenuation;
 	
 	return res;

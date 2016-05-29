@@ -2,7 +2,7 @@
 #include "urenderer.h"
 #include "..\Utils\utils.h"
 
-void UShader::Create(USHADER_TYPE st, std::vector<std::string> defines)
+void UShader::Create(UShaderType st, std::vector<std::string> defines)
 {
     _id = URenderer::GetInstance()->CompileShader(&source, st, defines);
 }
@@ -14,7 +14,7 @@ bool UShader::LoadFromFile(std::string path)
 
     if (fShd == NULL)
     {
-        ULogger::GetInstance()->Message("Shader: Can`t open file " + path, ULOG_MSG_ERROR);
+        ULogger::GetInstance()->Message("Shader: Can`t open file " + path, ULogType::Error);
         return false;
     }
 

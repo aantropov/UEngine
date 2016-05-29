@@ -2,7 +2,7 @@
 
 UIndexBuffer::UIndexBuffer(void)
 {
-    state = UVBO_STATIC;
+    state = UBufferUsage::Static;
     indices = NULL;
 }
 
