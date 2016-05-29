@@ -64,6 +64,7 @@ class UMaterial : public UResource, public UNode
     int queue = 200;
 
     UBlendMode blend_mode = UBlendMode::Opaque;
+    UDepthFunc depth_func = UDepthFunc::LEqual;
 
 public:
 
@@ -72,6 +73,9 @@ public:
     UMaterial();
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin);
+
+    void SetDepthFunc(UDepthFunc value) { depth_func = value; }
+    UDepthFunc GetDepthFunc() const { return depth_func; }
 
     void SetBlendMode(UBlendMode value) { blend_mode = value; }
     UBlendMode GetBlendMode() const { return blend_mode; }

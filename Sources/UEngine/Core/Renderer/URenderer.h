@@ -157,6 +157,8 @@ public:
     void UniformMatrix3(const unsigned int location, const unsigned int num, const float *variable) const;
 
     void DepthWrite(bool value) const;
+    void BlendMode(UBlendMode value) const;
+    void DepthFunc(UDepthFunc value) const;
 
     void DrawSegment(const vec3& p1, const vec3& p2, const vec3& color);
     void DrawTransform(::transform xf);

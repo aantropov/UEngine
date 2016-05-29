@@ -36,7 +36,6 @@ class UMesh : public UNode, public UIRenderable
 
 public:
 
-    // Data    
     std::string name;
     UVertexBuffer vb;
     UIndexBuffer ib;

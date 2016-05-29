@@ -296,7 +296,7 @@ void main(void)
 	color += texture(material.emission_text, Vert.texcoord);
 #endif	
 	
-	color += res;	
+	color += res;
 }
 
 #endif

@@ -140,7 +140,7 @@ int URenderer::CreateCubemap(UCubemap *tex) const
     GLuint id = tex->GetId();
 
     auto filter = GL_LINEAR;
-    if (tex->GetImageFilter() == UTextureFiltration:: Nearest)
+    if (tex->GetImageFilter() == UTextureFiltration::Nearest)
         filter = GL_NEAREST;
 
     auto wrap = GL_REPEAT;
@@ -725,6 +725,24 @@ void URenderer::Uniform2(const unsigned int location, const unsigned int num, co
 void URenderer::DepthWrite(bool value) const
 {
     glDepthMask(value);
+}
+
+void URenderer::DepthFunc(UDepthFunc value) const
+{
+    glDepthFunc((GLenum)value);
+}
+
+void URenderer::BlendMode(UBlendMode value) const
+{
+    if (value == UBlendMode::Opaque)
+        glDisable(GL_BLEND);
+    else
+        glEnable(GL_BLEND);
+
+    if (value == UBlendMode::Translucent)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    else if (value == UBlendMode::Additive)
+        glBlendFunc(GL_ONE, GL_ONE);
 }
 
 bool URenderer::SetVerticalSynchronization(bool bEnabled)
