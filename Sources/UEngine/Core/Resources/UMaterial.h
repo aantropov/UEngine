@@ -63,6 +63,8 @@ class UMaterial : public UResource, public UNode
     bool is_shadow_caster = true;
     int queue = 200;
 
+    UBlendMode blend_mode = UBlendMode::Opaque;
+
 public:
 
     std::map<std::string, UUniformParam> params;
@@ -71,10 +73,13 @@ public:
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin, UShaderProgram *_sp);
     UMaterial(vec4 dif, vec4 spec, vec4 emi, float shin);
 
-    bool IsShadowCaster() { return is_shadow_caster; } const
+    void SetBlendMode(UBlendMode value) { blend_mode = value; }
+    UBlendMode GetBlendMode() const { return blend_mode; }
+
+    bool IsShadowCaster() const { return is_shadow_caster; }
     void IsShadowCaster(bool value) { is_shadow_caster = value; }
 
-    int GetQueue() { return queue; } const
+    int GetQueue() const { return queue; }
     void SetQueue(unsigned int value) { queue = value; }
 
     void SetSkinningMatrixes(mat4 *skinningMatrixes, unsigned int num) { this->skinningTransforms = skinningMatrixes; this->skinningTransformsNum = num; }

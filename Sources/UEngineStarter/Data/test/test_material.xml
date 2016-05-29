@@ -77,5 +77,6 @@
     </specular>
     <two_sides>0</two_sides>
     <shininess>1.f</shininess>
+	<blend_mode>translucent</blend_mode>
   </material>
 </xml>

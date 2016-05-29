@@ -49,6 +49,21 @@ public:
     bool GetElementb(std::string param_path) const;
     float GetElementf(std::string param_path) const;
 
+    template<class EnumType, class HelperType>
+    EnumType GetElementEnum(std::string path) const
+    {
+        return HelperType::FromString(GetElement(path).c_str());
+    }
+
+    template<class EnumType, class HelperType>
+    bool TryGetElementEnum(std::string path, EnumType &var) const
+    {
+        if (!isExistElement(path))
+            return false;
+        var = GetElementEnum<EnumType, HelperType>(path);
+        return true;
+    }
+
     bool TryGetElement(std::string path, std::string &var) const;
     bool TryGetElementi(std::string path, int &var) const;
     bool TryGetElementf(std::string path, float &var) const;

@@ -42,7 +42,7 @@ void ULogger::Message(string text, ULogType msg_type, ULogTarget out)
 
     // Formed string (st.wHour +3) = time in Moscow
     //sprintf_s(message,  "[%d/%d/%d %d:%d:%d] %s %s\n", st.wDay,st.wMonth,st.wYear,st.wHour + 3,st.wMinute,st.wSecond,(LPCWSTR)type.c_str(), (LPCWSTR)text.c_str());
-    sprintf_s(message, "[%d/%d/%d %d:%d:%d] %s %s\n", st.wDay, st.wMonth, st.wYear, st.wHour + 3, st.wMinute, st.wSecond, (LPCWSTR)type.c_str(), (LPCWSTR)text.c_str());
+    sprintf_s(message, "[%d/%d/%d %d:%d:%d] %s %s\n", st.wDay, st.wMonth, st.wYear, st.wHour + 3, st.wMinute, st.wSecond, type.c_str(), text.c_str());
 
     if (out == ULogTarget::File)
         fprintf(fLog, message);

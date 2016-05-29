@@ -155,6 +155,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
         xml.TryGetElementb(path + "material/shadow_caster/", is_shadow_caster);
         xml.TryGetElementb(path + "material/depth_write/", is_depth_write_enabled);
         xml.TryGetElementi(path + "material/queue/", queue);
+        xml.TryGetElementEnum<UBlendMode, UBlendModeHelper>(path + "material/blend_mode/", blend_mode);
 
         if (xml.isExistElement(path + "material/param_num/"))
         {

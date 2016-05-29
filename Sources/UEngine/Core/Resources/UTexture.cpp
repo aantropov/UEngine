@@ -13,16 +13,10 @@ UTexture::~UTexture(void)
 
 bool UTexture::Load(UXMLFile& xml, std::string path)
 {
-    this->name = xml.GetElement(path + "texture/name/");
-
-    if (xml.isExistElement(path + "texture/wrap/"))
-        wrap = xml.GetElement(path + "texture/wrap/") == "repeat" ? UTextureWrapMode::Repeat : UTextureWrapMode::Clamp;
-
-    if (xml.isExistElement(path + "texture/filter/"))
-        filter = xml.GetElement(path + "texture/filter/") == "linear" ? UTextureFiltration::Linear : UTextureFiltration::Nearest;
-
-    if (xml.isExistElement(path + "texture/mipmap/"))
-        mipmap = atoi(xml.GetElement(path + "texture/mipmap/").c_str()) == 1;
+    xml.TryGetElement(path + "texture/name/", name);
+    xml.TryGetElementEnum<UTextureWrapMode, UTextureWrapModeHelper>(path + "texture/wrap/", wrap);
+    xml.TryGetElementEnum<UTextureFiltration, UTextureFiltrationHelper>(path + "texture/filter/", filter);
+    xml.TryGetElementb(path + "texture/mipmap/", mipmap);
 
     DEVIL_CALL(ilGenImages(1, &texture_res_id));
     DEVIL_CALL(ilBindImage(texture_res_id));
