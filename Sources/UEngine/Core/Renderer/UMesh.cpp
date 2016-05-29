@@ -1,5 +1,6 @@
 #include "UMesh.h"
 #include "../Basic/UScene.h"
+#include"../Renderer/URenderManager.h"
 
 UMesh::UMesh(void)
 {
@@ -10,9 +11,9 @@ UMesh::~UMesh(void)
     Free();
 }
 
-void UMesh::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
+void UMesh::AddToRenderQueue(URenderQueue& render_queue)
 {
-    render_queue[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
+    render_queue.data[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
 }
 
 void UMesh::InitializeMaterial(URENDER_PASS type)

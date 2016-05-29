@@ -2,6 +2,7 @@
 #include "..\Renderer\URenderer.h"
 #include "ULight.h"
 #include "..\Renderer\UMesh.h"
+#include "..\Renderer\URenderManager.h"
 
 void UScene::USceneNode::AddChild(USceneNode* n)
 {
@@ -9,7 +10,7 @@ void UScene::USceneNode::AddChild(USceneNode* n)
     children.push_back(n);
 }
 
-void UScene::USceneNode::AddToRenderQueue(map<int, list<pair<mat4, UMesh*>>>& render_queue)
+void UScene::USceneNode::AddToRenderQueue(URenderQueue& render_queue)
 {
     auto render = URenderer::GetInstance();
     render->PushModelMatrix();
@@ -160,41 +161,12 @@ void UScene::Render(URENDER_PASS type, UCamera camera)
 }
 */
 
-void UScene::PrepareRenderQueue()
+void UScene::PrepareRenderQueue(URenderQueue& render_queue)
 {
+    render_queue.data.clear();
     auto render = URenderer::GetInstance();
     render->model_view = mat4_identity;
-
-    render_queue.clear();
     root->AddToRenderQueue(render_queue);
-}
-
-void UScene::RenderQueue(URENDER_PASS type, UCamera camera)
-{
-    vector<int> keys;
-    for (auto it = render_queue.begin(); it != render_queue.end(); ++it)
-        keys.push_back(it->first);
-
-    keys.erase(unique(keys.begin(), keys.end()), keys.end());
-
-    std::sort(keys.begin(), keys.end());
-
-    auto render = URenderer::GetInstance();
-
-    render->SetCurrentCamera(camera);
-    render->current_camera.UpdateFrustum();
-
-    for (auto it = keys.begin(); it != keys.end(); ++it)
-    {
-        auto vec = render_queue[*it];
-        for (auto mesh_it = vec.begin(); mesh_it != vec.end(); ++mesh_it)
-        {
-            render->model_view = (*mesh_it).first;
-            (*mesh_it).second->Render(type);
-        }
-    }
-
-    render->model_view = mat4_identity;
 }
 
 UScene::~UScene(void)

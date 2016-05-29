@@ -4,6 +4,8 @@
 #include "..\Utils\enum.h"
 #include "..\Basic\ULight.h"
 #include "..\UEngine.h"
+#include <vector>
+#include <map>
 
 URenderManager::URenderManager()
 {
@@ -49,6 +51,9 @@ URenderManager::~URenderManager(void)
 
 void URenderManager::Render(UScene* scene)
 {
+    URenderQueue render_queue;
+    scene->PrepareRenderQueue(render_queue);
+
     auto render = URenderer::GetInstance();
 
     UCamera previousCam = URenderer::GetInstance()->GetCurrentCamera();
@@ -81,7 +86,7 @@ void URenderManager::Render(UScene* scene)
             vsm_fbo.BindTexture(vsmTextures[j], UFB_ATTACHMENT_COLOR0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            scene->RenderQueue(URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
+            RenderQueue(render_queue, URENDER_PASS_DEPTH_SHADOW, lights[light_params.light_index[i]]->GetCameras()[j]);
         }
     }
     
@@ -112,10 +117,38 @@ void URenderManager::Render(UScene* scene)
 
     OPENGL_CHECK_FOR_ERRORS();
 
-    lighting->Render(scene, render->main_ñamera);
+    lighting->Render(scene, render->main_ñamera, render_queue);
     //postEffectDOF->Render(URENDER_FORWARD);
 
     //postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);
     //postEffectSSAO->Render(URENDER_FORWARD);
     postEffectRipple->Render(URENDER_PASS_FORWARD);
+}
+
+void URenderManager::RenderQueue(const URenderQueue& render_queue, const URENDER_PASS type, const UCamera& camera)
+{
+    vector<int> keys;
+    for (auto it = render_queue.data.begin(); it != render_queue.data.end(); ++it)
+        keys.push_back(it->first);
+
+    keys.erase(unique(keys.begin(), keys.end()), keys.end());
+
+    std::sort(keys.begin(), keys.end());
+
+    auto render = URenderer::GetInstance();
+
+    render->SetCurrentCamera(camera);
+    render->current_camera.UpdateFrustum();
+
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        auto vec = render_queue.data.at(*it);
+        for (auto mesh_it = vec.begin(); mesh_it != vec.end(); ++mesh_it)
+        {
+            render->model_view = (*mesh_it).first;
+            (*mesh_it).second->Render(type);
+        }
+    }
+
+    render->model_view = mat4_identity;
 }

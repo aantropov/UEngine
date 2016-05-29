@@ -73,8 +73,7 @@ void UEngine::Run()
             render->draw_ñalls = 0;
 
             if (current_scene != NULL)
-            {
-                current_scene->PrepareRenderQueue();
+            {                
                 render_manager->Render(current_scene);
             }
 

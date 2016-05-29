@@ -5,6 +5,7 @@
 
 class UScene;
 class UCamera;
+class URenderQueue;
 
 class ULighting
 {
@@ -17,14 +18,16 @@ public:
     UFrameBufferObject fb;
     UFrameBufferObject postfb;
 
-    virtual UTexture *Render(UScene *scene, UCamera camera) = 0;
+    virtual UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue) = 0;
+
+    friend class URenderManager;
 };
 
 class UForwardLighting : public ULighting
 {
 public:
 
-    virtual UTexture *Render(UScene *scene, UCamera camera);
+    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
     UForwardLighting();
 };
 
@@ -44,6 +47,6 @@ public:
     UPostEffect *lighting;
     UShaderProgram *objectShaderProgram;
 
-    virtual UTexture *Render(UScene *scene, UCamera camera);
+    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
     UDefferedLighting();
 };

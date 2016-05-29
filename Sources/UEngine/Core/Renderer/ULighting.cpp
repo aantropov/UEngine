@@ -18,7 +18,7 @@ UDefferedLighting::UDefferedLighting()
     resSceneA = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     resSceneB = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
     positionScene = dynamic_cast<UTexture*>(UEngine::rf.Create(URESOURCE_TEXTURE));
-    
+
     colorScene->name = "colorScene";
     depthScene->name = "depthScene";
     normalScene->name = "normalScene";
@@ -60,7 +60,7 @@ UDefferedLighting::UDefferedLighting()
     lighting->AddTexture(positionScene, 5);
 }
 
-UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
+UTexture* UDefferedLighting::Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue)
 {
     auto render = URenderer::GetInstance();
     render->BindFBO(&fb);
@@ -72,7 +72,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->RenderQueue(URENDER_PASS_DEFFERED, camera);
+    URenderManager::RenderQueue(render_queue, URENDER_PASS_DEFFERED, camera);
     render->UnbindFBO();
 
     OPENGL_CHECK_FOR_ERRORS();
@@ -83,7 +83,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     //Update frustum
     /*
     UVertex* vertices = reinterpret_cast<UVertex*>(lighting->vb.Lock());
-    
+
     mat4 view = render->current_camera.GetView();
     mat4 viewProjection = render->current_camera.GetProjection() * view;
     mat4 viewProjectionInv = inverse(viewProjection);
@@ -91,7 +91,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
     for (int i = 0; i < lighting->vb.GetNum(); i++)
     {
         vec3 pos = vertices[i].GetPosition();
-        vec4 frustumCorner = vec4(pos.x, pos.y, 1.0f, 1.0f);        
+        vec4 frustumCorner = vec4(pos.x, pos.y, 1.0f, 1.0f);
         frustumCorner = viewProjectionInv * frustumCorner;
         frustumCorner /= frustumCorner.w;
 
@@ -138,7 +138,7 @@ UTexture* UDefferedLighting::Render(UScene *scene, UCamera camera)
         postfb.BindTexture(mod2 == light_params.count - 1 ? resScene : (mod2 % 2 == 0 ? resSceneB : resSceneA), UFB_ATTACHMENT_COLOR0);
 
         OPENGL_CHECK_FOR_ERRORS();
-                
+
         lighting->Render(URENDER_PASS_DEFFERED, i);
         render->UnbindFBO();
         //////////////////////////////////////
@@ -174,7 +174,7 @@ UForwardLighting::UForwardLighting()
     fb.BindTexture(normalScene, UFB_ATTACHMENT_COLOR1);
 }
 
-UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
+UTexture* UForwardLighting::Render(const UScene * scene, const UCamera camera, const URenderQueue& render_queue)
 {
     auto render = URenderer::GetInstance();
     //color, depth
@@ -187,7 +187,7 @@ UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
 
-    scene->RenderQueue(URENDER_PASS_FORWARD, camera);
+    URenderManager::RenderQueue(render_queue, URENDER_PASS_FORWARD, camera);
     URenderer::GetInstance()->UnbindFBO();
 
     // normal    
@@ -201,7 +201,7 @@ UTexture* UForwardLighting::Render(UScene *scene, UCamera camera)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    scene->RenderQueue(URENDER_PASS_NORMAL, camera);
+    URenderManager::RenderQueue(render_queue, URENDER_PASS_NORMAL, camera);
     URenderer::GetInstance()->UnbindFBO();
     return resScene;
 }

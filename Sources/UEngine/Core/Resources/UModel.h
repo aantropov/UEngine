@@ -4,6 +4,8 @@
 #include "..\Basic\UIAnimatable.h"
 #include "..\Utils\enum.h"
 
+class URenderQueue;
+
 class UModel : public UResource, public UComponent, public UIRenderable, public UISkinAnimatable
 {
     unsigned int mesh_num;
@@ -11,7 +13,7 @@ class UModel : public UResource, public UComponent, public UIRenderable, public 
 
 public:
 
-    virtual void AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue);
+    virtual void AddToRenderQueue(URenderQueue& render_queue);
     virtual void Render(URENDER_PASS type, int light_index = 0);
     virtual void Update(double delta);
 

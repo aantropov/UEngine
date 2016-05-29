@@ -5,6 +5,7 @@
 
 class UMaterial;
 class UMesh;
+class URenderQueue;
 
 class UGameObject : public UNode
 {
@@ -24,7 +25,7 @@ public:
     void UENGINE_DECLSPEC GetBounds() const;
     void UENGINE_DECLSPEC AddComponent(UComponent *component);
 
-    void UENGINE_DECLSPEC AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue);
+    void UENGINE_DECLSPEC AddToRenderQueue(URenderQueue& render_queue);
     virtual void UENGINE_DECLSPEC Update(double delta);
 
     UENGINE_DECLSPEC UGameObject();

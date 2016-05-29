@@ -3,7 +3,6 @@
 #include "..\Renderer\URenderer.h"
 #include "..\Basic\UCamera.h"
 #include <vector>
-#include <map>
 #include "UIRenderable.h"
 #include "..\Utils\ExportDef.h"
 #include "..\Utils\enum.h"
@@ -18,6 +17,7 @@ class URenderer;
 class ULight;
 class UMaterial;
 class UMesh;
+class URenderQueue;
 
 class ULightParams
 {
@@ -63,7 +63,7 @@ public:
         UENGINE_DECLSPEC ~USceneNode();
 
         void UENGINE_DECLSPEC AddChild(USceneNode* n);
-        void UENGINE_DECLSPEC AddToRenderQueue(map<int, list<pair<mat4, UMesh*>>>& render_queue);
+        void UENGINE_DECLSPEC AddToRenderQueue(URenderQueue& render_queue);
         void UENGINE_DECLSPEC Update(double delta);
         void UENGINE_DECLSPEC DeleteTopology();
         void UENGINE_DECLSPEC Free();
@@ -74,7 +74,7 @@ public:
         lights.push_back(n);
     }
 
-    vector<ULight*> UENGINE_DECLSPEC GetLights()
+    const vector<ULight*> UENGINE_DECLSPEC GetLights() const
     {
         return lights;
     }
@@ -87,8 +87,7 @@ public:
     void UENGINE_DECLSPEC Update(double deltaTime);
     void UENGINE_DECLSPEC UpdateLightParams();
 
-    void UENGINE_DECLSPEC PrepareRenderQueue();
-    void UENGINE_DECLSPEC RenderQueue(URENDER_PASS type, UCamera camera);
+    void UENGINE_DECLSPEC PrepareRenderQueue(URenderQueue& render_queue);
 
     //void UENGINE_DECLSPEC Render(URENDER_PASS type, UCamera camera);
     

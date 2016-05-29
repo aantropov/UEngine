@@ -1,6 +1,7 @@
 #include "UGameObject.h"
 #include "..\UEngine.h"
 #include "..\Renderer\UMesh.h"
+#include "..\Renderer\URenderManager.h"
 
 void UGameObject::AddComponent(UComponent *component)
 {
@@ -8,7 +9,7 @@ void UGameObject::AddComponent(UComponent *component)
     components.push_back(component);
 }
 
-void UGameObject::AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
+void UGameObject::AddToRenderQueue(URenderQueue& render_queue)
 {
     auto render = URenderer::GetInstance();
     for each(auto el in components)

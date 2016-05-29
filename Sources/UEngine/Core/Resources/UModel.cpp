@@ -3,8 +3,9 @@
 #include "UTexture.h"
 #include "stdio.h"
 #include "..\Basic\UScene.h"
+#include "..\Renderer\URenderManager.h"
 
-void UModel:: AddToRenderQueue(map<int, list<pair<mat4,UMesh*>>>& render_queue)
+void UModel:: AddToRenderQueue(URenderQueue& render_queue)
 {
     URenderer::GetInstance()->PushModelMatrix();
     for (int i = mesh_num - 1; i >= 0; i--)
