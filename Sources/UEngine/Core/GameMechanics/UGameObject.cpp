@@ -23,7 +23,7 @@ void UGameObject::AddToRenderQueue(URenderQueue& render_queue)
                 auto sph = model->GetBounds();
                 sph.center = render->model_view * sph.center;
 
-                if (IsSphereInFrustum(sph, render->current_camera.GetFrustum()))
+               if (IsSphereInFrustum(sph, render->current_camera.GetFrustum()))
                     renderable->AddToRenderQueue(render_queue);
             }
             else

@@ -164,9 +164,9 @@ void UScene::Render(URenderPass type, UCamera camera)
 
 void UScene::PrepareRenderQueue(URenderQueue& render_queue)
 {
+    auto render = URenderer::GetInstance();
+    render->model_view = mat4_identity;
 	render_queue.data.clear();
-	auto render = URenderer::GetInstance();
-	render->model_view = mat4_identity;
 	root->AddToRenderQueue(render_queue);
 }
 

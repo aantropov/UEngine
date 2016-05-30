@@ -60,16 +60,13 @@ void URenderManager::Render(UScene* scene)
 	
 	RenderShadowMaps();
 
-	//glClearColor(0, 0, 0, 1);
-
 	OPENGL_CHECK_FOR_ERRORS();
 
 	opaque_lighting->Render(scene, render->main_ñamera, render_queue);
 	//translucent_lighting->Render(scene, render->main_ñamera, render_queue);
 
 	//postEffectDOF->Render(URENDER_FORWARD);
-
-	//postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);
+    //postEffectRipple->AddTexture(lights[light_params.light_index[1]]->GetDepthTextures()[0], 0);
 	//postEffectSSAO->Render(URENDER_FORWARD);
 	postEffectRipple->Render(URenderPass::Forward);
 }
@@ -105,6 +102,7 @@ void URenderManager::RenderShadowMaps()
 		for (unsigned int j = 0; j < vsmTextures.size(); j++)
 		{
 			auto camera = lights[light_params.light_index[i]]->GetCameras()[j];
+            camera.UpdateFrustum();
 
 			vsm_fbo.BindTexture(vsmTextures[j], UFramebufferAttachment::Color0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -135,6 +133,8 @@ void URenderManager::RenderShadowMaps()
 	}
 
 	render->SetCurrentCamera(previous_camera);
+
+    //glClearColor(0, 0, 0, 1);
 }
 
 void URenderManager::RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera)
