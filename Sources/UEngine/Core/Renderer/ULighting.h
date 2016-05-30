@@ -34,7 +34,6 @@ class UDefferedLightingOpaque : public ULighting
 {
 public:
 
-	UTexture* color;
 	UTexture* diffuse;
 	UTexture* specular;
 	UTexture* position;

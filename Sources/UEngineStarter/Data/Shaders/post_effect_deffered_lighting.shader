@@ -234,7 +234,7 @@ void main(void)
   if(int(state) == 3)
     color = res + emission;	
 	
-	//color = vec4(res);
+  //color = vec4(emission);
 }
 
 #endif

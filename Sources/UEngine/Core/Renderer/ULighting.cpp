@@ -13,7 +13,6 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 	normal = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	diffuse = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	specular = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
-	color = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	res_color_ping = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	res_color_pong = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	position = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
@@ -24,7 +23,6 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 	diffuse->name = "diffuseScene";
 	specular->name = "specularScene";
 	position->name = "positionScene";
-	color->name = "colorScene";
 	res_color_ping->name = "previousScene";
 	res_color_pong->name = "previousScene";
 
@@ -34,7 +32,6 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 	normal->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	diffuse->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	specular->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
-	color->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	res_color_ping->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	res_color_pong->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	position->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::R32F);
@@ -73,6 +70,11 @@ UTexture* UDefferedLightingOpaque::Render(const UScene *scene, const UCamera cam
 	glCullFace(GL_BACK);
 
 	URenderManager::RenderQueue(render_queue, UBlendMode::Opaque, URenderPass::Deffered, camera);
+
+	glDrawBuffers(1, buffers);
+
+	URenderManager::RenderQueue(render_queue, UBlendMode::Additive, URenderPass::Forward, camera);
+
 	render->UnbindFBO();
 
 	OPENGL_CHECK_FOR_ERRORS();
@@ -111,6 +113,7 @@ UTexture* UDefferedLightingOpaque::Render(const UScene *scene, const UCamera cam
 		OPENGL_CHECK_FOR_ERRORS();
 
 		post_effect->Render(URenderPass::Deffered, i);
+
 		render->UnbindFBO();
 		//////////////////////////////////////
 

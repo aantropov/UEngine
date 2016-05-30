@@ -141,6 +141,7 @@ void main(void)
 #if defined(SHADOW_RECEIVER)
 	shadow_receiver = 1;
 #endif
+
 	color[0].a = 1.0f;
 	color[1] = vec4(normal * 0.5 + vec3(0.5), shadow_receiver);
 	color[2] = material.diffuse * texture(material.texture, Vert.texcoord);
