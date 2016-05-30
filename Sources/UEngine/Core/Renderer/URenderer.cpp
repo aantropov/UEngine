@@ -280,7 +280,7 @@ void URenderer::UnbindFBO() const
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void URenderer::BindFBO(UFrameBufferObject *fb) const
+void URenderer::BindFBO(const UFrameBufferObject *fb) const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fb->GetId());
 }

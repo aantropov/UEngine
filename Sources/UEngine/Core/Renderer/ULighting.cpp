@@ -124,7 +124,6 @@ UTexture* UDefferedLightingOpaque::Render(const UScene *scene, const UCamera cam
 UForwardLightingOpaque::UForwardLightingOpaque()
 {
 	fb.Initialize();
-	post_effect_fb.Initialize();
 
 	depth = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	normal = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
@@ -159,6 +158,8 @@ UTexture* UForwardLightingOpaque::Render(const UScene * scene, const UCamera cam
 	glCullFace(GL_BACK);
 
 	URenderManager::RenderQueue(render_queue, UBlendMode::Opaque, URenderPass::Forward, camera);
+	URenderManager::RenderQueue(render_queue, UBlendMode::Additive, URenderPass::Forward, camera);
+
 	URenderer::GetInstance()->UnbindFBO();
 
 	// normal    
@@ -172,23 +173,17 @@ UTexture* UForwardLightingOpaque::Render(const UScene * scene, const UCamera cam
 	return color;
 }
 
-
-UForwardLightingTranslucent::UForwardLightingTranslucent()
+UForwardLightingTranslucent::UForwardLightingTranslucent(const UTexture* _depth)
 {
 	auto render = URenderer::GetInstance();
 
 	fb.Initialize();
-	post_effect_fb.Initialize();
 
 	color = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	color->name = "colorScene";
 	color->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 
-	depth = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
-	depth->name = "depthScene";
-	depth->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::Depth32F);
-
-	fb.BindTexture(depth, UFramebufferAttachment::Depth);
+	fb.BindTexture(_depth, UFramebufferAttachment::Depth);
 	fb.BindTexture(color, UFramebufferAttachment::Color0);
 }
 
@@ -196,25 +191,15 @@ UTexture* UForwardLightingTranslucent::Render(const UScene * scene, const UCamer
 {
 	auto render = URenderer::GetInstance();
 	//color, depth
-	render->BindFBO(&fb);
-	fb.BindTexture(color, UFramebufferAttachment::Color0);
-	fb.BindTexture(depth, UFramebufferAttachment::Depth);
+	//render->BindFBO(&fb);
 
 	glViewport(0, 0, color->GetWidth(), color->GetHeight());
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glCullFace(GL_BACK);
 
-	URenderManager::RenderQueue(render_queue, UBlendMode::Opaque, URenderPass::Forward, camera);
+	URenderManager::RenderQueue(render_queue, UBlendMode::Translucent, URenderPass::Forward, camera);
 	URenderer::GetInstance()->UnbindFBO();
 
-	// normal    
-	URenderer::GetInstance()->BindFBO(&fb);
-	fb.BindTexture(normal, UFramebufferAttachment::Color0);
-
-	glViewport(0, 0, normal->GetWidth(), normal->GetHeight());
-
-	URenderManager::RenderQueue(render_queue, UBlendMode::Opaque, URenderPass::Normal, camera);
-	URenderer::GetInstance()->UnbindFBO();
 	return color;
 }

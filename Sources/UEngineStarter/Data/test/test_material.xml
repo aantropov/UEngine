@@ -41,7 +41,7 @@
 		</shader>
 	  </deffered>
       <depth>
-		<shader>			
+		<shader>
 			<path>data\\test\\depth.shader</path>
 		</shader>
 	  </depth>
@@ -78,6 +78,7 @@
     <two_sides>0</two_sides>
     <shininess>1.f</shininess>
 	<blend_mode>opaque</blend_mode>
+    <depth_write>1</depth_write>
 	<depth_func>lequal</depth_func>
   </material>
 </xml>

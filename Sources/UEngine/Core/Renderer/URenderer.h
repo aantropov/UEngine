@@ -109,7 +109,7 @@ public:
     //FBO
     int CreateFBO()  const;
     void DeleteFBO(UFrameBufferObject *fb)  const;
-    void BindFBO(UFrameBufferObject *fb)  const;
+    void BindFBO(const UFrameBufferObject *fb)  const;
     void UnbindFBO()  const;
 
     //VAO

@@ -2,8 +2,12 @@
   <model>   
     <name>test Model</name>
 	<upm>data\\Models\\scene_model.upm</upm>
-    <mesh_num>0</mesh_num>
+    <mesh_num>1</mesh_num>
     <anim_num>0</anim_num>
     <common_material>data\\test\\test_material.xml</common_material>    	
+     <mesh_0>
+      <name>Teapot05</name>
+      <material>data\\test\\test_add_material.xml</material>		
+    </mesh_0>
   </model>
 </xml>

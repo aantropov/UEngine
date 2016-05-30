@@ -14,6 +14,8 @@ URenderManager::URenderManager()
 	else
 		opaque_lighting = new UForwardLightingOpaque();
 
+	translucent_lighting = new UForwardLightingTranslucent(opaque_lighting->depth);
+
 	vsm_fbo.Initialize();
 	post_effect_fbo.Initialize();
 	post_post_effect_fbo.Initialize();
@@ -39,7 +41,6 @@ URenderManager::URenderManager()
 
 	depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
 	depthShadowMap = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
-
 	depthShadowMap->Create(depthTextureSize, depthTextureSize, UTextureFormat::Depth32F, UTextureFiltration::Linear, UTextureWrapMode::ClampToEdge);
 	depthShadowMap->name = "depth";
 }
@@ -47,6 +48,7 @@ URenderManager::URenderManager()
 URenderManager::~URenderManager(void)
 {
 	delete opaque_lighting;
+	delete translucent_lighting;
 }
 
 void URenderManager::Render(UScene* scene)
@@ -136,29 +138,31 @@ void URenderManager::RenderShadowMaps()
 void URenderManager::RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera)
 {
 	vector<int> keys;
-	auto render_queue_blend_mode = render_queue.data.at(blend_mode);
-
-	for (auto it = render_queue_blend_mode.begin(); it != render_queue_blend_mode.end(); ++it)
-		keys.push_back(it->first);
-
-	keys.erase(unique(keys.begin(), keys.end()), keys.end());
-
-	std::sort(keys.begin(), keys.end());
-
-	auto render = URenderer::GetInstance();
-
-	render->SetCurrentCamera(camera);
-	render->current_camera.UpdateFrustum();
-	
-	for (auto it = keys.begin(); it != keys.end(); ++it)
+	if(render_queue.data.find(blend_mode) != render_queue.data.end())
 	{
-		auto vec = render_queue_blend_mode.at(*it);
-		for (auto mesh_it = vec.begin(); mesh_it != vec.end(); ++mesh_it)
-		{
-			render->model_view = (*mesh_it).first;
-			(*mesh_it).second->Render(type);
-		}
-	}
+		auto render_queue_blend_mode = render_queue.data.at(blend_mode);
+		for (auto it = render_queue_blend_mode.begin(); it != render_queue_blend_mode.end(); ++it)
+			keys.push_back(it->first);
 
-	render->model_view = mat4_identity;
+		keys.erase(unique(keys.begin(), keys.end()), keys.end());
+
+		std::sort(keys.begin(), keys.end());
+
+		auto render = URenderer::GetInstance();
+
+		render->SetCurrentCamera(camera);
+		render->current_camera.UpdateFrustum();
+
+		for (auto it = keys.begin(); it != keys.end(); ++it)
+		{
+			auto vec = render_queue_blend_mode.at(*it);
+			for (auto mesh_it = vec.begin(); mesh_it != vec.end(); ++mesh_it)
+			{
+				render->model_view = (*mesh_it).first;
+				(*mesh_it).second->Render(type);
+			}
+		}
+
+		render->model_view = mat4_identity;
+	}
 }

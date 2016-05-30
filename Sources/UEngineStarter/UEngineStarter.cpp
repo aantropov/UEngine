@@ -50,7 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     scene.AddLight(light);
     //light->AddComponent((UComponent*)script);
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 2; i++)
     {
         vec4 rand_pos = vec4(rand() % 40 - 80, rand() % 40, rand() % 40 - 80, rand() % 80);
         rand_color = vec4(rand() % 1000, rand() % 1000, rand() % 1000, rand() % 1000)* 0.001f;

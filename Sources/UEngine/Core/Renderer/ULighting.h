@@ -50,8 +50,11 @@ public:
 
 class UForwardLightingTranslucent : public ULighting
 {
+
 public:
 
+	UTexture* prev_color;
+
 	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-	UForwardLightingTranslucent();
+	UForwardLightingTranslucent(const UTexture* _depth);
 };
