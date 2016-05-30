@@ -249,7 +249,7 @@ int URenderer::CreateTexture(UTexture *tex) const
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
         }
-        else if (tex->GetFormat() == UTextureFormat::RGBA_FLOAT)
+        else if (tex->GetFormat() == UTextureFormat::RGBA_Float)
         {
             OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
         }

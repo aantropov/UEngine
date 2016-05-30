@@ -74,7 +74,7 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
 
     gauss_blur->ClearUniformUnits();
     gauss_blur->AddTexture(temp_texture, 0);
-    gauss_blur->material.params["resolution"] = UUniformParam(texture->GetWidth());
+    gauss_blur->material.params["resolution"] = UUniformParam((float)texture->GetWidth());
     gauss_blur->material.params["radius"] = UUniformParam(amount);
     gauss_blur->material.params["dir"] = UUniformParam(dir);
 

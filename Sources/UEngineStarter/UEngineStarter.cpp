@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UModel *test_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\test_model.xml", UResourceType::Model));
     UModel *sky_sphere_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\sky_sphere_model.xml", UResourceType::Model));
 
-    const int maxObjs = 100;
+    const int maxObjs = 4;
     UGameObject *gameObject[maxObjs];
 
     UScene scene;
@@ -50,7 +50,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     scene.AddLight(light);
     //light->AddComponent((UComponent*)script);
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 1; i++)
     {
         vec4 rand_pos = vec4(rand() % 40 - 80, rand() % 40, rand() % 40 - 80, rand() % 80);
         rand_color = vec4(rand() % 1000, rand() % 1000, rand() % 1000, rand() % 1000)* 0.001f;

@@ -11,42 +11,47 @@ class ULighting
 {
 public:
 
-    UTexture* resScene;
-    UTexture* depthScene;
-    UTexture* normalScene;
+	UTexture* color;
+	UTexture* depth;
+	UTexture* normal;
 
-    UFrameBufferObject fb;
-    UFrameBufferObject postfb;
+	UFrameBufferObject fb;
+	UFrameBufferObject post_effect_fb;
 
-    virtual UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue) = 0;
-
-    friend class URenderManager;
+	virtual UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue) = 0;
+	friend class URenderManager;
 };
 
-class UForwardLighting : public ULighting
+class UForwardLightingOpaque : public ULighting
 {
 public:
 
-    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-    UForwardLighting();
+	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+	UForwardLightingOpaque();
 };
 
-class UDefferedLighting : public ULighting
+class UDefferedLightingOpaque : public ULighting
 {
 public:
 
-    UTexture* colorScene;
-    UTexture* diffuseScene;
-    //UTexture* ambientScene;
-    UTexture* specularScene;
-    UTexture* positionScene;
+	UTexture* color;
+	UTexture* diffuse;
+	UTexture* specular;
+	UTexture* position;
 
-    UTexture* resSceneA;
-    UTexture* resSceneB;
+	UTexture* res_color_ping;
+	UTexture* res_color_pong;
 
-    UPostEffect *lighting;
-    UShaderProgram *objectShaderProgram;
+	UPostEffect *post_effect;
 
-    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-    UDefferedLighting();
+	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+	UDefferedLightingOpaque();
+};
+
+class UForwardLightingTranslucent : public ULighting
+{
+public:
+
+	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+	UForwardLightingTranslucent();
 };

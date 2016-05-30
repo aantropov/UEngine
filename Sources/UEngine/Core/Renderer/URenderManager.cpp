@@ -10,9 +10,9 @@
 URenderManager::URenderManager()
 {
 	if (atoi(UConfig::GetInstance()->GetParam("/xml/config/deffered_lighting/").c_str()) == 1)
-		lighting = new UDefferedLighting();
+		opaque_lighting = new UDefferedLightingOpaque();
 	else
-		lighting = new UForwardLighting();
+		opaque_lighting = new UForwardLightingOpaque();
 
 	vsm_fbo.Initialize();
 	post_effect_fbo.Initialize();
@@ -27,15 +27,15 @@ URenderManager::URenderManager()
 	posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
 	posteffectScene->name = "colorScene";
 
-	postEffectRipple->AddTexture(lighting->resScene, 0);
-	postEffectRipple->AddTexture(lighting->depthScene, 1);
+	postEffectRipple->AddTexture(opaque_lighting->color, 0);
+	postEffectRipple->AddTexture(opaque_lighting->depth, 1);
 
-	postEffectDOF->AddTexture(lighting->resScene, 0);
-	postEffectDOF->AddTexture(lighting->depthScene, 1);
+	postEffectDOF->AddTexture(opaque_lighting->color, 0);
+	postEffectDOF->AddTexture(opaque_lighting->depth, 1);
 
-	postEffectSSAO->AddTexture(lighting->resScene, 2);
-	postEffectSSAO->AddTexture(lighting->depthScene, 1);
-	postEffectSSAO->AddTexture(lighting->normalScene, 3);
+	postEffectSSAO->AddTexture(opaque_lighting->color, 2);
+	postEffectSSAO->AddTexture(opaque_lighting->depth, 1);
+	postEffectSSAO->AddTexture(opaque_lighting->normal, 3);
 
 	depthTextureSize = atoi(UConfig::GetInstance()->GetParam("/xml/config/depth_texture_size/").c_str());
 	depthShadowMap = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
@@ -46,7 +46,7 @@ URenderManager::URenderManager()
 
 URenderManager::~URenderManager(void)
 {
-	delete lighting;
+	delete opaque_lighting;
 }
 
 void URenderManager::Render(UScene* scene)
@@ -62,7 +62,7 @@ void URenderManager::Render(UScene* scene)
 
 	OPENGL_CHECK_FOR_ERRORS();
 
-	lighting->Render(scene, render->main_ñamera, render_queue);
+	opaque_lighting->Render(scene, render->main_ñamera, render_queue);
 	//postEffectDOF->Render(URENDER_FORWARD);
 
 	//postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);

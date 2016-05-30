@@ -171,7 +171,7 @@ STRING_ENUM(UKeyState,
 STRING_ENUM(UTextureFormat,
     RGBA,
     RG32F,
-    RGBA_FLOAT,
+    RGBA_Float,
     R32F,
     Depth32F,
     DepthShadow

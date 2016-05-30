@@ -24,12 +24,13 @@ class URenderManager
 	UPostEffect* postEffectSSAO;
 	UPostEffect* postEffectDOF;
 
-	UTexture* colorScene;
-	UTexture* depthScene;
-	UTexture* normalScene;
+	UTexture* color;
+	UTexture* depth;
+	UTexture* normal;
 	UTexture* posteffectScene;
 
-	ULighting *lighting;
+	ULighting *opaque_lighting;
+	ULighting *translucent_lighting;
 
 	UTexture* depthShadowMap;
 	int depthTextureSize;
@@ -37,8 +38,9 @@ class URenderManager
 	void RenderShadowMaps();
 
 	static void RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera);
-	friend class UForwardLighting;
-	friend class UDefferedLighting;
+	friend class UForwardLightingOpaque;
+	friend class UDefferedLightingOpaque;
+	friend class UForwardLightingTranslucent;
 
 public:
 
