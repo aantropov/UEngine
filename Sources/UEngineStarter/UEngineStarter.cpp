@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     UModel *test_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\test_model.xml", UResourceType::Model));
     UModel *sky_sphere_model = dynamic_cast<UModel*>(e.rf.Load("data\\test\\sky_sphere_model.xml", UResourceType::Model));
 
-    const int maxObjs = 4;
+    const int maxObjs = 100;
     UGameObject *gameObject[maxObjs];
 
     UScene scene;

@@ -13,7 +13,7 @@ UMesh::~UMesh(void)
 
 void UMesh::AddToRenderQueue(URenderQueue& render_queue)
 {
-    render_queue.data[material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
+    render_queue.data[material.GetBlendMode()][material.GetQueue()].push_back(pair<mat4, UMesh*>(URenderer::GetInstance()->model_view, this));
 }
 
 void UMesh::InitializeMaterial(URenderPass type)

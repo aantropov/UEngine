@@ -11,38 +11,40 @@ class URenderQueue
 {
 public:
 
-    map<int, list<pair<mat4, UMesh*>>> data;
+	map<UBlendMode, map<int, list<pair<mat4, UMesh*>>>> data;
 };
 
 class URenderManager
 {
-    UFrameBufferObject vsm_fbo;
-    UFrameBufferObject post_effect_fbo;
-    UFrameBufferObject post_post_effect_fbo;
+	UFrameBufferObject vsm_fbo;
+	UFrameBufferObject post_effect_fbo;
+	UFrameBufferObject post_post_effect_fbo;
 
-    UPostEffect* postEffectRipple;
-    UPostEffect* postEffectSSAO;
-    UPostEffect* postEffectDOF;
+	UPostEffect* postEffectRipple;
+	UPostEffect* postEffectSSAO;
+	UPostEffect* postEffectDOF;
 
-    UTexture* colorScene;
-    UTexture* depthScene;
-    UTexture* normalScene;
-    UTexture* posteffectScene;
+	UTexture* colorScene;
+	UTexture* depthScene;
+	UTexture* normalScene;
+	UTexture* posteffectScene;
 
-    ULighting *lighting;
+	ULighting *lighting;
 
-    UTexture* depthShadowMap;
-    int depthTextureSize;       
- 
-    static void RenderQueue(const URenderQueue& render_queue, const URenderPass type, const UCamera& camera);
-    friend class UForwardLighting;
-    friend class UDefferedLighting;
+	UTexture* depthShadowMap;
+	int depthTextureSize;
 
-public:    
+	void RenderShadowMaps();
 
-    void Render(UScene* scene);
+	static void RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera);
+	friend class UForwardLighting;
+	friend class UDefferedLighting;
 
-    URenderManager();
-    ~URenderManager(void);
+public:
+
+	void Render(UScene* scene);
+
+	URenderManager();
+	~URenderManager(void);
 };
 
