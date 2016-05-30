@@ -65,6 +65,8 @@ void URenderManager::Render(UScene* scene)
 	OPENGL_CHECK_FOR_ERRORS();
 
 	opaque_lighting->Render(scene, render->main_ñamera, render_queue);
+	//translucent_lighting->Render(scene, render->main_ñamera, render_queue);
+
 	//postEffectDOF->Render(URENDER_FORWARD);
 
 	//postEffectSSAO->AddTexture(lights[light_params.light_index[0]]->GetDepthTextures()[0], 2);

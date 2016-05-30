@@ -55,7 +55,7 @@ public:
     std::string GetShaderVersion() const { return "#version 330 core"; }
 
     void UENGINE_DECLSPEC SetCurrentScene(UScene* current_scene);
-    UScene UENGINE_DECLSPEC *GetCurrentScene();
+    UScene UENGINE_DECLSPEC *GetCurrentScene() const;
 
     static URenderer UENGINE_DECLSPEC *GetInstance();
 

@@ -37,7 +37,7 @@ void URenderer::SetCurrentScene(UScene* current_scene)
 	this->current_scene = current_scene;
 }
 
-UScene* URenderer::GetCurrentScene()
+UScene* URenderer::GetCurrentScene() const
 {
 	return this->current_scene;
 }

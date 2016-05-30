@@ -38,6 +38,7 @@ class URenderManager
 	void RenderShadowMaps();
 
 	static void RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera);
+
 	friend class UForwardLightingOpaque;
 	friend class UDefferedLightingOpaque;
 	friend class UForwardLightingTranslucent;

@@ -192,12 +192,12 @@ float SampleShadow(in vec4 smcoord, sampler2D depthTexture, float distance, floa
 }
 
 #if defined(SPECULAR)
-vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec4 specular, vec3 viewDir)
+vec3 ProccessLight(int i, vec4 diffuse, vec3 bump, vec4 specular, vec3 viewDir)
 #else
-vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
+vec3 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 #endif
 {
-	vec4 res = vec4(1);
+	vec3 res = vec3(1);
 	
 	vec3 lightDir = vec3(0); 
 	float distance = length(Vert.lightDir[i]);
@@ -228,7 +228,7 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 		lightDir = normalize(Vert.lightDir[i]);
 	}
 	
-	res = light_ambient[i];
+	res = light_ambient[i].xyz;
 	
 	float rawNdotL = dot(bump, lightDir);
 	float NdotL = max(rawNdotL, 0);
@@ -236,8 +236,8 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 	float shadow = 1;
 	if(rawNdotL > 0)
 	{
-		res += light_diffuse[i] * NdotL;
-		res *= diffuse;
+		res += light_diffuse[i].xyz * NdotL;
+		res *= diffuse.xyz;
 		
 #if defined(SHADOW_RECEIVER)
 		if(light_type[i] % 2 == 1)
@@ -246,7 +246,7 @@ vec4 ProccessLight(int i, vec4 diffuse, vec3 bump, vec3 viewDir)
 
 #if defined(SPECULAR)
 			float RdotVpow = max(pow(dot(reflect(-lightDir, bump), viewDir), material.shininess), 0.0);
-			res += vec4(specular.xyz * material.specular.xyz * light_specular[i].xyz, 1.0f) * RdotVpow;
+			res += specular.xyz * material.specular.xyz * light_specular[i].xyz * RdotVpow;
 #endif
 
 	}
@@ -275,7 +275,7 @@ void main(void)
 	vec4 specular = texture(material.specular_tex, Vert.texcoord);	
 #endif
 	
-	vec4 res = vec4(0.0);
+	vec3 res = vec3(0.0);
     
 	for(int i = 0; i < lightsNum; i++)
 #if defined(SPECULAR)
@@ -284,19 +284,20 @@ void main(void)
 		res += ProccessLight(i, diffuse, normal, viewDir);
 #endif
 
-	color = material.emission;
+	color.xyz = material.emission.xyz;
 	
 #if defined(REFLECTION_CUBEMAP)	
 	vec3 reflectDir = normalize(reflect(viewDir, normal));
 	vec4 reflectColor = vec4(textureCube(material.cubemap, reflectDir)) * pow(1 - dot(Vert.normal, viewDir), 3);
-	color += reflectColor;
+	color.xyz += reflectColor.xyz;
 #endif
 
 #if defined(EMISSION)
-	color += texture(material.emission_text, Vert.texcoord);
+	color.xyz += texture(material.emission_text, Vert.texcoord).xyz;
 #endif	
 	
-	color += res;
+	color.xyz += res;
+    color.a = diffuse.a;
 }
 
 #endif

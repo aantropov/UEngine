@@ -194,11 +194,10 @@ UTexture* UForwardLightingTranslucent::Render(const UScene * scene, const UCamer
 {
 	auto render = URenderer::GetInstance();
 	//color, depth
-	//render->BindFBO(&fb);
+	render->BindFBO(&fb);
 
 	glViewport(0, 0, color->GetWidth(), color->GetHeight());
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glCullFace(GL_BACK);
 
 	URenderManager::RenderQueue(render_queue, UBlendMode::Translucent, URenderPass::Forward, camera);
