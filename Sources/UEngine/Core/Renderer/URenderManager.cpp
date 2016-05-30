@@ -127,8 +127,8 @@ void URenderManager::RenderShadowMaps()
 		auto vsmTextures = lights[light_params.light_index[i]]->GetDepthTextures();
 		for (unsigned int j = 0; j < vsmTextures.size(); j++)
 		{
-			helper->GaussBlur(vsmTextures[j], 0.5f, vec2_x);
-			helper->GaussBlur(vsmTextures[j], 0.5f, vec2_y);
+			helper->GaussBlur(vsmTextures[j], 0.25f, vec2_x);
+			helper->GaussBlur(vsmTextures[j], 0.25f, vec2_y);
 		}
 	}
 

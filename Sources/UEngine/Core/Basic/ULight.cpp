@@ -21,8 +21,8 @@ ULight::ULight(UResourceFactory* rf, vec4 pos)
     type = ULightType::Directional;
     is_casting_shadows = false;
 
-    shadow_distance_min = 0.1f;
-    shadow_distance_max = 150.0f;
+    shadow_distance_min = 1.0f;
+    shadow_distance_max = 300.0f;
 
     ambient.set(0.5f, 0.5f, 0.5f, 1.0f);
     diffuse.set(0.70f, 0.70f, 0.70f, 1.0f);

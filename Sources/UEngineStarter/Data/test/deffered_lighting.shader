@@ -1,5 +1,6 @@
 #extension GL_NV_shadow_samplers_cube : enable
 #define maxLight 8
+#define maxBones 64
 
 precision highp float;
 
@@ -70,6 +71,10 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 binormal;
 layout(location = 3) in vec2 texcoord;
+#if defined(SKINNING)
+layout(location = 4) in vec4 bone_indices;
+layout(location = 5) in vec4 bone_weights;
+#endif
 
 void main(void)
 {

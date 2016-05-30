@@ -48,12 +48,13 @@ layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 binormal;
 layout(location = 3) in vec2 texcoord;
+#if defined(SKINNING)
 layout(location = 4) in vec4 bone_indices;
 layout(location = 5) in vec4 bone_weights;
+#endif
 
 void main(void)
 {
-
 #if defined(SKINNING)
 	vec4 skinnedVertex = vec4(0, 0, 0, 0);
 	vec4 vertex = vec4(position, 1.0);
@@ -65,7 +66,7 @@ void main(void)
 	skinnedVertex = MVI * vertex;	
 	mat3 MVIN = mat3(transpose(inverse(MVI)));
 
-	vec4 vertex = transform.model * skinnedVertex;	
+	vertex = transform.model * skinnedVertex;	
 #else
 	vec4 vertex = transform.model * vec4(position, 1.0);
 #endif

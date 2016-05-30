@@ -1,34 +1,50 @@
 <xml>
   <material>
     <name>Diffuse</name>
-    <tex_num>3</tex_num>
-    <textures>
+    <tex_num>3</tex_num>    
+	<textures>
       <tex_0>
         <name>material.texture</name>
         <channel>0</channel>
-        <path>data\\Textures\\T_Black_Knight_D.jpg</path>
+        <path>data\\textures\\c_texture.xml</path>
       </tex_0>
       <tex_1>
         <name>material.normal</name>
         <channel>1</channel>
-        <path>data\\Textures\\T_Black_Knight_N.jpg</path>
+        <path>data\\textures\\n_texture.xml</path>
       </tex_1>
       <tex_2>
         <name>material.specular_tex</name>
         <channel>2</channel>
-        <path>data\\Textures\\T_Black_Knight_S.jpg</path>
+        <path>data\\textures\\s_texture.xml</path>
       </tex_2>
-    </textures>
+    </textures>    
     <shaders>
-      <pixel_path>data\\Shaders\\specular_bump_light.ps</pixel_path>
-      <vertex_path>data\\Shaders\\skinned_light.vs</vertex_path>
-      <depth_vertex_path>data\\Shaders\\skinned_empty.vs</depth_vertex_path>
-      <depth_pixel_path>data\\Shaders\\empty.ps</depth_pixel_path>
-      <normal_vertex_path>data\\Shaders\\skinned_light.vs</normal_vertex_path>
-      <normal_pixel_path>data\\Shaders\\normal.ps</normal_pixel_path>
-      <deffered_vertex_path>data\\Shaders\\skinned_light.vs</deffered_vertex_path> 
-      <deffered_pixel_path>data\\Shaders\\specular_deffered_light.ps</deffered_pixel_path>
-    </shaders>    
+	  <forward>
+		<shader>			
+			<defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER REFLECTION_CUBEMAP SKINNING</defines>
+			<path>data\\test\\forward_lighting.shader</path>
+		</shader>
+	  </forward>
+  	  <deffered>
+		<shader>			
+            <defines>NORMAL_MAPPING SPECULAR SHADOW_RECEIVER REFLECTION_CUBEMAP SKINNING</defines>
+			<path>data\\test\\deffered_lighting.shader</path>
+		</shader>
+	  </deffered>
+      <depth>
+		<shader>
+			<defines>SKINNING</defines>
+			<path>data\\test\\depth.shader</path>
+		</shader>
+	  </depth>
+	  <normal>
+		<shader>
+			<defines>SKINNING</defines>
+			<path>data\\test\\normal.shader</path>
+		</shader>
+	  </normal>  
+    </shaders>
     <emission>
       <r>0.0f</r>
       <g>0.0f</g>
@@ -54,6 +70,6 @@
       <a>1.0f</a>
     </specular>
     <two_sides>1</two_sides>
-    <shininnes>4.5f</shininnes>
+    <shininess>4.5f</shininess>	
   </material>
 </xml>
