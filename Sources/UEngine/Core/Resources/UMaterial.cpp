@@ -331,6 +331,19 @@ void UMaterial::Render(URenderPass type, int light_index)
     render->DepthFunc(depth_func);
 }
 
+void UMaterial::UnbindUniformUnits() const
+{
+    auto render = URenderer::GetInstance();
+
+    for each(auto el in textures)
+        render->UnbindTexture(el.second);
+
+    for each(auto el in cubemaps)
+        render->UnbindTexture(el.second);
+
+    OPENGL_CHECK_FOR_ERRORS();
+}
+
 void UMaterial::Render(UShaderProgram* sp)
 {
     //not implemented yet

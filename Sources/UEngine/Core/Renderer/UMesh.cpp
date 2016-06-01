@@ -29,8 +29,7 @@ void UMesh::InitializeMaterial(URenderPass type)
     locations[type].binormal = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "binormal");
     locations[type].bone_indices = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_indices");
     locations[type].bone_weights = glGetAttribLocation(material.GetShaderProgram(type)->GetId(), "bone_weights");
-
-
+    
     if (locations[type].position != -1)
     {
         OPENGL_CALL(glVertexAttribPointer(locations[type].position, 3, GL_FLOAT, GL_FALSE, sizeof(UVertex), (const GLvoid*)0));
@@ -95,6 +94,8 @@ void UMesh::Render(URenderPass type, int light_index)
     URenderer::GetInstance()->BindVAO(&vb);
     URenderer::GetInstance()->BindVBO(&ib);
     URenderer::GetInstance()->DrawBuffer(&ib);
+
+    material.UnbindUniformUnits();
 }
 
 sphere UMesh::GetBounds() const { return boundSphere; }

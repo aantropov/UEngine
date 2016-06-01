@@ -94,6 +94,7 @@ public:
     void AddUniformUnit(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
     void AddUniformUnit(pair<UCubemap*, unsigned int> tex) { cubemaps.push_back(tex); }
 
+    void UnbindUniformUnits() const;
     void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
 
     //Setup material parameters in Shader

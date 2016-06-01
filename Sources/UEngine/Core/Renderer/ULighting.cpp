@@ -17,7 +17,7 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 	res_color_pong = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 	position = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
 
-	color->name = "colorScene";
+  	color->name = "colorScene";
 	depth->name = "depthScene";
 	normal->name = "normalScene";
 	diffuse->name = "diffuseScene";
@@ -27,7 +27,7 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 	res_color_pong->name = "previousScene";
 
 	auto render = URenderer::GetInstance();
-
+  
 	color->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
 	normal->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	diffuse->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);

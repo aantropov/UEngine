@@ -24,6 +24,7 @@ class URenderManager
 	UPostEffect* postEffectSSAO;
 	UPostEffect* postEffectDOF;
 
+    UTexture* color_bloom;
 	UTexture* color;
 	UTexture* depth;
 	UTexture* normal;

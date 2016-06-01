@@ -20,6 +20,10 @@ URenderManager::URenderManager()
 	post_effect_fbo.Initialize();
 	post_post_effect_fbo.Initialize();
 
+    color_bloom = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
+    color_bloom->name = "colorScene";
+    color_bloom->Create(512, 512, UTextureFormat::RGBA);
+
 	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", UResourceType::PostEffect));
 	postEffectDOF = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_dof.xml", UResourceType::PostEffect));
 	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", UResourceType::PostEffect));
@@ -63,11 +67,16 @@ void URenderManager::Render(UScene* scene)
 	OPENGL_CHECK_FOR_ERRORS();
 
 	opaque_lighting->Render(scene, render->main_ñamera, render_queue);
+    //URendererHelper::GetInstance()->CopyTexture(opaque_lighting->color, color_bloom);
+    
 	//translucent_lighting->Render(scene, render->main_ñamera, render_queue);
 
+    //postEffectRipple->AddTexture(color_bloom, 0);
 	//postEffectDOF->Render(URENDER_FORWARD);
     //postEffectRipple->AddTexture(lights[light_params.light_index[1]]->GetDepthTextures()[0], 0);
 	//postEffectSSAO->Render(URENDER_FORWARD);
+
+    //glViewport(0, 0, render->GetWidth(), 1024);
 	postEffectRipple->Render(URenderPass::Forward);
 }
 

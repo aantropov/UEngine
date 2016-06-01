@@ -145,6 +145,7 @@ public:
 
     void Initialize();
     void GaussBlur(UTexture* texture, float amount, vec2 dir);
+    void CopyTexture(UTexture* from_texture, UTexture* to_texture);
 
     UTexture* GetTemporaryTexture(int width, int height, UTextureFormat type);
     void ReleaseTemporaryTexture(UTexture* texture);

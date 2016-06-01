@@ -47,12 +47,12 @@ class UScene
     double move_delta[2];
 
     vector<ULight*> lights;
-    map<int, list<pair<mat4,UMesh*>>> render_queue;
 
 public:
 
     class USceneNode : public UNode
     {
+        USceneNode* parent;
         UGameObject* node;
         std::vector<USceneNode*> children;
         bool is_already_updated;

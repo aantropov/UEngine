@@ -44,33 +44,47 @@ void URendererHelper::Initialize()
     fbo->Initialize();
 }
 
-void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
+void URendererHelper::CopyTexture(UTexture* from_texture, UTexture* to_texture)
 {
     auto render = URenderer::GetInstance();
 
-    auto temp_texture = GetTemporaryTexture(texture->GetWidth(), texture->GetHeight(), texture->GetFormat());
-    temp_texture->name = "colorScene";
-
-    auto prev_name = texture->name;
-    texture->name = "colorScene";
+    auto prev_name = from_texture->name;
+    from_texture->name = "colorScene";
+    to_texture->name = "colorScene";
 
     copy_texture->ClearUniformUnits();
-    copy_texture->AddTexture(texture, 0);
+    copy_texture->AddTexture(from_texture, 0);
 
     GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
 
-    fbo->BindTexture(temp_texture, UFramebufferAttachment::Color0);
+    fbo->BindTexture(to_texture, UFramebufferAttachment::Color0);
     render->BindFBO(fbo);
+
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     glDrawBuffers(1, buffers);
-    glViewport(0, 0, texture->GetWidth(), texture->GetHeight());
+    glViewport(0, 0, to_texture->GetWidth(), to_texture->GetHeight());
     copy_texture->Render(URenderPass::Forward);
-    render->UnbindFBO();
+
     fbo->UnbindTexture(UFramebufferAttachment::Color0);
+    render->UnbindFBO();
+    
+    //to_texture->name = prev_name;
+    //from_texture->name = prev_name;
 
     OPENGL_CHECK_FOR_ERRORS();
+}
+
+void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
+{
+    auto render = URenderer::GetInstance();
+    auto prev_name = texture->name;
+
+    GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
+
+    auto temp_texture = GetTemporaryTexture(texture->GetWidth(), texture->GetHeight(), texture->GetFormat());
+    CopyTexture(texture, temp_texture);
 
     gauss_blur->ClearUniformUnits();
     gauss_blur->AddTexture(temp_texture, 0);
@@ -83,10 +97,10 @@ void URendererHelper::GaussBlur(UTexture* texture, float amount, vec2 dir)
     glDrawBuffers(1, buffers);
     gauss_blur->Render(URenderPass::Forward);
     render->UnbindFBO();
+
     //fbo->UnbindTexture(UFramebufferAttachment::Color0);
 
     OPENGL_CHECK_FOR_ERRORS();
-
     texture->name = prev_name;
 }
 
