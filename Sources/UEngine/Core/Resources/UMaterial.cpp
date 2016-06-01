@@ -125,14 +125,27 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
                 sprintf_s(tex_buffer, "%d", j);
                 std::string current_tex = path + "material/textures/tex_" + string(tex_buffer) + "/";
 
-                auto tex = pair<UTexture*, unsigned int>(
-                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
-                    atoi(xml.GetElement(current_tex + "channel/").c_str()));
+                pair<UTexture*, unsigned int> tex;
+                if (!xml.isExistElement(current_tex + "name/"))
+                {
+                    tex = pair<UTexture*, unsigned int>(
+                        dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
+                        atoi(xml.GetElement(current_tex + "channel/").c_str()));
+                }
+                else
+                {
+                    tex = pair<UTexture*, unsigned int>(
+                        dynamic_cast<UTexture*>((UTexture*)rf->Create(UResourceType::Texture)),
+                        atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
-                tex.first->name = xml.GetElement(current_tex + "name/");
-                AddUniformUnit(tex);
+                    tex.first->LoadFromFile(xml.GetElement(current_tex + "path/"));
+                    tex.first->name = xml.GetElement(current_tex + "name/");
+                }
+
+                AddUniformUnit(tex.second, tex.first);
             }
         }
+
 
         if (xml.isExistElement(path + "material/cubemaps_num/"))
         {
@@ -148,7 +161,7 @@ bool UMaterial::Load(UXMLFile& xml, std::string path)
                     atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                 tex.first->name = xml.GetElement(current_tex + "name/");
-                AddUniformUnit(tex);
+                AddUniformUnit(tex.second, tex.first);
             }
         }
 
@@ -310,20 +323,30 @@ void UMaterial::Render(URenderPass type, int light_index)
 
     if (type == URenderPass::Forward || type == URenderPass::Deffered || type == URenderPass::Normal)
     {
-        for each(auto el in textures)
-        {
-            render->BindTexture(el.first, el.second);
-            render->CacheUniform1(el.first->name, el.second);
-        }
-        OPENGL_CHECK_FOR_ERRORS();
+        static std::vector<unsigned int> keys(16);
+        keys.clear();
 
-        for each(auto el in cubemaps)
-        {
-            render->BindCubemap(el.first, el.second);
-            render->CacheUniform1(el.first->name, el.second);
-        }
-        OPENGL_CHECK_FOR_ERRORS();
+        for (auto it = uniform_textures.begin(); it != uniform_textures.end(); ++it)
+            keys.push_back(it->first);
 
+        for each(auto key in keys)
+        {
+            render->BindTexture(uniform_textures[key], key);
+            render->CacheUniform1(uniform_textures[key]->name, key);
+        }
+
+        keys.clear();
+
+        for (auto it = uniform_cubemaps.begin(); it != uniform_cubemaps.end(); ++it)
+            keys.push_back(it->first);
+
+        for each(auto key in keys)
+        {
+            render->BindCubemap(uniform_cubemaps[key], key);
+            render->CacheUniform1(uniform_cubemaps[key]->name, key);
+        }
+
+        OPENGL_CHECK_FOR_ERRORS();
     }
 
     render->DepthWrite(is_depth_write_enabled);
@@ -335,11 +358,11 @@ void UMaterial::UnbindUniformUnits() const
 {
     auto render = URenderer::GetInstance();
 
-    for each(auto el in textures)
-        render->UnbindTexture(el.second);
+    for (auto it = uniform_textures.begin(); it != uniform_textures.end(); ++it)
+        render->UnbindTexture((*it).first);
 
-    for each(auto el in cubemaps)
-        render->UnbindTexture(el.second);
+    for (auto it = uniform_cubemaps.begin(); it != uniform_cubemaps.end(); ++it)
+        render->UnbindTexture((*it).first);
 
     OPENGL_CHECK_FOR_ERRORS();
 }

@@ -17,7 +17,7 @@ void UPostEffect::ClearUniformUnits()
 void UPostEffect::AddTexture(UTexture* tex, int channel)
 {
     //material.ClearTextures();
-    material.AddUniformUnit(std::pair<UTexture*, int>(tex, channel));
+    material.AddUniformUnit(channel, tex);
 }
 
 void UPostEffect::Render(URenderPass type, int light_index)
@@ -78,11 +78,24 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
                 sprintf_s(tex_buffer, "%d", j);
                 std::string current_tex = path + "post_effect/textures/tex_" + string(tex_buffer) + "/";
 
-                auto tex = pair<UTexture*, unsigned int>(
-                    dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
-                    atoi(xml.GetElement(current_tex + "channel/").c_str()));
-                tex.first->name = xml.GetElement(current_tex + "name/");
-                material.AddUniformUnit(tex);
+                pair<UTexture*, unsigned int> tex;
+                if (!xml.isExistElement(current_tex + "name/"))
+                {
+                    tex = pair<UTexture*, unsigned int>(
+                        dynamic_cast<UTexture*>(rf->Load(xml.GetElement(current_tex + "path/"), UResourceType::Texture)),
+                        atoi(xml.GetElement(current_tex + "channel/").c_str()));
+                }
+                else
+                {
+                    tex = pair<UTexture*, unsigned int>(
+                        dynamic_cast<UTexture*>((UTexture*)rf->Create(UResourceType::Texture)),
+                        atoi(xml.GetElement(current_tex + "channel/").c_str()));
+
+                    tex.first->LoadFromFile(xml.GetElement(current_tex + "path/"));
+                    tex.first->name = xml.GetElement(current_tex + "name/");
+                }
+                
+                material.AddUniformUnit(tex.second, tex.first);
             }
         }
         vb.SetState(UBufferUsage::Dynamic);

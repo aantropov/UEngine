@@ -51,8 +51,8 @@ class UMaterial : public UResource, public UNode
     UShaderProgram *shader_normal;
     UShaderProgram *shader_deffered;
 
-    std::vector<std::pair<UTexture*, unsigned int>> textures;
-    std::vector<std::pair<UCubemap*, unsigned int>> cubemaps;
+    std::map<unsigned int, UTexture*> uniform_textures;
+    std::map<unsigned int, UCubemap*> uniform_cubemaps;
 
     mat4* skinningTransforms;
     unsigned int skinningTransformsNum;
@@ -91,11 +91,11 @@ public:
     UShaderProgram* GetShaderProgram(URenderPass type);
     void SetShaderProgram(UShaderProgram *_sp, URenderPass type);
 
-    void AddUniformUnit(pair<UTexture*, unsigned int> tex) { textures.push_back(tex); }
-    void AddUniformUnit(pair<UCubemap*, unsigned int> tex) { cubemaps.push_back(tex); }
+    void AddUniformUnit(unsigned int channel, UTexture* tex) { uniform_textures[channel] = tex; }
+    void AddUniformUnit(unsigned int channel, UCubemap* tex) { uniform_cubemaps[channel] = tex; }
 
     void UnbindUniformUnits() const;
-    void ClearUniformUnits() { textures.clear(); cubemaps.clear(); }
+    void ClearUniformUnits() { uniform_textures.clear(); uniform_cubemaps.clear(); }
 
     //Setup material parameters in Shader
     virtual void Render(URenderPass type, int light_index = -1);

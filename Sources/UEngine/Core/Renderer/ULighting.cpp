@@ -28,6 +28,7 @@ UDefferedLightingOpaque::UDefferedLightingOpaque()
 
 	auto render = URenderer::GetInstance();
   
+    color->SetMipMap(false);
 	color->Create(render->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
 	normal->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	diffuse->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
@@ -138,6 +139,7 @@ UForwardLightingOpaque::UForwardLightingOpaque()
 
 	auto render = URenderer::GetInstance();
 
+    color->SetMipMap(false);
 	normal->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA_Float);
 	color->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::RGBA);
 	depth->Create(render->GetWidth(), render->GetHeight(), UTextureFormat::Depth32F);

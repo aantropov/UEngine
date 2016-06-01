@@ -23,6 +23,7 @@ class URenderManager
 	UPostEffect* postEffectRipple;
 	UPostEffect* postEffectSSAO;
 	UPostEffect* postEffectDOF;
+    UPostEffect* post_effect_bloom;
 
     UTexture* color_bloom;
 	UTexture* color;

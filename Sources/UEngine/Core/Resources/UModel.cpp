@@ -220,7 +220,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
                             atoi(xml.GetElement(current_tex + "channel/").c_str()));
 
                         tex.first->name = xml.GetElement(current_tex + "name/");
-                        mesh->material.AddUniformUnit(tex);
+                        mesh->material.AddUniformUnit(tex.second, tex.first);                      
                     }
                 }
 
@@ -247,7 +247,7 @@ bool UModel::Load(UXMLFile& xml, std::string path)
 
                             tex.first->name = xml.GetElement(current_tex + "name/");
 
-                            mesh->material.AddUniformUnit(tex);
+                            mesh->material.AddUniformUnit(tex.second, tex.first);
                         }
                     }
                 }

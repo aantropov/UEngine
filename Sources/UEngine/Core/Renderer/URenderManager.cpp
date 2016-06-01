@@ -22,17 +22,18 @@ URenderManager::URenderManager()
 
     color_bloom = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
     color_bloom->name = "colorScene";
-    color_bloom->Create(512, 512, UTextureFormat::RGBA);
+    color_bloom->Create(32, 32, UTextureFormat::RGBA);
 
+    post_effect_bloom = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_bloom.xml", UResourceType::PostEffect));
 	postEffectSSAO = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_ssao.xml", UResourceType::PostEffect));
 	postEffectDOF = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_dof.xml", UResourceType::PostEffect));
 	postEffectRipple = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_blur.xml", UResourceType::PostEffect));
 
 	posteffectScene = dynamic_cast<UTexture*>(UEngine::rf.Create(UResourceType::Texture));
-
-	posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
+    posteffectScene->Create(URenderer::GetInstance()->GetWidth(), URenderer::GetInstance()->GetHeight(), UTextureFormat::RGBA);
 	posteffectScene->name = "colorScene";
 
+    post_effect_bloom->AddTexture(opaque_lighting->color, 0);
 	postEffectRipple->AddTexture(opaque_lighting->color, 0);
 	postEffectRipple->AddTexture(opaque_lighting->depth, 1);
 
@@ -67,7 +68,9 @@ void URenderManager::Render(UScene* scene)
 	OPENGL_CHECK_FOR_ERRORS();
 
 	opaque_lighting->Render(scene, render->main_ñamera, render_queue);
-    //URendererHelper::GetInstance()->CopyTexture(opaque_lighting->color, color_bloom);
+    URendererHelper::GetInstance()->CopyTexture(opaque_lighting->color, color_bloom);
+    URendererHelper::GetInstance()->GaussBlur(color_bloom, 1.0, vec2_x);
+    URendererHelper::GetInstance()->GaussBlur(color_bloom, 1.0, vec2_y);
     
 	//translucent_lighting->Render(scene, render->main_ñamera, render_queue);
 
@@ -76,8 +79,14 @@ void URenderManager::Render(UScene* scene)
     //postEffectRipple->AddTexture(lights[light_params.light_index[1]]->GetDepthTextures()[0], 0);
 	//postEffectSSAO->Render(URENDER_FORWARD);
 
-    //glViewport(0, 0, render->GetWidth(), 1024);
+    glViewport(0, 0, opaque_lighting->color->GetWidth(), opaque_lighting->color->GetHeight());
+    postEffectRipple->AddTexture(opaque_lighting->color, 0);
 	postEffectRipple->Render(URenderPass::Forward);
+    
+    color_bloom->name = "bluredScene";
+    post_effect_bloom->AddTexture(color_bloom, 1);
+    post_effect_bloom->Render(URenderPass::Forward);
+    //post_effect_bloom->Render(URenderPass::Forward);
 }
 
 void URenderManager::RenderShadowMaps()

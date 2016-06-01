@@ -56,20 +56,21 @@ void URendererHelper::CopyTexture(UTexture* from_texture, UTexture* to_texture)
     copy_texture->AddTexture(from_texture, 0);
 
     GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
-
-    fbo->BindTexture(to_texture, UFramebufferAttachment::Color0);
+    
     render->BindFBO(fbo);
+    fbo->BindTexture(to_texture, UFramebufferAttachment::Color0);
 
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glCullFace(GL_BACK);
     glDrawBuffers(1, buffers);
+
     glViewport(0, 0, to_texture->GetWidth(), to_texture->GetHeight());
     copy_texture->Render(URenderPass::Forward);
 
     fbo->UnbindTexture(UFramebufferAttachment::Color0);
     render->UnbindFBO();
-    
+
     //to_texture->name = prev_name;
     //from_texture->name = prev_name;
 

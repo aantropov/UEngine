@@ -8,11 +8,13 @@ UFrameBufferObject::UFrameBufferObject(void)
 
 UFrameBufferObject::~UFrameBufferObject(void)
 {
+    if (_id != -1)
+        glDeleteFramebuffers(1, (GLuint*)&_id);
 }
 
 bool UFrameBufferObject::Initialize()
 {
-    _id = -1;    
+    _id = -1;
     _id = URenderer::GetInstance()->CreateFBO();
     URenderer::GetInstance()->UnbindFBO();
 
