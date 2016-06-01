@@ -32,7 +32,7 @@ out vec4 color;
 
 void main(void)
 {
-  color = texture(colorScene, Vert.texcoord);
+	color = texture(colorScene, Vert.texcoord);
 }
 
 #endif
