@@ -11,46 +11,55 @@ class ULighting
 {
 public:
 
-	UTexture* color;
-	UTexture* depth;
-	UTexture* normal;
+    UTexture* color;
+    UTexture* depth;
+    UTexture* normal;
 
-	UFrameBufferObject fb;
-	UFrameBufferObject post_effect_fb;
+    UFrameBufferObject fb;
 
-	virtual UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue) = 0;
-	friend class URenderManager;
+    ULighting();
+    virtual ~ULighting() {}
+
+    virtual UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue) = 0;
+    friend class URenderManager;
 };
 
 class UForwardLightingOpaque : public ULighting
 {
 public:
 
-	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-	UForwardLightingOpaque();
+    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+
+    UForwardLightingOpaque();
+    virtual ~UForwardLightingOpaque() {}
 };
 
 class UDefferedLightingOpaque : public ULighting
 {
 public:
 
-	UTexture* diffuse;
-	UTexture* specular;
-	UTexture* position;
+    UTexture* diffuse;
+    UTexture* specular;
+    UTexture* position;
 
-	UTexture* res_color_ping;
-	UTexture* res_color_pong;
+    UTexture* res_color_ping;
+    UTexture* res_color_pong;
 
-	UPostEffect *post_effect;
+    UPostEffect *deffered_lighting;
+    UFrameBufferObject accum_lighting;
 
-	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-	UDefferedLightingOpaque();
+    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+
+    UDefferedLightingOpaque();
+    virtual ~UDefferedLightingOpaque() {}
 };
 
 class UForwardLightingTranslucent : public ULighting
 {
 public:
 
-	virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
-	UForwardLightingTranslucent(const UTexture* _depth);
+    virtual  UTexture *Render(const UScene *scene, const UCamera camera, const URenderQueue& render_queue);
+    
+    UForwardLightingTranslucent(const UTexture* _depth);
+    virtual ~UForwardLightingTranslucent() {}
 };

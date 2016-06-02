@@ -11,45 +11,45 @@ class URenderQueue
 {
 public:
 
-	map<UBlendMode, map<int, list<pair<mat4, UMesh*>>>> data;
+    map<UBlendMode, map<int, list<pair<mat4, UMesh*>>>> data;
 };
 
 class URenderManager
 {
-	UFrameBufferObject vsm_fbo;
-	UFrameBufferObject post_effect_fbo;
-	UFrameBufferObject post_post_effect_fbo;
+    UFrameBufferObject vsm_fbo;
 
-	UPostEffect* postEffectRipple;
-	UPostEffect* postEffectSSAO;
-	UPostEffect* postEffectDOF;
-    UPostEffect* post_effect_bloom;
+    const int bloom_quality = 2;
+    UPostEffect* bloom;
+    vector<UTexture*> bloom_textures;
+    UTexture* accum_bloom;
 
-    UTexture* color_bloom;
-	UTexture* color;
-	UTexture* depth;
-	UTexture* normal;
-	UTexture* posteffectScene;
+    UPostEffect* ripple;
+    UPostEffect* ssao;
+    UPostEffect* depth_of_field;
+        
+    UTexture* color;
+    UTexture* depth;
+    UTexture* normal;
 
-	ULighting *opaque_lighting;
-	ULighting *translucent_lighting;
+    ULighting *opaque_lighting;
+    ULighting *translucent_lighting;
 
-	UTexture* depthShadowMap;
-	int depthTextureSize;
+    UTexture* depthShadowMap;
+    int depthTextureSize;
 
-	void RenderShadowMaps();
+    void RenderShadowMaps();
 
-	static void RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera);
+    static void RenderQueue(const URenderQueue& render_queue, const UBlendMode blend_mode, const URenderPass type, const UCamera& camera);
 
-	friend class UForwardLightingOpaque;
-	friend class UDefferedLightingOpaque;
-	friend class UForwardLightingTranslucent;
+    friend class UForwardLightingOpaque;
+    friend class UDefferedLightingOpaque;
+    friend class UForwardLightingTranslucent;
 
 public:
 
-	void Render(UScene* scene);
+    void Render(UScene* scene);
 
-	URenderManager();
-	~URenderManager(void);
+    URenderManager();
+    ~URenderManager(void);
 };
 

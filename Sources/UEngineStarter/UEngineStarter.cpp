@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     rand_color = vec4_one;
     ULight *light = new ULight(&e.rf, vec4(-100.0f, 100.0f, 0.0f, 1.0f));
 
-    light->SetAttenuation(atten * 1.7);
+    light->SetAttenuation(atten * 2.3);
     light->SetAmbient(vec4_one * 0.0025f);
     light->IsShadowCaster(true);
     light->SetType(ULightType::Directional);

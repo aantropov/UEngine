@@ -247,7 +247,7 @@ int URenderer::CreateTexture(UTexture *tex) const
 		}
 		else if (tex->GetFormat() == UTextureFormat::RGBA)
 		{
-			OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
+			OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->GetWidth(), tex->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL));
 		}
 		else if (tex->GetFormat() == UTextureFormat::RGBA_Float)
 		{

@@ -2,8 +2,7 @@
   <post_effect>
     <name>Blur</name>
     <shader>
-      <path>data\\Shaders\\post_effect_bloom.shader</path>      
+      <path>data\\Shaders\\post_effect_mix_textures.shader</path>
     </shader>
-	
   </post_effect>
 </xml>

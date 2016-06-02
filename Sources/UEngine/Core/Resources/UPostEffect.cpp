@@ -98,6 +98,7 @@ bool UPostEffect::Load(UXMLFile& xml, std::string path)
                 material.AddUniformUnit(tex.second, tex.first);
             }
         }
+
         vb.SetState(UBufferUsage::Dynamic);
         Initialize();
 

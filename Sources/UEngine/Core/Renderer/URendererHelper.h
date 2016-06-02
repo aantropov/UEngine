@@ -135,6 +135,7 @@ class URendererHelper : USingleton<URendererHelper>
 
     UPostEffect* gauss_blur;
     UPostEffect* copy_texture;
+    UPostEffect* mix_textures;
     UFrameBufferObject* fbo;
 
     std::map<string, UTexture*> temporaryTextures;
@@ -146,6 +147,7 @@ public:
     void Initialize();
     void GaussBlur(UTexture* texture, float amount, vec2 dir);
     void CopyTexture(UTexture* from_texture, UTexture* to_texture);
+    void MixTextures(UTexture* texture1, float param1, UTexture* texture2, float param2, UTexture* res);
 
     UTexture* GetTemporaryTexture(int width, int height, UTextureFormat type);
     void ReleaseTemporaryTexture(UTexture* texture);

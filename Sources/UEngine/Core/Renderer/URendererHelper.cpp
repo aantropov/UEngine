@@ -39,9 +39,48 @@ void URendererHelper::Initialize()
 {
     gauss_blur = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_gauss_blur.xml", UResourceType::PostEffect));
     copy_texture = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_copy_texture.xml", UResourceType::PostEffect));
+    mix_textures = dynamic_cast<UPostEffect*>(UEngine::rf.Load("data\\PostEffects\\post_effect_mix_textures.xml", UResourceType::PostEffect));
 
     fbo = new UFrameBufferObject();
     fbo->Initialize();
+}
+
+void URendererHelper::MixTextures(UTexture* texture1, float param1, UTexture* texture2, float param2, UTexture* res)
+{
+    auto render = URenderer::GetInstance();
+
+    auto prev_name_tex1 = texture1->name;
+    auto prev_name_tex2 = texture2->name;
+
+    texture1->name = "texture1";
+    texture2->name = "texture2";
+
+    mix_textures->ClearUniformUnits();
+    mix_textures->material.params["param1"] = param1;
+    mix_textures->material.params["param2"] = param2;
+    mix_textures->AddTexture(texture1, 0);
+    mix_textures->AddTexture(texture2, 1);
+
+    GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
+
+    render->BindFBO(fbo);
+    fbo->BindTexture(res, UFramebufferAttachment::Color0);
+
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glCullFace(GL_BACK);
+    glDrawBuffers(1, buffers);
+
+    glViewport(0, 0, res->GetWidth(), res->GetHeight());
+    mix_textures->Render(URenderPass::Forward);
+
+    fbo->UnbindTexture(UFramebufferAttachment::Color0);
+    render->UnbindFBO();
+
+    texture1->name = prev_name_tex1;
+    texture2->name = prev_name_tex2;
+
+    OPENGL_CHECK_FOR_ERRORS();
 }
 
 void URendererHelper::CopyTexture(UTexture* from_texture, UTexture* to_texture)
@@ -56,7 +95,7 @@ void URendererHelper::CopyTexture(UTexture* from_texture, UTexture* to_texture)
     copy_texture->AddTexture(from_texture, 0);
 
     GLenum buffers[] = { (GLenum)UFramebufferAttachment::Color0 };
-    
+
     render->BindFBO(fbo);
     fbo->BindTexture(to_texture, UFramebufferAttachment::Color0);
 

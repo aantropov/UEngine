@@ -11,10 +11,10 @@ inout Vertex
 
 } Vert;
 
-uniform sampler2D colorScene;
-uniform sampler2D bluredScene;
-uniform float power;
-uniform float border;
+uniform sampler2D texture1;
+uniform float param1;
+uniform sampler2D texture2;
+uniform float param2;
 
 #if defined(VERTEX)
 
@@ -32,17 +32,9 @@ void main(void)
 
 out vec4 color;
 
-float Luminance(vec3 color)
-{
-	return (color.g + color.r + color.b) / 3;
-}
-
 void main(void)
 {
-  vec4 blured = texture(bluredScene, Vert.texcoord);
-  blured *= pow(Luminance(blured.rgb), 2) * 1;
-  
-  color = texture(colorScene, Vert.texcoord) + blured;  
+	color = texture(texture1, Vert.texcoord) * param1 +  texture(texture2, Vert.texcoord) * param2;	
 }
 
 #endif
